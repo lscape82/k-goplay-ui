@@ -1,11 +1,18 @@
 .DS_Store
 .venv/
+__pycache__/
+*.py[cod]
 .playwright-mcp/
 tmp/
 output/
 .codex-*.png
 *.rdp
 
-# Keep source PDFs used by the project, but skip ad-hoc root PDFs.
-/*.pdf
-!/source/*.pdf
+# Keep private/source extraction artifacts out of a public repository.
+*.pdf
+source/
+data/pdf_pages_text.json
+
+# Current pages reference these images, so keep them tracked until
+# public-safe thumbnails are split into a separate folder.
+# assets/images/pdf-pages/
