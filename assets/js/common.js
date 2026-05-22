@@ -21,6 +21,7 @@
   const config = {
     brandName: "광고플레이",
     brandMark: "AD",
+    brandHref: "media.html",
     phone: "1533-1975",
     email: "info@k-goplay.com",
     copyright: "저작권자 © 광고플레이. 무단전재 및 재배포 금지.",
@@ -29,7 +30,6 @@
     featuredAreaSlugs: ["dosan-daero", "samseong-coex", "gangnam-daero"],
     homeCategoryOrder: ["large_billboard", "package", "shopping_mall_did", "subway", "bus", "daily_touchpoint"],
     navItems: [
-      { href: "index.html", label: "홈" },
       { href: "media.html", label: "매체 찾기" },
       { href: "areas.html", label: "지역 보기" },
       { href: "guides.html", label: "가이드" },
@@ -110,7 +110,7 @@
     document.querySelectorAll("[data-site-header]").forEach((root) => {
       root.innerHTML = `
         <nav class="nav" aria-label="주요 메뉴">
-          <a class="brand" href="index.html"><span class="brand-mark">${esc(config.brandMark)}</span><span>${esc(config.brandName)}</span></a>
+          <a class="brand" href="${esc(config.brandHref)}"><span class="brand-mark">${esc(config.brandMark)}</span><span>${esc(config.brandName)}</span></a>
           <div class="nav-links">
             ${config.navItems.map((item) => `<a data-nav href="${esc(item.href)}">${esc(item.label)}</a>`).join("")}
           </div>
