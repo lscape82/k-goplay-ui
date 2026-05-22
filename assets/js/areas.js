@@ -14,13 +14,14 @@ document.addEventListener("DOMContentLoaded", async () => {
 });
 
 function renderAreaList(root, areas, media) {
-  root.innerHTML = areas.map((area) => {
-    const count = media.filter((item) => item.areaSlug === area.slug).length;
+  const withMedia = areas
+    .map((area) => ({ area, count: media.filter((item) => item.areaSlug === area.slug).length }))
+    .filter((entry) => entry.count > 0);
+  root.innerHTML = withMedia.map(({ area, count }) => {
     return `
       <article class="directory-card">
         <div class="directory-meta">
           <span>${count.toLocaleString("ko-KR")}개 매체</span>
-          ${area.needsReview ? '<span class="soft-badge review">검수 필요</span>' : '<span class="soft-badge">데이터 확보</span>'}
         </div>
         <h3>${AdPlay.esc(area.name)}</h3>
         <p>${AdPlay.esc(area.summary)}</p>
@@ -61,13 +62,7 @@ function renderAreaDetail(root, areas, media, guides) {
             <h1>${AdPlay.esc(area.name)}</h1>
             <p class="document-lede">${AdPlay.esc(area.description || area.summary)}</p>
           </div>
-          <div class="document-status">
-            <span>${area.needsReview ? "검수 필요" : "검수 완료"}</span>
-            <strong>${(area.sourcePages || []).join(", ") || "-"}p</strong>
-          </div>
         </header>
-
-        ${area.needsReview ? `<p class="subtle-alert">${AdPlay.esc(area.dataQualityNote)}</p>` : ""}
 
         <section class="document-section">
           <div class="section-body">
@@ -160,7 +155,7 @@ function mediaRow(item) {
 function guideCard(guide) {
   return `
     <article class="directory-card small">
-      <div class="directory-meta"><span>${AdPlay.esc(guide.category)}</span><span>PDF ${guide.sourcePages.join(", ")}p</span></div>
+      <div class="directory-meta"><span>${AdPlay.esc(guide.category)}</span></div>
       <h3>${AdPlay.esc(guide.title)}</h3>
       <p>${AdPlay.esc(guide.summary)}</p>
       <a class="button secondary" href="guide-detail.html?slug=${encodeURIComponent(guide.slug)}">읽기</a>

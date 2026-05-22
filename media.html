@@ -4,30 +4,20 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>매체 찾기 | 광고플레이 DOOH</title>
-    <link rel="stylesheet" href="assets/css/styles.css?v=publisher-20260521">
+    <link rel="stylesheet" href="assets/css/styles.css?v=structure-20260522">
   </head>
   <body>
     <a class="skip-link" href="#main">본문 바로가기</a>
-    <header class="site-header">
-      <nav class="nav" aria-label="주요 메뉴">
-        <a class="brand" href="index.html"><span class="brand-mark">AD</span><span>광고플레이</span></a>
-        <div class="nav-links">
-          <a data-nav href="index.html">홈</a>
-          <a data-nav href="media.html">매체 찾기</a>
-          <a data-nav href="areas.html">지역 보기</a>
-          <a data-nav href="guides.html">가이드</a>
-          <a data-nav href="estimate.html">견적 문의</a>
-        </div>
-      </nav>
-    </header>
+    <header class="site-header" data-site-header></header>
     <main id="main">
       <section class="section">
         <div class="container">
           <div class="catalog-toolbar">
-            <div class="catalog-title">
-              <strong>매체 찾기</strong>
-              <span id="resultCount" class="result-count" aria-live="polite"></span>
+            <div class="catalog-tabs" role="tablist" aria-label="매체 분류">
+              <button type="button" class="catalog-tab is-active" data-tab="all" role="tab" aria-selected="true">전체 <em id="tabCountAll"></em></button>
+              <button type="button" class="catalog-tab" data-tab="package" role="tab" aria-selected="false">패키지 <em id="tabCountPackage"></em></button>
             </div>
+            <span id="resultCount" class="result-count" aria-live="polite"></span>
             <details class="filters" open>
               <summary>필터</summary>
               <div class="filter-grid">
@@ -39,7 +29,7 @@
                   <label for="areaFilter">지역</label>
                   <select id="areaFilter"><option value="all">전체 지역</option></select>
                 </div>
-                <div class="field">
+                <div class="field" id="categoryFilterWrap">
                   <label for="categoryFilter">매체 유형</label>
                   <select id="categoryFilter"><option value="all">전체 유형</option></select>
                 </div>
@@ -50,29 +40,30 @@
                     <option value="under-10m">월 1,000만원 미만</option>
                     <option value="10m-20m">월 1,000~2,000만원</option>
                     <option value="20m-50m">월 2,000~5,000만원</option>
-                    <option value="over-50m">월 5,000만원 초과</option>
+                    <option value="50m-100m">월 5,000만~1억원</option>
+                    <option value="over-100m">월 1억원 이상</option>
                     <option value="unknown">상담 필요</option>
                   </select>
                 </div>
-                <label class="check-field" for="shortTermFilter">
-                  <input id="shortTermFilter" type="checkbox">
-                  단기
-                </label>
+                <div class="field">
+                  <label for="sortBy">정렬</label>
+                  <select id="sortBy">
+                    <option value="recommended">추천순</option>
+                    <option value="price-asc">가격 낮은 순</option>
+                    <option value="price-desc">가격 높은 순</option>
+                    <option value="area">지역권별</option>
+                  </select>
+                </div>
               </div>
             </details>
           </div>
+          <div id="activeChips" class="active-chips" aria-live="polite"></div>
           <div id="media-list" class="grid cols-3"></div>
         </div>
       </section>
     </main>
-    <footer class="site-footer">
-      <div class="footer-inner">
-        <strong>광고플레이</strong>
-        <span>Tel. 1533-1975 · E-mail. info@k-goplay.com</span>
-        <small>저작권자 © 광고플레이. 무단전재 및 재배포 금지.</small>
-      </div>
-    </footer>
-    <script src="assets/js/common.js?v=publisher-20260521"></script>
-    <script src="assets/js/media-list.js?v=publisher-20260521"></script>
+    <footer class="site-footer" data-site-footer></footer>
+    <script src="assets/js/common.js?v=structure-20260522"></script>
+    <script src="assets/js/media-list.js?v=structure-20260522"></script>
   </body>
 </html>

@@ -89,7 +89,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     summary.innerHTML = buildPreview(data);
     summary.dataset.rawBody = body;
     const subject = encodeURIComponent(`[광고플레이 DOOH 문의] ${data.brand || "견적 문의"}`);
-    mailLink.href = `mailto:info@k-goplay.com?subject=${subject}&body=${encodeURIComponent(body)}`;
+    mailLink.href = `mailto:${AdPlay.config.email}?subject=${subject}&body=${encodeURIComponent(body)}`;
   }
 
   form.addEventListener("input", updateSummary);

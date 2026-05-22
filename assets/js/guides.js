@@ -13,7 +13,6 @@ function renderGuideList(root, guides) {
     <article class="directory-card guide-card">
       <div class="directory-meta">
         <span>${AdPlay.esc(guide.category)}</span>
-        <span>PDF ${guide.sourcePages.join(", ")}p</span>
       </div>
       <h3>${AdPlay.esc(guide.title)}</h3>
       <p>${AdPlay.esc(guide.summary)}</p>
@@ -45,10 +44,6 @@ function renderGuideDetail(root, guides) {
             <p class="document-kicker">${AdPlay.esc(guide.category)}</p>
             <h1>${AdPlay.esc(guide.title)}</h1>
             <p class="document-lede">${AdPlay.esc(guide.summary)}</p>
-          </div>
-          <div class="document-status">
-            <span>PDF 참고</span>
-            <strong>${guide.sourcePages.join(", ")}p</strong>
           </div>
         </header>
 

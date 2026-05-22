@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", async () => {
   const similar = media
     .filter((entry) => entry.areaSlug === item.areaSlug && entry.slug !== item.slug)
     .slice(0, 4);
-  const sourcePages = (item.sourcePages || []).length ? `${item.sourcePages.join(", ")}p` : "확인 필요";
   const playCondition = primaryPlayCondition(item);
   const recommendedIndustries = item.recommendedIndustries?.length ? item.recommendedIndustries : area?.recommendedIndustries;
 
@@ -40,16 +39,12 @@ document.addEventListener("DOMContentLoaded", async () => {
           <h1>${AdPlay.esc(item.name)}</h1>
           <p class="document-lede">${AdPlay.esc(detailSummary(item))}</p>
         </div>
-        <div class="document-status" aria-label="데이터 상태">
-          <span>${item.needsReview ? "검수 필요" : "검수 완료"}</span>
-          <strong>${AdPlay.esc(sourcePages)}</strong>
-        </div>
       </header>
 
       <div class="detail-page-grid">
         <main class="detail-main-column">
           <figure class="document-photo">
-            <img src="${AdPlay.esc(AdPlay.pageImage(item))}" alt="${AdPlay.esc(item.name)} 현장 이미지" onerror="this.src='assets/images/placeholders/media-placeholder.svg'">
+            <img src="${AdPlay.esc(AdPlay.pageImage(item))}" alt="${AdPlay.esc(item.name)} 현장 이미지" onerror="this.src='${AdPlay.esc(AdPlay.config.placeholderImage)}'">
           </figure>
 
           <nav class="section-index" aria-label="상세 정보 목차">
@@ -57,7 +52,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             <a href="#spec">스펙</a>
             <a href="#pricing">가격</a>
             <a href="#target">타깃</a>
-            <a href="#source">출처</a>
           </nav>
 
           <section id="summary" class="document-section">
@@ -111,17 +105,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             </div>
           </section>
 
-          <section id="source" class="document-section">
-            <div class="section-body">
-              <h2>출처와 검수 상태</h2>
-              <dl class="key-value-lines">
-                ${line("PDF 페이지", sourcePages)}
-                ${line("데이터 상태", item.needsReview ? "검수 필요" : "검수 완료")}
-                ${line("검수 메모", item.dataQualityNote || "특이사항 없음")}
-              </dl>
-            </div>
-          </section>
-
           <section class="related-document">
             <div class="related-head">
               <h2>같은 지역의 유사 매체</h2>
@@ -140,7 +123,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             ${factRow("송출 조건", playCondition)}
             ${factRow("운영 시간", item.operationHours || "확인 필요")}
             ${factRow("단기 집행", item.shortTermAvailable ? "가능" : "협의 필요")}
-            ${factRow("원본 페이지", sourcePages)}
             <a class="button" href="estimate.html?media=${encodeURIComponent(item.slug)}">이 매체 견적 문의</a>
             <p>${AdPlay.priceNotice()}</p>
           </div>
@@ -198,7 +180,6 @@ function insightVisuals(item, area) {
       </div>
       ${operationVisual(item.operationHours)}
       ${screenSizeVisual(item)}
-      ${audiencePatternVisual(area)}
       ${efficiencyVisual(item)}
       ${stationBars(area)}
     </div>`;
@@ -253,72 +234,6 @@ function screenSizeVisual(item) {
         <div class="screen-shape" style="${hasSize ? `aspect-ratio:${item.widthM}/${item.heightM};` : ""}"></div>
         <p>${area ? `약 ${area.toFixed(1)}㎡` : "규격 확인 필요"}</p>
       </div>
-    </div>`;
-}
-
-function audiencePatternVisual(area) {
-  const pattern = audiencePattern(area);
-  return `
-    <div class="insight-panel">
-      <div class="insight-head">
-        <span>평일/주말 유동 패턴 <em>샘플</em></span>
-        <strong>${AdPlay.esc(pattern.title)}</strong>
-      </div>
-      <div class="pattern-bars">
-        ${patternBar("평일", pattern.weekdayLabel, pattern.weekdayIndex)}
-        ${patternBar("주말", pattern.weekendLabel, pattern.weekendIndex)}
-      </div>
-      <p class="insight-caption">현재 PDF의 정성 설명을 기준으로 한 구조 샘플입니다. 실제 평일/주말 수치 입력 시 교체합니다.</p>
-    </div>`;
-}
-
-function audiencePattern(area) {
-  const text = `${area?.name || ""} ${area?.summary || ""} ${area?.description || ""}`;
-  if (/도산|압구정|청담|강남/.test(text)) {
-    return {
-      title: "평일 업무 + 주말 쇼핑/외식",
-      weekdayLabel: "출퇴근·업무 유동",
-      weekendLabel: "쇼핑·외식 방문",
-      weekdayIndex: 100,
-      weekendIndex: 88,
-    };
-  }
-  if (/삼성|코엑스|전시|컨벤션/.test(text)) {
-    return {
-      title: "전시/컨벤션 일정 영향",
-      weekdayLabel: "비즈니스·전시",
-      weekendLabel: "쇼핑·행사 방문",
-      weekdayIndex: 96,
-      weekendIndex: 100,
-    };
-  }
-  if (/명동|관광|홍대|성수|잠실/.test(text)) {
-    return {
-      title: "주말 방문 수요 강세",
-      weekdayLabel: "일상 유동",
-      weekendLabel: "관광·쇼핑 방문",
-      weekdayIndex: 86,
-      weekendIndex: 100,
-    };
-  }
-  return {
-    title: "평일/주말 비교 입력 예정",
-    weekdayLabel: "평일 유동",
-    weekendLabel: "주말 유동",
-    weekdayIndex: 100,
-    weekendIndex: 92,
-  };
-}
-
-function patternBar(day, label, index) {
-  return `
-    <div class="pattern-row">
-      <span>${AdPlay.esc(day)}</span>
-      <div>
-        <strong>${AdPlay.esc(label)}</strong>
-        <div class="bar-track"><i style="width:${Math.max(8, index)}%;"></i></div>
-      </div>
-      <em>${index}</em>
     </div>`;
 }
 
@@ -390,25 +305,31 @@ function priceSummaryChips(item) {
     <div class="price-summary">
       <span><b>최저 월</b>${min ? AdPlay.formatKRW(min) : "상담 필요"}</span>
       <span><b>과세</b>${AdPlay.esc(item.taxNote || "VAT 별도")}</span>
-      <span><b>단기</b>${hasShortTermPrice ? "가격표 제공" : "협의 필요"}</span>
+      <span><b>단기</b>${hasShortTermPrice ? "가격표 제공" : item.shortTermAvailable ? "집행 가능 · 협의" : "협의 필요"}</span>
     </div>`;
 }
 
 function priceTable(rows) {
   if (!rows || !rows.length) return `<p class="empty">가격은 상담 시 확인이 필요합니다.</p>`;
+  const columns = [
+    { key: "monthlyPriceKRW", label: "월" },
+    { key: "price15DaysKRW", label: "15일" },
+    { key: "price10DaysKRW", label: "10일" },
+    { key: "price7DaysKRW", label: "7일" },
+    { key: "price5DaysKRW", label: "5일" },
+    { key: "price3DaysKRW", label: "3일" },
+    { key: "price1DayKRW", label: "1일" },
+  ].filter((col) => rows.some((row) => {
+    const v = row[col.key];
+    return v !== null && v !== undefined && v !== "";
+  }));
   return `
     <div class="table-wrap document-price-table">
       <table>
         <thead>
           <tr>
             <th>조건</th>
-            <th>월</th>
-            <th>15일</th>
-            <th>10일</th>
-            <th>7일</th>
-            <th>5일</th>
-            <th>3일</th>
-            <th>1일</th>
+            ${columns.map((col) => `<th>${col.label}</th>`).join("")}
           </tr>
         </thead>
         <tbody>
@@ -416,16 +337,9 @@ function priceTable(rows) {
             <tr>
               <td>
                 <strong>${AdPlay.esc(row.label || "조건 확인")}</strong>
-                ${row.needsReview ? '<span class="badge review">검수 필요</span>' : ""}
                 <small>${AdPlay.esc(row.rawText || "")}</small>
               </td>
-              ${priceCell(row.monthlyPriceKRW)}
-              ${priceCell(row.price15DaysKRW)}
-              ${priceCell(row.price10DaysKRW)}
-              ${priceCell(row.price7DaysKRW)}
-              ${priceCell(row.price5DaysKRW)}
-              ${priceCell(row.price3DaysKRW)}
-              ${priceCell(row.price1DayKRW)}
+              ${columns.map((col) => priceCell(row[col.key])).join("")}
             </tr>`).join("")}
         </tbody>
       </table>
