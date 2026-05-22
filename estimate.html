@@ -1,0 +1,97 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>견적 문의 | 광고플레이 DOOH</title>
+    <link rel="stylesheet" href="assets/css/styles.css?v=estimate-20260522">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">본문 바로가기</a>
+    <header class="site-header">
+      <nav class="nav" aria-label="주요 메뉴">
+        <a class="brand" href="index.html"><span class="brand-mark">AD</span><span>광고플레이</span></a>
+        <div class="nav-links">
+          <a data-nav href="index.html">홈</a>
+          <a data-nav href="media.html">매체 찾기</a>
+          <a data-nav href="areas.html">지역 보기</a>
+          <a data-nav href="guides.html">가이드</a>
+          <a data-nav href="estimate.html">견적 문의</a>
+        </div>
+      </nav>
+    </header>
+    <main id="main">
+      <section class="page-title">
+        <div class="container">
+          <h1>견적 문의</h1>
+          <p>서버 저장 없이 입력 내용을 이메일 본문으로 생성합니다.</p>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container">
+          <div class="estimate-layout">
+            <form id="estimateForm" class="estimate-form-card">
+              <div class="form-grid">
+                <div class="field"><label for="brand">브랜드명</label><input id="brand" name="brand" autocomplete="organization" placeholder="예: 고고스타트"></div>
+                <div class="field"><label for="manager">담당자명</label><input id="manager" name="manager" autocomplete="name" placeholder="예: 홍길동"></div>
+                <div class="field"><label for="phone">연락처</label><input id="phone" name="phone" autocomplete="tel" placeholder="010-0000-0000"></div>
+                <div class="field"><label for="email">이메일</label><input id="email" name="email" type="email" autocomplete="email" placeholder="name@company.com"></div>
+                <div class="field"><label for="industry">업종</label><input id="industry" name="industry" placeholder="예: 뷰티, F&B, 테크"></div>
+                <div class="field"><label for="area">희망 지역</label><select id="area" name="area"><option value="">희망 지역 선택</option></select></div>
+                <div class="field"><label for="media">희망 매체</label><select id="media" name="media"><option value="">희망 매체 선택</option></select></div>
+                <div class="field">
+                  <label for="budget">예산 범위</label>
+                  <select id="budget" name="budget">
+                    <option value="">예산 범위 선택</option>
+                    <option>월 1,000만원 미만</option>
+                    <option>월 1,000~2,000만원</option>
+                    <option>월 2,000~5,000만원</option>
+                    <option>월 5,000만원 이상</option>
+                  </select>
+                </div>
+                <div class="field"><label for="period">집행 기간</label><input id="period" name="period" placeholder="예: 2026년 6월 1주"></div>
+                <div class="field">
+                  <label for="creative">광고 소재 보유 여부</label>
+                  <select id="creative" name="creative">
+                    <option value="">광고 소재 상태 선택</option>
+                    <option>영상 소재 보유</option>
+                    <option>이미지 소재 보유</option>
+                    <option>제작 필요</option>
+                  </select>
+                </div>
+                <div class="field full"><label for="message">문의 내용</label><textarea id="message" name="message" placeholder="캠페인 목적, 타깃, 희망 일정 등을 적어주세요."></textarea></div>
+              </div>
+            </form>
+            <aside class="estimate-preview-panel">
+              <div class="estimate-preview-card">
+              <div class="estimate-preview-head">
+                <div>
+                  <h2>실시간 견적 프리뷰</h2>
+                </div>
+                <em>메일 발송용</em>
+              </div>
+              <div id="estimateSummary" class="summary-box" aria-live="polite"></div>
+              <div class="estimate-preview-footer">
+                <div class="estimate-actions">
+                  <a id="mailLink" class="button" href="mailto:info@k-goplay.com">이메일로 문의 보내기</a>
+                  <button id="copyButton" class="button secondary" type="button">문의 내용 복사하기</button>
+                </div>
+                <p class="estimate-info">입력 내용은 서버에 저장되지 않습니다. 이메일 클라이언트 또는 복사 기능으로만 전달됩니다.</p>
+              </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div class="footer-inner">
+        <strong>광고플레이</strong>
+        <span>Tel. 1533-1975 · E-mail. info@k-goplay.com</span>
+        <small>저작권자 © 광고플레이. 무단전재 및 재배포 금지.</small>
+      </div>
+    </footer>
+    <script src="assets/js/common.js?v=estimate-20260522"></script>
+    <script src="assets/js/estimate.js?v=estimate-20260522"></script>
+  </body>
+</html>

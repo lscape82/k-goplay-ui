@@ -1,0 +1,416 @@
+[
+  {
+    "slug": "dosan-daero",
+    "name": "도산대로 프리미엄",
+    "summary": "압구정·청담 프리미엄 상권, 럭셔리 브랜드와 트렌디 소비층이 밀집된 핵심 소비 축",
+    "description": "차량 정체구간과 대형 교차로가 이어지는 하이엔드 소비 상권입니다. 뷰티, 패션, 수입차, 프리미엄 라이프스타일 브랜드의 인지도 캠페인에 적합합니다.",
+    "dailyFootTraffic": 198092,
+    "trafficVolumeDaily": 36644,
+    "subwayMonthlyUsers": [
+      {
+        "station": "신사역 3호선",
+        "users": 1771915
+      },
+      {
+        "station": "신사역 신분당선",
+        "users": 510832
+      },
+      {
+        "station": "압구정역 3호선",
+        "users": 2063914
+      },
+      {
+        "station": "압구정로데오역 수인분당선",
+        "users": 1278508
+      },
+      {
+        "station": "청담역",
+        "users": 1160642
+      },
+      {
+        "station": "학동역",
+        "users": 1385498
+      },
+      {
+        "station": "강남구청역",
+        "users": 1034458
+      }
+    ],
+    "primaryTargets": [
+      "2030~40대 고소득 소비층",
+      "패션·뷰티 트렌드 리더",
+      "프리미엄 상권 방문객"
+    ],
+    "recommendedIndustries": [
+      "럭셔리",
+      "뷰티",
+      "패션",
+      "수입차",
+      "라이프스타일"
+    ],
+    "sourcePages": [
+      7,
+      18
+    ],
+    "needsReview": false,
+    "dataQualityNote": ""
+  },
+  {
+    "slug": "samseong-coex",
+    "name": "삼성 코엑스",
+    "summary": "코엑스·전시장·몰 이용객이 상시 유입되는 MICE·비즈니스 복합 상권",
+    "description": "전시, 쇼핑, 문화 소비가 결합된 체류형 거점입니다. 영동대로 정체 구간과 보행 동선이 겹쳐 대형 전광판 주목도가 높습니다.",
+    "dailyFootTraffic": 291095,
+    "trafficVolumeDaily": 67576,
+    "subwayMonthlyUsers": [
+      {
+        "station": "삼성역 2호선",
+        "users": 3595169
+      },
+      {
+        "station": "봉은사역 9호선",
+        "users": 1582113
+      }
+    ],
+    "primaryTargets": [
+      "전시·컨벤션 방문객",
+      "오피스 직장인",
+      "MZ 문화 소비층",
+      "글로벌 방문객"
+    ],
+    "recommendedIndustries": [
+      "테크",
+      "전시/문화",
+      "뷰티",
+      "패션",
+      "B2B 서비스"
+    ],
+    "sourcePages": [
+      7,
+      39
+    ],
+    "needsReview": true,
+    "dataQualityNote": "교통량이 테헤란로/영동대교 두 값으로 병기되어 대표값은 보수적으로 67,576대를 사용했습니다."
+  },
+  {
+    "slug": "gangnam-daero",
+    "name": "강남역/강남대로",
+    "summary": "서울 유동인구 1위권의 업무·쇼핑·외식 핵심 상권",
+    "description": "초대형 전광판과 버스쉘터, 지하철 디지털 매체를 조합하기 좋은 대표 업무·소비 상권입니다.",
+    "dailyFootTraffic": 357552,
+    "trafficVolumeDaily": null,
+    "subwayMonthlyUsers": [
+      {
+        "station": "강남역 2호선",
+        "users": 5046293
+      }
+    ],
+    "primaryTargets": [
+      "3040 직장인",
+      "MZ 쇼핑객",
+      "야간 상권 이용객"
+    ],
+    "recommendedIndustries": [
+      "F&B",
+      "패션",
+      "테크",
+      "교육",
+      "금융"
+    ],
+    "sourcePages": [
+      7,
+      8
+    ],
+    "needsReview": false,
+    "dataQualityNote": ""
+  },
+  {
+    "slug": "myeongdong-euljiro",
+    "name": "명동/을지로입구",
+    "summary": "국내외 관광객과 쇼핑 수요가 집중되는 글로벌 리테일 상권",
+    "description": "K-뷰티, 패션, 리테일 브랜드의 관광객 대상 노출에 적합합니다.",
+    "dailyFootTraffic": 254317,
+    "trafficVolumeDaily": null,
+    "subwayMonthlyUsers": [
+      {
+        "station": "을지로입구역 2호선",
+        "users": 3460259
+      },
+      {
+        "station": "명동역 4호선",
+        "users": 2674996
+      }
+    ],
+    "primaryTargets": [
+      "국내외 관광객",
+      "쇼핑 방문객",
+      "도심 직장인"
+    ],
+    "recommendedIndustries": [
+      "뷰티",
+      "패션",
+      "관광",
+      "리테일"
+    ],
+    "sourcePages": [
+      7,
+      8
+    ],
+    "needsReview": false,
+    "dataQualityNote": ""
+  },
+  {
+    "slug": "gwanghwamun",
+    "name": "광화문",
+    "summary": "관공서·대사관·글로벌 기업과 관광 동선이 겹치는 도심 관문",
+    "description": "평일 직장인 유동과 주말 관광 수요가 동시에 발생하는 상징적 도심 노출지입니다.",
+    "dailyFootTraffic": 250960,
+    "trafficVolumeDaily": null,
+    "subwayMonthlyUsers": [
+      {
+        "station": "광화문역 5호선",
+        "users": 2467800
+      },
+      {
+        "station": "경복궁역 3호선",
+        "users": 1639224
+      }
+    ],
+    "primaryTargets": [
+      "도심 직장인",
+      "관광객",
+      "공공기관 방문객"
+    ],
+    "recommendedIndustries": [
+      "금융",
+      "공공캠페인",
+      "관광",
+      "기업 브랜딩"
+    ],
+    "sourcePages": [
+      7,
+      8
+    ],
+    "needsReview": false,
+    "dataQualityNote": ""
+  },
+  {
+    "slug": "yeouido",
+    "name": "여의도",
+    "summary": "금융·방송·공공기관이 집중된 서울 대표 업무지구",
+    "description": "직장인 중심의 고소득 유동과 더현대서울 방문 수요를 함께 커버할 수 있습니다.",
+    "dailyFootTraffic": 246276,
+    "trafficVolumeDaily": null,
+    "subwayMonthlyUsers": [
+      {
+        "station": "여의도역 5호선",
+        "users": 1826075
+      },
+      {
+        "station": "여의나루역 5호선",
+        "users": 751772
+      }
+    ],
+    "primaryTargets": [
+      "3040 직장인",
+      "금융권 종사자",
+      "쇼핑 방문객"
+    ],
+    "recommendedIndustries": [
+      "금융",
+      "프리미엄 리테일",
+      "F&B",
+      "문화"
+    ],
+    "sourcePages": [
+      7
+    ],
+    "needsReview": false,
+    "dataQualityNote": ""
+  },
+  {
+    "slug": "hongdae",
+    "name": "홍대",
+    "summary": "젊은 소비층과 외국인 관광객이 교차하는 문화·콘텐츠 상권",
+    "description": "공연, 패션, F&B, 콘텐츠 소비가 활발해 SNS 확산형 캠페인에 적합합니다.",
+    "dailyFootTraffic": 265796,
+    "trafficVolumeDaily": null,
+    "subwayMonthlyUsers": [
+      {
+        "station": "홍대입구역 2호선",
+        "users": 5078231
+      }
+    ],
+    "primaryTargets": [
+      "20대",
+      "외국인 관광객",
+      "콘텐츠 소비층"
+    ],
+    "recommendedIndustries": [
+      "패션",
+      "F&B",
+      "콘텐츠",
+      "공연",
+      "뷰티"
+    ],
+    "sourcePages": [
+      7,
+      8
+    ],
+    "needsReview": true,
+    "dataQualityNote": "PDF 추출값이 '50,78,231'로 보여 5,078,231로 정리했으며 원본 대조가 필요합니다."
+  },
+  {
+    "slug": "seongsu",
+    "name": "성수",
+    "summary": "카페거리·편집숍·팝업스토어가 밀집한 트렌드 선도 상권",
+    "description": "체류형 방문과 SNS 공유가 활발해 브랜드 경험형 캠페인과 궁합이 좋습니다.",
+    "dailyFootTraffic": 167319,
+    "trafficVolumeDaily": null,
+    "subwayMonthlyUsers": [
+      {
+        "station": "성수역 2호선",
+        "users": 3786067
+      }
+    ],
+    "primaryTargets": [
+      "2030 여성",
+      "트렌드 소비층",
+      "팝업 방문객"
+    ],
+    "recommendedIndustries": [
+      "뷰티",
+      "패션",
+      "라이프스타일",
+      "F&B"
+    ],
+    "sourcePages": [
+      7,
+      8
+    ],
+    "needsReview": false,
+    "dataQualityNote": ""
+  },
+  {
+    "slug": "jamsil",
+    "name": "잠실",
+    "summary": "업무·관광·쇼핑·레저가 결합된 대형 복합 상권",
+    "description": "롯데월드타워·몰과 이벤트 수요를 기반으로 가족·관광 유동을 폭넓게 커버합니다.",
+    "dailyFootTraffic": 346781,
+    "trafficVolumeDaily": null,
+    "subwayMonthlyUsers": [
+      {
+        "station": "잠실역 2호선",
+        "users": 5621542
+      }
+    ],
+    "primaryTargets": [
+      "가족 방문객",
+      "관광객",
+      "쇼핑객",
+      "직장인"
+    ],
+    "recommendedIndustries": [
+      "리테일",
+      "엔터테인먼트",
+      "F&B",
+      "레저"
+    ],
+    "sourcePages": [
+      7
+    ],
+    "needsReview": false,
+    "dataQualityNote": ""
+  },
+  {
+    "slug": "seoul-station",
+    "name": "서울역",
+    "summary": "KTX·공항철도·지하철이 집결된 전국 단위 교통 허브",
+    "description": "국내외 방문객과 전국 이동 수요가 집중되는 관문형 노출지입니다.",
+    "dailyFootTraffic": 179975,
+    "trafficVolumeDaily": null,
+    "subwayMonthlyUsers": [
+      {
+        "station": "서울역 1호선",
+        "users": 4739906
+      },
+      {
+        "station": "서울역 4호선",
+        "users": 1144578
+      }
+    ],
+    "primaryTargets": [
+      "출장객",
+      "관광객",
+      "전국 이동객"
+    ],
+    "recommendedIndustries": [
+      "여행",
+      "금융",
+      "리테일",
+      "공공캠페인"
+    ],
+    "sourcePages": [
+      7,
+      13
+    ],
+    "needsReview": false,
+    "dataQualityNote": ""
+  },
+  {
+    "slug": "mapo",
+    "name": "마포/공덕",
+    "summary": "대기업 사옥과 업무시설이 밀집한 안정적 오피스 상권",
+    "description": "직장인 중심의 반복 노출과 점심·퇴근 소비 동선 공략에 적합합니다.",
+    "dailyFootTraffic": 247807,
+    "trafficVolumeDaily": null,
+    "subwayMonthlyUsers": [
+      {
+        "station": "마포역 5호선",
+        "users": 934703
+      }
+    ],
+    "primaryTargets": [
+      "4050 직장인",
+      "오피스 방문객"
+    ],
+    "recommendedIndustries": [
+      "B2B",
+      "금융",
+      "F&B",
+      "생활서비스"
+    ],
+    "sourcePages": [
+      7
+    ],
+    "needsReview": false,
+    "dataQualityNote": ""
+  },
+  {
+    "slug": "other-national",
+    "name": "전국 생활권",
+    "summary": "아파트, 오피스, 편의점, 대학교 등 생활 접점 중심의 전국 커버리지",
+    "description": "지역 단위 또는 전국 단위로 일상 반복 노출을 설계할 수 있는 생활밀착형 매체군입니다.",
+    "dailyFootTraffic": null,
+    "trafficVolumeDaily": null,
+    "subwayMonthlyUsers": [],
+    "primaryTargets": [
+      "거주민",
+      "직장인",
+      "학생",
+      "생활권 소비자"
+    ],
+    "recommendedIndustries": [
+      "생활서비스",
+      "F&B",
+      "교육",
+      "앱",
+      "리테일"
+    ],
+    "sourcePages": [
+      14
+    ],
+    "needsReview": true,
+    "dataQualityNote": "요약형 생활권 매체의 전국 단위 데이터로 지역별 유동 수치가 분리되어 있지 않습니다."
+  }
+]

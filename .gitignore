@@ -1,0 +1,11 @@
+.DS_Store
+.venv/
+.playwright-mcp/
+tmp/
+output/
+.codex-*.png
+*.rdp
+
+# Keep source PDFs used by the project, but skip ad-hoc root PDFs.
+/*.pdf
+!/source/*.pdf

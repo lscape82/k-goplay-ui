@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" role="img" aria-labelledby="title desc">
+  <title id="title">광고플레이 DOOH placeholder</title>
+  <desc id="desc">정적 사이트에서 PDF 이미지가 없을 때 표시하는 대체 이미지</desc>
+  <rect width="1200" height="675" fill="#eef6f8"/>
+  <rect x="180" y="130" width="840" height="415" rx="18" fill="#ffffff" stroke="#b9d8de" stroke-width="3"/>
+  <rect x="230" y="180" width="740" height="250" rx="10" fill="#d9edf1"/>
+  <rect x="280" y="470" width="330" height="22" rx="11" fill="#2f6f88"/>
+  <rect x="280" y="505" width="520" height="16" rx="8" fill="#7fb6b9"/>
+  <text x="600" y="317" text-anchor="middle" font-family="Arial, sans-serif" font-size="54" font-weight="700" fill="#16465c">ADPLAY DOOH</text>
+</svg>
