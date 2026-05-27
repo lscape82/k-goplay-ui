@@ -43,8 +43,8 @@ document.addEventListener("DOMContentLoaded", async () => {
 
       <div class="detail-page-grid">
         <main class="detail-main-column">
-          <figure class="document-photo">
-            <img src="${AdPlay.esc(AdPlay.pageImage(item))}" alt="${AdPlay.esc(item.name)} 현장 이미지" onerror="this.src='${AdPlay.esc(AdPlay.config.placeholderImage)}'">
+          <figure class="document-photo ${item.videoUrl ? "has-video" : ""}">
+            ${heroMedia(item)}
           </figure>
 
           <nav class="section-index" aria-label="상세 정보 목차">
@@ -146,6 +146,16 @@ function specItem(label, value) {
   return `<div class="spec-item"><span>${AdPlay.esc(label)}</span><strong>${AdPlay.esc(value)}</strong></div>`;
 }
 
+function heroMedia(item) {
+  if (item.videoUrl) {
+    return `
+      <video class="document-video" src="${AdPlay.esc(item.videoUrl)}" poster="${AdPlay.esc(AdPlay.pageImage(item))}" autoplay muted loop playsinline controls aria-label="${AdPlay.esc(item.name)} 영상">
+        <img src="${AdPlay.esc(AdPlay.pageImage(item))}" alt="${AdPlay.esc(item.name)} 현장 이미지">
+      </video>`;
+  }
+  return `<img src="${AdPlay.esc(AdPlay.pageImage(item))}" alt="${AdPlay.esc(item.name)} 현장 이미지" onerror="this.src='${AdPlay.esc(AdPlay.config.placeholderImage)}'">`;
+}
+
 function detailSummary(item) {
   const addressText = item.address || item.areaName || "위치 확인 필요";
   return `${addressText} · ${item.mediaType || "DOOH 매체"} · ${AdPlay.priceLabel(item)}`;
@@ -165,6 +175,16 @@ function listItems(items) {
 }
 
 function insightVisuals(item, area) {
+  if (item.audienceInsights) {
+    return `
+      <div class="insight-grid">
+        ${audienceDashboardVisual(item)}
+        ${operationVisual(item.operationHours)}
+        ${screenSizeVisual(item)}
+        ${efficiencyVisual(item)}
+        ${stationBars(area)}
+      </div>`;
+  }
   return `
     <div class="insight-grid">
       <div class="insight-panel span-2">
@@ -178,6 +198,7 @@ function insightVisuals(item, area) {
           ${metricItem("월 지하철 이용", subwayTotal(area), "명")}
         </div>
       </div>
+      ${audienceDashboardVisual(item)}
       ${operationVisual(item.operationHours)}
       ${screenSizeVisual(item)}
       ${efficiencyVisual(item)}
@@ -192,6 +213,241 @@ function metricItem(label, value, suffix) {
 
 function subwayTotal(area) {
   return (area?.subwayMonthlyUsers || []).reduce((sum, station) => sum + Number(station.users || 0), 0) || null;
+}
+
+function audienceDashboardVisual(item) {
+  const insights = item.audienceInsights;
+  if (!insights) return "";
+  const avg500 = Number(insights.averageDailyFootTraffic?.radius500m) || 0;
+  const avg300 = Number(insights.averageDailyFootTraffic?.radius300m) || 0;
+  const weekday = Number((insights.weekdayPercent || [])[0]?.value) || 0;
+  const weekend = Number((insights.weekdayPercent || [])[1]?.value) || 0;
+  return `
+    <div class="audience-dashboard span-2">
+      <div class="audience-metrics">
+        ${audienceMetricCard("일평균 유동인구", "300m", avg300)}
+        ${audienceMetricCard("일평균 유동인구", "500m", avg500)}
+        ${audienceMetricCard("주중 일평균", "500m", Math.round(avg500 * weekday / 100))}
+        ${audienceMetricCard("주말 일평균", "500m", Math.round(avg500 * weekend / 100))}
+      </div>
+      <div class="audience-card audience-card-gender">
+        <h3>성별 비율 기준 500m</h3>
+        ${audienceProgressRows(countFromPercent(insights.genderPercent, avg500), true)}
+      </div>
+      <div class="audience-card">
+        <h3>연령대별 분포 기준 500m</h3>
+        ${audienceProgressRows(countFromPercent(insights.agePercent, avg500), false)}
+      </div>
+      <div class="audience-card">
+        <h3>요일별 일평균 기준 500m</h3>
+        ${audienceProgressRows(countFromPercent(insights.dayPercent, avg500), false)}
+      </div>
+      <div class="audience-card audience-card-time">
+        <h3>시간대별 유동인구 기준 500m</h3>
+        ${audienceColumnChart(countFromPercent(insights.timePercent, avg500))}
+      </div>
+      <div class="audience-card audience-card-trend">
+        <h3>월별 일평균 유동인구 추이 기준 500m</h3>
+        ${audienceLineChart(insights.monthlyDailyFootTraffic500m || [])}
+      </div>
+    </div>`;
+}
+
+function audienceMetricCard(label, scope, value) {
+  return `
+    <div class="audience-metric">
+      <span>${AdPlay.esc(label)} <b>(${AdPlay.esc(scope)})</b></span>
+      <strong>${AdPlay.formatNumber(value)}명</strong>
+    </div>`;
+}
+
+function countFromPercent(rows, base) {
+  return (rows || []).map((row) => ({
+    label: row.label,
+    percent: Number(row.value) || 0,
+    count: Math.round((Number(base) || 0) * (Number(row.value) || 0) / 100),
+  }));
+}
+
+function audienceProgressRows(rows, genderColor) {
+  const max = Math.max(...rows.map((row) => row.count), 1);
+  return `
+    <div class="audience-progress-list">
+      ${rows.map((row, index) => {
+        const width = `${Math.max(3, (row.count / max) * 100)}%`;
+        return `
+          <div class="audience-progress ${genderColor && index === 1 ? "is-accent" : ""}">
+            <span>${AdPlay.esc(row.label)}</span>
+            <div class="audience-progress-track"><i style="width:${width}"></i></div>
+            <strong>${AdPlay.formatNumber(row.count)}명 <em>${formatPercent(row.percent)}</em></strong>
+          </div>`;
+      }).join("")}
+    </div>`;
+}
+
+function audienceColumnChart(rows) {
+  const max = Math.max(...rows.map((row) => row.count), 1);
+  return `
+    <div class="audience-columns">
+      ${rows.map((row) => {
+        const height = `${Math.max(8, (row.count / max) * 100)}%`;
+        return `
+          <div class="audience-column">
+            <strong>${formatCompact(row.count)}</strong>
+            <i style="height:${height}"></i>
+            <span>${AdPlay.esc(row.label)}</span>
+          </div>`;
+      }).join("")}
+    </div>`;
+}
+
+function audienceLineChart(rows) {
+  const points = (rows || []).map((row) => ({ label: monthLabel(row.month), value: Number(row.value) || 0 }));
+  if (!points.length) return "";
+  const values = points.map((point) => point.value);
+  const min = Math.min(...values);
+  const max = Math.max(...values);
+  const width = 640;
+  const height = 220;
+  const padX = 38;
+  const padTop = 34;
+  const padBottom = 42;
+  const plotWidth = width - padX * 2;
+  const plotHeight = height - padTop - padBottom;
+  const coords = points.map((point, index) => {
+    const x = padX + (plotWidth * index / Math.max(points.length - 1, 1));
+    const ratio = max === min ? 0.5 : (point.value - min) / (max - min);
+    const y = padTop + plotHeight - (plotHeight * ratio);
+    return { ...point, x, y };
+  });
+  const line = coords.map((point) => `${point.x.toFixed(1)},${point.y.toFixed(1)}`).join(" ");
+  return `
+    <div class="audience-line-wrap">
+      <svg class="audience-line-chart" viewBox="0 0 ${width} ${height}" role="img" aria-label="월별 일평균 유동인구 추이">
+        <polyline points="${line}" fill="none" stroke="#496c98" stroke-width="4" stroke-linecap="round" stroke-linejoin="round"></polyline>
+        ${coords.map((point) => `
+          <g>
+            <circle cx="${point.x.toFixed(1)}" cy="${point.y.toFixed(1)}" r="5" fill="#496c98"></circle>
+            <text x="${point.x.toFixed(1)}" y="${(point.y - 12).toFixed(1)}" text-anchor="middle">${formatCompact(point.value)}</text>
+            <text class="axis-label" x="${point.x.toFixed(1)}" y="${height - 12}" text-anchor="middle">${AdPlay.esc(point.label)}</text>
+          </g>`).join("")}
+      </svg>
+    </div>`;
+}
+
+function formatCompact(value) {
+  const num = Number(value);
+  if (!Number.isFinite(num)) return "0";
+  return `${Math.round(num / 1000)}K`;
+}
+
+function audienceMetricVisual(item) {
+  const insights = item.audienceInsights;
+  if (!insights) return "";
+  return `
+    <div class="insight-panel span-2">
+      <div class="insight-head">
+        <span>매체 반경 데이터 <em>엑셀 분석</em></span>
+        <strong>500m 일평균 ${AdPlay.formatNumber(insights.averageDailyFootTraffic?.radius500m)}명</strong>
+      </div>
+      <div class="metric-strip">
+        ${metricItem("500m 유동인구", insights.averageDailyFootTraffic?.radius500m, "명")}
+        ${metricItem("300m 유동인구", insights.averageDailyFootTraffic?.radius300m, "명")}
+        ${metricItem("주중 비중", (insights.weekdayPercent || [])[0]?.value, "%")}
+      </div>
+    </div>`;
+}
+
+function audienceTrendVisual(item) {
+  const rows = item.audienceInsights?.monthlyDailyFootTraffic500m || [];
+  const values = rows.map((row) => Number(row.value)).filter((value) => Number.isFinite(value));
+  if (!values.length) return "";
+  const max = Math.max(...values);
+  const min = Math.min(...values);
+  const peak = rows.reduce((best, row) => Number(row.value) > Number(best.value) ? row : best, rows[0]);
+  return `
+    <div class="insight-panel span-2 audience-trend-panel">
+      <div class="insight-head">
+        <span>월별 유동인구 추이 <em>500m 기준</em></span>
+        <strong>최고 ${monthLabel(peak.month)} · ${AdPlay.formatNumber(peak.value)}명</strong>
+      </div>
+      <div class="audience-bars" aria-label="월별 500m 일평균 유동인구">
+        ${rows.map((row) => {
+          const value = Number(row.value);
+          const height = max ? Math.max(14, (value / max) * 100) : 0;
+          return `
+            <div class="audience-bar ${value === max ? "is-peak" : ""}">
+              <i style="height:${height}%"></i>
+              <span>${AdPlay.esc(monthLabel(row.month))}</span>
+            </div>`;
+        }).join("")}
+      </div>
+      <p class="insight-caption">연평균 ${AdPlay.formatNumber(item.audienceInsights?.averageDailyFootTraffic?.radius500m)}명, 월별 범위 ${AdPlay.formatNumber(min)}~${AdPlay.formatNumber(max)}명입니다.</p>
+    </div>`;
+}
+
+function genderVisual(item) {
+  const rows = item.audienceInsights?.genderPercent || [];
+  if (!rows.length) return "";
+  return `
+    <div class="insight-panel">
+      <div class="insight-head">
+        <span>성별 비중 <em>500m 기준</em></span>
+        <strong>${AdPlay.esc(topPercentLabel(rows))}</strong>
+      </div>
+      <div class="split-chart">
+        ${rows.map((row, index) => `<i class="${index === 0 ? "primary" : "secondary"}" style="width:${Number(row.value)}%"></i>`).join("")}
+      </div>
+      <div class="split-legend">${rows.map((row) => `<span><b>${AdPlay.esc(row.label)}</b>${formatPercent(row.value)}</span>`).join("")}</div>
+    </div>`;
+}
+
+function ageVisual(item) {
+  return percentBarPanel("연령대 비중", "핵심 연령 40~60대+", item.audienceInsights?.agePercent, true);
+}
+
+function timeSlotVisual(item) {
+  return percentBarPanel("시간대 비중", "오후~저녁 집중 노출", item.audienceInsights?.timePercent, false);
+}
+
+function percentBarPanel(kicker, title, rows, compact) {
+  if (!rows || !rows.length) return "";
+  const max = Math.max(...rows.map((row) => Number(row.value) || 0));
+  return `
+    <div class="insight-panel">
+      <div class="insight-head">
+        <span>${AdPlay.esc(kicker)} <em>500m 기준</em></span>
+        <strong>${AdPlay.esc(title)}</strong>
+      </div>
+      <div class="profile-bars ${compact ? "is-compact" : ""}">
+        ${rows.map((row) => {
+          const value = Number(row.value) || 0;
+          const width = max ? Math.max(5, (value / max) * 100) : 0;
+          return `
+            <div class="profile-row">
+              <span>${AdPlay.esc(row.label)}</span>
+              <div class="bar-track"><i style="width:${width}%"></i></div>
+              <strong>${formatPercent(value)}</strong>
+            </div>`;
+        }).join("")}
+      </div>
+    </div>`;
+}
+
+function monthLabel(month) {
+  const parts = String(month || "").split(".");
+  return parts.length > 1 ? `${Number(parts[1])}월` : String(month || "");
+}
+
+function topPercentLabel(rows) {
+  const top = [...rows].sort((a, b) => Number(b.value) - Number(a.value))[0];
+  return top ? `${top.label} ${formatPercent(top.value)}` : "확인 필요";
+}
+
+function formatPercent(value) {
+  const num = Number(value);
+  if (!Number.isFinite(num)) return "확인 필요";
+  return `${Number.isInteger(num) ? num : num.toFixed(1)}%`;
 }
 
 function operationVisual(operationHours) {

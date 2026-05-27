@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>지도 보기 | 광고플레이 DOOH</title>
+    <meta name="description" content="서울 주요 상권의 DOOH 전광판 매체를 지도형 화면에서 비교하고 탐색합니다.">
+    <link rel="stylesheet" href="assets/css/styles.css?v=map-20260527">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">본문 바로가기</a>
+    <header class="site-header" data-site-header></header>
+    <main id="main">
+      <section class="map-page" id="media-map" aria-live="polite">
+        <div class="container">
+          <header class="map-header">
+            <div>
+              <p class="document-kicker">LOCATION PLANNER</p>
+              <h1>상권 지도에서 전광판 매체를 빠르게 비교하세요</h1>
+              <p>강남 핵심 축부터 도심·생활권까지, 유동 규모와 매체 수를 한 화면에서 확인하고 바로 상세 견적 흐름으로 이어갑니다.</p>
+            </div>
+            <a class="button" href="estimate.html">견적 문의</a>
+          </header>
+
+          <div class="map-shell">
+            <aside class="map-panel" aria-label="지도 필터와 선택 지역">
+              <div class="map-panel-head">
+                <strong>탐색 조건</strong>
+                <span id="mapResultCount"></span>
+              </div>
+              <div class="map-controls">
+                <div class="field">
+                  <label for="mapAreaFilter">지역</label>
+                  <select id="mapAreaFilter">
+                    <option value="all">전체 지역</option>
+                  </select>
+                </div>
+                <div class="field">
+                  <label for="mapCategoryFilter">매체 유형</label>
+                  <select id="mapCategoryFilter">
+                    <option value="all">전체 유형</option>
+                  </select>
+                </div>
+              </div>
+              <div id="mapSelectedArea" class="map-selected"></div>
+            </aside>
+
+            <section class="map-stage-wrap" aria-label="서울 주요 상권 지도">
+              <div class="map-stage" id="mapStage"></div>
+              <div class="map-legend" aria-label="지도 범례">
+                <span><i class="legend-dot"></i>등록 매체</span>
+                <span><i class="legend-dot is-featured"></i>프리미엄 권역</span>
+                <span><i class="legend-line"></i>주요 이동 축</span>
+              </div>
+            </section>
+          </div>
+
+          <section class="map-results-section">
+            <div class="related-head">
+              <h2>지도 기반 추천 매체</h2>
+              <a href="media.html">전체 매체 보기</a>
+            </div>
+            <div id="mapMediaList" class="map-media-list"></div>
+          </section>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer" data-site-footer></footer>
+    <script src="assets/js/common.js?v=map-20260527"></script>
+    <script src="assets/js/map.js?v=map-20260527"></script>
+  </body>
+</html>

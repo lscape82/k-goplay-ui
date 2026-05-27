@@ -1,5 +1,5 @@
 ﻿slug,name,areaSlug,areaName,category,mediaType,address,tags,widthM,heightM,resolutionPx,operationHours,minMonthlyPriceKRW,sourcePages,needsReview,dataQualityNote
-sinsa-h-station,신사역 사거리 H스테이션,dosan-daero,도산대로 프리미엄,large_billboard,대형 전광판,"서울시 서초구 강남대로 605, 휴먼타워",신사|가로수길|강남대로|도산대로|한남대교,10.8,19.6,1320 x 2400,06:00~24:00,12000000,19,False,
+sinsa-h-station,신사동 휴먼타워 H-스테이션 전광판,dosan-daero,도산대로 프리미엄,large_billboard,대형 전광판,"서울시 서초구 강남대로 605, 휴먼타워",신사|가로수길|강남대로|도산대로|한남대교,10.8,19.6,1320 x 2400,06:00~24:00,12000000,19,False,
 sinsa-syh-tower,신사역 사거리 SYH타워,dosan-daero,도산대로 프리미엄,large_billboard,대형 전광판,서울시 강남구 신사동 501-2,신사역사거리|가로수길|강남대로|한남대교|쇼핑,11.8,19.0,1248 x 1872,06:00~24:00,12000000,20,False,
 sinsa-yk-tower,신사역 YK타워 유경빌딩,dosan-daero,도산대로 프리미엄,large_billboard,대형 전광판,서울시 강남구 도산대로 121,신사역|도산대로|가로수길|명품|프리미엄|미용병원,12.5,17.3,1248 x 1728,06:00~24:00,12000000,21,False,
 sinsa-peyto,신사동 PEYTO 페이토,dosan-daero,도산대로 프리미엄,large_billboard,대형 전광판,서울시 강남구 도산대로 134,신사|강남|도산대로|가로수길|쇼핑|관광,13.1,14.0,1296 x 1376,06:00~24:00,12000000,22,False,

@@ -31,6 +31,7 @@
     homeCategoryOrder: ["large_billboard", "package", "shopping_mall_did", "subway", "bus", "daily_touchpoint"],
     navItems: [
       { href: "media.html", label: "매체 찾기" },
+      { href: "map.html", label: "지도 보기" },
       { href: "areas.html", label: "지역 보기" },
       { href: "guides.html", label: "가이드" },
       { href: "estimate.html", label: "견적 문의" },

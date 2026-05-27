@@ -16,6 +16,24 @@ python3 -m http.server 3000
 
 브라우저에서 `http://localhost:3000`으로 접속합니다.
 
+Windows 로컬 실행은 프로젝트 가상환경을 사용하는 아래 명령을 권장합니다.
+
+```powershell
+.\run-local.ps1
+```
+
+## 배포 방법
+
+GitHub Pages가 `main` 브랜치의 루트 폴더를 배포하도록 설정되어 있으면, 아래 명령 하나로 변경사항을 커밋하고 GitHub에 푸쉬합니다.
+
+```powershell
+git ship "수정 내용"
+```
+
+이 Codex 채팅에서는 `/ship`이라고 보내면 같은 흐름으로 처리합니다.
+
+푸쉬 후 잠시 뒤 `https://lscape82.github.io/k-goplay-ui/`에 반영됩니다.
+
 ## PDF 데이터 추출
 
 - 기준 PDF: `source/adplay-dooh.pdf`
@@ -50,6 +68,7 @@ PDF 추출이 불확실한 가격, 패키지 조건, 요약 표 매체는 `needs
 - `index.html`: 홈
 - `media.html`: 매체 리스트와 필터
 - `media-detail.html?slug=...`: 매체 상세
+- `map.html`: 지도 기반 매체 탐색
 - `areas.html`: 지역 목록
 - `area-detail.html?slug=dosan-daero`: 지역 상세
 - `guides.html`: 가이드 목록

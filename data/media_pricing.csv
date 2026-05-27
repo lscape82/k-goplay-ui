@@ -1,6 +1,6 @@
 ﻿mediaSlug,mediaName,label,durationSec,dailyPlays,monthlyPriceKRW,price15DaysKRW,price10DaysKRW,price7DaysKRW,price5DaysKRW,price3DaysKRW,price1DayKRW,rawText,needsReview
-sinsa-h-station,신사역 사거리 H스테이션,20초 100회,20,100,12000000,,,,,,,"1일 20초 100회 1,200만원/월 (1개월 미만 협의 필요)",False
-sinsa-h-station,신사역 사거리 H스테이션,30초 100회,30,100,15000000,,,,,,,"1일 30초 100회 1,500만원/월 (1개월 미만 협의 필요)",False
+sinsa-h-station,신사동 휴먼타워 H-스테이션 전광판,20초 100회,20,100,12000000,,,,,,,"1일 20초 100회 1,200만원/월 (1개월 미만 협의 필요)",False
+sinsa-h-station,신사동 휴먼타워 H-스테이션 전광판,30초 100회,30,100,15000000,,,,,,,"1일 30초 100회 1,500만원/월 (1개월 미만 협의 필요)",False
 sinsa-syh-tower,신사역 사거리 SYH타워,20초 100회,20,100,12000000,6000000,,3360000,,,500000,"1,200만원/월, 600만원/15일, 336만원/7일, 50만원/1일",False
 sinsa-syh-tower,신사역 사거리 SYH타워,30초 100회,30,100,15000000,7500000,,4200000,,,600000,"1,500만원/월, 750만원/15일, 420만원/7일, 60만원/1일",False
 sinsa-yk-tower,신사역 YK타워 유경빌딩,20초 100회,20,100,12000000,7500000,,3500000,,,,"1,200만원/월, 750만원/15일, 350만원/7일",False
