@@ -34,6 +34,7 @@
       { href: "map.html", label: "지도 보기" },
       { href: "areas.html", label: "지역 보기" },
       { href: "guides.html", label: "가이드" },
+      { href: "geocode.html", label: "주소 변환" },
       { href: "estimate.html", label: "견적 문의" },
     ],
   };

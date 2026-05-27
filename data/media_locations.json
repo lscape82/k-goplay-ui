@@ -1,0 +1,603 @@
+﻿{
+    "sinsa-h-station":  {
+                            "sourceIds":  [
+                                              627
+                                          ],
+                            "latitude":  37.5157646,
+                            "longitude":  127.0192069,
+                            "sourceName":  "신사동 휴먼타워 H-스테이션 전광판",
+                            "sourceAddress":  "서울 서초구 강남대로 605 (잠원동)",
+                            "size":  "10.8 x 19.6m",
+                            "description":  null,
+                            "contract":  "1일 20초 100회 - 1,200만원/월 1일 30초 100회 - 1,500만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                            "resolution":  "1320 x 2400",
+                            "operationHours":  "06:00 - 24:00",
+                            "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/627/image/1767831224-0.jpg",
+                            "isComposite":  false,
+                            "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                        },
+    "sinsa-syh-tower":  {
+                            "sourceIds":  [
+                                              340
+                                          ],
+                            "latitude":  37.5167674,
+                            "longitude":  127.0202638,
+                            "sourceName":  "신사역 SYH타워 메가마티아 전광판",
+                            "sourceAddress":  "서울특별시 강남구 도산대로  107 BIO",
+                            "size":  "11.8 x 19.0m",
+                            "description":  null,
+                            "contract":  "1일 20초 100회 - 1,200만원/월 1일 30초 100회 - 1,500만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                            "resolution":  "1248 x 1872",
+                            "operationHours":  "06:00 - 24:00",
+                            "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/340/image/1689311507-0.jpg",
+                            "isComposite":  false,
+                            "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                        },
+    "sinsa-yk-tower":  {
+                           "sourceIds":  [
+                                             325
+                                         ],
+                           "latitude":  37.5174154,
+                           "longitude":  127.0217421,
+                           "sourceName":  "도산대로 유경빌딩",
+                           "sourceAddress":  "서울 강남구 도산대로 121 (신사동)",
+                           "size":  "12.5m x 17.3m",
+                           "description":  null,
+                           "contract":  "1일 20초 100회 - 1,200만원/월 1일 30초 100회 - 1,500만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                           "resolution":  "1248 x 1728",
+                           "operationHours":  "06:00 - 24:00",
+                           "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/325/image/1686122251-0.jpg",
+                           "isComposite":  false,
+                           "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                       },
+    "sinsa-peyto":  {
+                        "sourceIds":  [
+                                          323
+                                      ],
+                        "latitude":  37.5173572,
+                        "longitude":  127.0234091,
+                        "sourceName":  "도산대로 PEYTO 페이토",
+                        "sourceAddress":  "서울 강남구 도산대로 134 (논현동)",
+                        "size":  "13.1m x 14.0m",
+                        "description":  "#신사 #강남 #도산대로 #가로수길 #애플전광판 #쇼핑 #관광",
+                        "contract":  "1일 20초 100회 - 1,200만원/월 1일 30초 100회 - 1,500만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                        "resolution":  "1296 x 1376",
+                        "operationHours":  "06:00 - 24:00",
+                        "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/323/image/1684215920-0.jpg",
+                        "isComposite":  false,
+                        "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                    },
+    "hakdong-ss-tower":  {
+                             "sourceIds":  [
+                                               328
+                                           ],
+                             "latitude":  37.5237127,
+                             "longitude":  127.0404854,
+                             "sourceName":  "도산대로 S\u0026S타워",
+                             "sourceAddress":  "서울 강남구 도산대로 409 (청담동)",
+                             "size":  "13.0 x 17.2m",
+                             "description":  null,
+                             "contract":  "1일 15초 100회 - 1,000만원/월 1일 20초 100회 - 1,200만원/월 1일 30초 100회 - 1,500만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                             "resolution":  "1280 x 1696",
+                             "operationHours":  "06:00 - 24:00",
+                             "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/328/image/1685430550-0.jpg",
+                             "isComposite":  false,
+                             "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                         },
+    "dosan-sgf-cheongdam":  {
+                                "sourceIds":  [
+                                                  618
+                                              ],
+                                "latitude":  37.523145,
+                                "longitude":  127.0376251,
+                                "sourceName":  "도산대로 SGF청담타워 전광판",
+                                "sourceAddress":  "서울 강남구 도산대로 327 (신사동)",
+                                "size":  "11.4 x 19.6m",
+                                "description":  null,
+                                "contract":  "1일 15초 100회 - 1,000만원/월 1일 20초 100회 - 1,200만원/월 1일 30초 100회 - 1,500만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                                "resolution":  "1104 x 1920",
+                                "operationHours":  "06:00 - 24:00",
+                                "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/618/image/1730356921-0.jpg",
+                                "isComposite":  false,
+                                "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                            },
+    "dosan-sb-tower":  {
+                           "sourceIds":  [
+                                             314
+                                         ],
+                           "latitude":  37.5220259,
+                           "longitude":  127.0363329,
+                           "sourceName":  "도산대로 SB타워 전광판",
+                           "sourceAddress":  "서울특별시 강남구 도산대로  318 SB타워",
+                           "size":  "10.0 x 22.1m",
+                           "description":  null,
+                           "contract":  "1일 20초 150회 - 1,500만원/월 1일 30초 100회 - 1,500만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                           "resolution":  "960 x 2170",
+                           "operationHours":  "06:00 - 24:00",
+                           "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/314/image/1684834156-0.jpg",
+                           "isComposite":  false,
+                           "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                       },
+    "dosan-sun-and-vill":  {
+                               "sourceIds":  [
+                                                 315
+                                             ],
+                               "latitude":  37.5211094,
+                               "longitude":  127.0314077,
+                               "sourceName":  "도산대로 썬앤빌\u0026학빌딩 전광판",
+                               "sourceAddress":  "서울 강남구 도산대로 225 (신사동, 현대썬앤빌)",
+                               "size":  "썬앤빌 12.4 x 17.9m / 학빌딩 16.5 x 9.0m",
+                               "description":  "학동사거리, 영동대교 방향 노출. 벤틀리, 롤스로이스, 마세라티 등 명품 자동차 브랜드 및 패션 브랜드 매장에 특화된 상권으로 상위 클래스 고객과 고소득 세대 다수 분포",
+                               "contract":  "1일 20초 150회 - 2,000만원/월 1일 30초 100회 - 2,000만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                               "resolution":  "썬앤빌 1216 x 1760 / 학빌딩 1280 x 768",
+                               "operationHours":  "06:00 - 24:00",
+                               "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/315/image/1770887734-0.jpg",
+                               "isComposite":  false,
+                               "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                           },
+    "dosan-sun-vill-hak-pkg":  {
+                                   "sourceIds":  [
+                                                     315,
+                                                     330
+                                                 ],
+                                   "latitude":  37.52143615,
+                                   "longitude":  127.03234105,
+                                   "sourceName":  "도산대로 썬앤빌\u0026학빌딩 전광판",
+                                   "sourceAddress":  "서울 강남구 도산대로 225 (신사동, 현대썬앤빌)",
+                                   "size":  "썬앤빌 12.4 x 17.9m / 학빌딩 16.5 x 9.0m",
+                                   "description":  "학동사거리, 영동대교 방향 노출. 벤틀리, 롤스로이스, 마세라티 등 명품 자동차 브랜드 및 패션 브랜드 매장에 특화된 상권으로 상위 클래스 고객과 고소득 세대 다수 분포",
+                                   "contract":  "1일 20초 150회 - 2,000만원/월 1일 30초 100회 - 2,000만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                                   "resolution":  "썬앤빌 1216 x 1760 / 학빌딩 1280 x 768",
+                                   "operationHours":  "06:00 - 24:00",
+                                   "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/315/image/1770887734-0.jpg",
+                                   "isComposite":  true,
+                                   "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                               },
+    "dosan-emporia":  {
+                          "sourceIds":  [
+                                            604
+                                        ],
+                          "latitude":  37.5203143,
+                          "longitude":  127.0311442,
+                          "sourceName":  "도산대로 엠포리아빌딩 전광판",
+                          "sourceAddress":  "서울 강남구 도산대로 220 (논현동)",
+                          "size":  "12.4m x 18.2m",
+                          "description":  null,
+                          "contract":  "1일 20초 100회 - 1,200만원/월 1일 30초 100회 - 1,500만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                          "resolution":  "1216 x 1792",
+                          "operationHours":  "06:00 - 24:00",
+                          "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/604/image/1753148070-0.jpg",
+                          "isComposite":  false,
+                          "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                      },
+    "dosan-gangnam-building":  {
+                                   "sourceIds":  [
+                                                     326
+                                                 ],
+                                   "latitude":  37.5208324,
+                                   "longitude":  127.0305827,
+                                   "sourceName":  "도산대로 강남빌딩",
+                                   "sourceAddress":  "서울 강남구 도산대로 217 (신사동)",
+                                   "size":  "13.0 x 17.2m",
+                                   "description":  null,
+                                   "contract":  "1일 20초 100회 - 1,200만원/월 1일 30초 100회 - 1,500만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                                   "resolution":  "1280 x 1680",
+                                   "operationHours":  "06:00 - 24:00",
+                                   "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/326/image/1685434903-0.jpg",
+                                   "isComposite":  false,
+                                   "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                               },
+    "dosan-baekyoung-building":  {
+                                     "sourceIds":  [
+                                                       603
+                                                   ],
+                                     "latitude":  37.5222797,
+                                     "longitude":  127.0349155,
+                                     "sourceName":  "도산대로 백영빌딩 전광판",
+                                     "sourceAddress":  "서울 강남구 도산대로 307 (신사동)",
+                                     "size":  "40.0 x 9.0m",
+                                     "description":  null,
+                                     "contract":  "1일 30초 100회 - 1,500만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                                     "resolution":  "3968 x 864 / (1536+512+1920) x 864",
+                                     "operationHours":  "06:00 - 24:00",
+                                     "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/603/image/1728614809-0.jpg",
+                                     "isComposite":  false,
+                                     "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                                 },
+    "dosan-hak-building":  {
+                               "sourceIds":  [
+                                                 330
+                                             ],
+                               "latitude":  37.5217629,
+                               "longitude":  127.0332744,
+                               "sourceName":  "도산대로 학빌딩 전광판",
+                               "sourceAddress":  "서울 강남구 도산대로 239 (신사동)",
+                               "size":  "16.5 x 9.0m",
+                               "description":  null,
+                               "contract":  "1일 20초 150회 - 1,200만원/월 1일 30초 100회 - 1,200만원/월 *썬앤빌 패키지(2,000만원) 우선 판매 *기재된 내용 외의 기간 및 비용 협의 가능",
+                               "resolution":  "1280 x 768",
+                               "operationHours":  "06:00 - 24:00",
+                               "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/330/image/1685431625-0.jpg",
+                               "isComposite":  false,
+                               "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                           },
+    "dosan-bmw-building":  {
+                               "sourceIds":  [
+                                                 329
+                                             ],
+                               "latitude":  37.5220334,
+                               "longitude":  127.0341141,
+                               "sourceName":  "도산대로 BMW 빌딩",
+                               "sourceAddress":  "서울 강남구 도산대로 301 (신사동)",
+                               "size":  "13.0m x 8.0m",
+                               "description":  null,
+                               "contract":  "1일 20초 100회 - 800만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                               "resolution":  "1920 x 1080",
+                               "operationHours":  "06:00 - 24:00",
+                               "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/329/image/1685428046-0.jpg",
+                               "isComposite":  false,
+                               "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                           },
+    "dosan-hakil-building":  {
+                                 "sourceIds":  [
+                                                   324
+                                               ],
+                                 "latitude":  37.5226391,
+                                 "longitude":  127.038924,
+                                 "sourceName":  "도산대로 학일빌딩",
+                                 "sourceAddress":  "서울 강남구 도산대로 336 (논현동)",
+                                 "size":  "17.2m x 8.6m",
+                                 "description":  null,
+                                 "contract":  "1일 20초 100회 - 600만원/월 1일 30초 100회 - 800만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                                 "resolution":  "2240 x 1088",
+                                 "operationHours":  "06:00 - 24:00",
+                                 "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/324/image/1686123339-0.jpg",
+                                 "isComposite":  false,
+                                 "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                             },
+    "dosan-hansum-building":  {
+                                  "sourceIds":  [
+                                                    316
+                                                ],
+                                  "latitude":  37.52498,
+                                  "longitude":  127.0507225,
+                                  "sourceName":  "도산대로 한섬빌딩",
+                                  "sourceAddress":  "서울 강남구 도산대로 523 (청담동)",
+                                  "size":  "11.5m x 19.5m",
+                                  "description":  "*한섬 경쟁 브랜드 불가*",
+                                  "contract":  "1일 20초 100회 - 1,200만원/월 1일 30초 100회 - 1,500만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                                  "resolution":  "1056 x 1824",
+                                  "operationHours":  "06:00 - 24:00",
+                                  "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/316/image/1721554403-0.jpg",
+                                  "isComposite":  false,
+                                  "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                              },
+    "cheongdam-bluepearl-hotel":  {
+                                      "sourceIds":  [
+                                                        617
+                                                    ],
+                                      "latitude":  37.5256491,
+                                      "longitude":  127.0539461,
+                                      "sourceName":  "청담 블루펄호텔 전광판",
+                                      "sourceAddress":  "서울 강남구 도산대로 549 (청담동)",
+                                      "size":  "10.95x19.5m",
+                                      "description":  null,
+                                      "contract":  "1일 20초 100회 - 1,200만원/월 1일 30초 100회 - 1,500만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                                      "resolution":  "1056x1920",
+                                      "operationHours":  "06:00 - 24:00",
+                                      "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/617/image/1730100651-0.jpg",
+                                      "isComposite":  false,
+                                      "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                                  },
+    "dosan-timesync-1":  {
+                             "sourceIds":  [
+                                               315,
+                                               330,
+                                               604
+                                           ],
+                             "latitude":  37.5210622,
+                             "longitude":  127.0319421,
+                             "sourceName":  "도산대로 썬앤빌\u0026학빌딩 전광판",
+                             "sourceAddress":  "서울 강남구 도산대로 225 (신사동, 현대썬앤빌)",
+                             "size":  "썬앤빌 12.4 x 17.9m / 학빌딩 16.5 x 9.0m",
+                             "description":  "학동사거리, 영동대교 방향 노출. 벤틀리, 롤스로이스, 마세라티 등 명품 자동차 브랜드 및 패션 브랜드 매장에 특화된 상권으로 상위 클래스 고객과 고소득 세대 다수 분포",
+                             "contract":  "1일 20초 150회 - 2,000만원/월 1일 30초 100회 - 2,000만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                             "resolution":  "썬앤빌 1216 x 1760 / 학빌딩 1280 x 768",
+                             "operationHours":  "06:00 - 24:00",
+                             "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/315/image/1770887734-0.jpg",
+                             "isComposite":  true,
+                             "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                         },
+    "dosan-timesync-2":  {
+                             "sourceIds":  [
+                                               314,
+                                               603
+                                           ],
+                             "latitude":  37.5221528,
+                             "longitude":  127.0356242,
+                             "sourceName":  "도산대로 SB타워 전광판",
+                             "sourceAddress":  "서울특별시 강남구 도산대로  318 SB타워",
+                             "size":  "10.0 x 22.1m",
+                             "description":  null,
+                             "contract":  "1일 20초 150회 - 1,500만원/월 1일 30초 100회 - 1,500만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                             "resolution":  "960 x 2170",
+                             "operationHours":  "06:00 - 24:00",
+                             "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/314/image/1684834156-0.jpg",
+                             "isComposite":  true,
+                             "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                         },
+    "samseong-kpop-square-package":  {
+                                         "sourceIds":  [
+                                                           414
+                                                       ],
+                                         "latitude":  37.5098792,
+                                         "longitude":  127.0617593,
+                                         "sourceName":  "삼성동 K-POP 라이브미디어",
+                                         "sourceAddress":  "서울특별시 강남구 영동대로  511 트레이드타워",
+                                         "size":  "81.0 x 20.0m",
+                                         "description":  null,
+                                         "contract":  "1구좌 - 10,000만원/월 0.5구좌 - 8,000만원/월 *1일 30초 70회 기준 *기재된 내용 외의 기간 및 비용 협의 가능",
+                                         "resolution":  "7840 x 1954",
+                                         "operationHours":  "06:00 - 24:00",
+                                         "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/414/image/1686708585-0.jpg",
+                                         "isComposite":  false,
+                                         "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                                     },
+    "samseong-coex-kpop-detail":  {
+                                      "sourceIds":  [
+                                                        414,
+                                                        415
+                                                    ],
+                                      "latitude":  37.5097191,
+                                      "longitude":  127.0618038,
+                                      "sourceName":  "삼성동 K-POP 라이브미디어",
+                                      "sourceAddress":  "서울특별시 강남구 영동대로  511 트레이드타워",
+                                      "size":  "81.0 x 20.0m",
+                                      "description":  null,
+                                      "contract":  "1구좌 - 10,000만원/월 0.5구좌 - 8,000만원/월 *1일 30초 70회 기준 *기재된 내용 외의 기간 및 비용 협의 가능",
+                                      "resolution":  "7840 x 1954",
+                                      "operationHours":  "06:00 - 24:00",
+                                      "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/414/image/1686708585-0.jpg",
+                                      "isComposite":  true,
+                                      "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                                  },
+    "samseong-hyundai-department":  {
+                                        "sourceIds":  [
+                                                          554
+                                                      ],
+                                        "latitude":  37.508365,
+                                        "longitude":  127.0604262,
+                                        "sourceName":  "현대백화점 면세점 무역센터점 외벽",
+                                        "sourceAddress":  "서울특별시 강남구 테헤란로  517 현대백화점",
+                                        "size":  "37.4 x 36.1",
+                                        "description":  null,
+                                        "contract":  "30초/70회/일 - 5,000만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                                        "resolution":  "3616 x 3488",
+                                        "operationHours":  "06:00 - 24:00",
+                                        "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/554/image/1716967343-0.jpg",
+                                        "isComposite":  false,
+                                        "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                                    },
+    "samseong-coex-media-tower-cmt":  {
+                                          "sourceIds":  [
+                                                            363
+                                                        ],
+                                          "latitude":  37.5130928,
+                                          "longitude":  127.0598122,
+                                          "sourceName":  "코엑스 미디어타워",
+                                          "sourceAddress":  "서울 강남구 영동대로 517 (삼성동)",
+                                          "size":  "10.7 x 29.6m x 2면 (양면)",
+                                          "description":  "#코엑스 #삼성역 #도심공항터미널 #비즈니스 #특급호텔 #현대백화점 #파르나스몰 #전시",
+                                          "contract":  "1일 20초 70회 - 3,000만원/월 1일 30초 70회 - 4,000만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                                          "resolution":  "960 x 2112",
+                                          "operationHours":  "06:00 - 24:00",
+                                          "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/363/image/1686298784-0.jpg",
+                                          "isComposite":  false,
+                                          "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                                      },
+    "samseong-parnas-media-tower-pmt":  {
+                                            "sourceIds":  [
+                                                              368
+                                                          ],
+                                            "latitude":  37.5089244,
+                                            "longitude":  127.0617279,
+                                            "sourceName":  "삼성동 파르나스 미디어타워",
+                                            "sourceAddress":  "서울특별시 강남구 테헤란로  521 파르나스타워",
+                                            "size":  "12.3 x 26.0m x 2면 (양면)",
+                                            "description":  "#삼성역 #파르나스몰 #현대백화점 #코엑스몰 #도심공항터미널 #호텔 #비즈니스 #전시 #컨퍼런스",
+                                            "contract":  "1일 20초 70회 - 4,000만원/월 1일 30초 70회 - 5,000만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                                            "resolution":  "1440 x 2560",
+                                            "operationHours":  "06:00 - 24:00",
+                                            "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/368/image/1686300084-0.jpg",
+                                            "isComposite":  false,
+                                            "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                                        },
+    "samseong-media-tower-package-cpmt":  {
+                                              "sourceIds":  [
+                                                                363,
+                                                                368
+                                                            ],
+                                              "latitude":  37.5110086,
+                                              "longitude":  127.06077005,
+                                              "sourceName":  "코엑스 미디어타워",
+                                              "sourceAddress":  "서울 강남구 영동대로 517 (삼성동)",
+                                              "size":  "10.7 x 29.6m x 2면 (양면)",
+                                              "description":  "#코엑스 #삼성역 #도심공항터미널 #비즈니스 #특급호텔 #현대백화점 #파르나스몰 #전시",
+                                              "contract":  "1일 20초 70회 - 3,000만원/월 1일 30초 70회 - 4,000만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                                              "resolution":  "960 x 2112",
+                                              "operationHours":  "06:00 - 24:00",
+                                              "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/363/image/1686298784-0.jpg",
+                                              "isComposite":  true,
+                                              "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                                          },
+    "samseong-shilla-stay":  {
+                                 "sourceIds":  [
+                                                   362
+                                               ],
+                                 "latitude":  37.509905,
+                                 "longitude":  127.0631771,
+                                 "sourceName":  "삼성동 신라스테이",
+                                 "sourceAddress":  "서울 강남구 영동대로 506 (삼성동)",
+                                 "size":  "13.3m x 16.9m",
+                                 "description":  "#삼성역 #코엑스 #파르나스몰 #도심공항터미널 #무역센터 #특급호텔 #비즈니스타운 #광고특구",
+                                 "contract":  "1일 20초 100회 - 1,200만원/월 1일 30초 100회 - 1,500만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                                 "resolution":  "1312 x 1664",
+                                 "operationHours":  "07:00 - 23:00",
+                                 "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/362/image/1686723414-0.jpg",
+                                 "isComposite":  false,
+                                 "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                             },
+    "samseong-superior-tower":  {
+                                    "sourceIds":  [
+                                                      359
+                                                  ],
+                                    "latitude":  37.5081885,
+                                    "longitude":  127.0619836,
+                                    "sourceName":  "삼성동 슈페리어타워",
+                                    "sourceAddress":  "서울특별시 강남구 테헤란로  528 슈페리어타워",
+                                    "size":  "12.7m x 17.3m",
+                                    "description":  null,
+                                    "contract":  "1일 20초 100회 - 1,200만원/월 1일 30초 100회 - 1,500만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                                    "resolution":  "1248 x 1696",
+                                    "operationHours":  "06:00 - 24:00",
+                                    "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/359/image/1689645910-0.jpg",
+                                    "isComposite":  false,
+                                    "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                                },
+    "samseong-landmark-building":  {
+                                       "sourceIds":  [
+                                                         360
+                                                     ],
+                                       "latitude":  37.5145599,
+                                       "longitude":  127.0594994,
+                                       "sourceName":  "삼성동 랜드마크빌딩",
+                                       "sourceAddress":  "서울 강남구 영동대로 607 (삼성동)",
+                                       "size":  "12.4m x 18.2m",
+                                       "description":  null,
+                                       "contract":  "1일 20초 100회 - 1,200만원/월 1일 30초 100회 - 1,500만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                                       "resolution":  "1216 x 1792",
+                                       "operationHours":  "06:00 - 24:00",
+                                       "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/360/image/1686641212-0.jpg",
+                                       "isComposite":  false,
+                                       "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                                   },
+    "samseong-luchen-tower":  {
+                                  "sourceIds":  [
+                                                    298
+                                                ],
+                                  "latitude":  37.5070308,
+                                  "longitude":  127.0586576,
+                                  "sourceName":  "삼성역 루첸타워",
+                                  "sourceAddress":  "서울 강남구 테헤란로 510 (대치동)",
+                                  "size":  "10.5m x 20m ",
+                                  "description":  "영동대로와 테헤란로가 교차하는 구간에 위치하여 차량 및 유동인구 많은 지역. 비즈니스, 문화, 관광, 쇼핑, 전시와 컨벤션이 융합된 무역센터와 현대백화점이 위치함. 한류 문화중심지로서 외국인 관광객이 많은 국제 관광명소",
+                                  "contract":  "1일 20초 100회 이상 - 1,200만원/월 1일 30초 100회 이상 - 1,500만원/월",
+                                  "resolution":  "1024 x 1888",
+                                  "operationHours":  "06:00 - 24:00",
+                                  "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/298/image/1681276386-0.jpg",
+                                  "isComposite":  false,
+                                  "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                              },
+    "samseong-vplex":  {
+                           "sourceIds":  [
+                                             547
+                                         ],
+                           "latitude":  37.5073867,
+                           "longitude":  127.0568389,
+                           "sourceName":  "삼성 포스코사거리 VPLEX",
+                           "sourceAddress":  "서울 강남구 테헤란로 501 (삼성동)",
+                           "size":  "14m x 16m",
+                           "description":  null,
+                           "contract":  "1일 30초 70회 - 1,500만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                           "resolution":  ".",
+                           "operationHours":  "06:00 - 24:00",
+                           "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/547/image/1716880530-0.jpg",
+                           "isComposite":  false,
+                           "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                       },
+    "shopping-coex-9to9-cube":  {
+                                    "sourceIds":  [
+                                                      432
+                                                  ],
+                                    "latitude":  37.5108917,
+                                    "longitude":  127.0602588,
+                                    "sourceName":  "삼성동 코엑스 9to9 Cube",
+                                    "sourceAddress":  "서울특별시 강남구 영동대로  511 트레이드타워",
+                                    "size":  "1.75m x 2.75m x 18기",
+                                    "description":  null,
+                                    "contract":  "1일 15초 133회 - 2,500만원/월 1일 20초 100회 - 2,500만원/월 1일 30초 66회 - 2,500만원/월 *9to9 Cube + 별마당 LED = 3,000만원 *기재된 내용 외의 기간 및 비용 협의 가능",
+                                    "resolution":  "896 x 1408",
+                                    "operationHours":  "06:00 - 24:00",
+                                    "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/432/image/1687510730-0.jpg",
+                                    "isComposite":  false,
+                                    "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                                },
+    "subway-gangnam-pmp":  {
+                               "sourceIds":  [
+                                                 437
+                                             ],
+                               "latitude":  37.4979886,
+                               "longitude":  127.0278188,
+                               "sourceName":  "강남역 PMP ",
+                               "sourceAddress":  "서울특별시 강남구 강남대로  396 강남역",
+                               "size":  "위치별 상이 (이미지 첨부)",
+                               "description":  null,
+                               "contract":  "1일 20초 150회 - 3,000만원/월 1일 30초 100회 - 3,000만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                               "resolution":  "위치별 상이 (이미지 첨부)",
+                               "operationHours":  "05:00 - 25:00",
+                               "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/437/image/1693203670-0.jpg",
+                               "isComposite":  false,
+                               "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                           },
+    "bus-gangnam-shelter":  {
+                                "sourceIds":  [
+                                                  533
+                                              ],
+                                "latitude":  37.5034393,
+                                "longitude":  127.0453779,
+                                "sourceName":  "에코큐브 버스쉘터",
+                                "sourceAddress":  "서울특별시 강남구 테헤란로  319-2",
+                                "size":  "차도면(A)8M Type 1기 2,880x1,760 / 차도면(A)5,6M Type 9기 1,920x1,760 / 인도면(B) 950 x 1820",
+                                "description":  "테헤란로, 비즈니스 상권",
+                                "contract":  "1일 30초 100회 패키지-2,000만원/월 (에코큐브 10곳+가로변 디지털 7곳)",
+                                "resolution":  "차도면 8M Type 2,880x1,760 / 차도면 5,6M Type 1,920x1,760 / 인도면 950 x 1820",
+                                "operationHours":  "06:00 - 02:00",
+                                "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/533/image/1709477579-0.jpg",
+                                "isComposite":  false,
+                                "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                            },
+    "transport-seoul-station-ktx-panorama":  {
+                                                 "sourceIds":  [
+                                                                   771
+                                                               ],
+                                                 "latitude":  37.5540955,
+                                                 "longitude":  126.9712512,
+                                                 "sourceName":  "KTX 서울역 파노라마 전광판",
+                                                 "sourceAddress":  "서울특별시 용산구 한강대로  405 서울역(철도역)",
+                                                 "size":  "광고면 91.0 x 5.5m, 전체 112.0 x 5.5m",
+                                                 "description":  null,
+                                                 "contract":  "1일 20초 100회 - 8,000만원/월 1일 30초 100회 - 8,000만원/월 *기재된 내용 외의 기간 및 비용 협의 가능",
+                                                 "resolution":  "35740 x 2160",
+                                                 "operationHours":  "05:00 - 25:00",
+                                                 "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/771/image/1760578086-0.jpg",
+                                                 "isComposite":  false,
+                                                 "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                                             },
+    "daily-apartment-elevator-tv":  {
+                                        "sourceIds":  [
+                                                          556
+                                                      ],
+                                        "latitude":  37.5233663,
+                                        "longitude":  126.9234407,
+                                        "sourceName":  "여의도오투타워EV",
+                                        "sourceAddress":  "서울 영등포구 의사당대로 83 (여의도동)",
+                                        "size":  "영상 15~30”+이미지 10” ",
+                                        "description":  "여의도 비즈니스 중심지 초역세권 프리미엄 오피스 빌딩, 총 9대 매립형 광고 모니터가 설치되어 있음. 지하 7층~지상 23층으로 이루어진 고층 빌딩으로 엘리베이터 이동중 광고 노출에 효과적임. 로컬 음식점, 지자체, 금융기관, 패션, 뷰티, 테크 광고 등 구매력 높은 직장인 타겟 광고 다수 진행",
+                                        "contract":  "1일 15초 100회 이상-45만원/월 (9대 1set)",
+                                        "resolution":  "영상 1280x720 + 이미지 960x720 ",
+                                        "operationHours":  "06:00 - 24:00",
+                                        "photoUrl":  "https://lifescapediag.blob.core.windows.net/photo/Assets/public/556/image/1719323468-0.jpg",
+                                        "isComposite":  false,
+                                        "sourceLabel":  "GOPLAY_매체_20260527.csv"
+                                    }
+}

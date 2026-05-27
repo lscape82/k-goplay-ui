@@ -18,5 +18,18 @@ if (-not (Test-Path $venvPython)) {
 }
 
 Set-Location $root
-Write-Host "Serving http://localhost:$port from .venv"
-& $venvPython -m http.server $port
+
+$envFile = Join-Path $root ".env"
+if (Test-Path $envFile) {
+    Get-Content $envFile | ForEach-Object {
+        if ($_ -match "^\s*([^#\s][^=]*)=(.*)$") {
+            $k = $Matches[1].Trim()
+            $v = $Matches[2].Trim()
+            Set-Item -Path "Env:$k" -Value $v
+        }
+    }
+    Write-Host "Loaded .env"
+}
+
+Write-Host "Serving http://localhost:$port"
+& $venvPython api_server.py $port

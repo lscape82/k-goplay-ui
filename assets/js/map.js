@@ -2,9 +2,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const root = document.querySelector("#media-map");
   if (!root) return;
 
-  const [areas, media] = await Promise.all([
+  const [areas, media, locations] = await Promise.all([
     AdPlay.loadJson("data/areas.json"),
     AdPlay.loadJson("data/media.json"),
+    AdPlay.loadJson("data/media_locations.json"),
   ]);
 
   const areaFilter = document.querySelector("#mapAreaFilter");
@@ -14,89 +15,80 @@ document.addEventListener("DOMContentLoaded", async () => {
   const listRoot = document.querySelector("#mapMediaList");
   const countRoot = document.querySelector("#mapResultCount");
 
-  const areaPositions = {
-    "gwanghwamun": { x: 47, y: 18, lat: 37.5759, lng: 126.9768 },
-    "myeongdong-euljiro": { x: 54, y: 29, lat: 37.564, lng: 126.9827 },
-    "seoul-station": { x: 43, y: 36, lat: 37.5547, lng: 126.9706 },
-    "mapo": { x: 27, y: 40, lat: 37.5436, lng: 126.9512 },
-    "hongdae": { x: 21, y: 34, lat: 37.5572, lng: 126.9245 },
-    "yeouido": { x: 32, y: 55, lat: 37.5219, lng: 126.9246 },
-    "seongsu": { x: 66, y: 47, lat: 37.5446, lng: 127.0559 },
-    "dosan-daero": { x: 58, y: 60, lat: 37.5225, lng: 127.0365 },
-    "samseong-coex": { x: 70, y: 65, lat: 37.5126, lng: 127.0588 },
-    "gangnam-daero": { x: 58, y: 74, lat: 37.4979, lng: 127.0276 },
-    "jamsil": { x: 82, y: 62, lat: 37.5133, lng: 127.1002 },
-    "other-national": { x: 82, y: 82, lat: 37.5665, lng: 126.978 },
-  };
   let naverMap = null;
   let naverMarkers = [];
+  let selectedMediaSlug = new URLSearchParams(window.location.search).get("media") || "";
+  let currentItems = [];
 
-  const areaStats = areas.map((area) => {
-    const items = media.filter((item) => item.areaSlug === area.slug);
-    return { area, items, position: areaPositions[area.slug] || { x: 50, y: 50 } };
-  }).filter((entry) => entry.items.length > 0);
-
-  let selectedSlug = new URLSearchParams(window.location.search).get("area") || "all";
+  const mediaWithLocations = media.map((item) => ({
+    ...item,
+    mapLocation: locations[item.slug] || null,
+  }));
 
   populateFilters();
   render();
 
   areaFilter.addEventListener("change", () => {
-    selectedSlug = areaFilter.value;
+    selectedMediaSlug = "";
     render();
   });
-  categoryFilter.addEventListener("change", render);
+  categoryFilter.addEventListener("change", () => {
+    selectedMediaSlug = "";
+    render();
+  });
 
   function populateFilters() {
-    areaStats.forEach(({ area, items }) => {
+    const activeAreas = areas
+      .map((area) => ({
+        area,
+        count: mediaWithLocations.filter((item) => item.areaSlug === area.slug && hasLatLng(item)).length,
+      }))
+      .filter((entry) => entry.count > 0);
+
+    activeAreas.forEach(({ area, count }) => {
       const option = document.createElement("option");
       option.value = area.slug;
-      option.textContent = `${area.name} (${items.length})`;
+      option.textContent = `${area.name} (${count})`;
       areaFilter.appendChild(option);
     });
+
     Object.entries(AdPlay.categoryLabels).forEach(([value, label]) => {
       if (value === "other") return;
-      if (!media.some((item) => item.category === value)) return;
+      if (!mediaWithLocations.some((item) => item.category === value && hasLatLng(item))) return;
       const option = document.createElement("option");
       option.value = value;
       option.textContent = label;
       categoryFilter.appendChild(option);
     });
-    if ([...areaFilter.options].some((option) => option.value === selectedSlug)) {
-      areaFilter.value = selectedSlug;
-    } else {
-      selectedSlug = "all";
-    }
   }
 
-  function render() {
+  function render(options = {}) {
+    const area = areaFilter.value;
     const category = categoryFilter.value;
-    const filteredAreaStats = areaStats.map((entry) => ({
-      ...entry,
-      filteredItems: entry.items.filter((item) => category === "all" || item.category === category),
-    })).filter((entry) => entry.filteredItems.length > 0);
+    const filtered = mediaWithLocations.filter((item) => (
+      hasLatLng(item) &&
+      (area === "all" || item.areaSlug === area) &&
+      (category === "all" || item.category === category)
+    ));
 
-    const visibleStats = selectedSlug === "all"
-      ? filteredAreaStats
-      : filteredAreaStats.filter((entry) => entry.area.slug === selectedSlug);
-    const visibleItems = visibleStats.flatMap((entry) => entry.filteredItems);
-    const selectedEntry = selectedSlug === "all"
-      ? topArea(filteredAreaStats)
-      : filteredAreaStats.find((entry) => entry.area.slug === selectedSlug);
+    currentItems = filtered;
+    if (selectedMediaSlug && !filtered.some((item) => item.slug === selectedMediaSlug)) {
+      selectedMediaSlug = "";
+    }
+    if (!selectedMediaSlug && filtered.length) selectedMediaSlug = filtered[0].slug;
 
-    countRoot.textContent = `${visibleItems.length.toLocaleString("ko-KR")}개 매체`;
-    renderStage(filteredAreaStats);
-    renderSelected(selectedEntry, visibleItems);
-    renderMedia(visibleItems);
+    countRoot.textContent = `${filtered.length.toLocaleString("ko-KR")}개 매체`;
+    renderStage(filtered, options.preserveView);
+    renderSelectedMedia(selectedItem(filtered), filtered);
+    renderMedia(filtered);
   }
 
-  function renderStage(stats) {
-    if (window.naver && window.naver.maps) {
-      renderNaverMap(stats);
+  function renderStage(items, preserveView = false) {
+    if (!window.naver || !window.naver.maps) {
+      renderNaverLoadError();
       return;
     }
-
-    renderNaverLoadError();
+    renderNaverMap(items, preserveView);
   }
 
   function renderNaverLoadError() {
@@ -109,7 +101,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     `;
   }
 
-  function renderNaverMap(stats) {
+  function renderNaverMap(items, preserveView) {
     try {
       stage.classList.add("has-naver-map");
       if (!naverMap) {
@@ -117,7 +109,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         naverMap = new naver.maps.Map(stage, {
           center: new naver.maps.LatLng(37.5172, 127.0473),
           zoom: 12,
-          minZoom: 9,
+          minZoom: 8,
           mapTypeControl: false,
           zoomControl: true,
           zoomControlOptions: {
@@ -129,35 +121,37 @@ document.addEventListener("DOMContentLoaded", async () => {
       naverMarkers.forEach((marker) => marker.setMap(null));
       naverMarkers = [];
 
+      if (!items.length) return;
+
       const bounds = new naver.maps.LatLngBounds();
-      stats.forEach((entry) => {
-        const { area, position } = entry;
-        const latlng = new naver.maps.LatLng(position.lat, position.lng);
+      items.forEach((item) => {
+        const latlng = new naver.maps.LatLng(item.mapLocation.latitude, item.mapLocation.longitude);
         bounds.extend(latlng);
         const marker = new naver.maps.Marker({
           map: naverMap,
           position: latlng,
-          title: area.name,
+          title: item.name,
           icon: {
-            content: markerContent(entry),
-            size: new naver.maps.Size(64, 64),
-            anchor: new naver.maps.Point(32, 32),
+            content: markerContent(item),
+            size: new naver.maps.Size(58, 58),
+            anchor: new naver.maps.Point(29, 29),
           },
         });
         naver.maps.Event.addListener(marker, "click", () => {
-          selectedSlug = area.slug;
-          areaFilter.value = selectedSlug;
-          render();
+          selectedMediaSlug = item.slug;
+          render({ preserveView: true });
           naverMap.panTo(latlng);
         });
         naverMarkers.push(marker);
       });
 
-      if (stats.length > 1) {
-        naverMap.fitBounds(bounds, { top: 72, right: 72, bottom: 72, left: 72 });
-      } else if (stats.length === 1) {
-        naverMap.setCenter(new naver.maps.LatLng(stats[0].position.lat, stats[0].position.lng));
-        naverMap.setZoom(14);
+      if (!preserveView) {
+        if (items.length === 1) {
+          naverMap.setCenter(new naver.maps.LatLng(items[0].mapLocation.latitude, items[0].mapLocation.longitude));
+          naverMap.setZoom(15);
+        } else {
+          naverMap.fitBounds(bounds, { top: 80, right: 80, bottom: 80, left: 80 });
+        }
       }
     } catch (error) {
       console.error("Naver map failed to initialize.", error);
@@ -167,68 +161,71 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
   }
 
-  function markerContent(entry) {
-    const isActive = selectedSlug === entry.area.slug;
-    const isFeatured = AdPlay.config.featuredAreaSlugs.includes(entry.area.slug);
+  function markerContent(item) {
+    const location = item.mapLocation;
+    const isActive = selectedMediaSlug === item.slug;
+    const isPackage = item.category === "package";
     return `
-      <button type="button" class="naver-map-marker${isActive ? " is-active" : ""}${isFeatured ? " is-featured" : ""}" aria-label="${AdPlay.esc(entry.area.name)}">
-        <span>${entry.filteredItems.length}</span>
-        <strong>${AdPlay.esc(entry.area.name)}</strong>
+      <button type="button" class="naver-map-marker${isActive ? " is-active" : ""}${isPackage ? " is-package" : ""}" aria-label="${AdPlay.esc(item.name)}">
+        <span>${markerLabel(item)}</span>
+        <strong>${AdPlay.esc(location.sourceName || item.name)}</strong>
       </button>`;
   }
 
-  function markerHtml(entry, maxCount) {
-    const { area, filteredItems, position } = entry;
-    const isActive = selectedSlug === area.slug;
-    const isFeatured = AdPlay.config.featuredAreaSlugs.includes(area.slug);
-    const size = 38 + Math.round((filteredItems.length / maxCount) * 28);
-    return `
-      <button type="button" class="map-marker${isActive ? " is-active" : ""}${isFeatured ? " is-featured" : ""}"
-        data-area-slug="${AdPlay.esc(area.slug)}"
-        style="left:${position.x}%; top:${position.y}%; --marker-size:${size}px;"
-        aria-label="${AdPlay.esc(area.name)} 매체 ${filteredItems.length}개 보기">
-        <span>${filteredItems.length}</span>
-        <strong>${AdPlay.esc(area.name)}</strong>
-      </button>`;
-  }
-
-  function renderSelected(entry, visibleItems) {
-    if (!entry) {
-      selectedRoot.innerHTML = `<p class="empty">조건에 맞는 지역이 없습니다.</p>`;
+  function renderSelectedMedia(item, items) {
+    if (!item) {
+      selectedRoot.innerHTML = `<p class="empty">조건에 맞는 매체 위치가 없습니다.</p>`;
       return;
     }
-    const area = entry.area;
-    const count = selectedSlug === "all" ? visibleItems.length : entry.filteredItems.length;
+    const location = item.mapLocation;
     selectedRoot.innerHTML = `
-      <div class="map-selected-kicker">${selectedSlug === "all" ? "전체 권역 요약" : "선택 권역"}</div>
-      <h2>${selectedSlug === "all" ? "서울 주요 DOOH 권역" : AdPlay.esc(area.name)}</h2>
-      <p>${AdPlay.esc(selectedSlug === "all" ? "핀 크기는 등록 매체 수를 기준으로 표시됩니다. 프리미엄 권역은 강조 색상으로 표시했습니다." : area.summary)}</p>
+      <div class="map-selected-kicker">선택 매체</div>
+      <h2>${AdPlay.esc(item.name)}</h2>
+      <p>${AdPlay.esc(cardDescription(item))}</p>
       <div class="compact-metrics">
-        ${metric("표시 매체", `${count.toLocaleString("ko-KR")}개`)}
-        ${metric("일 유동", selectedSlug === "all" ? "권역별 확인" : `${AdPlay.formatNumber(area.dailyFootTraffic)}명`)}
+        ${metric("지도 표시", `${items.length.toLocaleString("ko-KR")}개`)}
+        ${metric("좌표", `${Number(location.latitude).toFixed(5)}, ${Number(location.longitude).toFixed(5)}`)}
       </div>
-      <div class="tag-list">${AdPlay.tagsHtml(selectedSlug === "all" ? ["대형 전광판", "패키지", "상권 비교"] : area.recommendedIndustries)}</div>
+      <dl class="map-card-facts">
+        ${fact("주소", location.sourceAddress || item.address)}
+        ${fact("규격", location.size || sizeLabel(item))}
+        ${fact("운영", location.operationHours || item.operationHours)}
+        ${fact("조건", location.contract || AdPlay.priceLabel(item))}
+      </dl>
+      <div class="tag-list">${AdPlay.tagsHtml([item.areaName, AdPlay.categoryLabels[item.category] || item.mediaType, ...(location.isComposite ? ["복합 매체"] : [])])}</div>
       <div class="actions">
-        <a class="button secondary" href="${selectedSlug === "all" ? "areas.html" : `area-detail.html?slug=${encodeURIComponent(area.slug)}`}">지역 상세</a>
-        <a class="button" href="${selectedSlug === "all" ? "media.html" : `media.html?area=${encodeURIComponent(area.slug)}`}">매체 보기</a>
+        <a class="button secondary" href="media-detail.html?slug=${encodeURIComponent(item.slug)}">상세보기</a>
+        <a class="button" href="estimate.html?media=${encodeURIComponent(item.slug)}">견적 문의</a>
       </div>
     `;
   }
 
   function renderMedia(items) {
-    const topItems = [...items]
-      .sort((a, b) => (AdPlay.minMonthlyPrice(a) || Number.MAX_SAFE_INTEGER) - (AdPlay.minMonthlyPrice(b) || Number.MAX_SAFE_INTEGER))
-      .slice(0, 8);
-    listRoot.innerHTML = topItems.length
-      ? topItems.map(mediaCard).join("")
-      : `<div class="empty">조건에 맞는 매체가 없습니다. 필터를 조정해 주세요.</div>`;
+    listRoot.innerHTML = items.length
+      ? items.map(mediaCard).join("")
+      : `<div class="empty">조건에 맞는 매체 위치가 없습니다. 필터를 조정해 주세요.</div>`;
+
+    listRoot.querySelectorAll("[data-map-media]").forEach((button) => {
+      button.addEventListener("click", () => {
+        const item = currentItems.find((entry) => entry.slug === button.dataset.mapMedia);
+        if (!item) return;
+        selectedMediaSlug = item.slug;
+        render({ preserveView: true });
+        if (naverMap && window.naver && window.naver.maps) {
+          naverMap.panTo(new naver.maps.LatLng(item.mapLocation.latitude, item.mapLocation.longitude));
+        }
+      });
+    });
   }
 
   function mediaCard(item) {
+    const location = item.mapLocation;
+    const isActive = selectedMediaSlug === item.slug;
     return `
-      <article class="map-media-card">
+      <article class="map-media-card${isActive ? " is-active" : ""}">
+        <button type="button" class="map-media-focus" data-map-media="${AdPlay.esc(item.slug)}" aria-label="${AdPlay.esc(item.name)} 지도에서 보기"></button>
         <a class="map-media-thumb" href="media-detail.html?slug=${encodeURIComponent(item.slug)}">
-          <img src="${AdPlay.esc(AdPlay.pageImage(item))}" alt="${AdPlay.esc(item.name)} 현장 이미지" loading="lazy" onerror="this.src='${AdPlay.esc(AdPlay.config.placeholderImage)}'">
+          <img src="${AdPlay.esc(location.photoUrl || AdPlay.pageImage(item))}" alt="${AdPlay.esc(item.name)} 현장 이미지" loading="lazy" onerror="this.src='${AdPlay.esc(AdPlay.pageImage(item))}'">
         </a>
         <div>
           <div class="directory-meta">
@@ -236,14 +233,49 @@ document.addEventListener("DOMContentLoaded", async () => {
             <span>${AdPlay.esc(AdPlay.categoryLabels[item.category] || item.mediaType || "매체")}</span>
           </div>
           <h3><a href="media-detail.html?slug=${encodeURIComponent(item.slug)}">${AdPlay.esc(item.name)}</a></h3>
-          <p>${AdPlay.esc(item.address || "주소 확인 필요")}</p>
+          <p>${AdPlay.esc(cardDescription(item))}</p>
+          <dl class="map-card-mini">
+            ${fact("위치", location.sourceAddress || item.address)}
+            ${fact("규격", location.size || sizeLabel(item))}
+          </dl>
           <strong class="price">${AdPlay.priceLabel(item)}</strong>
         </div>
       </article>`;
   }
 
-  function topArea(stats) {
-    return [...stats].sort((a, b) => b.filteredItems.length - a.filteredItems.length)[0];
+  function selectedItem(items) {
+    return items.find((item) => item.slug === selectedMediaSlug) || items[0] || null;
+  }
+
+  function hasLatLng(item) {
+    return item.mapLocation && Number.isFinite(Number(item.mapLocation.latitude)) && Number.isFinite(Number(item.mapLocation.longitude));
+  }
+
+  function markerLabel(item) {
+    if (item.category === "package") return "PKG";
+    if (item.category === "bus") return "BUS";
+    if (item.category === "subway") return "SUB";
+    if (item.category === "daily_touchpoint") return "EV";
+    return "AD";
+  }
+
+  function cardDescription(item) {
+    const description = item.mapLocation && item.mapLocation.description;
+    if (description && description.replace(/[.\s]/g, "").length === 0) {
+      return item.locationDescription || item.address || "현장 설명 확인 필요";
+    }
+    if (description) return description.length > 120 ? `${description.slice(0, 120)}...` : description;
+    return item.locationDescription || item.address || "현장 설명 확인 필요";
+  }
+
+  function sizeLabel(item) {
+    if (item.widthM && item.heightM) return `${item.widthM}m x ${item.heightM}m`;
+    return item.resolutionPx || "확인 필요";
+  }
+
+  function fact(label, value) {
+    if (!value) return "";
+    return `<dt>${AdPlay.esc(label)}</dt><dd>${AdPlay.esc(value)}</dd>`;
   }
 
   function metric(label, value) {

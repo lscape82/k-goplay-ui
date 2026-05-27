@@ -1,0 +1,104 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>주소 변환 | 광고플레이 DOOH</title>
+    <meta name="description" content="주소를 입력하면 도로명·지번 주소와 위도·경도 좌표로 변환합니다.">
+    <link rel="stylesheet" href="assets/css/styles.css?v=geocode-20260527">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">본문 바로가기</a>
+    <header class="site-header" data-site-header></header>
+    <main id="main">
+      <section class="page-title">
+        <div class="container">
+          <p class="document-kicker">ADDRESS GEOCODER</p>
+          <h1>주소 변환</h1>
+          <p>주소를 입력하면 도로명·지번 주소와 위도·경도 좌표로 변환합니다.</p>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="container">
+
+          <div id="fileProtocolWarning" class="notice notice-warn" hidden>
+            ⚠ 이 페이지는 <code>file://</code> 프로토콜에서는 동작하지 않습니다.
+            로컬 서버(<code>run-local.ps1</code> 또는 <code>run-local.bat</code>)를 실행 후 <code>http://localhost:3000/geocode.html</code>에서 이용해 주세요.
+          </div>
+
+          <div id="configWarning" class="notice notice-warn" hidden>
+            ⚠ Naver Maps API 키가 설정되지 않았습니다.
+            로컬 서버를 실행한 뒤 <code>NAVER_MAPS_CLIENT_ID</code>와 <code>NAVER_MAPS_CLIENT_SECRET</code> 환경 변수를 설정해 주세요.
+          </div>
+
+          <div class="geocode-layout">
+
+            <div class="geocode-form-card">
+              <form id="geocodeForm" autocomplete="off">
+                <div class="field">
+                  <label for="addressInput">주소 입력</label>
+                  <input
+                    id="addressInput"
+                    name="address"
+                    type="search"
+                    placeholder="예: 경기도 성남시 분당구 판교역로 166"
+                    autocomplete="off"
+                    required
+                  >
+                </div>
+                <button id="geocodeBtn" class="button" type="submit">좌표 변환</button>
+              </form>
+            </div>
+
+            <div class="geocode-result-card">
+              <div class="geocode-result-head">
+                <h2>변환 결과</h2>
+              </div>
+
+              <div id="geocodeError" class="geocode-error" hidden></div>
+
+              <div id="geocodeResult" hidden>
+                <dl class="geocode-result-rows">
+                  <div class="geocode-result-row">
+                    <dt>입력 주소</dt>
+                    <dd id="resultInputAddr">—</dd>
+                  </div>
+                  <div class="geocode-result-row">
+                    <dt>도로명 주소</dt>
+                    <dd id="resultRoadAddr">—</dd>
+                  </div>
+                  <div class="geocode-result-row">
+                    <dt>지번 주소</dt>
+                    <dd id="resultJibunAddr">—</dd>
+                  </div>
+                  <div class="geocode-result-row">
+                    <dt>위도</dt>
+                    <dd><input id="resultLat" class="geocode-coord-input" type="text" readonly placeholder="—"></dd>
+                  </div>
+                  <div class="geocode-result-row">
+                    <dt>경도</dt>
+                    <dd><input id="resultLng" class="geocode-coord-input" type="text" readonly placeholder="—"></dd>
+                  </div>
+                </dl>
+
+                <div class="geocode-actions">
+                  <button id="copyCoords" class="button secondary" type="button">좌표 복사</button>
+                  <a id="naverMapLink" class="button" href="#" target="_blank" rel="noopener">네이버 지도에서 보기</a>
+                </div>
+              </div>
+
+              <p id="geocodeResultPlaceholder" class="geocode-placeholder">
+                왼쪽에서 주소를 입력하고 <strong>좌표 변환</strong>을 누르면 결과가 표시됩니다.
+              </p>
+            </div>
+
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer" data-site-footer></footer>
+    <script src="assets/js/common.js?v=geocode-20260527"></script>
+    <script src="assets/js/geocode.js?v=geocode-20260527"></script>
+  </body>
+</html>

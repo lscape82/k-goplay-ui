@@ -3348,8 +3348,8 @@ body:has(#media-map) {
   position: relative;
   display: grid;
   place-items: center;
-  width: 52px;
-  height: 52px;
+  width: 46px;
+  height: 46px;
   padding: 0;
   border: 2px solid rgba(255, 255, 255, 0.95);
   border-radius: 999px;
@@ -3359,7 +3359,7 @@ body:has(#media-map) {
   box-shadow: 0 12px 26px rgba(15, 23, 42, 0.28), 0 0 0 8px rgba(37, 99, 235, 0.14);
 }
 
-.naver-map-marker.is-featured {
+.naver-map-marker.is-package {
   background: linear-gradient(135deg, #19aa58, #128c7c);
   box-shadow: 0 12px 26px rgba(15, 23, 42, 0.28), 0 0 0 8px rgba(25, 170, 88, 0.16);
 }
@@ -3370,7 +3370,7 @@ body:has(#media-map) {
 
 .naver-map-marker span {
   color: #fff;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 1000;
   line-height: 1;
 }
@@ -3389,6 +3389,8 @@ body:has(#media-map) {
   line-height: 1.15;
   text-align: center;
   white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
   transform: translateX(-50%);
 }
 
@@ -3445,6 +3447,7 @@ body:has(#media-map) {
 }
 
 .map-media-card {
+  position: relative;
   display: grid;
   grid-template-columns: 92px minmax(0, 1fr);
   gap: 12px;
@@ -3452,7 +3455,23 @@ body:has(#media-map) {
   padding: 10px;
 }
 
+.map-media-card.is-active {
+  border-color: rgba(18, 54, 140, 0.55);
+  box-shadow: 0 10px 24px rgba(18, 54, 140, 0.12);
+}
+
+.map-media-focus {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  border: 0;
+  background: transparent;
+  cursor: pointer;
+}
+
 .map-media-thumb {
+  position: relative;
+  z-index: 2;
   display: block;
   overflow: hidden;
   align-self: stretch;
@@ -3470,6 +3489,8 @@ body:has(#media-map) {
 }
 
 .map-media-card h3 {
+  position: relative;
+  z-index: 2;
   display: -webkit-box;
   margin: 5px 0 5px;
   overflow: hidden;
@@ -3494,9 +3515,45 @@ body:has(#media-map) {
 }
 
 .map-media-card .price {
+  position: relative;
+  z-index: 2;
   display: block;
   overflow: hidden;
   font-size: 13px;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.map-card-facts,
+.map-card-mini {
+  display: grid;
+  grid-template-columns: 54px minmax(0, 1fr);
+  gap: 5px 9px;
+  margin: 0;
+}
+
+.map-card-facts dt,
+.map-card-mini dt {
+  color: #94a3b8;
+  font-size: 11px;
+  font-weight: 850;
+}
+
+.map-card-facts dd,
+.map-card-mini dd {
+  margin: 0;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 700;
+  line-height: 1.45;
+}
+
+.map-card-mini {
+  margin-bottom: 7px;
+}
+
+.map-card-mini dd {
+  overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
@@ -3549,5 +3606,224 @@ body:has(#media-map) {
 
   .map-media-list {
     grid-template-columns: 1fr;
+  }
+}
+
+/* ─── Geocode Page ─── */
+
+body:has(#geocodeForm) {
+  background: #f8fafc;
+}
+
+body:has(#geocodeForm) .page-title {
+  padding: 22px 0 18px;
+  background:
+    radial-gradient(circle at 80% 10%, rgba(25, 170, 88, 0.08), transparent 30%),
+    linear-gradient(135deg, rgba(18, 54, 140, 0.06), rgba(255, 255, 255, 0.92)),
+    #fff;
+}
+
+body:has(#geocodeForm) .page-title h1 {
+  font-size: clamp(24px, 2.1vw, 30px);
+  font-weight: 800;
+  letter-spacing: -0.012em;
+}
+
+body:has(#geocodeForm) .page-title p {
+  margin-top: 8px;
+  color: #64748b;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.geocode-layout {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+  gap: 28px;
+  align-items: start;
+}
+
+.geocode-form-card,
+.geocode-result-card {
+  border: 1px solid #e2e8f0;
+  border-radius: 20px;
+  background: #fff;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.025);
+  padding: 28px;
+}
+
+.geocode-form-card form {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+body:has(#geocodeForm) .field {
+  gap: 8px;
+  flex: initial;
+}
+
+body:has(#geocodeForm) .field label {
+  position: static;
+  width: auto;
+  height: auto;
+  overflow: visible;
+  clip: auto;
+  color: #64748b;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+body:has(#geocodeForm) .field input {
+  min-height: 48px;
+  padding: 12px 14px;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  background: #fff;
+  color: #0f172a;
+  font-size: 14px;
+  transition: border-color 160ms ease, box-shadow 160ms ease;
+}
+
+body:has(#geocodeForm) .field input::placeholder {
+  color: #94a3b8;
+}
+
+body:has(#geocodeForm) .field input:focus {
+  border-color: #2563eb;
+  box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.11);
+}
+
+body:has(#geocodeForm) .button[type="submit"] {
+  width: 100%;
+  text-align: center;
+  justify-content: center;
+}
+
+.geocode-result-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.geocode-result-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.geocode-result-head h2 {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--navy);
+  margin: 0;
+}
+
+.geocode-result-rows {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #e2e8f0;
+  border-radius: 12px;
+  overflow: hidden;
+  margin-bottom: 20px;
+}
+
+.geocode-result-row {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  border-bottom: 1px solid #f1f5f9;
+  padding: 12px 16px;
+}
+
+.geocode-result-row:last-child {
+  border-bottom: none;
+}
+
+.geocode-result-row dt {
+  font-size: 12px;
+  font-weight: 700;
+  color: #64748b;
+  display: flex;
+  align-items: center;
+}
+
+.geocode-result-row dd {
+  font-size: 13px;
+  color: #0f172a;
+  margin: 0;
+  word-break: break-all;
+  display: flex;
+  align-items: center;
+}
+
+.geocode-coord-input {
+  width: 100%;
+  padding: 5px 10px;
+  font-size: 13px;
+  font-family: monospace;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: var(--navy);
+  outline: none;
+  cursor: text;
+}
+
+.geocode-coord-input:focus {
+  border-color: var(--navy);
+  box-shadow: 0 0 0 3px rgba(18, 54, 140, 0.10);
+}
+
+.geocode-actions {
+  display: flex;
+  gap: 10px;
+}
+
+.geocode-actions .button {
+  flex: 1;
+  text-align: center;
+  justify-content: center;
+}
+
+.geocode-error {
+  padding: 14px 16px;
+  border: 1px solid #fecaca;
+  border-left: 4px solid #ef4444;
+  border-radius: 10px;
+  background: #fef2f2;
+  color: #991b1b;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.geocode-placeholder {
+  font-size: 13px;
+  color: #94a3b8;
+  text-align: center;
+  padding: 32px 0;
+  margin: 0;
+}
+
+.notice-warn {
+  border-color: #fde68a;
+  border-left-color: #f59e0b;
+  background: #fffbeb;
+  color: #92400e;
+  margin-bottom: 24px;
+}
+
+.notice-warn code {
+  font-family: monospace;
+  font-size: 11px;
+  background: rgba(0,0,0,0.06);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+
+@media (max-width: 860px) {
+  .geocode-layout {
+    grid-template-columns: minmax(0, 1fr);
   }
 }
