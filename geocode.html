@@ -27,11 +27,6 @@
             로컬 서버(<code>run-local.ps1</code> 또는 <code>run-local.bat</code>)를 실행 후 <code>http://localhost:3000/geocode.html</code>에서 이용해 주세요.
           </div>
 
-          <div id="configWarning" class="notice notice-warn" hidden>
-            ⚠ Naver Maps API 키가 설정되지 않았습니다.
-            로컬 서버를 실행한 뒤 <code>NAVER_MAPS_CLIENT_ID</code>와 <code>NAVER_MAPS_CLIENT_SECRET</code> 환경 변수를 설정해 주세요.
-          </div>
-
           <div class="geocode-layout">
 
             <div class="geocode-form-card">
@@ -98,7 +93,8 @@
       </section>
     </main>
     <footer class="site-footer" data-site-footer></footer>
+    <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1ouo31myef&submodules=geocoder"></script>
     <script src="assets/js/common.js?v=geocode-20260527"></script>
-    <script src="assets/js/geocode.js?v=geocode-20260527"></script>
+    <script src="assets/js/geocode.js?v=geocode-20260527-2"></script>
   </body>
 </html>

@@ -1,7 +1,7 @@
 (function () {
   let proxyConfigured = false;
 
-  async function checkConfig() {
+  async function checkProxy() {
     try {
       const res = await fetch("/api/geocode/config");
       if (!res.ok) return false;
@@ -12,11 +12,38 @@
     }
   }
 
-  async function geocodeAddress(query) {
+  async function geocodeViaProxy(query) {
     const res = await fetch("/api/geocode?query=" + encodeURIComponent(query));
     const data = await res.json();
     if (!res.ok) throw new Error(data.error || "주소 변환에 실패했습니다.");
     return data;
+  }
+
+  function geocodeViaSdk(query) {
+    return new Promise((resolve, reject) => {
+      if (!window.naver || !naver.maps || !naver.maps.Service) {
+        reject(new Error("네이버 지도 SDK가 로드되지 않았습니다. 잠시 후 다시 시도해 주세요."));
+        return;
+      }
+      naver.maps.Service.geocode({ query }, (status, response) => {
+        if (status !== naver.maps.Service.Status.OK) {
+          reject(new Error("주소 변환에 실패했습니다. 더 구체적인 주소를 입력해 주세요."));
+          return;
+        }
+        resolve(response.v2);
+      });
+    });
+  }
+
+  async function geocodeAddress(query) {
+    if (proxyConfigured) {
+      try {
+        return await geocodeViaProxy(query);
+      } catch (err) {
+        console.warn("proxy geocode failed, falling back to SDK:", err);
+      }
+    }
+    return geocodeViaSdk(query);
   }
 
   function renderResult(query, data) {
@@ -83,19 +110,12 @@
       return;
     }
 
-    proxyConfigured = await checkConfig();
-
-    if (!proxyConfigured) {
-      document.getElementById("configWarning").hidden = false;
-      document.getElementById("geocodeBtn").disabled = true;
-    }
+    proxyConfigured = await checkProxy();
 
     const addressParam = AdPlay.getParam("address");
     if (addressParam) {
       document.getElementById("addressInput").value = addressParam;
-      if (proxyConfigured) {
-        submitGeocode(addressParam);
-      }
+      submitGeocode(addressParam);
     }
 
     document.getElementById("geocodeForm").addEventListener("submit", (e) => {
