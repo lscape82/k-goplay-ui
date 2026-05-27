@@ -15,19 +15,21 @@ document.addEventListener("DOMContentLoaded", async () => {
   const countRoot = document.querySelector("#mapResultCount");
 
   const areaPositions = {
-    "gwanghwamun": { x: 47, y: 18 },
-    "myeongdong-euljiro": { x: 54, y: 29 },
-    "seoul-station": { x: 43, y: 36 },
-    "mapo": { x: 27, y: 40 },
-    "hongdae": { x: 21, y: 34 },
-    "yeouido": { x: 32, y: 55 },
-    "seongsu": { x: 66, y: 47 },
-    "dosan-daero": { x: 58, y: 60 },
-    "samseong-coex": { x: 70, y: 65 },
-    "gangnam-daero": { x: 58, y: 74 },
-    "jamsil": { x: 82, y: 62 },
-    "other-national": { x: 82, y: 82 },
+    "gwanghwamun": { x: 47, y: 18, lat: 37.5759, lng: 126.9768 },
+    "myeongdong-euljiro": { x: 54, y: 29, lat: 37.564, lng: 126.9827 },
+    "seoul-station": { x: 43, y: 36, lat: 37.5547, lng: 126.9706 },
+    "mapo": { x: 27, y: 40, lat: 37.5436, lng: 126.9512 },
+    "hongdae": { x: 21, y: 34, lat: 37.5572, lng: 126.9245 },
+    "yeouido": { x: 32, y: 55, lat: 37.5219, lng: 126.9246 },
+    "seongsu": { x: 66, y: 47, lat: 37.5446, lng: 127.0559 },
+    "dosan-daero": { x: 58, y: 60, lat: 37.5225, lng: 127.0365 },
+    "samseong-coex": { x: 70, y: 65, lat: 37.5126, lng: 127.0588 },
+    "gangnam-daero": { x: 58, y: 74, lat: 37.4979, lng: 127.0276 },
+    "jamsil": { x: 82, y: 62, lat: 37.5133, lng: 127.1002 },
+    "other-national": { x: 82, y: 82, lat: 37.5665, lng: 126.978 },
   };
+  let naverMap = null;
+  let naverMarkers = [];
 
   const areaStats = areas.map((area) => {
     const items = media.filter((item) => item.areaSlug === area.slug);
@@ -89,21 +91,90 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function renderStage(stats) {
-    const maxCount = Math.max(...areaStats.map((entry) => entry.items.length), 1);
+    if (window.naver && window.naver.maps) {
+      renderNaverMap(stats);
+      return;
+    }
+
+    renderNaverLoadError();
+  }
+
+  function renderNaverLoadError() {
+    stage.classList.remove("has-naver-map");
     stage.innerHTML = `
-      <div class="map-grid-lines" aria-hidden="true"></div>
-      <div class="map-route route-primary" aria-hidden="true"></div>
-      <div class="map-route route-secondary" aria-hidden="true"></div>
-      <div class="map-river" aria-hidden="true"></div>
-      ${stats.map((entry) => markerHtml(entry, maxCount)).join("")}
+      <div class="map-load-error">
+        <strong>네이버 지도를 불러오지 못했습니다.</strong>
+        <span>네이버 클라우드 앱의 Web 서비스 URL에 현재 도메인이 등록되어 있는지 확인해 주세요.</span>
+      </div>
     `;
-    stage.querySelectorAll("[data-area-slug]").forEach((button) => {
-      button.addEventListener("click", () => {
-        selectedSlug = button.dataset.areaSlug;
-        areaFilter.value = selectedSlug;
-        render();
+  }
+
+  function renderNaverMap(stats) {
+    try {
+      stage.classList.add("has-naver-map");
+      if (!naverMap) {
+        stage.innerHTML = "";
+        naverMap = new naver.maps.Map(stage, {
+          center: new naver.maps.LatLng(37.5172, 127.0473),
+          zoom: 12,
+          minZoom: 9,
+          mapTypeControl: false,
+          zoomControl: true,
+          zoomControlOptions: {
+            position: naver.maps.Position.TOP_RIGHT,
+          },
+        });
+      }
+
+      naverMarkers.forEach((marker) => marker.setMap(null));
+      naverMarkers = [];
+
+      const bounds = new naver.maps.LatLngBounds();
+      stats.forEach((entry) => {
+        const { area, position } = entry;
+        const latlng = new naver.maps.LatLng(position.lat, position.lng);
+        bounds.extend(latlng);
+        const marker = new naver.maps.Marker({
+          map: naverMap,
+          position: latlng,
+          title: area.name,
+          icon: {
+            content: markerContent(entry),
+            size: new naver.maps.Size(64, 64),
+            anchor: new naver.maps.Point(32, 32),
+          },
+        });
+        naver.maps.Event.addListener(marker, "click", () => {
+          selectedSlug = area.slug;
+          areaFilter.value = selectedSlug;
+          render();
+          naverMap.panTo(latlng);
+        });
+        naverMarkers.push(marker);
       });
-    });
+
+      if (stats.length > 1) {
+        naverMap.fitBounds(bounds, { top: 72, right: 72, bottom: 72, left: 72 });
+      } else if (stats.length === 1) {
+        naverMap.setCenter(new naver.maps.LatLng(stats[0].position.lat, stats[0].position.lng));
+        naverMap.setZoom(14);
+      }
+    } catch (error) {
+      console.error("Naver map failed to initialize.", error);
+      naverMap = null;
+      naverMarkers = [];
+      renderNaverLoadError();
+    }
+  }
+
+  function markerContent(entry) {
+    const isActive = selectedSlug === entry.area.slug;
+    const isFeatured = AdPlay.config.featuredAreaSlugs.includes(entry.area.slug);
+    return `
+      <button type="button" class="naver-map-marker${isActive ? " is-active" : ""}${isFeatured ? " is-featured" : ""}" aria-label="${AdPlay.esc(entry.area.name)}">
+        <span>${entry.filteredItems.length}</span>
+        <strong>${AdPlay.esc(entry.area.name)}</strong>
+      </button>`;
   }
 
   function markerHtml(entry, maxCount) {
