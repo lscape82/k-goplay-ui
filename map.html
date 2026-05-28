@@ -5,69 +5,104 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>지도 보기 | 광고플레이 DOOH</title>
     <meta name="description" content="서울 주요 상권의 DOOH 전광판 매체를 지도형 화면에서 비교하고 탐색합니다.">
-    <link rel="stylesheet" href="assets/css/styles.css?v=media-location-map-20260527">
+    <link rel="stylesheet" href="assets/css/styles.css?v=map-title-hierarchy-20260528">
   </head>
   <body>
     <a class="skip-link" href="#main">본문 바로가기</a>
-    <header class="site-header" data-site-header></header>
+    <header class="map-global-header">
+      <a class="map-global-brand" href="media.html" aria-label="광고플레이 홈">
+        <span class="brand-mark">AD</span>
+        <strong>광고플레이</strong>
+      </a>
+      <nav class="map-global-nav" aria-label="지도 메뉴">
+        <a href="areas.html">지역 바로가기</a>
+        <a class="is-active" href="map.html">테마별 맞춤광고</a>
+        <a href="guides.html">광고 현장 사례</a>
+        <a href="estimate.html">비용 · 기간 검색</a>
+      </nav>
+      <form class="map-global-search" role="search">
+        <label for="mapGlobalSearch" class="sr-only">매체 검색</label>
+        <input id="mapGlobalSearch" type="search" placeholder="어디에 광고하시겠어요?">
+        <button type="submit" aria-label="검색">⌕</button>
+      </form>
+      <div class="map-global-actions">
+        <a href="media.html">주요매체</a>
+        <a href="index.html">회사소개</a>
+        <span aria-hidden="true"></span>
+        <a href="estimate.html">로그인</a>
+        <a class="join" href="estimate.html">회원가입</a>
+      </div>
+    </header>
     <main id="main">
-      <section class="map-page" id="media-map" aria-live="polite">
-        <div class="container">
-          <header class="map-header">
-            <div>
-              <p class="document-kicker">LOCATION PLANNER</p>
-              <h1>상권 지도에서 전광판 매체를 빠르게 비교하세요</h1>
-              <p>강남 핵심 축부터 도심·생활권까지, 유동 규모와 매체 수를 한 화면에서 확인하고 바로 상세 견적 흐름으로 이어갑니다.</p>
-            </div>
-            <a class="button" href="estimate.html">견적 문의</a>
-          </header>
-
-          <div class="map-shell">
-            <aside class="map-panel" aria-label="지도 필터와 선택 지역">
-              <div class="map-panel-head">
-                <strong>탐색 조건</strong>
-                <span id="mapResultCount"></span>
+      <section class="map-workspace-page" id="media-map">
+        <div class="map-category-strip" id="mapCategoryBar" aria-label="매체 유형"></div>
+        <div class="map-workspace">
+          <aside class="map-sidebar" aria-label="지도 매체 목록과 상세 정보">
+            <section class="map-list-view" id="mapListView">
+              <div class="map-list-head">
+                <p id="mapResultSummary" aria-live="polite">지도 표시 지역에 <strong id="mapResultCount">0개</strong>의 전광판 광고가 있습니다.</p>
               </div>
-              <div class="map-controls">
-                <div class="field">
-                  <label for="mapAreaFilter">지역</label>
-                  <select id="mapAreaFilter">
-                    <option value="all">전체 지역</option>
-                  </select>
-                </div>
-                <div class="field">
-                  <label for="mapCategoryFilter">매체 유형</label>
-                  <select id="mapCategoryFilter">
-                    <option value="all">전체 유형</option>
-                  </select>
-                </div>
-              </div>
-              <div id="mapSelectedArea" class="map-selected"></div>
-            </aside>
-
-            <section class="map-stage-wrap" aria-label="서울 주요 상권 지도">
-              <div class="map-stage" id="mapStage"></div>
-              <div class="map-legend" aria-label="지도 범례">
-                <span><i class="legend-dot"></i>일반 매체</span>
-                <span><i class="legend-dot is-featured"></i>패키지 매체</span>
-                <span><i class="legend-line"></i>선택 매체</span>
-              </div>
+              <div id="mapMediaList" class="map-sidebar-list"></div>
             </section>
-          </div>
-
-          <section class="map-results-section">
-            <div class="related-head">
-              <h2>지도 기반 추천 매체</h2>
-              <a href="media.html">전체 매체 보기</a>
+            <article class="map-detail-view" id="mapDetailView" aria-live="polite" tabindex="-1" hidden></article>
+          </aside>
+          <section class="map-canvas-shell" aria-label="매체 위치 지도">
+            <div class="map-stage" id="mapStage"></div>
+            <article class="map-curation-panel" id="mapCurationPanel" aria-label="테마별 맞춤광고 추천">
+              <div class="map-curation-copy">
+                <div class="map-curation-head">
+                  <span>NEW · 추천 매체</span>
+                  <button type="button" id="mapCurationClose" aria-label="추천 패널 닫기">×</button>
+                </div>
+                <h2>테마별 맞춤광고 핵심 매체</h2>
+                <p>주요 전광판, 신규 매체, 최신 공지를 한눈에 확인하세요.</p>
+                <div class="map-curation-list" aria-label="추천 매체 바로가기">
+                  <button type="button" data-curation-media="sinsa-h-station">
+                    <strong>강남 프리미엄 전광판</strong>
+                    <span>유동인구 · 대형 전광판</span>
+                  </button>
+                  <button type="button" data-curation-media="samseong-kpop-square-package">
+                    <strong>삼성 COEX K-POP 패키지</strong>
+                    <span>신규 문의 · 복합 매체</span>
+                  </button>
+                  <button type="button" data-curation-media="transport-seoul-station-ktx-panorama">
+                    <strong>서울역 교통 허브 매체</strong>
+                    <span>출퇴근 · 이동 동선</span>
+                  </button>
+                </div>
+                <div class="map-curation-actions">
+                  <a class="live" href="estimate.html?intent=live-talk">실시간 라이브톡</a>
+                  <a class="download" href="assets/downloads/goplay-media-introduction.html" download>매체 소개서 다운로드</a>
+                </div>
+              </div>
+              <figure class="map-curation-visual">
+                <img src="assets/images/map-samples/cheonggye-wide.jpg" alt="주요 전광판 매체 예시">
+              </figure>
+            </article>
+            <div class="map-mode-toggle" aria-label="지도 보기 방식">
+              <button type="button" class="is-active">지도</button>
+              <button type="button">스카이뷰</button>
             </div>
-            <div id="mapMediaList" class="map-media-list"></div>
+            <div class="map-utility-controls" aria-label="지도 부가 기능">
+              <button type="button">로드뷰</button>
+              <button type="button">실시간<br>교통</button>
+            </div>
+            <div class="map-zoom-controls" aria-label="지도 확대 축소">
+              <button type="button" aria-label="지도 확대">+</button>
+              <button type="button" aria-label="지도 축소">−</button>
+              <button type="button" aria-label="현재 위치">⌾</button>
+            </div>
+            <div class="map-contact-card" aria-label="상담 채널">
+              <a href="tel:1533-1975">전화</a>
+              <a href="estimate.html">온라인 상담</a>
+              <a class="primary" href="estimate.html">실시간 빠른 상담</a>
+            </div>
           </section>
         </div>
       </section>
     </main>
-    <footer class="site-footer" data-site-footer></footer>
     <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1ouo31myef"></script>
-    <script src="assets/js/common.js?v=media-location-map-20260527"></script>
-    <script src="assets/js/map.js?v=media-location-map-desc-20260527"></script>
+    <script src="assets/js/common.js?v=map-title-hierarchy-20260528"></script>
+    <script src="assets/js/map.js?v=map-title-hierarchy-20260528"></script>
   </body>
 </html>
