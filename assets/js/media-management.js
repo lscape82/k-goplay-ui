@@ -1,6 +1,5 @@
 document.addEventListener("DOMContentLoaded", () => {
   const tableRoot = document.querySelector("#mediaAdminTable");
-  const rawTableRoot = document.querySelector("#mediaAdminRawTable");
   const searchInput = document.querySelector("#mediaAdminSearch");
   const sortSelect = document.querySelector("#mediaAdminSort");
   const pageSizeSelect = document.querySelector("#mediaAdminPageSize");
@@ -85,7 +84,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderList() {
     if (!rows.length) {
       tableRoot.innerHTML = `<div class="empty">조건에 맞는 매체가 없습니다.</div>`;
-      rawTableRoot.innerHTML = `<div class="empty">조건에 맞는 매체가 없습니다.</div>`;
       updatePager();
       return;
     }
@@ -104,23 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
     tableRoot.querySelectorAll("[data-idx]").forEach((button) => {
       button.addEventListener("click", () => selectRow(button.dataset.idx));
     });
-    renderRawTable();
     updatePager();
-  }
-
-  function renderRawTable() {
-    rawTableRoot.innerHTML = `
-      <table class="admin-table">
-        <thead>
-          <tr>${columns.map((col) => `<th>${esc(col)}</th>`).join("")}</tr>
-        </thead>
-        <tbody>
-          ${rows.map((row) => `
-            <tr>
-              ${columns.map((col) => `<td title="${esc(valueText(row[col]))}">${esc(valueText(row[col]))}</td>`).join("")}
-            </tr>`).join("")}
-        </tbody>
-      </table>`;
   }
 
   function inputHtml(col, value) {
@@ -352,7 +334,6 @@ document.addEventListener("DOMContentLoaded", () => {
       }
     } catch (error) {
       tableRoot.innerHTML = `<div class="empty">${esc(error.message)}</div>`;
-      rawTableRoot.innerHTML = `<div class="empty">${esc(error.message)}</div>`;
       setStatus("조회 실패", "error");
       updatePager();
     }

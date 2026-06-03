@@ -2911,22 +2911,6 @@ body:has(#media-management) .page-title p {
   font-weight: 850;
 }
 
-.admin-raw-panel {
-  margin-top: 18px;
-}
-
-.admin-raw-panel summary {
-  width: fit-content;
-  cursor: pointer;
-  color: #1d4ed8;
-  font-size: 13px;
-  font-weight: 900;
-}
-
-.admin-raw-panel .table-wrap {
-  margin-top: 10px;
-}
-
 .admin-pagination {
   display: flex;
   align-items: center;
