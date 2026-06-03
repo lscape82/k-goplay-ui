@@ -9,7 +9,7 @@ import sys
 import urllib.error
 import urllib.parse
 import urllib.request
-from http.server import HTTPServer, SimpleHTTPRequestHandler
+from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
 
 
 def load_env_file(path=".env"):
@@ -157,6 +157,8 @@ class ApiHandler(SimpleHTTPRequestHandler):
             self._handle_media_config()
         elif parsed.path == "/api/media/admin":
             self._handle_media_admin_list(parsed.query)
+        elif parsed.path == "/api/health":
+            self._send_json({"ok": True})
         else:
             super().do_GET()
 
@@ -167,12 +169,23 @@ class ApiHandler(SimpleHTTPRequestHandler):
         else:
             self._send_json({"error": "지원하지 않는 API입니다."}, 404)
 
+    def do_OPTIONS(self):
+        self.send_response(204)
+        self._send_cors_headers()
+        self.end_headers()
+
+    def _send_cors_headers(self):
+        self.send_header("Access-Control-Allow-Origin", "*")
+        self.send_header("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+
     def _send_json(self, data, status=200):
         body = json.dumps(data, ensure_ascii=False, default=json_default).encode("utf-8")
         self.send_response(status)
         self.send_header("Content-Type", "application/json; charset=utf-8")
         self.send_header("Content-Length", str(len(body)))
         self.send_header("Cache-Control", "no-store")
+        self._send_cors_headers()
         self.end_headers()
         self.wfile.write(body)
 
@@ -350,8 +363,8 @@ class ApiHandler(SimpleHTTPRequestHandler):
 
 if __name__ == "__main__":
     load_env_file()
-    port = int(sys.argv[1]) if len(sys.argv) > 1 else 3000
-    server = HTTPServer(("", port), ApiHandler)
+    port = int(sys.argv[1]) if len(sys.argv) > 1 else int(env("PORT", "3000"))
+    server = ThreadingHTTPServer(("", port), ApiHandler)
     print(f"Serving at http://localhost:{port}")
     print("  Loaded .env if present.")
     try:

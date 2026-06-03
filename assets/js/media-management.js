@@ -47,6 +47,7 @@ document.addEventListener("DOMContentLoaded", () => {
   let selectedIdx = null;
   let selectedSnapshot = null;
   let updateConfigured = false;
+  const apiOrigin = window.location.hostname.endsWith("github.io") ? "https://k-goplay.vercel.app" : "";
 
   function esc(value) {
     return window.AdPlay ? AdPlay.esc(value) : String(value ?? "");
@@ -67,19 +68,8 @@ document.addEventListener("DOMContentLoaded", () => {
     statusEl.dataset.tone = tone;
   }
 
-  function isStaticDeployment() {
-    return window.location.hostname.endsWith("github.io");
-  }
-
-  function showBackendUnavailable() {
-    setStatus("관리 서버 필요", "error");
-    tableRoot.innerHTML = `
-      <div class="empty">
-        매체 관리 기능은 DB API 서버에서만 동작합니다. 서버에서 실행 중인 관리 페이지 주소로 접속해 주세요.
-      </div>`;
-    prevBtn.disabled = true;
-    nextBtn.disabled = true;
-    refreshBtn.disabled = true;
+  function apiUrl(path) {
+    return `${apiOrigin}${path}`;
   }
 
   async function fetchJson(url, options) {
@@ -282,10 +272,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function geocodeAddress(query) {
     try {
-      const configResponse = await fetch("/api/geocode/config");
+      const configResponse = await fetch(apiUrl("/api/geocode/config"));
       const config = configResponse.ok ? await configResponse.json() : {};
       if (config.configured) {
-        const response = await fetch("/api/geocode?query=" + encodeURIComponent(query));
+        const response = await fetch(apiUrl("/api/geocode?query=" + encodeURIComponent(query)));
         const data = await response.json();
         if (!response.ok) throw new Error(data.error || "주소 변환 실패");
         return data;
@@ -326,7 +316,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function loadConfig() {
     try {
-      const data = await fetchJson("/api/media/config");
+      const data = await fetchJson(apiUrl("/api/media/config"));
       updateConfigured = data.updateConfigured === true;
     } catch {
       updateConfigured = false;
@@ -344,7 +334,7 @@ document.addEventListener("DOMContentLoaded", () => {
         sortBy,
         sortDir,
       });
-      const data = await fetchJson(`/api/media/admin?${params.toString()}`);
+      const data = await fetchJson(apiUrl(`/api/media/admin?${params.toString()}`));
       columns = data.columns || [];
       rows = data.rows || [];
       total = data.total || 0;
@@ -428,7 +418,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
     saveBtn.disabled = true;
     showSaveNotice("저장 중...", "ok");
-    fetch("/api/media/admin/update", {
+    fetch(apiUrl("/api/media/admin/update"), {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -451,9 +441,5 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
-  if (isStaticDeployment()) {
-    showBackendUnavailable();
-  } else {
-    loadConfig().then(loadMedia);
-  }
+  loadConfig().then(loadMedia);
 });
