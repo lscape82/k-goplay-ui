@@ -2460,12 +2460,14 @@ body:has(#estimateForm) .summary-box {
 body:has(#areas-list),
 body:has(#guides-list),
 body:has(#area-detail),
-body:has(#guide-detail) {
+body:has(#guide-detail),
+body:has(#media-management) {
   background: #f8fafc;
 }
 
 body:has(#areas-list) .page-title,
-body:has(#guides-list) .page-title {
+body:has(#guides-list) .page-title,
+body:has(#media-management) .page-title {
   padding: 22px 0 18px;
   background:
     radial-gradient(circle at 80% 10%, rgba(37, 99, 235, 0.08), transparent 30%),
@@ -2474,14 +2476,16 @@ body:has(#guides-list) .page-title {
 }
 
 body:has(#areas-list) .page-title h1,
-body:has(#guides-list) .page-title h1 {
+body:has(#guides-list) .page-title h1,
+body:has(#media-management) .page-title h1 {
   font-size: clamp(24px, 2.1vw, 30px);
   font-weight: 800;
   letter-spacing: -0.012em;
 }
 
 body:has(#areas-list) .page-title p,
-body:has(#guides-list) .page-title p {
+body:has(#guides-list) .page-title p,
+body:has(#media-management) .page-title p {
   margin-top: 8px;
   color: #64748b;
   font-size: 14px;
