@@ -67,6 +67,32 @@ document.addEventListener("DOMContentLoaded", () => {
     statusEl.dataset.tone = tone;
   }
 
+  function isStaticDeployment() {
+    return window.location.hostname.endsWith("github.io");
+  }
+
+  function showBackendUnavailable() {
+    setStatus("관리 서버 필요", "error");
+    tableRoot.innerHTML = `
+      <div class="empty">
+        매체 관리 기능은 DB API 서버에서만 동작합니다. 서버에서 실행 중인 관리 페이지 주소로 접속해 주세요.
+      </div>`;
+    prevBtn.disabled = true;
+    nextBtn.disabled = true;
+    refreshBtn.disabled = true;
+  }
+
+  async function fetchJson(url, options) {
+    const response = await fetch(url, options);
+    const contentType = response.headers.get("Content-Type") || "";
+    if (!contentType.includes("application/json")) {
+      throw new Error("관리 API 서버에서 접속해야 합니다.");
+    }
+    const data = await response.json();
+    if (!response.ok) throw new Error(data.error || "요청 실패");
+    return data;
+  }
+
   function mediaTitle(row) {
     return compactText(row.representcompanyname || row.representname || row.idx, "이름 없음");
   }
@@ -300,8 +326,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   async function loadConfig() {
     try {
-      const response = await fetch("/api/media/config");
-      const data = await response.json();
+      const data = await fetchJson("/api/media/config");
       updateConfigured = data.updateConfigured === true;
     } catch {
       updateConfigured = false;
@@ -319,9 +344,7 @@ document.addEventListener("DOMContentLoaded", () => {
         sortBy,
         sortDir,
       });
-      const response = await fetch(`/api/media/admin?${params.toString()}`);
-      const data = await response.json();
-      if (!response.ok) throw new Error(data.error || "매체 목록 조회 실패");
+      const data = await fetchJson(`/api/media/admin?${params.toString()}`);
       columns = data.columns || [];
       rows = data.rows || [];
       total = data.total || 0;
@@ -428,5 +451,9 @@ document.addEventListener("DOMContentLoaded", () => {
       });
   });
 
-  loadConfig().then(loadMedia);
+  if (isStaticDeployment()) {
+    showBackendUnavailable();
+  } else {
+    loadConfig().then(loadMedia);
+  }
 });
