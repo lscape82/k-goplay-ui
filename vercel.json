@@ -2,7 +2,8 @@
   "version": 2,
   "functions": {
     "api/**/*.py": {
-      "maxDuration": 60
+      "maxDuration": 60,
+      "regions": ["icn1"]
     }
   }
 }

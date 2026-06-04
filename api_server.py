@@ -283,21 +283,26 @@ class ApiHandler(SimpleHTTPRequestHandler):
         where.append("a.isused = 1")
         where_sql = "WHERE " + " AND ".join(where) if where else ""
         order_tail = "" if sort_by == "idx" else ", a.idx DESC"
+        offset = (page - 1) * page_size
         select_sql = f"""
-            SELECT {", ".join(MEDIA_SELECT_COLUMNS)}
+            SELECT {", ".join(MEDIA_SELECT_COLUMNS)}, COUNT(1) OVER() AS __total
             FROM {table} a WITH(NOLOCK)
             {where_sql}
             ORDER BY {sql_sort_expr(sort_by)} {sort_dir_sql}{order_tail}
+            OFFSET {marker} ROWS FETCH NEXT {marker} ROWS ONLY
         """
         try:
             with get_mssql_connection() as conn:
                 cursor = conn.cursor()
-                execute_sql(cursor, select_sql, sql_params)
+                execute_sql(cursor, select_sql, [*sql_params, offset, page_size])
                 columns = [col[0] for col in cursor.description] if cursor.description else []
-                rows = [dict(zip(columns, row)) for row in cursor.fetchall()] if columns else []
-            total = len(rows)
-            start = (page - 1) * page_size
-            page_rows = rows[start:start + page_size]
+                raw_rows = [dict(zip(columns, row)) for row in cursor.fetchall()] if columns else []
+            total = int(raw_rows[0].get("__total", 0)) if raw_rows else 0
+            columns = [col for col in columns if col != "__total"]
+            page_rows = [
+                {key: value for key, value in row.items() if key != "__total"}
+                for row in raw_rows
+            ]
             self._send_json(
                 {
                     "columns": columns,
