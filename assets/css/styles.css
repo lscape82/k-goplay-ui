@@ -2781,7 +2781,7 @@ body:has(#media-management) .page-title p {
 
 .admin-fields {
   display: grid;
-  gap: 16px;
+  gap: 10px;
 }
 
 .admin-field-group h3 {

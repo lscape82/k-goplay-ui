@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const pageEl = document.querySelector("#mediaAdminPage");
   const form = document.querySelector("#mediaAdminForm");
   const fieldsRoot = document.querySelector("#mediaAdminFields");
+  const detailHead = document.querySelector(".admin-detail-head");
   const detailTitle = document.querySelector("#mediaAdminDetailTitle");
   const detailMeta = document.querySelector("#mediaAdminDetailMeta");
   const actionsRoot = document.querySelector("#mediaAdminActions");
@@ -20,9 +21,9 @@ document.addEventListener("DOMContentLoaded", () => {
   if (!tableRoot) return;
 
   const fieldGroups = [
-    ["매체", ["representcompanyname", "representname", "isused", "ordering", "saddressinfo"]],
+    ["", ["representcompanyname", "representname", "isused", "ordering", "saddressinfo"]],
     ["", ["latitude", "longitude", "__spacer", "__geocodeButton", "panoposition", "__panoButton"]],
-    ["카테고리", ["pickcategory", "periodcategory", "costcategory"]],
+    ["", ["pickcategory", "periodcategory", "costcategory"]],
   ];
   const readOnlyColumns = new Set(["idx"]);
   const fieldLabels = {
@@ -305,7 +306,8 @@ document.addEventListener("DOMContentLoaded", () => {
     if (!row) return;
     selectedSnapshot = { ...row };
     detailTitle.textContent = mediaTitle(row);
-    detailMeta.textContent = `IDX ${row.idx} · ${mediaAddress(row)}`;
+    detailMeta.textContent = mediaAddress(row);
+    detailHead.hidden = true;
     actionsRoot.hidden = false;
     saveBtn.disabled = !updateConfigured;
     cancelBtn.disabled = false;
