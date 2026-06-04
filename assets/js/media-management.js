@@ -22,7 +22,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const fieldGroups = [
     ["", ["representcompanyname", "representname", "isused", "ordering", "saddressinfo"]],
-    ["", ["latitude", "longitude", "__spacer", "__geocodeButton", "panoposition", "__panoButton"]],
+    ["", ["latitude", "longitude", "panoposition", "__panoButton"]],
     ["", ["pickcategory", "periodcategory", "costcategory"]],
   ];
   const readOnlyColumns = new Set(["idx"]);
@@ -38,6 +38,31 @@ document.addEventListener("DOMContentLoaded", () => {
     pickcategory: "선택 카테고리",
     periodcategory: "기간 카테고리",
     costcategory: "비용 카테고리",
+  };
+  const categoryOptions = {
+    pickcategory: [
+      ["11", "빌딩옥외"],
+      ["12", "아파트 · 오피스 엘리베이터"],
+      ["13", "버스쉘터 · 지하철 · 공항 · 철도 · 터미널 · 고속도로"],
+      ["14", "쇼핑몰 · 광장 · 영화관"],
+      ["15", "마트 · 편의점 · 카페"],
+      ["16", "대학교 · 기타"],
+    ],
+    periodcategory: [
+      ["17", "1일"],
+      ["18", "3일"],
+      ["19", "7일"],
+      ["20", "15일"],
+      ["21", "1개월 이상"],
+    ],
+    costcategory: [
+      ["22", "100만원 미만"],
+      ["23", "100-300만원 미만"],
+      ["24", "300-500만원 미만"],
+      ["25", "500-1,000만원 미만"],
+      ["26", "1,000만원-1,500만원 미만"],
+      ["27", "1,500만원 이상"],
+    ],
   };
 
   let columns = [];
@@ -126,6 +151,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const text = valueText(value);
     const readOnly = readOnlyColumns.has(col);
     const attrs = `name="${esc(col)}" data-col="${esc(col)}"${readOnly ? " readonly" : ""}`;
+    if (categoryOptions[col]) {
+      return categoryPickerHtml(col, text);
+    }
     if (col === "isused") {
       const selected = text === "0" || text.toLowerCase() === "false" ? "0" : "1";
       return `
@@ -138,6 +166,28 @@ document.addEventListener("DOMContentLoaded", () => {
       return `<textarea ${attrs}>${esc(text)}</textarea>`;
     }
     return `<input ${attrs} value="${esc(text)}">`;
+  }
+
+  function csvValues(value) {
+    return valueText(value)
+      .split(",")
+      .map((item) => item.trim())
+      .filter(Boolean);
+  }
+
+  function categoryPickerHtml(col, value) {
+    const selected = new Set(csvValues(value));
+    return `
+      <div class="admin-category-picker" data-category-picker="${esc(col)}">
+        <input name="${esc(col)}" data-col="${esc(col)}" value="${esc([...selected].join(","))}" inputmode="numeric" autocomplete="off" placeholder="예: ${esc(categoryOptions[col][0][0])},${esc(categoryOptions[col].at(-1)[0])}">
+        <div class="admin-category-options">
+          ${categoryOptions[col].map(([code, label]) => `
+            <button type="button" class="admin-category-option ${selected.has(code) ? "is-selected" : ""}" data-category-code="${esc(code)}" aria-pressed="${selected.has(code) ? "true" : "false"}">
+              <span class="admin-category-check" aria-hidden="true"></span>
+              <span>${esc(label)}</span>
+            </button>`).join("")}
+        </div>
+      </div>`;
   }
 
   function renderFields(row) {
@@ -196,13 +246,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   function renderFieldCell(col, row) {
-    if (col === "__geocodeButton") {
-      return `
-        <div class="field admin-action-cell">
-          <span>&nbsp;</span>
-          <button type="button" class="button secondary admin-geocode-button" data-action="geocode">주소로 위경도 불러오기</button>
-        </div>`;
-    }
     if (col === "__spacer") {
       return `<div class="field admin-grid-spacer" aria-hidden="true"></div>`;
     }
@@ -211,6 +254,24 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="field admin-action-cell">
           <span>&nbsp;</span>
           <button type="button" class="button secondary admin-geocode-button admin-pano-button" data-action="pano">위경도로 로드뷰 좌표 생성</button>
+        </div>`;
+    }
+    if (categoryOptions[col]) {
+      return `
+        <div class="field ${col === "costcategory" ? "full" : ""}">
+          <span>${esc(fieldLabels[col] || col)}</span>
+          ${inputHtml(col, row[col])}
+        </div>`;
+    }
+    if (col === "saddressinfo") {
+      return `
+        <label class="field">
+          <span>${esc(fieldLabels[col] || col)}</span>
+          ${inputHtml(col, row[col])}
+        </label>
+        <div class="field admin-action-cell">
+          <span>&nbsp;</span>
+          <button type="button" class="button secondary admin-geocode-button" data-action="geocode">주소로 위경도 불러오기</button>
         </div>`;
     }
     return `
@@ -379,6 +440,25 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   fieldsRoot.addEventListener("click", (event) => {
+    const categoryInput = event.target.closest("[data-category-picker] [data-col]");
+    if (categoryInput) {
+      const picker = categoryInput.closest("[data-category-picker]");
+      const wasOpen = picker.classList.contains("is-open");
+      closeCategoryPickers(picker);
+      picker.classList.toggle("is-open", !wasOpen);
+      if (!wasOpen) positionCategoryPicker(picker);
+      return;
+    }
+    const categoryButton = event.target.closest("[data-category-code]");
+    if (categoryButton) {
+      const picker = categoryButton.closest("[data-category-picker]");
+      picker.classList.add("is-open");
+      positionCategoryPicker(picker);
+      categoryButton.classList.toggle("is-selected");
+      categoryButton.setAttribute("aria-pressed", categoryButton.classList.contains("is-selected") ? "true" : "false");
+      updateCategoryPickerValue(picker);
+      return;
+    }
     const button = event.target.closest("[data-action]");
     if (!button) return;
     if (button.dataset.action === "geocode") geocodeSelectedAddress();
@@ -388,6 +468,53 @@ document.addEventListener("DOMContentLoaded", () => {
   fieldsRoot.addEventListener("change", (event) => {
     if (event.target.matches('[data-col="isused"]')) updateUsageWarning();
   });
+
+  fieldsRoot.addEventListener("input", (event) => {
+    if (!event.target.matches("[data-category-picker] [data-col]")) return;
+    syncCategoryChecksFromInput(event.target.closest("[data-category-picker]"));
+  });
+
+  document.addEventListener("click", (event) => {
+    if (event.target.closest("[data-category-picker]")) return;
+    closeCategoryPickers();
+  });
+
+  function closeCategoryPickers(exceptPicker = null) {
+    fieldsRoot.querySelectorAll("[data-category-picker].is-open").forEach((picker) => {
+      if (picker !== exceptPicker) {
+        picker.classList.remove("is-open", "open-up");
+      }
+    });
+  }
+
+  function positionCategoryPicker(picker) {
+    window.requestAnimationFrame(() => {
+      const options = picker.querySelector(".admin-category-options");
+      const rect = picker.getBoundingClientRect();
+      const paneRect = document.querySelector(".admin-detail-pane").getBoundingClientRect();
+      const spaceBelow = paneRect.bottom - rect.bottom;
+      picker.classList.toggle("open-up", spaceBelow < options.offsetHeight + 12);
+    });
+  }
+
+  function updateCategoryPickerValue(picker) {
+    const selectedCodes = new Set(
+      [...picker.querySelectorAll(".admin-category-option.is-selected")].map((button) => button.dataset.categoryCode)
+    );
+    const selected = categoryOptions[picker.dataset.categoryPicker]
+      .map(([code]) => code)
+      .filter((code) => selectedCodes.has(code));
+    picker.querySelector("[data-col]").value = selected.join(",");
+  }
+
+  function syncCategoryChecksFromInput(picker) {
+    const selectedCodes = new Set(csvValues(picker.querySelector("[data-col]").value));
+    picker.querySelectorAll("[data-category-code]").forEach((button) => {
+      const selected = selectedCodes.has(button.dataset.categoryCode);
+      button.classList.toggle("is-selected", selected);
+      button.setAttribute("aria-pressed", selected ? "true" : "false");
+    });
+  }
 
   cancelBtn.addEventListener("click", () => {
     if (!selectedSnapshot) return;

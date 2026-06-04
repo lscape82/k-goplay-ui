@@ -2794,7 +2794,7 @@ body:has(#media-management) .page-title p {
 .admin-field-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 10px;
+  gap: 8px;
   align-items: start;
 }
 
@@ -2804,8 +2804,8 @@ body:has(#media-management) .page-title p {
 
 .admin-field-grid .field span {
   color: #64748b;
-  font-size: 11px;
-  font-weight: 850;
+  font-size: 12px;
+  font-weight: 700;
 }
 
 .admin-field-grid .field {
@@ -2817,8 +2817,8 @@ body:has(#media-management) .page-title p {
 .admin-field-grid select,
 .admin-field-grid textarea {
   width: 100%;
-  min-height: 38px;
-  padding: 9px 10px;
+  min-height: 34px;
+  padding: 7px 9px;
   border: 1px solid #e2e8f0;
   border-radius: 8px;
   background: #fff;
@@ -2838,10 +2838,104 @@ body:has(#media-management) .page-title p {
   color: #64748b;
 }
 
+.admin-category-picker {
+  position: relative;
+  display: grid;
+  gap: 4px;
+}
+
+.admin-category-options {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: calc(100% + 6px);
+  z-index: 30;
+  display: none;
+  gap: 5px;
+  max-height: none;
+  padding: 7px;
+  border: 1px solid #dbe4f0;
+  border-radius: 8px;
+  background: #fff;
+  box-shadow: 0 14px 32px rgba(15, 23, 42, 0.16);
+}
+
+.admin-category-picker.open-up .admin-category-options {
+  top: auto;
+  bottom: calc(100% + 6px);
+}
+
+.admin-category-picker.is-open .admin-category-options {
+  display: grid;
+}
+
+.admin-category-option {
+  position: static;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 7px;
+  width: 100%;
+  height: auto;
+  min-height: 22px;
+  padding: 4px 7px;
+  border: 1px solid #edf2f7;
+  border-radius: 6px;
+  background: #f8fafc;
+  clip: auto;
+  overflow: visible;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.4;
+  text-align: left;
+  cursor: pointer;
+}
+
+.admin-category-option.is-selected {
+  border-color: #9db7ff;
+  background: #eff6ff;
+  color: #173f98;
+  font-weight: 700;
+}
+
+.admin-category-option .admin-category-check {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 14px;
+  min-width: 14px;
+  height: 14px;
+  min-height: 14px;
+  border: 1px solid #b6c3d6;
+  border-radius: 4px;
+  background: #fff;
+}
+
+.admin-category-option.is-selected .admin-category-check {
+  border-color: #173f98;
+  background: #173f98;
+}
+
+.admin-category-option.is-selected .admin-category-check::after {
+  content: "✓";
+  color: #fff;
+  font-size: 10px;
+  font-weight: 900;
+  line-height: 1;
+}
+
+.admin-category-option span {
+  display: inline;
+  color: inherit;
+  font-size: inherit;
+  font-weight: inherit;
+}
+
 .admin-geocode-button {
   width: 100%;
   max-width: none;
-  min-height: 38px;
+  min-height: 34px;
   margin-top: 0;
   padding: 0 10px;
   border-radius: 8px;
