@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>지도 보기 | 광고플레이 DOOH</title>
     <meta name="description" content="서울 주요 상권의 DOOH 전광판 매체를 지도형 화면에서 비교하고 탐색합니다.">
-    <link rel="stylesheet" href="assets/css/styles.css?v=map-title-hierarchy-20260528">
+    <link rel="stylesheet" href="assets/css/styles.css?v=map-filter-nav-20260614">
   </head>
   <body>
     <a class="skip-link" href="#main">본문 바로가기</a>
@@ -15,27 +15,28 @@
         <strong>광고플레이</strong>
       </a>
       <nav class="map-global-nav" aria-label="지도 메뉴">
-        <a href="areas.html">지역 바로가기</a>
-        <a class="is-active" href="map.html">테마별 맞춤광고</a>
-        <a href="guides.html">광고 현장 사례</a>
-        <a href="estimate.html">비용 · 기간 검색</a>
-      </nav>
-      <form class="map-global-search" role="search">
-        <label for="mapGlobalSearch" class="sr-only">매체 검색</label>
-        <input id="mapGlobalSearch" type="search" placeholder="어디에 광고하시겠어요?">
-        <button type="submit" aria-label="검색">⌕</button>
-      </form>
-      <div class="map-global-actions">
         <a href="media.html">주요매체</a>
-        <a href="index.html">회사소개</a>
-        <span aria-hidden="true"></span>
-        <a href="estimate.html">로그인</a>
-        <a class="join" href="estimate.html">회원가입</a>
+        <button type="button" class="is-active" id="mapCurationToggle" aria-expanded="true" aria-controls="mapCurationPanel">테마별 맞춤광고</button>
+        <a href="https://www.youtube.com/channel/UCxXNbNumZkcpjIGzUaOnfnQ" target="_blank" rel="noopener">광고 현장 사례</a>
+        <button type="button" class="map-filter-entry map-header-filter" id="mapRegionToggle" aria-expanded="false" aria-controls="mapRegionPanel">지역검색</button>
+        <button type="button" class="map-filter-entry map-header-filter" id="mapCostFilterToggle" aria-expanded="false" aria-controls="mapCostFilterPanel">비용·기간 검색</button>
+      </nav>
+      <div class="map-global-actions">
+        <a href="about.html">회사소개</a>
+        <a href="login.html">로그인</a>
+        <a class="join" href="join.html">회원가입</a>
       </div>
     </header>
     <main id="main">
       <section class="map-workspace-page" id="media-map">
-        <div class="map-category-strip" id="mapCategoryBar" aria-label="매체 유형"></div>
+        <div class="map-category-strip">
+          <form class="map-global-search map-category-search" role="search">
+            <label for="mapGlobalSearch" class="sr-only">매체 검색</label>
+            <input id="mapGlobalSearch" type="search" placeholder="지역, 매체명 검색">
+            <button type="submit" aria-label="검색">⌕</button>
+          </form>
+          <div class="map-category-list" id="mapCategoryBar" aria-label="매체 유형"></div>
+        </div>
         <div class="map-workspace">
           <aside class="map-sidebar" aria-label="지도 매체 목록과 상세 정보">
             <section class="map-list-view" id="mapListView">
@@ -48,36 +49,92 @@
           </aside>
           <section class="map-canvas-shell" aria-label="매체 위치 지도">
             <div class="map-stage" id="mapStage"></div>
-            <article class="map-curation-panel" id="mapCurationPanel" aria-label="테마별 맞춤광고 추천">
-              <div class="map-curation-copy">
-                <div class="map-curation-head">
-                  <span>NEW · 추천 매체</span>
-                  <button type="button" id="mapCurationClose" aria-label="추천 패널 닫기">×</button>
-                </div>
-                <h2>테마별 맞춤광고 핵심 매체</h2>
-                <p>주요 전광판, 신규 매체, 최신 공지를 한눈에 확인하세요.</p>
-                <div class="map-curation-list" aria-label="추천 매체 바로가기">
-                  <button type="button" data-curation-media="sinsa-h-station">
-                    <strong>강남 프리미엄 전광판</strong>
-                    <span>유동인구 · 대형 전광판</span>
-                  </button>
-                  <button type="button" data-curation-media="samseong-kpop-square-package">
-                    <strong>삼성 COEX K-POP 패키지</strong>
-                    <span>신규 문의 · 복합 매체</span>
-                  </button>
-                  <button type="button" data-curation-media="transport-seoul-station-ktx-panorama">
-                    <strong>서울역 교통 허브 매체</strong>
-                    <span>출퇴근 · 이동 동선</span>
-                  </button>
-                </div>
-                <div class="map-curation-actions">
-                  <a class="live" href="estimate.html?intent=live-talk">실시간 라이브톡</a>
-                  <a class="download" href="assets/downloads/goplay-media-introduction.html" download>매체 소개서 다운로드</a>
+            <section class="map-cost-filter-panel" id="mapCostFilterPanel" aria-label="비용 및 기간 검색" hidden>
+              <div class="map-cost-filter-head">
+                <h2>원하는 비용 및 기간으로 검색하세요</h2>
+                <button type="button" id="mapCostFilterClose" aria-label="비용 기간 검색 닫기">×</button>
+              </div>
+              <div class="map-cost-filter-active" aria-live="polite">
+                <span>현재 적용된 조건</span>
+                <b id="mapBudgetActive">비용 전체</b>
+                <b id="mapPeriodActive">기간 전체</b>
+              </div>
+              <div class="map-cost-filter-grid">
+                <fieldset>
+                  <legend>비용</legend>
+                  <button type="button" class="is-active" data-budget-filter="all">비용 전체</button>
+                  <button type="button" data-budget-filter="under100">100만원 미만</button>
+                  <button type="button" data-budget-filter="100-300">100 - 300만원 미만</button>
+                  <button type="button" data-budget-filter="300-500">300 - 500만원 미만</button>
+                  <button type="button" data-budget-filter="500-1000">500 - 1,000만원 미만</button>
+                  <button type="button" data-budget-filter="1000-1500">1,000 - 1,500만원 미만</button>
+                  <button type="button" data-budget-filter="1500plus">1,500만원 이상</button>
+                </fieldset>
+                <fieldset>
+                  <legend>기간</legend>
+                  <button type="button" class="is-active" data-period-filter="all">기간 전체</button>
+                  <button type="button" data-period-filter="1">1일</button>
+                  <button type="button" data-period-filter="3">3일</button>
+                  <button type="button" data-period-filter="7">7일</button>
+                  <button type="button" data-period-filter="15">15일</button>
+                  <button type="button" data-period-filter="30">1개월 이상</button>
+                </fieldset>
+              </div>
+              <button type="button" class="map-cost-filter-apply" id="mapCostFilterApply">선택한 조건 적용</button>
+            </section>
+            <section class="map-region-panel" id="mapRegionPanel" aria-label="지역 검색" hidden>
+              <div class="map-region-head">
+                <h2>지역검색</h2>
+                <button type="button" id="mapRegionClose" aria-label="지역 검색 닫기">×</button>
+              </div>
+              <div class="map-region-group">
+                <p>전국/수도권</p>
+                <div class="map-region-grid is-two">
+                  <button type="button" data-region-target="nationwide">전국</button>
+                  <button type="button" data-region-target="capital">수도권</button>
                 </div>
               </div>
-              <figure class="map-curation-visual">
-                <img src="assets/images/map-samples/cheonggye-wide.jpg" alt="주요 전광판 매체 예시">
-              </figure>
+              <div class="map-region-group">
+                <p>서울시</p>
+                <button type="button" class="map-region-wide" data-region-target="seoul">서울시(전체)</button>
+                <div class="map-region-grid">
+                  <button type="button" data-region-target="gangbuk">강북</button>
+                  <button type="button" data-region-target="gangnam">강남</button>
+                  <button type="button" data-region-target="gangdong">강동</button>
+                  <button type="button" data-region-target="gangseo">강서</button>
+                </div>
+              </div>
+              <div class="map-region-group">
+                <p>광역시도</p>
+                <div class="map-region-grid">
+                  <button type="button" data-region-target="sejong">세종시</button>
+                  <button type="button" data-region-target="daejeon">대전시</button>
+                  <button type="button" data-region-target="gwangju">광주시</button>
+                  <button type="button" data-region-target="daegu">대구시</button>
+                  <button type="button" data-region-target="busan">부산시</button>
+                  <button type="button" data-region-target="ulsan">울산시</button>
+                  <button type="button" data-region-target="changwon">창원시</button>
+                  <button type="button" data-region-target="jeju">제주도</button>
+                </div>
+              </div>
+            </section>
+            <article class="map-curation-panel" id="mapCurationPanel" aria-label="테마별 맞춤광고 추천">
+              <div class="map-curation-copy">
+                <div class="map-curation-title-row">
+                  <h2>테마별 맞춤광고</h2>
+                  <button type="button" class="map-curation-close" id="mapCurationClose" aria-label="추천 패널 닫기">×</button>
+                </div>
+                <div class="map-curation-list" id="mapCurationList" aria-label="추천 매체 및 집행 사례"></div>
+                <div class="map-curation-quick-actions">
+                  <a class="map-curation-live" id="mapCurationLive" href="estimate.html?intent=live-talk">실시간 라이브 상담</a>
+                  <a class="map-curation-download" id="mapCurationDownload" href="assets/downloads/goplay-media-introduction.html" download>소개서 다운로드</a>
+                </div>
+              </div>
+              <div class="map-curation-media">
+                <figure class="map-curation-visual">
+                  <video id="mapCurationImage" src="assets/videos/large-billboard-260513.mp4" muted autoplay loop playsinline preload="metadata" aria-label="대형 전광판 현장 영상"></video>
+                </figure>
+              </div>
             </article>
             <div class="map-mode-toggle" aria-label="지도 보기 방식">
               <button type="button" class="is-active">지도</button>
@@ -93,16 +150,16 @@
               <button type="button" aria-label="현재 위치">⌾</button>
             </div>
             <div class="map-contact-card" aria-label="상담 채널">
-              <a href="tel:1533-1975">전화</a>
+              <a href="tel:1533-1975">1533-1975</a>
               <a href="estimate.html">온라인 상담</a>
-              <a class="primary" href="estimate.html">실시간 빠른 상담</a>
+              <a class="primary" href="estimate.html">실시간 라이브 상담</a>
             </div>
           </section>
         </div>
       </section>
     </main>
     <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1ouo31myef"></script>
-    <script src="assets/js/common.js?v=map-title-hierarchy-20260528"></script>
-    <script src="assets/js/map.js?v=map-title-hierarchy-20260528"></script>
+    <script src="assets/js/common.js?v=map-category-row-fix-20260614"></script>
+    <script src="assets/js/map.js?v=map-category-row-fix-20260614"></script>
   </body>
 </html>
