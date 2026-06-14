@@ -36,6 +36,7 @@
       { href: "guides.html", label: "가이드" },
       { href: "geocode.html", label: "주소 변환" },
       { href: "estimate.html", label: "견적 문의" },
+      { href: "media-management.html", label: "매체 관리" },
     ],
   };
 

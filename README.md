@@ -34,6 +34,28 @@ git ship "수정 내용"
 
 푸쉬 후 잠시 뒤 `https://lscape82.github.io/k-goplay-ui/`에 반영됩니다.
 
+## 매체 관리 서버 배포
+
+`media-management.html`의 DB 조회/수정 기능은 정적 GitHub Pages가 아니라 Python API 서버에서 동작합니다.
+
+Vercel 프로젝트 `k-goplay`로 배포하면 아래 주소에서 관리 페이지를 사용합니다.
+
+```text
+https://k-goplay.vercel.app/media-management.html
+```
+
+Vercel 환경변수에 아래 민감값을 직접 등록합니다.
+
+```text
+MSSQL_SERVER
+MSSQL_USER
+MSSQL_PASSWORD
+NAVER_MAPS_CLIENT_ID
+NAVER_MAPS_CLIENT_SECRET
+```
+
+GitHub Pages의 `media-management.html`은 화면을 제공하고, API 요청은 Vercel 서버로 전달합니다.
+
 ## PDF 데이터 추출
 
 - 기준 PDF: `source/adplay-dooh.pdf`

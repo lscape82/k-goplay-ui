@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>매체 관리 | 광고플레이 DOOH</title>
+    <link rel="stylesheet" href="assets/css/styles.css?v=media-admin-20260604-9">
+  </head>
+  <body>
+    <a class="skip-link" href="#main">본문 바로가기</a>
+    <header class="site-header" data-site-header></header>
+    <main id="main">
+      <section id="media-management" class="section">
+        <div class="container">
+          <div class="admin-toolbar">
+            <label class="field">
+              <span>검색</span>
+              <input id="mediaAdminSearch" type="search" placeholder="매체명, 주소, 카테고리 검색">
+            </label>
+            <label class="field">
+              <span>정렬</span>
+              <select id="mediaAdminSort">
+                <option value="ordering:asc" selected>정렬순</option>
+                <option value="ordering:desc">정렬순 역순</option>
+                <option value="modifydate:desc">최근 업데이트 순</option>
+                <option value="representcompanyname:asc">매체명 가나다</option>
+                <option value="representcompanyname:desc">매체명 역순</option>
+                <option value="saddressinfo:asc">주소 가나다</option>
+              </select>
+            </label>
+            <label class="field page-size-field">
+              <span>개수</span>
+              <select id="mediaAdminPageSize">
+                <option value="10" selected>10개</option>
+                <option value="25">25개</option>
+                <option value="50">50개</option>
+                <option value="100">100개</option>
+              </select>
+            </label>
+            <button id="mediaAdminRefresh" class="button secondary admin-refresh-button" type="button">새로고침</button>
+            <div id="mediaAdminStatus" class="admin-status">대기 중</div>
+          </div>
+          <div class="admin-workspace">
+            <section class="admin-list-pane" aria-label="매체 목록">
+              <div id="mediaAdminTable" class="admin-list">
+                <div class="empty">매체 목록을 불러오는 중입니다.</div>
+              </div>
+              <div class="admin-pagination" aria-label="매체 목록 페이지">
+                <button id="mediaAdminPrev" class="button secondary" type="button">이전</button>
+                <span id="mediaAdminPage">1 / 1</span>
+                <button id="mediaAdminNext" class="button secondary" type="button">다음</button>
+              </div>
+            </section>
+            <aside class="admin-detail-pane" aria-label="매체 편집">
+              <div class="admin-detail-head">
+                <div>
+                  <strong id="mediaAdminDetailTitle">매체 선택</strong>
+                  <span id="mediaAdminDetailMeta">목록에서 편집할 매체를 선택하세요.</span>
+                </div>
+              </div>
+              <form id="mediaAdminForm">
+                <div id="mediaAdminFields" class="admin-fields">
+                  <div class="empty">목록에서 편집할 매체를 선택하세요.</div>
+                </div>
+                <div id="mediaAdminUsageWarning" class="admin-usage-warning" hidden>저장 후 매체 리스트에서 빠집니다.</div>
+                <div class="admin-actions" id="mediaAdminActions" hidden>
+                  <button id="mediaAdminCancel" class="button secondary" type="button" disabled>취소</button>
+                  <button id="mediaAdminSave" class="button" type="submit" disabled>저장</button>
+                </div>
+                <div id="mediaAdminSaveNotice" class="admin-save-notice" hidden></div>
+              </form>
+            </aside>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer" data-site-footer></footer>
+    <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1ouo31myef&submodules=geocoder"></script>
+    <script src="assets/js/common.js?v=structure-20260603-admin-api"></script>
+    <script src="assets/js/media-management.js?v=db-admin-20260604-6"></script>
+  </body>
+</html>
