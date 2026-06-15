@@ -55,7 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     {
       id: "landmark",
       mediaSlug: "sinsa-h-station",
-      title: "압도적 스케일 대형 전광판",
+      title: "브랜드 랜드마크 전광판",
       label: "랜드마크 전광판",
       meta: "도시의 시선이 머무는 곳",
       desc: "강남·도심 핵심 상권에서 브랜드 런칭과 대형 캠페인을 빠르게 각인시키는 대표 매체 조합입니다.",
@@ -65,7 +65,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     {
       id: "genz",
       mediaSlug: "samseong-kpop-square-package",
-      title: "2030 MZ 대학가·핫플 미디어",
+      title: "2030 집중 캠퍼스 미디어",
       label: "MZ 타깃 집행 사례",
       meta: "콘텐츠 반응과 방문 동선 중심",
       desc: "쇼핑, 공연, 팝업, K-콘텐츠 동선이 겹치는 지역을 묶어 젊은 방문객에게 반복 노출합니다.",
@@ -75,7 +75,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     {
       id: "daily",
       mediaSlug: "daily-apartment-elevator-tv",
-      title: "생활 속 엘리베이터·편의점 보드",
+      title: "생활밀착 미디어 보드",
       label: "생활권 반복 노출",
       meta: "아파트·오피스·편의점 접점",
       desc: "짧은 접촉을 자주 만드는 생활권 매체로 프로모션, 지역 타깃, 앱 설치 캠페인에 적합합니다.",
@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     {
       id: "mobility",
       mediaSlug: "transport-seoul-station-ktx-panorama",
-      title: "최신 스마트 교통 미디어",
+      title: "일상 동선 커버 교통매체",
       label: "이동형·교통 매체",
       meta: "출퇴근과 이동 동선 커버",
       desc: "역사, 터미널, 정류장 등 이동 전후 접점에서 반복적으로 메시지를 노출합니다.",
@@ -95,7 +95,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     {
       id: "indoor",
       mediaSlug: "samseong-kpop-square-package",
-      title: "쇼핑몰·광장·영화관 Indoor",
+      title: "체험 자극 쇼핑·문화시설 미디어",
       label: "체류형 실내 매체",
       meta: "구매 고려가 일어나는 공간",
       desc: "쇼핑몰, 영화관, 광장처럼 체류 시간이 긴 공간에서 브랜드 선호와 구매 전환을 보조합니다.",
@@ -105,12 +105,44 @@ document.addEventListener("DOMContentLoaded", async () => {
     {
       id: "hot",
       mediaSlug: "sinsa-syh-tower",
-      title: "핫플·타임싱크 패키지",
+      title: "초대형·타임싱크 패키지",
       label: "시즌 집중 패키지",
       meta: "이벤트 일정에 맞춘 단기 집행",
       desc: "1개월 미만 집행이 가능한 매체를 중심으로 행사 기간에 맞춰 빠르게 노출합니다.",
       image: "assets/images/map-samples/gangnam-close.jpg",
       tag: "집행 사례",
+    },
+    {
+      id: "wide-coverage",
+      mediaSlug: "gangnam-wide-coverage-package",
+      title: "비용효율 와이드커버리지",
+      label: "다지역 가로형 패키지",
+      meta: "10곳·20곳 단위의 넓은 커버",
+      desc: "구형 가로형 매체를 여러 거점에 묶어 예산 부담은 낮추고 반복 노출 범위는 넓히는 패키지입니다.",
+      image: "assets/images/map-samples/gangnam-wide.jpg",
+      tag: "집행 사례",
+    },
+    {
+      id: "truck",
+      mediaSlug: "mobile-truck-national-package",
+      title: "전국 이동 트럭래핑",
+      isNew: true,
+      label: "전국 이동형 광고",
+      meta: "지역과 시간대에 맞춘 이동 노출",
+      desc: "행사장, 상권, 출퇴근 동선 등 원하는 지역과 시간대에 맞춰 전국 단위로 움직이며 노출하는 이동형 광고입니다.",
+      image: "assets/images/map-samples/gwanghwamun-close.jpg",
+      tag: "매체 종류",
+    },
+    {
+      id: "medical",
+      mediaSlug: "medical-clinic-board-package",
+      title: "병의원 메디컬 보드",
+      isNew: true,
+      label: "의료 업종 특화 보드",
+      meta: "병의원·약국 생활권 접점",
+      desc: "병의원, 약국, 건강관리 동선에 가까운 생활권 접점에서 의료·헬스케어 메시지를 반복 노출하는 보드형 매체입니다.",
+      image: "assets/images/map-samples/cheonggye-wide.jpg",
+      tag: "매체 종류",
     },
   ];
 
@@ -143,6 +175,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   let naverMarkers = [];
   let currentItems = [];
 
+  function setCurationPanel(isOpen) {
+    if (!curationPanel) return;
+    curationPanel.hidden = !isOpen;
+    if (!curationToggle) return;
+    curationToggle.setAttribute("aria-expanded", String(isOpen));
+    curationToggle.classList.toggle("is-active", isOpen);
+  }
+
   const mediaWithLocations = media.map((item) => ({
     ...item,
     mapLocation: locations[item.slug] || null,
@@ -169,15 +209,17 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
   if (curationClose && curationPanel) {
     curationClose.addEventListener("click", () => {
-      curationPanel.hidden = true;
-      if (curationToggle) curationToggle.setAttribute("aria-expanded", "false");
+      setCurationPanel(false);
     });
   }
   if (curationToggle && curationPanel) {
     curationToggle.addEventListener("click", () => {
       const willOpen = curationPanel.hidden;
-      curationPanel.hidden = !willOpen;
-      curationToggle.setAttribute("aria-expanded", String(willOpen));
+      setCurationPanel(willOpen);
+      if (willOpen) {
+        closeRegionPanel();
+        closeCostPanel();
+      }
     });
   }
   if (costFilterToggle && costFilterPanel) {
@@ -243,8 +285,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     curationMapView.addEventListener("click", () => {
       const slug = curationMapView.dataset.mediaSlug;
       if (slug) {
-        if (curationPanel) curationPanel.hidden = true;
-        if (curationToggle) curationToggle.setAttribute("aria-expanded", "false");
+        setCurationPanel(false);
         openDetail(slug, true, true);
       }
     });
@@ -268,7 +309,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     syncPanelMode();
     focusSelectedCard();
   });
-
   function renderCategoryTabs() {
     const available = new Set(mediaWithLocations.map((item) => item.category));
     categoryBar.innerHTML = categoryTabs
@@ -293,7 +333,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!curationList) return;
     curationList.innerHTML = curationItems.map((item) => `
       <button type="button" class="${item.id === activeId ? "is-active" : ""}" data-curation-id="${AdPlay.esc(item.id)}">
-        <strong>${AdPlay.esc(item.title)}</strong>
+        <strong><span>${AdPlay.esc(item.title)}</span>${item.isNew ? `<sup class="map-curation-new">NEW!</sup>` : ""}</strong>
       </button>
     `).join("");
 
@@ -497,7 +537,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           ${galleryImages.slice(0, 4).map((src, index) => `
             <figure>
               <img src="${AdPlay.esc(src)}" alt="${AdPlay.esc(item.name)} 현장 사진 ${index + 1}" loading="${index === 0 ? "eager" : "lazy"}">
-              ${index === 3 ? `<span>사진 더보기(${Math.max(galleryImages.length, 4)})</span>` : ""}
+              ${index === 3 ? `<button type="button" class="map-detail-gallery-jump">사진 더보기(${Math.max(galleryImages.length, 4)})</button>` : ""}
             </figure>
           `).join("")}
         </div>
@@ -516,7 +556,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           <a href="#detailTraffic"><strong>데이터 리포트</strong><span>Data Report</span></a>
           <a href="${roadviewUrl}" target="_blank" rel="noopener"><strong>거리뷰 보기</strong><span>Street View</span></a>
         </div>
-        <a class="map-detail-consult" href="#detailConsult">온라인 상담</a>
         <section class="map-detail-section map-detail-section-top" id="detailSpecs">
           <h3>상세 제원</h3>
           <dl class="map-detail-specs">
@@ -533,21 +572,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         </section>
         <a class="map-detail-live-card" href="estimate.html?intent=live-talk&media=${encodeURIComponent(item.slug)}">
           <strong>실시간 라이브 상담</strong>
-          <span>할인, 패키지, 예산 맞춤 집행은 1533-1975 또는 라이브 상담 신청하세요.</span>
+          <span>할인, 패키지, 예산 맞춤 집행은 1533-1975 또는 라이브 상담 신청</span>
         </a>
-        <nav class="map-detail-tabs" aria-label="상세 정보 바로가기">
-          <a href="#detailSpecs">상세제원</a>
-          <a href="#detailTraffic">유동인구</a>
-          <a href="#detailGallery">갤러리</a>
-          <a href="#detailRoadview">로드뷰</a>
-          <a href="#detailLocation">지역특징</a>
-          <a href="#detailConsult">상담</a>
-        </nav>
-        <section class="map-detail-section" id="detailTraffic">
-          <h3>유동인구와 타깃</h3>
-          <p class="map-detail-copy">${AdPlay.esc(insight.traffic)}</p>
-          ${trafficVisualization(insight)}
-        </section>
         <section class="map-detail-section" id="detailGallery">
           <h3>갤러리</h3>
           <div class="map-detail-gallery">
@@ -562,6 +588,11 @@ document.addEventListener("DOMContentLoaded", async () => {
             <span>거리뷰 보기</span>
           </a>
         </section>
+        <section class="map-detail-section" id="detailTraffic">
+          <h3>유동인구와 타깃</h3>
+          <p class="map-detail-copy">${AdPlay.esc(insight.traffic)}</p>
+          ${trafficVisualization(insight)}
+        </section>
         <section class="map-detail-section" id="detailLocation">
           <h3>입지 특성</h3>
           <p class="map-detail-copy">${AdPlay.esc(insight.location)}</p>
@@ -569,7 +600,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             ${insight.scores.map((score) => `<div><span>${AdPlay.esc(score.label)}</span><i style="--score:${score.value}"></i><strong>${score.value}</strong></div>`).join("")}
           </div>
         </section>
-        <section class="map-detail-section">
+        <section class="map-detail-section" id="detailFacilities">
           <h3>주요시설 및 행사</h3>
           <dl class="map-detail-table">
             ${insight.facilities.map((row) => `<dt>${AdPlay.esc(row.label)}</dt><dd>${AdPlay.esc(row.value)}</dd>`).join("")}
@@ -644,6 +675,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       detailOpen = false;
       syncPanelMode();
       focusSelectedCard();
+    });
+    const galleryJump = detailRoot.querySelector(".map-detail-gallery-jump");
+    if (galleryJump) galleryJump.addEventListener("click", () => {
+      const gallerySection = detailRoot.querySelector("#detailGallery");
+      if (gallerySection) gallerySection.scrollIntoView({ behavior: "smooth", block: "start" });
     });
     const onlineConsult = detailRoot.querySelector('.map-detail-consult[href="#detailConsult"]');
     if (onlineConsult) onlineConsult.addEventListener("click", (event) => {
@@ -859,40 +895,55 @@ document.addEventListener("DOMContentLoaded", async () => {
       traffic: "8.6만대",
       target: "2030·직장인",
     };
-    const monthly = [71, 73, 75, 79, 83, 78, 74, 79, 77, 79, 75, 76];
+    const monthly = [7.1, 7.3, 7.5, 7.9, 8.3, 7.8, 7.4, 7.9, 7.7, 7.9, 7.5, 7.6];
     const monthLabels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
-    const points = monthly.map((value, index) => `${20 + index * 24},${94 - value * 0.58}`).join(" ");
+    const minMonth = Math.min(...monthly);
+    const maxMonth = Math.max(...monthly);
+    const peakIndex = monthly.indexOf(maxMonth);
+    const monthX = (index) => 26 + index * 28.6;
+    const monthY = (value) => 118 - ((value - minMonth) / (maxMonth - minMonth || 1)) * 54;
+    const points = monthly.map((value, index) => `${monthX(index)},${monthY(value)}`).join(" ");
     const dayBars = [
-      ["월", 82, "강"],
-      ["화", 84, "강"],
-      ["수", 86, "강"],
-      ["목", 88, "최대"],
-      ["금", 87, "강"],
-      ["토", 72, "주말"],
-      ["일", 62, "완만"],
+      ["월", 7.4, 82, "강"],
+      ["화", 7.6, 84, "강"],
+      ["수", 7.8, 86, "강"],
+      ["목", 8.0, 88, "최대"],
+      ["금", 7.9, 87, "강"],
+      ["토", 6.5, 72, "주말"],
+      ["일", 5.7, 62, "완만"],
     ];
     const timeBars = [
-      ["05~09", 54, "출근"],
-      ["09~12", 70, "오전"],
-      ["12~14", 62, "점심"],
-      ["14~18", 100, "피크"],
-      ["18~23", 86, "저녁"],
-      ["23~05", 34, "심야"],
+      ["05~09", 4.2, 54, "출근"],
+      ["09~12", 5.4, 70, "오전"],
+      ["12~14", 4.8, 62, "점심"],
+      ["14~18", 7.8, 100, "피크"],
+      ["18~23", 6.7, 86, "저녁"],
+      ["23~05", 2.6, 34, "심야"],
     ];
+    const topDay = dayBars.reduce((top, row) => row[1] > top[1] ? row : top, dayBars[0]);
+    const topTime = timeBars.reduce((top, row) => row[1] > top[1] ? row : top, timeBars[0]);
+    const audienceRows = insight.audience || [];
     return `
-      <div class="map-traffic-kpis">
-        <article><span>일평균 유동 500m</span><strong>${AdPlay.esc(stats.daily500)}</strong><em>상권 반경 추정</em></article>
-        <article><span>일평균 유동 300m</span><strong>${AdPlay.esc(stats.daily300)}</strong><em>매체 근접권</em></article>
-        <article><span>핵심 타깃</span><strong>${AdPlay.esc(stats.target)}</strong><em>구매·방문 가능층</em></article>
+      <div class="map-traffic-lead">
+        <p>반경별 유동, 대중교통 승하차, 도로 교통량을 함께 보며 매체 주변 도달 규모와 노출 피크를 판단할 수 있습니다.</p>
       </div>
-      <div class="map-traffic-kpis is-compact">
+      <div class="map-traffic-kpis">
+        <article class="is-primary"><span>일평균 유동 500m</span><strong>${AdPlay.esc(stats.daily500)}</strong><em>상권 반경 추정</em></article>
+        <article><span>일평균 유동 300m</span><strong>${AdPlay.esc(stats.daily300)}</strong><em>매체 근접권</em></article>
+        <article class="is-text-kpi"><span>핵심 타깃</span><strong>${AdPlay.esc(stats.target)}</strong><em>구매·방문 가능층</em></article>
         <article><span>지하철 승하차</span><strong>${AdPlay.esc(stats.subway)}</strong><em>주변역 일평균</em></article>
         <article><span>버스 승하차</span><strong>${AdPlay.esc(stats.bus)}</strong><em>주변 정류장</em></article>
         <article><span>도로 교통량</span><strong>${AdPlay.esc(stats.traffic)}</strong><em>주요 간선도로</em></article>
       </div>
       <div class="map-traffic-chart">
-        <h4>월별 일평균 유동인구 추이</h4>
-        <svg viewBox="0 0 366 150" role="img" aria-label="월별 유동인구 추이 그래프">
+        <div class="map-traffic-chart-head">
+          <div>
+            <h4>월별 일평균 유동 추이</h4>
+            <p>반경 500m 기준 · 단위 만명</p>
+          </div>
+          <strong>${peakIndex + 1}월 피크 ${maxMonth.toFixed(1)}만명</strong>
+        </div>
+        <svg viewBox="0 0 366 164" role="img" aria-label="월별 유동인구 추이 그래프">
           <defs>
             <linearGradient id="trafficLine" x1="0" x2="1">
               <stop offset="0%" stop-color="#0b3a91"></stop>
@@ -903,25 +954,36 @@ document.addEventListener("DOMContentLoaded", async () => {
               <stop offset="100%" stop-color="#4f7df3" stop-opacity="0"></stop>
             </linearGradient>
           </defs>
-          <path d="M20 112H342" class="axis"></path>
-          <polygon points="20,112 ${points} 284,112" class="area"></polygon>
+          <path d="M26 124H341" class="axis"></path>
+          <polygon points="26,124 ${points} 341,124" class="area"></polygon>
           <polyline points="${points}" class="line"></polyline>
-          ${monthly.map((value, index) => `<circle cx="${20 + index * 24}" cy="${94 - value * 0.58}" r="3.5"></circle>`).join("")}
-          ${monthLabels.map((label, index) => `<text x="${20 + index * 24}" y="136">${AdPlay.esc(label)}</text>`).join("")}
+          ${monthly.map((value, index) => `<circle class="${index === peakIndex ? "is-peak" : ""}" cx="${monthX(index)}" cy="${monthY(value)}" r="${index === peakIndex ? 5 : 3.5}"></circle>`).join("")}
+          <text class="map-traffic-peak" x="${monthX(peakIndex)}" y="${monthY(maxMonth) - 12}">${maxMonth.toFixed(1)}만</text>
+          ${monthLabels.map((label, index) => `<text x="${monthX(index)}" y="150">${AdPlay.esc(label)}월</text>`).join("")}
         </svg>
       </div>
       <div class="map-traffic-grid">
         <div class="map-traffic-panel">
-          <h4>요일별 일평균</h4>
-          ${dayBars.map(([label, value, note]) => `<div><span>${label}</span><i style="--bar:${value}"></i><strong>${note}</strong></div>`).join("")}
+          <div class="map-traffic-panel-head">
+            <h4>요일별 일평균</h4>
+            <b>${topDay[0]}요일 강세</b>
+          </div>
+          ${dayBars.map(([label, people, value, note]) => `<div><span>${label}</span><i style="--bar:${value}"></i><em>${people.toFixed(1)}만</em><strong>${note}</strong></div>`).join("")}
         </div>
         <div class="map-traffic-panel">
-          <h4>시간대별 유동</h4>
-          ${timeBars.map(([label, value, note]) => `<div><span>${label}</span><i style="--bar:${value}"></i><strong>${note}</strong></div>`).join("")}
+          <div class="map-traffic-panel-head">
+            <h4>시간대별 유동</h4>
+            <b>${topTime[0]} 집중</b>
+          </div>
+          ${timeBars.map(([label, people, value, note]) => `<div><span>${label}</span><i style="--bar:${value}"></i><em>${people.toFixed(1)}만</em><strong>${note}</strong></div>`).join("")}
         </div>
       </div>
-      <div class="map-traffic-bars" aria-label="지역 특징 지수">
-        ${insight.audience.map((row) => `<div><span>${AdPlay.esc(row.label)}</span><i style="--bar:${row.value}"></i><strong>${AdPlay.esc(row.note)}</strong></div>`).join("")}
+      <div class="map-traffic-segments" aria-label="타깃 및 방문 동기">
+        <div class="map-traffic-segments-head">
+          <h4>타깃·방문 동기</h4>
+          <p>광고 메시지를 누구에게 맞출지 판단하는 보조 지표입니다.</p>
+        </div>
+        ${audienceRows.map((row) => `<div class="map-traffic-segment"><span>${AdPlay.esc(row.label)}</span><i style="--bar:${row.value}"></i><strong>${AdPlay.esc(row.note)}</strong></div>`).join("")}
       </div>`;
   }
 

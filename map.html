@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>지도 보기 | 광고플레이 DOOH</title>
     <meta name="description" content="서울 주요 상권의 DOOH 전광판 매체를 지도형 화면에서 비교하고 탐색합니다.">
-    <link rel="stylesheet" href="assets/css/styles.css?v=map-filter-nav-20260614">
+    <link rel="stylesheet" href="assets/css/styles.css?v=map-curation-title-dot-20260616">
   </head>
   <body>
     <a class="skip-link" href="#main">본문 바로가기</a>
@@ -17,7 +17,8 @@
       <nav class="map-global-nav" aria-label="지도 메뉴">
         <a href="media.html">주요매체</a>
         <button type="button" class="is-active" id="mapCurationToggle" aria-expanded="true" aria-controls="mapCurationPanel">테마별 맞춤광고</button>
-        <a href="https://www.youtube.com/channel/UCxXNbNumZkcpjIGzUaOnfnQ" target="_blank" rel="noopener">광고 현장 사례</a>
+        <a href="https://www.youtube.com/channel/UCxXNbNumZkcpjIGzUaOnfnQ" target="_blank" rel="noopener">광고집행사례</a>
+        <a href="guides.html">광고 인사이트</a>
         <button type="button" class="map-filter-entry map-header-filter" id="mapRegionToggle" aria-expanded="false" aria-controls="mapRegionPanel">지역검색</button>
         <button type="button" class="map-filter-entry map-header-filter" id="mapCostFilterToggle" aria-expanded="false" aria-controls="mapCostFilterPanel">비용·기간 검색</button>
       </nav>
@@ -121,12 +122,14 @@
             <article class="map-curation-panel" id="mapCurationPanel" aria-label="테마별 맞춤광고 추천">
               <div class="map-curation-copy">
                 <div class="map-curation-title-row">
-                  <h2>테마별 맞춤광고</h2>
+                  <div>
+                    <h2>NEW·추천 큐레이션</h2>
+                  </div>
                   <button type="button" class="map-curation-close" id="mapCurationClose" aria-label="추천 패널 닫기">×</button>
                 </div>
                 <div class="map-curation-list" id="mapCurationList" aria-label="추천 매체 및 집행 사례"></div>
                 <div class="map-curation-quick-actions">
-                  <a class="map-curation-live" id="mapCurationLive" href="estimate.html?intent=live-talk">실시간 라이브 상담</a>
+                  <a class="map-curation-live" id="mapCurationLive" href="estimate.html?intent=live-talk">실시간 상담</a>
                   <a class="map-curation-download" id="mapCurationDownload" href="assets/downloads/goplay-media-introduction.html" download>소개서 다운로드</a>
                 </div>
               </div>
@@ -160,6 +163,6 @@
     </main>
     <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1ouo31myef"></script>
     <script src="assets/js/common.js?v=map-category-row-fix-20260614"></script>
-    <script src="assets/js/map.js?v=map-category-row-fix-20260614"></script>
+    <script src="assets/js/map.js?v=map-curation-truck-wrapping-20260616"></script>
   </body>
 </html>
