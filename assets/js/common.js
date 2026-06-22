@@ -42,7 +42,7 @@
 
   async function loadJson(path) {
     if (!cache[path]) {
-      cache[path] = fetch(path).then((response) => {
+      cache[path] = fetch(path, { cache: "no-store" }).then((response) => {
         if (!response.ok) throw new Error(`${path} 로드 실패`);
         return response.json();
       });

@@ -183,6 +183,8 @@ function insightVisuals(item, area) {
         ${screenSizeVisual(item)}
         ${efficiencyVisual(item)}
         ${stationBars(area)}
+        ${busBars(area)}
+        ${busHourlyBars(area)}
       </div>`;
   }
   return `
@@ -196,6 +198,7 @@ function insightVisuals(item, area) {
           ${metricItem("일 유동인구", area?.dailyFootTraffic, "명")}
           ${metricItem("일 교통량", area?.trafficVolumeDaily, "대")}
           ${metricItem("월 지하철 이용", subwayTotal(area), "명")}
+          ${metricItem("월 버스 승하차", busTotal(area), "명")}
         </div>
       </div>
       ${audienceDashboardVisual(item)}
@@ -203,6 +206,8 @@ function insightVisuals(item, area) {
       ${screenSizeVisual(item)}
       ${efficiencyVisual(item)}
       ${stationBars(area)}
+      ${busBars(area)}
+      ${busHourlyBars(area)}
     </div>`;
 }
 
@@ -213,6 +218,10 @@ function metricItem(label, value, suffix) {
 
 function subwayTotal(area) {
   return (area?.subwayMonthlyUsers || []).reduce((sum, station) => sum + Number(station.users || 0), 0) || null;
+}
+
+function busTotal(area) {
+  return (area?.busMonthlyUsers || []).reduce((sum, station) => sum + Number(station.users || 0), 0) || null;
 }
 
 function audienceDashboardVisual(item) {
@@ -545,6 +554,64 @@ function stationBars(area) {
         }).join("")}
       </div>
     </div>`;
+}
+
+function busBars(area) {
+  const stops = [...(area?.busMonthlyUsers || [])]
+    .filter((stop) => Number.isFinite(Number(stop.users)))
+    .sort((a, b) => Number(b.users) - Number(a.users))
+    .slice(0, 5);
+  if (!stops.length) return "";
+  const max = Math.max(...stops.map((stop) => Number(stop.users)));
+  return `
+    <div class="insight-panel span-2">
+      <div class="insight-head">
+        <span>주요 버스 정류장 월 승하차</span>
+        <strong>${AdPlay.esc(area?.busDataSource || "서울시 버스 데이터")}</strong>
+      </div>
+      <div class="bar-list">
+        ${stops.map((stop) => {
+          const width = `${Math.max(8, (Number(stop.users) / max) * 100)}%`;
+          const label = stop.ars ? `${stop.station} · ${stop.ars}` : stop.station;
+          return `
+            <div class="bar-row ${stop === stops[0] ? "is-top" : ""}">
+              <span>${AdPlay.esc(label)}</span>
+              <div class="bar-track"><i style="width:${width};"></i></div>
+              <strong>${stop === stops[0] ? '<b>TOP</b>' : ""}${AdPlay.formatNumber(stop.users)}</strong>
+            </div>`;
+        }).join("")}
+      </div>
+    </div>`;
+}
+
+function busHourlyBars(area) {
+  const rows = [...(area?.busHourlyUsers || [])].filter((row) => Number.isFinite(Number(row.users)));
+  if (!rows.length) return "";
+  const max = Math.max(...rows.map((row) => Number(row.users)));
+  return `
+    <div class="insight-panel span-2">
+      <div class="insight-head">
+        <span>버스 시간대별 승하차</span>
+        <strong>${AdPlay.esc(peakBusLabel(rows))}</strong>
+      </div>
+      <div class="bar-list">
+        ${rows.map((row) => {
+          const isPeak = Number(row.users) === max;
+          const width = `${Math.max(8, (Number(row.users) / max) * 100)}%`;
+          return `
+            <div class="bar-row ${isPeak ? "is-top" : ""}">
+              <span>${AdPlay.esc(row.label)}</span>
+              <div class="bar-track"><i style="width:${width};"></i></div>
+              <strong>${isPeak ? '<b>PEAK</b>' : ""}${AdPlay.formatNumber(row.users)}</strong>
+            </div>`;
+        }).join("")}
+      </div>
+    </div>`;
+}
+
+function peakBusLabel(rows) {
+  const peak = rows.reduce((top, row) => Number(row.users) > Number(top.users) ? row : top, rows[0]);
+  return `${peak.label} 집중`;
 }
 
 function priceSummaryChips(item) {

@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>지도 보기 | 광고플레이 DOOH</title>
     <meta name="description" content="서울 주요 상권의 DOOH 전광판 매체를 지도형 화면에서 비교하고 탐색합니다.">
-    <link rel="stylesheet" href="assets/css/styles.css?v=map-curation-title-dot-20260616">
+    <link rel="stylesheet" href="assets/css/styles.css?v=traffic-target-aligned-20260622">
   </head>
   <body>
     <a class="skip-link" href="#main">본문 바로가기</a>
@@ -17,8 +17,8 @@
       <nav class="map-global-nav" aria-label="지도 메뉴">
         <a href="media.html">주요매체</a>
         <button type="button" class="is-active" id="mapCurationToggle" aria-expanded="true" aria-controls="mapCurationPanel">테마별 맞춤광고</button>
-        <a href="https://www.youtube.com/channel/UCxXNbNumZkcpjIGzUaOnfnQ" target="_blank" rel="noopener">광고집행사례</a>
-        <a href="guides.html">광고 인사이트</a>
+        <a class="map-nav-media-link is-youtube" href="https://www.youtube.com/channel/UCxXNbNumZkcpjIGzUaOnfnQ" target="_blank" rel="noopener">광고집행사례<span class="map-nav-icon" aria-hidden="true"></span></a>
+        <a class="map-nav-media-link is-blog" href="guides.html">광고 인사이트<span class="map-nav-icon" aria-hidden="true"></span></a>
         <button type="button" class="map-filter-entry map-header-filter" id="mapRegionToggle" aria-expanded="false" aria-controls="mapRegionPanel">지역검색</button>
         <button type="button" class="map-filter-entry map-header-filter" id="mapCostFilterToggle" aria-expanded="false" aria-controls="mapCostFilterPanel">비용·기간 검색</button>
       </nav>
@@ -150,7 +150,11 @@
             <div class="map-zoom-controls" aria-label="지도 확대 축소">
               <button type="button" aria-label="지도 확대">+</button>
               <button type="button" aria-label="지도 축소">−</button>
-              <button type="button" aria-label="현재 위치">⌾</button>
+            </div>
+            <div class="map-bus-stop-legend" id="mapBusStopLegend" aria-label="버스 정류장 광고 표시 범례" hidden>
+              <span><i class="bus-stop-pin is-digital"><span class="bus-stop-pin-core"><span class="bus-stop-pin-window"></span><span class="bus-stop-pin-body"></span><span class="bus-stop-pin-wheel is-left"></span><span class="bus-stop-pin-wheel is-right"></span></span></i>디지털</span>
+              <span><i class="bus-stop-pin is-light"><span class="bus-stop-pin-core"><span class="bus-stop-pin-window"></span><span class="bus-stop-pin-body"></span><span class="bus-stop-pin-wheel is-left"></span><span class="bus-stop-pin-wheel is-right"></span></span></i>조명</span>
+              <span><i class="bus-stop-pin is-nonlight"><span class="bus-stop-pin-core"><span class="bus-stop-pin-window"></span><span class="bus-stop-pin-body"></span><span class="bus-stop-pin-wheel is-left"></span><span class="bus-stop-pin-wheel is-right"></span></span></i>비조명</span>
             </div>
             <div class="map-contact-card" aria-label="상담 채널">
               <a href="tel:1533-1975">1533-1975</a>
@@ -162,7 +166,7 @@
       </section>
     </main>
     <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1ouo31myef"></script>
-    <script src="assets/js/common.js?v=map-category-row-fix-20260614"></script>
-    <script src="assets/js/map.js?v=map-curation-truck-wrapping-20260616"></script>
+    <script src="assets/js/common.js?v=bus-stop-layer-20260619"></script>
+    <script src="assets/js/map.js?v=traffic-target-aligned-20260622"></script>
   </body>
 </html>

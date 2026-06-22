@@ -2,10 +2,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   const root = document.querySelector("#media-map");
   if (!root) return;
 
-  const [media, locations] = await Promise.all([
+  const [media, locations, areas, busStops, busStopPositionOverrides] = await Promise.all([
     AdPlay.loadJson("data/media.json"),
     AdPlay.loadJson("data/media_locations.json"),
+    AdPlay.loadJson("data/areas.json"),
+    AdPlay.loadJson("data/bus_stops.json"),
+    AdPlay.loadJson("data/bus_stop_position_overrides.json"),
   ]);
+  const areaBySlug = new Map((areas || []).map((area) => [area.slug, area]));
 
   const categoryBar = document.querySelector("#mapCategoryBar");
   const stage = document.querySelector("#mapStage");
@@ -28,6 +32,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const curationLive = document.querySelector("#mapCurationLive");
   const curationDownload = document.querySelector("#mapCurationDownload");
   const curationMapView = document.querySelector("#mapCurationMapView");
+  const busStopLegend = document.querySelector("#mapBusStopLegend");
   const zoomControls = document.querySelector(".map-zoom-controls");
   const costFilterToggle = document.querySelector("#mapCostFilterToggle");
   const costFilterPanel = document.querySelector("#mapCostFilterPanel");
@@ -48,7 +53,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     { value: "mobility", label: "이동매체 광고", categories: ["transport_hub", "bus"] },
     { value: "shopping_mall_did", label: "쇼핑·문화시설 광고", categories: ["shopping_mall_did"] },
     { value: "daily_touchpoint", label: "엘리베이터 광고", categories: ["daily_touchpoint"] },
-    { value: "other", label: "생활권 광고", categories: ["daily_touchpoint", "shopping_mall_did"] },
+    { value: "other", label: "기타 옥외 광고", categories: ["daily_touchpoint", "shopping_mall_did"] },
   ];
 
   const curationItems = [
@@ -173,7 +178,11 @@ document.addEventListener("DOMContentLoaded", async () => {
   let pendingPeriod = "all";
   let naverMap = null;
   let naverMarkers = [];
+  let naverBusMarkers = [];
+  let busStopIdleListener = null;
   let currentItems = [];
+  let selectedBusStopId = "";
+  const BUS_STOP_CLUSTER_MAX_ZOOM = 13;
 
   function setCurationPanel(isOpen) {
     if (!curationPanel) return;
@@ -291,17 +300,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
   }
   if (zoomControls) {
-    const [zoomIn, zoomOut, locate] = zoomControls.querySelectorAll("button");
+    const [zoomIn, zoomOut] = zoomControls.querySelectorAll("button");
     if (zoomIn) zoomIn.addEventListener("click", () => naverMap && naverMap.setZoom(naverMap.getZoom() + 1));
     if (zoomOut) zoomOut.addEventListener("click", () => naverMap && naverMap.setZoom(naverMap.getZoom() - 1));
-    if (locate) {
-      locate.addEventListener("click", () => {
-        const item = selectedItem(currentItems);
-        if (item && naverMap && window.naver && window.naver.maps) {
-          naverMap.panTo(new naver.maps.LatLng(item.mapLocation.latitude, item.mapLocation.longitude));
-        }
-      });
-    }
   }
   document.addEventListener("keydown", (event) => {
     if (event.key !== "Escape" || !detailOpen) return;
@@ -382,6 +383,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       ].join(" ").toLowerCase();
       return haystack.includes(query);
     });
+    const busListStops = activeCategory === "bus" ? filteredBusAdStops(query) : [];
     currentItems = searched;
 
     if (selectedMediaSlug && !searched.some((item) => item.slug === selectedMediaSlug)) {
@@ -390,7 +392,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     if (!selectedMediaSlug && searched.length) selectedMediaSlug = searched[0].slug;
 
-    const countText = `${searched.length.toLocaleString("ko-KR")}개`;
+    const resultCount = activeCategory === "bus" ? busListStops.length : searched.length;
+    const countText = `${resultCount.toLocaleString("ko-KR")}개`;
     countRoot.textContent = countText;
     if (summaryRoot) {
       const category = categoryTabs.find((tab) => tab.value === activeCategory) || categoryTabs[0];
@@ -400,9 +403,14 @@ document.addEventListener("DOMContentLoaded", async () => {
       summaryRoot.innerHTML = `<span class="sr-only">지도 표시 지역에 <strong id="mapResultCount">${countText}</strong>의 ${AdPlay.esc(categoryLabel)} 매체가 있습니다${AdPlay.esc(queryText)}.${filterText ? ` ${AdPlay.esc(filterText)}.` : ""}</span>`;
     }
     updateCostFilterLabels();
+    if (busStopLegend) {
+      const showBusLegend = activeCategory === "bus";
+      busStopLegend.hidden = !showBusLegend;
+      busStopLegend.classList.toggle("is-visible", showBusLegend);
+    }
     renderCategoryTabs();
     renderStage(searched, options.preserveView);
-    renderList(searched);
+    renderList(searched, busListStops);
     renderDetail(selectedItem(searched));
     syncPanelMode();
   }
@@ -429,11 +437,17 @@ document.addEventListener("DOMContentLoaded", async () => {
           mapTypeControl: false,
           zoomControl: false,
         });
+        busStopIdleListener = naver.maps.Event.addListener(naverMap, "idle", () => {
+          if (activeCategory === "bus") syncBusStopLayer();
+        });
       }
 
       naverMarkers.forEach((marker) => marker.setMap(null));
       naverMarkers = [];
-      if (!items.length) return;
+      if (!items.length) {
+        clearBusStopLayer();
+        return;
+      }
 
       const bounds = new naver.maps.LatLngBounds();
       items.forEach((item) => {
@@ -454,7 +468,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
       if (!preserveView) {
-        if (items.length === 1) {
+        if (activeCategory === "bus") {
+          naverMap.setCenter(new naver.maps.LatLng(37.55, 126.99));
+          naverMap.setZoom(12);
+        } else if (items.length === 1) {
           const item = items[0];
           naverMap.setCenter(new naver.maps.LatLng(item.mapLocation.latitude, item.mapLocation.longitude));
           naverMap.setZoom(15);
@@ -462,9 +479,263 @@ document.addEventListener("DOMContentLoaded", async () => {
           naverMap.fitBounds(bounds, { top: 76, right: 76, bottom: 76, left: 76 });
         }
       }
+      if (activeCategory === "bus") {
+        syncBusStopLayer();
+      } else {
+        clearBusStopLayer();
+      }
     } catch (error) {
       console.error("Naver map failed to initialize.", error);
     }
+  }
+
+  function clearBusStopLayer() {
+    naverBusMarkers.forEach((marker) => marker.setMap(null));
+    naverBusMarkers = [];
+  }
+
+  function syncBusStopLayer() {
+    if (!naverMap || !window.naver || !window.naver.maps || activeCategory !== "bus") {
+      clearBusStopLayer();
+      return;
+    }
+    const bounds = naverMap.getBounds();
+    if (!bounds) return;
+    clearBusStopLayer();
+
+    const query = busStopSearchQuery();
+    const allStops = filteredBusAdStops(query);
+    const zoom = typeof naverMap.getZoom === "function" ? naverMap.getZoom() : 12;
+    if (zoom <= BUS_STOP_CLUSTER_MAX_ZOOM) {
+      renderBusStopClusters(allStops);
+      renderBusStopList(busStopsForCurrentMapView(query));
+      return;
+    }
+
+    const stopIdSet = new Set(allStops.map((entry) => String(entry.id)));
+    const visibleStops = visibleBusStops(bounds)
+      .filter((stop) => stop.adProduct)
+      .filter(matchesBusStopCostPeriod)
+      .filter((stop) => stopIdSet.has(String(stop.id)))
+      .slice(0, 650);
+    visibleStops.forEach((stop) => {
+      const position = busStopPosition(stop);
+      const latlng = new naver.maps.LatLng(position.latitude, position.longitude);
+      const marker = new naver.maps.Marker({
+        map: naverMap,
+        position: latlng,
+        title: busStopTitle(stop),
+        icon: {
+          content: busStopMarkerContent(stop),
+          size: new naver.maps.Size(18, 18),
+          anchor: new naver.maps.Point(9, 10),
+        },
+      });
+      naver.maps.Event.addListener(marker, "click", () => focusBusStop(stop.id));
+      naverBusMarkers.push(marker);
+    });
+    renderBusStopList(busStopsForCurrentMapView(query));
+  }
+
+  function renderBusStopClusters(stops) {
+    const groups = busStopClusterGroups(stops);
+    groups.forEach((group) => {
+      const marker = new naver.maps.Marker({
+        map: naverMap,
+        position: new naver.maps.LatLng(group.latitude, group.longitude),
+        title: `${group.district} 버스 정류장 광고 ${group.count.toLocaleString("ko-KR")}개`,
+        icon: {
+          content: busStopClusterContent(group),
+          size: new naver.maps.Size(group.size, group.size),
+          anchor: new naver.maps.Point(group.size / 2, group.size / 2),
+        },
+      });
+      naver.maps.Event.addListener(marker, "click", () => {
+        naverMap.setCenter(new naver.maps.LatLng(group.latitude, group.longitude));
+        naverMap.setZoom(Math.max(naverMap.getZoom() + 2, BUS_STOP_CLUSTER_MAX_ZOOM + 1));
+      });
+      naverBusMarkers.push(marker);
+    });
+  }
+
+  function busStopClusterGroups(stops) {
+    const grouped = new Map();
+    stops.forEach((stop) => {
+      const position = busStopPosition(stop);
+      if (!Number.isFinite(position.latitude) || !Number.isFinite(position.longitude)) return;
+      const product = stop.adProduct || {};
+      const district = product.district || stop.district || "기타";
+      const key = String(district);
+      const group = grouped.get(key) || { district: key, count: 0, latitude: 0, longitude: 0 };
+      group.count += 1;
+      group.latitude += position.latitude;
+      group.longitude += position.longitude;
+      grouped.set(key, group);
+    });
+    return [...grouped.values()]
+      .map((group) => {
+        const size = Math.max(34, Math.min(72, 28 + Math.sqrt(group.count) * 4.8));
+        return {
+          ...group,
+          latitude: group.latitude / group.count,
+          longitude: group.longitude / group.count,
+          size,
+        };
+      })
+      .sort((a, b) => b.count - a.count);
+  }
+
+  function busStopClusterContent(group) {
+    return `
+      <button type="button" class="bus-stop-cluster" style="--cluster-size: ${group.size}px" aria-label="${AdPlay.esc(group.district)} 버스 정류장 ${group.count.toLocaleString("ko-KR")}개 보기">
+        <span>${AdPlay.esc(group.district)}</span>
+        <strong>${group.count.toLocaleString("ko-KR")}</strong>
+      </button>`;
+  }
+
+  function visibleBusStops(bounds) {
+    const sw = bounds.getSW();
+    const ne = bounds.getNE();
+    const south = sw.lat();
+    const north = ne.lat();
+    const west = sw.lng();
+    const east = ne.lng();
+    return (busStops || []).filter((stop) => (
+      busStopPosition(stop).latitude >= south
+      && busStopPosition(stop).latitude <= north
+      && busStopPosition(stop).longitude >= west
+      && busStopPosition(stop).longitude <= east
+    ));
+  }
+
+  function busStopSearchQuery() {
+    return (searchInput && searchInput.value ? searchInput.value : "").trim().toLowerCase();
+  }
+
+  function busStopsForCurrentMapView(query = busStopSearchQuery()) {
+    const allStops = filteredBusAdStops(query);
+    if (!naverMap || !window.naver || !window.naver.maps || activeCategory !== "bus") {
+      return busStopListWithSelectedFirst(allStops);
+    }
+    const bounds = naverMap.getBounds();
+    if (!bounds) return busStopListWithSelectedFirst(allStops);
+    const allowed = new Set(allStops.map((stop) => String(stop.id)));
+    const visible = visibleBusStops(bounds)
+      .filter((stop) => stop.adProduct)
+      .filter((stop) => allowed.has(String(stop.id)));
+    return busStopListWithSelectedFirst(visible.length ? visible : allStops);
+  }
+
+  function busStopListWithSelectedFirst(stops) {
+    const selected = selectedBusStopId
+      ? (busStops || []).find((stop) => String(stop.id) === String(selectedBusStopId))
+      : null;
+    const deduped = [];
+    const seen = new Set();
+    if (selected) {
+      deduped.push(selected);
+      seen.add(String(selected.id));
+    }
+    stops.forEach((stop) => {
+      const id = String(stop.id);
+      if (seen.has(id)) return;
+      deduped.push(stop);
+      seen.add(id);
+    });
+    return deduped;
+  }
+
+  function busStopPosition(stop) {
+    const override = busStopPositionOverrides?.[String(stop.ars || "")] || busStopPositionOverrides?.[String(stop.id || "")];
+    const latitude = Number(override?.latitude ?? stop.latitude);
+    const longitude = Number(override?.longitude ?? stop.longitude);
+    return { latitude, longitude };
+  }
+
+  function busStopMarkerContent(stop) {
+    const product = stop.adProduct || {};
+    const kind = product.displayKind || "static";
+    const grade = product.grade || "";
+    const label = busStopTitle(stop);
+    return `
+      <span class="bus-stop-pin is-${AdPlay.esc(kind)}${selectedBusStopId === String(stop.id) ? " is-active" : ""}${grade ? ` is-grade-${AdPlay.esc(String(grade).toLowerCase().replace(/[^a-z0-9]+/g, "-"))}` : ""}" role="img" aria-label="${AdPlay.esc(label)}">
+        <span class="bus-stop-pin-core"></span>
+      </span>`;
+  }
+
+  function busStopTitle(stop) {
+    const product = stop.adProduct || {};
+    const price = product.minMonthlyCost
+      ? ` · 월 ${Math.round(product.minMonthlyCost / 10000).toLocaleString("ko-KR")}만원`
+      : "";
+    const grade = product.grade ? ` · ${product.grade}` : "";
+    const kind = product.displayLabel ? ` · ${product.displayLabel}` : "";
+    return `${stop.name}${stop.ars ? ` (${stop.ars})` : ""}${kind}${grade}${price}`;
+  }
+
+  function filteredBusAdStops(query = "") {
+    return (busStops || [])
+      .filter((stop) => stop.adProduct)
+      .filter((stop) => matchesBusStopCostPeriod(stop))
+      .filter((stop) => {
+        if (!query) return true;
+        const product = stop.adProduct || {};
+        const haystack = [
+          stop.name,
+          stop.ars,
+          stop.type,
+          product.district,
+          product.dong,
+          product.productType,
+          product.grade,
+          product.stationName,
+          product.faceLabel,
+          product.address,
+          product.light,
+          product.displayLabel,
+          product.innerSize,
+          product.outerSize,
+        ].join(" ").toLowerCase();
+        return haystack.includes(query);
+      });
+  }
+
+  function matchesBusStopCostPeriod(stop) {
+    const product = stop.adProduct || {};
+    const monthly = Number(product.minMonthlyCost);
+    if (activeBudget !== "all") {
+      if (!Number.isFinite(monthly)) return false;
+      const manwon = monthly / 10000;
+      if (activeBudget === "under100") return manwon < 100;
+      if (activeBudget === "100-300") return manwon >= 100 && manwon < 300;
+      if (activeBudget === "300-500") return manwon >= 300 && manwon < 500;
+      if (activeBudget === "500-1000") return manwon >= 500 && manwon < 1000;
+      if (activeBudget === "1000-1500") return manwon >= 1000 && manwon < 1500;
+      if (activeBudget === "1500plus") return manwon >= 1500;
+    }
+    return true;
+  }
+
+  function focusBusStop(stopId) {
+    const stop = (busStops || []).find((item) => String(item.id) === String(stopId));
+    if (!stop) return;
+    selectedBusStopId = String(stop.id);
+    if (naverMap && window.naver && window.naver.maps) {
+      const position = busStopPosition(stop);
+      naverMap.setCenter(new naver.maps.LatLng(position.latitude, position.longitude));
+      if (naverMap.getZoom() < 16) naverMap.setZoom(16);
+      syncBusStopLayer();
+    }
+    renderBusStopList(busStopListWithSelectedFirst(busStopsForCurrentMapView()));
+    if (listView && typeof listView.scrollTo === "function") {
+      listView.scrollTo({ top: 0, behavior: "smooth" });
+    }
+  }
+
+  function formatBusWon(value) {
+    const number = Number(value);
+    if (!Number.isFinite(number)) return "";
+    return `${number.toLocaleString("ko-KR")}원`;
   }
 
   function markerContent(item) {
@@ -476,7 +747,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       </button>`;
   }
 
-  function renderList(items) {
+  function renderList(items, busListStops = []) {
+    if (activeCategory === "bus") {
+      renderBusStopList(busStopsForCurrentMapView());
+      return;
+    }
     listRoot.innerHTML = items.length
       ? items.map(listCard).join("")
       : `<div class="empty">조건에 맞는 매체가 없습니다.</div>`;
@@ -922,6 +1197,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     ];
     const topDay = dayBars.reduce((top, row) => row[1] > top[1] ? row : top, dayBars[0]);
     const topTime = timeBars.reduce((top, row) => row[1] > top[1] ? row : top, timeBars[0]);
+    const ageRows = [
+      ["10대", 8, 27, "학생·동반"],
+      ["20대", 24, 78, "활동층"],
+      ["30대", 27, 88, "구매 핵심"],
+      ["40대", 22, 72, "직장인"],
+      ["50대", 13, 43, "가족 소비"],
+      ["60대+", 6, 22, "생활권"],
+    ];
     const audienceRows = insight.audience || [];
     return `
       <div class="map-traffic-lead">
@@ -983,50 +1266,250 @@ document.addEventListener("DOMContentLoaded", async () => {
           <h4>타깃·방문 동기</h4>
           <p>광고 메시지를 누구에게 맞출지 판단하는 보조 지표입니다.</p>
         </div>
-        ${audienceRows.map((row) => `<div class="map-traffic-segment"><span>${AdPlay.esc(row.label)}</span><i style="--bar:${row.value}"></i><strong>${AdPlay.esc(row.note)}</strong></div>`).join("")}
+        <div class="map-age-distribution">
+          <div class="map-age-distribution-head">
+            <h5>연령대 분포</h5>
+            <b>20~40대 중심</b>
+          </div>
+          ${ageRows.map(([label, percent, value, note]) => `<div class="map-age-row ${percent === 27 ? "is-peak" : ""}">
+            <span>${label}</span>
+            <i style="--bar:${value}"></i>
+            <em>${percent}%</em>
+            <strong>${note}</strong>
+          </div>`).join("")}
+        </div>
+        <div class="map-traffic-segment-list">
+          ${audienceRows.map((row) => `<div class="map-traffic-segment"><span>${AdPlay.esc(row.label)}</span><i style="--bar:${row.value}"></i><strong>${AdPlay.esc(row.note)}</strong></div>`).join("")}
+        </div>
       </div>`;
   }
 
   function locationInsight(item) {
     const text = [item.name, item.areaName, item.areaSlug, item.address, item.mapLocation && item.mapLocation.sourceAddress].filter(Boolean).join(" ");
-    if (/삼성|코엑스|COEX|samseong|coex/i.test(text)) {
+    const area = areaBySlug.get(item.areaSlug);
+    const withAreaTransit = (insight) => {
+      const subway = areaSubwayTotal(area);
+      const bus = areaBusTotal(area);
       return {
+        ...insight,
+        stats: {
+          ...(insight.stats || {}),
+          ...(subway ? { subway: compactPeople(subway) } : {}),
+          ...(bus ? { bus: compactPeople(bus) } : {}),
+        },
+      };
+    };
+    if (/삼성|코엑스|COEX|samseong|coex/i.test(text)) {
+      return withAreaTransit({
         location: "코엑스, 무역센터, 백화점, 호텔, 전시·컨벤션 동선이 겹치는 복합 상권입니다. B2B 방문객과 쇼핑·관광 체류 인구가 함께 발생해 브랜드 인지도와 행사 연계 캠페인에 적합합니다.",
         traffic: "평일에는 업무·전시 방문 수요가 안정적으로 유입되고, 주말에는 쇼핑몰·영화관·행사 방문객 중심으로 체류 시간이 길어지는 특성이 있습니다.",
         stats: { daily500: "8.4만명", daily300: "3.4만명", subway: "13.8만명", bus: "4.1만명", traffic: "9.2만대", target: "2030·B2B 방문객" },
         scores: scoreSet([["기업·오피스", 5], ["대형몰·상업시설", 5], ["지역명소", 4], ["교통접점", 4], ["행사연계", 5]]),
         facilities: facilitySet([["주요 교통", "삼성역, 봉은사역, 테헤란로"], ["지역 명소", "코엑스, 무역센터, 별마당길, K-POP 광장"], ["상업 시설", "백화점, 쇼핑몰, 영화관, 호텔"], ["기업·오피스", "무역센터, 테헤란로 업무시설, 컨벤션 방문 기업"], ["행사", "전시회, 컨퍼런스, 브랜드 팝업, K-콘텐츠 행사"]]),
         audience: audienceSet([["평일 업무·전시", 88, "오피스·컨벤션"], ["주말 쇼핑·관광", 78, "체류형 방문"], ["2030 활동층", 82, "문화·쇼핑"], ["프리미엄 소비층", 74, "백화점·호텔"]]),
-      };
+      });
     }
     if (/서울역|KTX|seoul-station|transport/i.test(text)) {
-      return {
+      return withAreaTransit({
         location: "철도, 지하철, 버스, 택시 동선이 집중되는 광역 교통 허브입니다. 출퇴근·출장·관광객이 반복적으로 교차해 단기간 고빈도 노출과 전국 단위 도달 메시지에 유리합니다.",
         traffic: "평일 출퇴근 피크와 주말 여행 수요가 모두 발생합니다. 이동 목적이 뚜렷한 이용자가 많아 금융, 통신, 여행, 공공 캠페인 고지에 적합합니다.",
         stats: { daily500: "9.1만명", daily300: "3.7만명", subway: "18.6만명", bus: "5.4만명", traffic: "8.8만대", target: "출퇴근·출장객" },
         scores: scoreSet([["교통접점", 5], ["광역도달", 5], ["기업·오피스", 4], ["관광동선", 4], ["상업시설", 3]]),
         facilities: facilitySet([["주요 교통", "서울역, KTX, 공항철도, 지하철 1·4호선"], ["지역 명소", "서울로, 남대문, 도심 관광 동선"], ["상업 시설", "역사 상업시설, 호텔, F&B"], ["기업·오피스", "서울역 인근 업무지구, 도심 기관"], ["행사", "여행 성수기, 공공 캠페인, 광역 프로모션"]]),
         audience: audienceSet([["출퇴근 피크", 86, "반복 노출"], ["출장·관광객", 90, "광역 이동"], ["주말 여행", 76, "목적형 방문"], ["고지 수용도", 80, "이동 전 대기"]]),
-      };
+      });
     }
     if (/광화문|종로|시청|청계|gwanghwamun|jongno|jung/i.test(text)) {
-      return {
+      return withAreaTransit({
         location: "광화문, 청계광장, 시청, 종로 업무지구를 연결하는 서울 도심 랜드마크 입지입니다. 관광·문화·공공행사 동선과 오피스 유동이 함께 발생해 신뢰도 높은 브랜드 노출에 적합합니다.",
         traffic: "평일에는 직장인 출퇴근·점심 유동이 강하고, 주말에는 관광객과 행사 방문객 비중이 커집니다. 축제·문화행사 시 체류 시간이 길어져 반복 노출이 가능합니다.",
         stats: { daily500: "7.9만명", daily300: "3.2만명", subway: "11.7만명", bus: "4.6만명", traffic: "7.4만대", target: "직장인·관광객" },
         scores: scoreSet([["지역명소", 5], ["기업·오피스", 5], ["교통접점", 4], ["관광·행사", 5], ["상업시설", 4]]),
         facilities: facilitySet([["주요 교통", "광화문역, 시청역, 종각역, 세종대로"], ["지역 명소", "청계광장, 광화문광장, 세종문화회관, 덕수궁"], ["상업 시설", "무교동·종로 상권, F&B, 관광특구"], ["기업·오피스", "서울시청, 금융기관, 언론사, 대기업 오피스"], ["행사", "서울페스티벌, 빛초롱축제, 도심 문화행사"]]),
         audience: audienceSet([["평일 직장인", 86, "출퇴근·점심"], ["주말 관광객", 78, "도심 명소"], ["행사 체류", 84, "반복 노출"], ["40대 이상", 72, "구매력 높은 층"]]),
-      };
+      });
     }
-    return {
+    return withAreaTransit({
       location: "강남대로, 도산대로, 신사·청담 상권을 잇는 프리미엄 소비 동선입니다. 업무, 뷰티, 패션, F&B, 야간 활동 수요가 겹쳐 브랜드 런칭과 고관여 소비재 캠페인에 적합합니다.",
       traffic: "평일에는 출퇴근·점심 직장인 유동이 안정적이고, 저녁과 주말에는 쇼핑·약속·외식 목적 방문객이 증가합니다. 2030 활동층과 구매력 높은 직장인층을 함께 공략할 수 있습니다.",
       stats: { daily500: "7.6만명", daily300: "3.1만명", subway: "12.4만명", bus: "3.8만명", traffic: "8.6만대", target: "2030·직장인" },
       scores: scoreSet([["기업·오피스", 5], ["상업시설", 5], ["지역명소", 4], ["교통접점", 4], ["야간활동", 4]]),
       facilities: facilitySet([["주요 교통", "신사역, 강남대로, 도산대로, 주요 버스 동선"], ["지역 명소", "가로수길, 압구정·청담 상권, 프리미엄 뷰티·패션 거리"], ["상업 시설", "병원, 뷰티, F&B, 쇼룸, 브랜드 플래그십"], ["기업·오피스", "강남 업무시설, 스타트업, 전문직 종사자"], ["행사", "브랜드 팝업, 패션·뷰티 런칭, 시즌 프로모션"]]),
       audience: audienceSet([["평일 직장인", 84, "출퇴근·점심"], ["2030 활동층", 88, "쇼핑·약속"], ["프리미엄 소비", 82, "뷰티·패션"], ["야간 유동", 76, "외식·모임"]]),
-    };
+    });
+  }
+
+  function renderBusStopList(stops) {
+    let visibleStops = stops.slice(0, 120);
+    if (!selectedBusStopId && stops.length) selectedBusStopId = String(stops[0].id);
+    const selectedStop = selectedBusStopId
+      ? stops.find((stop) => String(stop.id) === selectedBusStopId)
+      : null;
+    if (selectedStop && !visibleStops.some((stop) => String(stop.id) === selectedBusStopId)) {
+      visibleStops = [selectedStop, ...visibleStops].slice(0, 120);
+    }
+    if (selectedBusStopId && !stops.some((stop) => String(stop.id) === selectedBusStopId)) {
+      selectedBusStopId = stops.length ? String(stops[0].id) : "";
+      visibleStops = stops.slice(0, 120);
+    }
+    listRoot.innerHTML = visibleStops.length
+      ? visibleStops.map(busStopCard).join("")
+      : `<div class="empty">조건에 맞는 버스 정류장 광고가 없습니다.</div>`;
+
+    listRoot.querySelectorAll("[data-map-bus-stop]").forEach((button) => {
+      button.addEventListener("click", () => focusBusStop(button.dataset.mapBusStop));
+    });
+  }
+
+  function busStopSummaryRow(label, items) {
+    const values = items.filter(([, value]) => value);
+    if (!values.length) return "";
+    return `
+      <div class="map-bus-stop-summary-row">
+        <dt>${AdPlay.esc(label)}</dt>
+        <dd>${values.map(([itemLabel, value]) => `
+          <span><b>${AdPlay.esc(itemLabel)}</b>${AdPlay.esc(value)}</span>
+        `).join("")}</dd>
+      </div>`;
+  }
+
+  function busStopRawFaceCode(value) {
+    return /\d{2}-\d{3}_\d+_\d+/.test(String(value || ""));
+  }
+
+  function busStopFaceNumbers(product) {
+    const sourceFaces = Array.isArray(product.faces) && product.faces.length
+      ? product.faces
+      : String(product.faceLabel || "").split(",");
+    const numbers = sourceFaces
+      .map((face) => String(face || "").trim())
+      .map((face) => {
+        const rawMatch = face.match(/\d{2}-\d{3}_\d+_(\d+)$/);
+        if (rawMatch) return rawMatch[1];
+        const labelMatch = face.match(/(\d+)\s*면/);
+        if (labelMatch) return labelMatch[1];
+        return "";
+      })
+      .filter(Boolean);
+    const uniqueNumbers = [...new Set(numbers
+      .map(Number)
+      .filter(Boolean)
+      .map((number) => ((number - 1) % 4) + 1))]
+      .sort((a, b) => a - b);
+    return uniqueNumbers.length ? uniqueNumbers : ["1", "2"];
+  }
+
+  function compactBusStopFaceLabel(numbers) {
+    const numeric = [...new Set(numbers.map(Number).filter(Boolean))].sort((a, b) => a - b);
+    if (!numeric.length) return "";
+    const groups = [];
+    let index = 0;
+    while (index < numeric.length) {
+      const first = numeric[index];
+      const second = numeric[index + 1];
+      if (second === first + 1) {
+        groups.push(`${first}, ${second}면`);
+        index += 2;
+      } else {
+        groups.push(`${first}면`);
+        index += 1;
+      }
+    }
+    return groups.join(", ");
+  }
+
+  function busStopFaceLabel(product) {
+    const rawLabel = String(product.faceLabel || "").trim();
+    if (rawLabel && !busStopRawFaceCode(rawLabel)) return rawLabel;
+    const normalized = compactBusStopFaceLabel(busStopFaceNumbers(product));
+    return normalized || rawLabel || "확인 필요";
+  }
+
+  function busStopTypeImage(product) {
+    const type = String(product.productType || "").toUpperCase().replace(/\s+/g, "");
+    const match = type.match(/\b(A-1|A-2|A|B-1|B-2|B-3|B)\b/);
+    const imageKey = match ? match[1] : "A";
+    return `assets/images/bus-stops/${imageKey}.png?v=bus-photo-original-20260621`;
+  }
+
+  function busStopFaceImage(product) {
+    const type = String(product.productType || "").toUpperCase();
+    const compactType = type.replace(/\s+/g, "");
+    const faceLabel = busStopFaceLabel(product);
+    const compactFace = faceLabel.replace(/\s+/g, "");
+    const hasSingleFace = /(^|,)1면($|,)|(^|,)2면($|,)|1,2면/.test(compactFace)
+      && !/(3,4면|3,5면|5,6면|총8면)/.test(compactFace);
+    const hasAType = /(^|\/)A(-\d)?($|\/)/.test(compactType);
+    const hasSideFace = hasAType || /1,3면|2,4면|광역형\(A\)|광역형\(B\)/.test(`${compactFace}${type}`);
+    if (/B-3/.test(type) || hasSingleFace) {
+      return "assets/images/bus-stops/ad-face-single-horizontal.png";
+    }
+    if (hasSideFace) {
+      return "assets/images/bus-stops/ad-face-side-horizontal.png";
+    }
+    return "assets/images/bus-stops/ad-face-double-horizontal.png";
+  }
+
+  function busStopVisual(product) {
+    const kindLabel = product.displayLabel || "고정형";
+    const typeLabel = product.productType || "버스 쉘터";
+    const faceLabel = busStopFaceLabel(product);
+    return `
+      <div class="map-bus-stop-visual" aria-label="버스 정류장 광고 타입 및 광고면 위치">
+        <figure class="map-bus-stop-type-preview">
+          <img src="${AdPlay.esc(busStopTypeImage(product))}" alt="${AdPlay.esc(typeLabel)} 타입 예시">
+          <figcaption>
+            <strong>${AdPlay.esc(kindLabel)}</strong>
+            <span>${AdPlay.esc(typeLabel)}</span>
+          </figcaption>
+        </figure>
+        <figure class="map-bus-stop-face-preview">
+          <img src="${AdPlay.esc(busStopFaceImage(product))}" alt="버스 쉘터 광고면 위치 안내">
+          <figcaption>광고면 ${AdPlay.esc(faceLabel)}</figcaption>
+        </figure>
+      </div>`;
+  }
+
+  function busStopCard(stop) {
+    const product = stop.adProduct || {};
+    const isActive = selectedBusStopId === String(stop.id);
+    const title = product.stationName || stop.name;
+    const arsLabel = stop.ars ? `ID ${stop.ars}` : "";
+    const monthly = product.monthlyCostLabel || formatBusWon(product.minMonthlyCost) || "비용 문의";
+    const vatNote = monthly === "비용 문의" ? "" : "* 부가세 별도";
+    const summaryRows = [
+      busStopSummaryRow("위치", [["자치구", product.district], ["동명", product.dong], ["정류소명", title], ["주소", product.address]]),
+      busStopSummaryRow("상품", [["타입", product.productType], ["등급", product.grade], ["광고면", busStopFaceLabel(product)], ["조명", product.light || product.displayLabel]]),
+      busStopSummaryRow("비용·유동", [["월광고비", monthly], ["출력/부착비", product.installationCostLabel || "80,000원"], ["월 승하차객수", product.ridershipLabel || "확인 필요"]]),
+      busStopSummaryRow("규격", [["외경", product.outerSize], ["내경", product.innerSize]]),
+    ].join("");
+    return `
+      <article class="map-list-card map-bus-stop-card${isActive ? " is-active" : ""}">
+        <button type="button" data-map-bus-stop="${AdPlay.esc(String(stop.id))}" aria-label="${AdPlay.esc(title)} 위치 보기" aria-current="${isActive ? "true" : "false"}"></button>
+        <div class="map-list-card-body">
+          <div class="map-list-title-row">
+            <h2>${AdPlay.esc(title)}${arsLabel ? `<span class="map-bus-stop-ars">${AdPlay.esc(arsLabel)}</span>` : ""}</h2>
+            <strong class="map-bus-stop-price">${AdPlay.esc(monthly)}${vatNote ? `<small>${AdPlay.esc(vatNote)}</small>` : ""}</strong>
+          </div>
+          ${isActive ? `<span class="map-bus-stop-selected-label">지도에서 선택한 정류장</span>` : ""}
+          <dl class="map-bus-stop-summary">${summaryRows}</dl>
+          ${busStopVisual(product)}
+        </div>
+      </article>`;
+  }
+
+  function areaBusTotal(area) {
+    return (area?.busMonthlyUsers || []).reduce((sum, stop) => sum + Number(stop.users || 0), 0) || null;
+  }
+
+  function areaSubwayTotal(area) {
+    return (area?.subwayMonthlyUsers || []).reduce((sum, station) => sum + Number(station.users || 0), 0) || null;
+  }
+
+  function compactPeople(value) {
+    const number = Number(value);
+    if (!Number.isFinite(number)) return "";
+    return number >= 10000 ? `${(number / 10000).toFixed(1)}만명` : `${AdPlay.formatNumber(number)}명`;
   }
 
   function scoreSet(scores) {

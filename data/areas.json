@@ -9,7 +9,7 @@
     "subwayMonthlyUsers": [
       {
         "station": "신사역 3호선",
-        "users": 1771915
+        "users": 1610218
       },
       {
         "station": "신사역 신분당선",
@@ -17,7 +17,7 @@
       },
       {
         "station": "압구정역 3호선",
-        "users": 2063914
+        "users": 1849720
       },
       {
         "station": "압구정로데오역 수인분당선",
@@ -25,15 +25,15 @@
       },
       {
         "station": "청담역",
-        "users": 1160642
+        "users": 1073922
       },
       {
         "station": "학동역",
-        "users": 1385498
+        "users": 1278312
       },
       {
         "station": "강남구청역",
-        "users": 1034458
+        "users": 959024
       }
     ],
     "primaryTargets": [
@@ -53,7 +53,41 @@
       18
     ],
     "needsReview": false,
-    "dataQualityNote": ""
+    "dataQualityNote": "",
+    "busMonthlyUsers": [
+      {
+        "station": "신사역8번출구.가로수길",
+        "ars": "23108",
+        "users": 92010
+      }
+    ],
+    "busHourlyUsers": [
+      {
+        "label": "05~09",
+        "users": 7284
+      },
+      {
+        "label": "09~12",
+        "users": 10217
+      },
+      {
+        "label": "12~14",
+        "users": 10612
+      },
+      {
+        "label": "14~18",
+        "users": 27916
+      },
+      {
+        "label": "18~23",
+        "users": 32664
+      },
+      {
+        "label": "23~05",
+        "users": 3317
+      }
+    ],
+    "busDataSource": "서울시 버스노선별 정류장별 시간대별 승하차 인원 정보 2026년 5월"
   },
   {
     "slug": "samseong-coex",
@@ -65,11 +99,11 @@
     "subwayMonthlyUsers": [
       {
         "station": "삼성역 2호선",
-        "users": 3595169
+        "users": 3157523
       },
       {
         "station": "봉은사역 9호선",
-        "users": 1582113
+        "users": 1352987
       }
     ],
     "primaryTargets": [
@@ -90,7 +124,51 @@
       39
     ],
     "needsReview": true,
-    "dataQualityNote": "교통량이 테헤란로/영동대교 두 값으로 병기되어 대표값은 보수적으로 67,576대를 사용했습니다."
+    "dataQualityNote": "교통량이 테헤란로/영동대교 두 값으로 병기되어 대표값은 보수적으로 67,576대를 사용했습니다.",
+    "busMonthlyUsers": [
+      {
+        "station": "코엑스동문",
+        "ars": "23818",
+        "users": 31256
+      },
+      {
+        "station": "봉은사.코엑스북문",
+        "ars": "23190",
+        "users": 15276
+      },
+      {
+        "station": "봉은사.코엑스북문",
+        "ars": "23191",
+        "users": 11344
+      }
+    ],
+    "busHourlyUsers": [
+      {
+        "label": "05~09",
+        "users": 6037
+      },
+      {
+        "label": "09~12",
+        "users": 9562
+      },
+      {
+        "label": "12~14",
+        "users": 6752
+      },
+      {
+        "label": "14~18",
+        "users": 18819
+      },
+      {
+        "label": "18~23",
+        "users": 15873
+      },
+      {
+        "label": "23~05",
+        "users": 833
+      }
+    ],
+    "busDataSource": "서울시 버스노선별 정류장별 시간대별 승하차 인원 정보 2026년 5월"
   },
   {
     "slug": "gangnam-daero",
@@ -102,7 +180,7 @@
     "subwayMonthlyUsers": [
       {
         "station": "강남역 2호선",
-        "users": 5046293
+        "users": 4621218
       }
     ],
     "primaryTargets": [
@@ -122,7 +200,35 @@
       8
     ],
     "needsReview": false,
-    "dataQualityNote": ""
+    "dataQualityNote": "",
+    "busMonthlyUsers": [],
+    "busHourlyUsers": [
+      {
+        "label": "05~09",
+        "users": 0
+      },
+      {
+        "label": "09~12",
+        "users": 0
+      },
+      {
+        "label": "12~14",
+        "users": 0
+      },
+      {
+        "label": "14~18",
+        "users": 0
+      },
+      {
+        "label": "18~23",
+        "users": 0
+      },
+      {
+        "label": "23~05",
+        "users": 0
+      }
+    ],
+    "busDataSource": "서울시 버스노선별 정류장별 시간대별 승하차 인원 정보 2026년 5월"
   },
   {
     "slug": "myeongdong-euljiro",
@@ -134,11 +240,11 @@
     "subwayMonthlyUsers": [
       {
         "station": "을지로입구역 2호선",
-        "users": 3460259
+        "users": 2950044
       },
       {
         "station": "명동역 4호선",
-        "users": 2674996
+        "users": 2286070
       }
     ],
     "primaryTargets": [
@@ -157,7 +263,35 @@
       8
     ],
     "needsReview": false,
-    "dataQualityNote": ""
+    "dataQualityNote": "",
+    "busMonthlyUsers": [],
+    "busHourlyUsers": [
+      {
+        "label": "05~09",
+        "users": 0
+      },
+      {
+        "label": "09~12",
+        "users": 0
+      },
+      {
+        "label": "12~14",
+        "users": 0
+      },
+      {
+        "label": "14~18",
+        "users": 0
+      },
+      {
+        "label": "18~23",
+        "users": 0
+      },
+      {
+        "label": "23~05",
+        "users": 0
+      }
+    ],
+    "busDataSource": "서울시 버스노선별 정류장별 시간대별 승하차 인원 정보 2026년 5월"
   },
   {
     "slug": "gwanghwamun",
@@ -169,11 +303,11 @@
     "subwayMonthlyUsers": [
       {
         "station": "광화문역 5호선",
-        "users": 2467800
+        "users": 2036564
       },
       {
         "station": "경복궁역 3호선",
-        "users": 1639224
+        "users": 1633972
       }
     ],
     "primaryTargets": [
@@ -192,7 +326,35 @@
       8
     ],
     "needsReview": false,
-    "dataQualityNote": ""
+    "dataQualityNote": "",
+    "busMonthlyUsers": [],
+    "busHourlyUsers": [
+      {
+        "label": "05~09",
+        "users": 0
+      },
+      {
+        "label": "09~12",
+        "users": 0
+      },
+      {
+        "label": "12~14",
+        "users": 0
+      },
+      {
+        "label": "14~18",
+        "users": 0
+      },
+      {
+        "label": "18~23",
+        "users": 0
+      },
+      {
+        "label": "23~05",
+        "users": 0
+      }
+    ],
+    "busDataSource": "서울시 버스노선별 정류장별 시간대별 승하차 인원 정보 2026년 5월"
   },
   {
     "slug": "yeouido",
@@ -204,11 +366,11 @@
     "subwayMonthlyUsers": [
       {
         "station": "여의도역 5호선",
-        "users": 1826075
+        "users": 1660652
       },
       {
         "station": "여의나루역 5호선",
-        "users": 751772
+        "users": 846298
       }
     ],
     "primaryTargets": [
@@ -226,7 +388,41 @@
       7
     ],
     "needsReview": false,
-    "dataQualityNote": ""
+    "dataQualityNote": "",
+    "busMonthlyUsers": [
+      {
+        "station": "더현대서울",
+        "ars": "19282",
+        "users": 80259
+      }
+    ],
+    "busHourlyUsers": [
+      {
+        "label": "05~09",
+        "users": 5725
+      },
+      {
+        "label": "09~12",
+        "users": 5754
+      },
+      {
+        "label": "12~14",
+        "users": 7702
+      },
+      {
+        "label": "14~18",
+        "users": 28018
+      },
+      {
+        "label": "18~23",
+        "users": 32035
+      },
+      {
+        "label": "23~05",
+        "users": 1025
+      }
+    ],
+    "busDataSource": "서울시 버스노선별 정류장별 시간대별 승하차 인원 정보 2026년 5월"
   },
   {
     "slug": "hongdae",
@@ -238,7 +434,7 @@
     "subwayMonthlyUsers": [
       {
         "station": "홍대입구역 2호선",
-        "users": 5078231
+        "users": 4653439
       }
     ],
     "primaryTargets": [
@@ -258,7 +454,51 @@
       8
     ],
     "needsReview": true,
-    "dataQualityNote": "PDF 추출값이 '50,78,231'로 보여 5,078,231로 정리했으며 원본 대조가 필요합니다."
+    "dataQualityNote": "PDF 추출값이 '50,78,231'로 보여 5,078,231로 정리했으며 원본 대조가 필요합니다.",
+    "busMonthlyUsers": [
+      {
+        "station": "홍익대학교",
+        "ars": "14233",
+        "users": 56241
+      },
+      {
+        "station": "홍익대학교",
+        "ars": "14232",
+        "users": 18427
+      },
+      {
+        "station": "상수역",
+        "ars": "14124",
+        "users": 7509
+      }
+    ],
+    "busHourlyUsers": [
+      {
+        "label": "05~09",
+        "users": 5325
+      },
+      {
+        "label": "09~12",
+        "users": 9573
+      },
+      {
+        "label": "12~14",
+        "users": 9986
+      },
+      {
+        "label": "14~18",
+        "users": 22685
+      },
+      {
+        "label": "18~23",
+        "users": 28674
+      },
+      {
+        "label": "23~05",
+        "users": 5934
+      }
+    ],
+    "busDataSource": "서울시 버스노선별 정류장별 시간대별 승하차 인원 정보 2026년 5월"
   },
   {
     "slug": "seongsu",
@@ -270,7 +510,7 @@
     "subwayMonthlyUsers": [
       {
         "station": "성수역 2호선",
-        "users": 3786067
+        "users": 3111902
       }
     ],
     "primaryTargets": [
@@ -289,7 +529,35 @@
       8
     ],
     "needsReview": false,
-    "dataQualityNote": ""
+    "dataQualityNote": "",
+    "busMonthlyUsers": [],
+    "busHourlyUsers": [
+      {
+        "label": "05~09",
+        "users": 0
+      },
+      {
+        "label": "09~12",
+        "users": 0
+      },
+      {
+        "label": "12~14",
+        "users": 0
+      },
+      {
+        "label": "14~18",
+        "users": 0
+      },
+      {
+        "label": "18~23",
+        "users": 0
+      },
+      {
+        "label": "23~05",
+        "users": 0
+      }
+    ],
+    "busDataSource": "서울시 버스노선별 정류장별 시간대별 승하차 인원 정보 2026년 5월"
   },
   {
     "slug": "jamsil",
@@ -301,7 +569,7 @@
     "subwayMonthlyUsers": [
       {
         "station": "잠실역 2호선",
-        "users": 5621542
+        "users": 4779331
       }
     ],
     "primaryTargets": [
@@ -320,7 +588,35 @@
       7
     ],
     "needsReview": false,
-    "dataQualityNote": ""
+    "dataQualityNote": "",
+    "busMonthlyUsers": [],
+    "busHourlyUsers": [
+      {
+        "label": "05~09",
+        "users": 0
+      },
+      {
+        "label": "09~12",
+        "users": 0
+      },
+      {
+        "label": "12~14",
+        "users": 0
+      },
+      {
+        "label": "14~18",
+        "users": 0
+      },
+      {
+        "label": "18~23",
+        "users": 0
+      },
+      {
+        "label": "23~05",
+        "users": 0
+      }
+    ],
+    "busDataSource": "서울시 버스노선별 정류장별 시간대별 승하차 인원 정보 2026년 5월"
   },
   {
     "slug": "seoul-station",
@@ -332,11 +628,11 @@
     "subwayMonthlyUsers": [
       {
         "station": "서울역 1호선",
-        "users": 4739906
+        "users": 4237363
       },
       {
         "station": "서울역 4호선",
-        "users": 1144578
+        "users": 1056804
       }
     ],
     "primaryTargets": [
@@ -355,7 +651,41 @@
       13
     ],
     "needsReview": false,
-    "dataQualityNote": ""
+    "dataQualityNote": "",
+    "busMonthlyUsers": [
+      {
+        "station": "남대문경찰서.서울역10번출구",
+        "ars": "02218",
+        "users": 19185
+      }
+    ],
+    "busHourlyUsers": [
+      {
+        "label": "05~09",
+        "users": 3557
+      },
+      {
+        "label": "09~12",
+        "users": 3846
+      },
+      {
+        "label": "12~14",
+        "users": 1810
+      },
+      {
+        "label": "14~18",
+        "users": 5186
+      },
+      {
+        "label": "18~23",
+        "users": 4571
+      },
+      {
+        "label": "23~05",
+        "users": 215
+      }
+    ],
+    "busDataSource": "서울시 버스노선별 정류장별 시간대별 승하차 인원 정보 2026년 5월"
   },
   {
     "slug": "mapo",
@@ -367,7 +697,7 @@
     "subwayMonthlyUsers": [
       {
         "station": "마포역 5호선",
-        "users": 934703
+        "users": 844955
       }
     ],
     "primaryTargets": [
@@ -384,7 +714,35 @@
       7
     ],
     "needsReview": false,
-    "dataQualityNote": ""
+    "dataQualityNote": "",
+    "busMonthlyUsers": [],
+    "busHourlyUsers": [
+      {
+        "label": "05~09",
+        "users": 0
+      },
+      {
+        "label": "09~12",
+        "users": 0
+      },
+      {
+        "label": "12~14",
+        "users": 0
+      },
+      {
+        "label": "14~18",
+        "users": 0
+      },
+      {
+        "label": "18~23",
+        "users": 0
+      },
+      {
+        "label": "23~05",
+        "users": 0
+      }
+    ],
+    "busDataSource": "서울시 버스노선별 정류장별 시간대별 승하차 인원 정보 2026년 5월"
   },
   {
     "slug": "other-national",
