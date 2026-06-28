@@ -7468,9 +7468,9 @@ body:has(.map-workspace-page) {
 @media (max-width: 760px) {
   .map-global-header {
     grid-template-columns: auto 1fr;
-    gap: 12px;
+    gap: 10px;
     min-height: auto;
-    padding: 10px 20px 12px;
+    padding: 10px 14px;
   }
 
   .map-global-brand {
@@ -7483,9 +7483,11 @@ body:has(.map-workspace-page) {
   }
 
   .map-global-actions {
-    grid-column: 1 / -1;
-    flex-wrap: wrap;
-    width: 100%;
+    grid-column: 2;
+    justify-self: end;
+    flex-wrap: nowrap;
+    width: auto;
+    gap: 12px;
     justify-content: flex-end;
     padding: 0;
   }
