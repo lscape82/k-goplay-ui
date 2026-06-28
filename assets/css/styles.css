@@ -5861,7 +5861,8 @@ body:has(.map-workspace-page) {
   top: 18px;
   right: 18px;
   z-index: 4;
-  display: inline-flex;
+  display: flex;
+  width: 150px;
   gap: 3px;
   padding: 4px;
   border: 1px solid rgba(226, 232, 240, 0.92);
@@ -5872,7 +5873,8 @@ body:has(.map-workspace-page) {
 }
 
 .map-mode-toggle button {
-  min-width: 58px;
+  flex: 1;
+  min-width: 0;
   min-height: 34px;
   padding: 0 13px;
   border: 0;
@@ -5894,7 +5896,8 @@ body:has(.map-workspace-page) {
   right: 18px;
   z-index: 4;
   display: grid;
-  grid-template-columns: repeat(2, 68px);
+  width: 150px;
+  grid-template-columns: 1fr 1fr;
   overflow: hidden;
   border: 1px solid rgba(226, 232, 240, 0.92);
   border-radius: 13px;
@@ -5921,7 +5924,8 @@ body:has(.map-workspace-page) {
 
 .map-zoom-controls {
   position: absolute;
-  top: 214px;
+  top: auto;
+  bottom: 200px;
   right: 18px;
   z-index: 4;
   display: grid;
@@ -7543,6 +7547,10 @@ body:has(.map-workspace-page) {
 
   .map-contact-card {
     display: none;
+  }
+
+  .map-zoom-controls {
+    bottom: 26px;
   }
 }
 
