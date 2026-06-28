@@ -6120,6 +6120,32 @@ body:has(.map-workspace-page) {
   line-height: 1;
 }
 
+.map-curation-mobile-toggle {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  z-index: 4;
+  display: none;
+  align-items: center;
+  gap: 6px;
+  padding: 9px 14px;
+  border: 1px solid rgba(226, 232, 240, 0.92);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.92);
+  color: #0b3a91;
+  font-size: 13px;
+  font-weight: 850;
+  box-shadow: 0 8px 22px rgba(15, 23, 42, 0.16);
+  backdrop-filter: blur(12px);
+  cursor: pointer;
+}
+
+.map-curation-mobile-toggle svg {
+  width: 15px;
+  height: 15px;
+  fill: #f5a623;
+}
+
 .map-detail-close {
   position: absolute;
   top: 14px;
@@ -7526,19 +7552,25 @@ body:has(.map-workspace-page) {
 
   .map-category-strip {
     display: flex;
-    padding: 9px 18px;
-    overflow-x: auto;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 8px;
+    padding: 9px 14px;
+    overflow: visible;
   }
 
   .map-category-search {
-    flex-basis: 220px;
-    width: 220px;
+    flex: 0 0 auto;
+    width: 100%;
     margin: 0;
   }
 
   .map-category-list {
+    display: flex;
+    gap: 8px;
     flex: 0 0 auto;
     padding-right: 0;
+    overflow-x: auto;
   }
 
   .map-category-pill {
@@ -7642,6 +7674,7 @@ body:has(.map-workspace-page) {
   }
 
   .map-workspace-page.is-list-open .map-consult-fab,
+  .map-workspace-page.is-list-open .map-curation-mobile-toggle,
   .map-workspace-page.is-list-open .map-mode-toggle,
   .map-workspace-page.is-list-open .map-utility-controls,
   .map-workspace-page.is-list-open .map-curation-panel,
@@ -7650,19 +7683,68 @@ body:has(.map-workspace-page) {
     pointer-events: none;
   }
 
+  /* Curation opens as a bottom sheet (opt-in via the floating trigger) */
+  .map-curation-mobile-toggle {
+    display: inline-flex;
+  }
+
   .map-curation-panel {
-    top: 14px;
-    left: 14px;
-    width: calc(100% - 28px);
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: auto;
+    z-index: 41;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    height: var(--map-sheet-h);
     min-height: 0;
+    max-height: none;
+    overflow-y: auto;
+    grid-template-columns: none;
+    border: 0;
+    border-radius: 18px 18px 0 0;
+    box-shadow: 0 -14px 40px rgba(15, 23, 42, 0.2);
+    transform: translateZ(0);
+  }
+
+  .map-curation-panel::before {
+    content: "";
+    flex: 0 0 auto;
+    align-self: center;
+    width: 40px;
+    height: 4px;
+    margin: 8px 0 2px;
+    border-radius: 999px;
+    background: #cbd5e1;
   }
 
   .map-curation-copy {
+    display: block;
     padding: 0;
+    border-right: 0;
+    background: #fff;
+  }
+
+  .map-curation-list {
+    max-height: none;
   }
 
   .map-curation-media {
-    min-height: 260px;
+    min-height: 0;
+    height: 170px;
+  }
+
+  .map-workspace-page.is-curation-open .map-curation-mobile-toggle,
+  .map-workspace-page.is-curation-open .map-mobile-list-toggle,
+  .map-workspace-page.is-curation-open .map-consult-fab,
+  .map-workspace-page.is-curation-open .map-mode-toggle,
+  .map-workspace-page.is-curation-open .map-utility-controls,
+  .map-workspace-page.is-curation-open .map-zoom-controls,
+  .map-workspace-page.is-curation-open .map-bus-stop-legend {
+    opacity: 0;
+    pointer-events: none;
   }
 
   .map-curation-actions {

@@ -46,6 +46,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const workspacePage = document.querySelector(".map-workspace-page");
   const mobileListToggle = document.querySelector("#mapMobileListToggle");
   const mobileListToggleLabel = document.querySelector("#mapMobileListToggleLabel");
+  const curationMobileToggle = document.querySelector("#mapCurationMobileToggle");
   const mobileLayoutQuery = window.matchMedia("(max-width: 700px)");
 
   const categoryTabs = [
@@ -191,6 +192,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   function setCurationPanel(isOpen) {
     if (!curationPanel) return;
     curationPanel.hidden = !isOpen;
+    if (workspacePage) workspacePage.classList.toggle("is-curation-open", isOpen);
     if (!curationToggle) return;
     curationToggle.setAttribute("aria-expanded", String(isOpen));
     curationToggle.classList.toggle("is-active", isOpen);
@@ -247,6 +249,19 @@ document.addEventListener("DOMContentLoaded", async () => {
     mobileListToggle.addEventListener("click", () => {
       setMobileListOpen(!workspacePage.classList.contains("is-list-open"));
     });
+  }
+
+  if (curationMobileToggle) {
+    curationMobileToggle.addEventListener("click", () => {
+      setMobileListOpen(false);
+      setCurationPanel(true);
+    });
+  }
+
+  // On mobile the curation panel is opt-in via the floating trigger,
+  // so it should not cover the map on load.
+  if (mobileLayoutQuery.matches) {
+    setCurationPanel(false);
   }
   if (costFilterToggle && costFilterPanel) {
     costFilterToggle.addEventListener("click", () => {
