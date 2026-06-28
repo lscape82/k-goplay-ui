@@ -7781,6 +7781,21 @@ body:has(.map-workspace-page) {
   }
 }
 
+@media (max-width: 430px) {
+  /* Icon-only logo so 주요매체 / 회사소개 / 로그인 / 회원가입 fit one row */
+  .map-global-brand strong {
+    display: none;
+  }
+
+  .map-global-actions {
+    gap: 10px;
+  }
+
+  .map-global-actions a:not(.join) {
+    font-size: 12.5px;
+  }
+}
+
 /* ─── Geocode Page ─── */
 
 body:has(#geocodeForm) {
