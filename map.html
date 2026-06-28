@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>지도 보기 | 광고플레이 DOOH</title>
     <meta name="description" content="서울 주요 상권의 DOOH 전광판 매체를 지도형 화면에서 비교하고 탐색합니다.">
-    <link rel="stylesheet" href="assets/css/styles.css?v=map-header-media-20260629">
+    <link rel="stylesheet" href="assets/css/styles.css?v=map-favorites-20260629">
   </head>
   <body>
     <a class="skip-link" href="#main">본문 바로가기</a>
@@ -173,12 +173,29 @@
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l1.9 5.9H20l-4.9 3.6 1.9 5.9L12 13.8 7 17.4l1.9-5.9L4 7.9h6.1z"/></svg>
               <span>맞춤추천</span>
             </button>
+            <button type="button" class="map-fav-bar" id="mapFavBar" aria-haspopup="dialog" aria-controls="mapFavPanel" hidden>
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+              <span>관심매체(<strong id="mapFavCount">0</strong>) 상담신청</span>
+            </button>
+            <div class="map-fav-panel" id="mapFavPanel" role="dialog" aria-modal="true" aria-label="관심매체 비교" hidden>
+              <div class="map-fav-sheet">
+                <div class="map-fav-head">
+                  <h2>관심매체 <strong id="mapFavPanelCount">0</strong></h2>
+                  <button type="button" class="map-fav-close" id="mapFavClose" aria-label="관심매체 비교 닫기">×</button>
+                </div>
+                <div class="map-fav-list" id="mapFavList"></div>
+                <div class="map-fav-foot">
+                  <div class="map-fav-total-row"><span>예상 월 합계</span><strong id="mapFavTotal">-</strong></div>
+                  <a class="map-fav-cta" id="mapFavCta" href="estimate.html"><span>선택 매체로 상담신청</span></a>
+                </div>
+              </div>
+            </div>
           </section>
         </div>
       </section>
     </main>
     <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1ouo31myef&submodules=geocoder"></script>
     <script src="assets/js/common.js?v=bus-stop-layer-20260619"></script>
-    <script src="assets/js/map.js?v=map-search-center-20260629"></script>
+    <script src="assets/js/map.js?v=map-favorites-20260629"></script>
   </body>
 </html>

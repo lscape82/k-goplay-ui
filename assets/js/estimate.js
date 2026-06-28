@@ -16,11 +16,24 @@ document.addEventListener("DOMContentLoaded", async () => {
   areas.forEach((area) => areaSelect.appendChild(new Option(area.name, area.name)));
   media.forEach((item) => mediaSelect.appendChild(new Option(item.name, item.name)));
 
-  const mediaSlug = AdPlay.getParam("media");
-  const selectedMedia = media.find((item) => item.slug === mediaSlug);
-  if (selectedMedia) {
-    mediaSelect.value = selectedMedia.name;
-    areaSelect.value = selectedMedia.areaName;
+  const mediaParam = AdPlay.getParam("media") || "";
+  const selectedMedia = mediaParam
+    .split(",")
+    .map((slug) => media.find((item) => item.slug === slug.trim()))
+    .filter(Boolean);
+
+  if (selectedMedia.length === 1) {
+    mediaSelect.value = selectedMedia[0].name;
+    areaSelect.value = selectedMedia[0].areaName;
+  } else if (selectedMedia.length > 1) {
+    mediaSelect.value = selectedMedia[0].name;
+    const areaNames = new Set(selectedMedia.map((item) => item.areaName).filter(Boolean));
+    if (areaNames.size === 1) areaSelect.value = selectedMedia[0].areaName;
+    const messageField = form.querySelector("[name='message']");
+    if (messageField && !messageField.value.trim()) {
+      const lines = selectedMedia.map((item, index) => `${index + 1}. ${item.name}${item.areaName ? ` (${item.areaName})` : ""}`);
+      messageField.value = `관심매체 ${selectedMedia.length}개에 대한 견적·상담을 요청합니다.\n${lines.join("\n")}`;
+    }
   }
 
   function getData() {

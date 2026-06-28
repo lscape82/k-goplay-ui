@@ -47,7 +47,98 @@ document.addEventListener("DOMContentLoaded", async () => {
   const mobileListToggle = document.querySelector("#mapMobileListToggle");
   const mobileListToggleLabel = document.querySelector("#mapMobileListToggleLabel");
   const curationMobileToggle = document.querySelector("#mapCurationMobileToggle");
+  const favBar = document.querySelector("#mapFavBar");
+  const favCountEl = document.querySelector("#mapFavCount");
+  const favPanel = document.querySelector("#mapFavPanel");
+  const favPanelCount = document.querySelector("#mapFavPanelCount");
+  const favListEl = document.querySelector("#mapFavList");
+  const favTotalEl = document.querySelector("#mapFavTotal");
+  const favCta = document.querySelector("#mapFavCta");
+  const favClose = document.querySelector("#mapFavClose");
   const mobileLayoutQuery = window.matchMedia("(max-width: 700px)");
+
+  const FAVORITES_KEY = "goplay:favorites";
+  let favorites = (() => {
+    try { return JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]"); } catch (error) { return []; }
+  })();
+
+  function saveFavorites() {
+    try { localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites)); } catch (error) { /* ignore */ }
+  }
+  function isFavorite(slug) {
+    return favorites.includes(slug);
+  }
+  function toggleFavorite(slug) {
+    const index = favorites.indexOf(slug);
+    if (index >= 0) favorites.splice(index, 1);
+    else favorites.push(slug);
+    saveFavorites();
+    updateFavoritesUI();
+    if (favPanel && !favPanel.hidden) renderFavPanel();
+  }
+  function favoriteItems() {
+    return favorites
+      .map((slug) => mediaWithLocations.find((item) => item.slug === slug))
+      .filter(Boolean);
+  }
+  function favHeartButton(item, variant) {
+    const on = isFavorite(item.slug);
+    const label = variant === "map-detail-fav"
+      ? (on ? "관심매체 담김" : "관심매체 담기")
+      : "관심";
+    return `<button type="button" class="${variant}${on ? " is-active" : ""}" data-fav-toggle="${AdPlay.esc(item.slug)}" aria-pressed="${on}" aria-label="${AdPlay.esc(item.name)} 관심매체 ${on ? "제거" : "담기"}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><span>${label}</span></button>`;
+  }
+  function updateFavoritesUI() {
+    const count = favorites.length;
+    if (favBar) favBar.hidden = count === 0;
+    if (favCountEl) favCountEl.textContent = String(count);
+    document.querySelectorAll("[data-fav-toggle]").forEach((button) => {
+      const on = isFavorite(button.dataset.favToggle);
+      button.classList.toggle("is-active", on);
+      button.setAttribute("aria-pressed", String(on));
+    });
+  }
+  function renderFavPanel() {
+    const items = favoriteItems();
+    if (favPanelCount) favPanelCount.textContent = String(items.length);
+    if (!favListEl) return;
+    if (!items.length) {
+      favListEl.innerHTML = `<p class="map-fav-empty">아직 담은 관심매체가 없습니다.<br>매체 카드나 상세의 하트(♥)를 눌러 담아보세요.</p>`;
+      if (favTotalEl) favTotalEl.textContent = "-";
+      if (favCta) { favCta.setAttribute("aria-disabled", "true"); favCta.removeAttribute("href"); }
+      return;
+    }
+    favListEl.innerHTML = items.map((item) => `
+      <article class="map-fav-card">
+        <figure><img src="${AdPlay.esc(cardImages(item)[0])}" alt="" loading="lazy" onerror="this.src='${AdPlay.esc(AdPlay.pageImage(item))}'"></figure>
+        <div class="map-fav-card-main">
+          <h3>${AdPlay.esc(item.name)}</h3>
+          <p>${AdPlay.esc(compactAddress(item))}</p>
+          <div class="map-fav-card-meta">
+            ${[item.areaName, sizeLabel(item)].filter(Boolean).map((tag) => `<span>${AdPlay.esc(tag)}</span>`).join("")}
+            <strong>${AdPlay.esc(mapCardPriceLabel(item))}</strong>
+          </div>
+        </div>
+        <button type="button" class="map-fav-remove" data-fav-remove="${AdPlay.esc(item.slug)}" aria-label="${AdPlay.esc(item.name)} 관심매체에서 제거">×</button>
+      </article>`).join("");
+    const total = items.reduce((sum, item) => sum + (AdPlay.minMonthlyPrice(item) || 0), 0);
+    if (favTotalEl) favTotalEl.textContent = total ? `월 ${AdPlay.formatKRW(total)}~` : "상담 필요";
+    if (favCta) {
+      favCta.setAttribute("href", `estimate.html?intent=bundle&media=${items.map((item) => encodeURIComponent(item.slug)).join(",")}`);
+      favCta.removeAttribute("aria-disabled");
+    }
+  }
+  function openFavPanel() {
+    if (!favPanel) return;
+    renderFavPanel();
+    favPanel.hidden = false;
+    if (workspacePage) workspacePage.classList.add("is-fav-open");
+  }
+  function closeFavPanel() {
+    if (!favPanel) return;
+    favPanel.hidden = true;
+    if (workspacePage) workspacePage.classList.remove("is-fav-open");
+  }
 
   // Representative centres for the regions this platform covers, so a region
   // search (e.g. 광화문) recenters the map even when no media match it.
@@ -306,6 +397,27 @@ document.addEventListener("DOMContentLoaded", async () => {
   if (mobileLayoutQuery.matches) {
     setCurationPanel(false);
   }
+
+  if (favBar) favBar.addEventListener("click", openFavPanel);
+  if (favClose) favClose.addEventListener("click", closeFavPanel);
+  if (favPanel) favPanel.addEventListener("click", (event) => {
+    if (event.target === favPanel) closeFavPanel();
+  });
+  document.addEventListener("click", (event) => {
+    const toggle = event.target.closest("[data-fav-toggle]");
+    if (toggle) {
+      event.preventDefault();
+      event.stopPropagation();
+      toggleFavorite(toggle.dataset.favToggle);
+      return;
+    }
+    const remove = event.target.closest("[data-fav-remove]");
+    if (remove) {
+      event.preventDefault();
+      toggleFavorite(remove.dataset.favRemove);
+    }
+  });
+  updateFavoritesUI();
   if (costFilterToggle && costFilterPanel) {
     costFilterToggle.addEventListener("click", () => {
       const willOpen = costFilterPanel.hidden;
@@ -861,6 +973,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="map-list-card-body">
           <div class="map-list-title-row">
             <h2>${AdPlay.esc(item.name)}</h2>
+            ${favHeartButton(item, "map-card-fav")}
           </div>
           <p>${AdPlay.esc(compactAddress(item))}</p>
           <p class="map-card-decision-line">${AdPlay.esc(mapCardDecisionSummary(item))}</p>
@@ -903,7 +1016,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       <div class="map-detail-body">
         <div class="map-detail-title-row">
           <h2>${AdPlay.esc(item.name)}</h2>
-          <span>♡</span>
+          ${favHeartButton(item, "map-detail-fav")}
         </div>
         <p class="map-detail-address">${AdPlay.esc(compactAddress(item))}</p>
         <div class="map-list-tags">
