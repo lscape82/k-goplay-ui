@@ -459,8 +459,8 @@ document.addEventListener("DOMContentLoaded", async () => {
           title: item.name,
           icon: {
             content: markerContent(item),
-            size: new naver.maps.Size(54, 62),
-            anchor: new naver.maps.Point(27, 54),
+            size: new naver.maps.Size(42, 48),
+            anchor: new naver.maps.Point(21, 42),
           },
         });
         naver.maps.Event.addListener(marker, "click", () => openDetail(item.slug, true, true));
