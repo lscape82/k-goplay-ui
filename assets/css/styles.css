@@ -5735,9 +5735,9 @@ body:has(.map-workspace-page) {
 .bus-stop-pin {
   position: relative;
   display: block;
-  width: 13px;
-  height: 13px;
-  border-radius: 999px 999px 999px 3px;
+  width: 19px;
+  height: 19px;
+  border-radius: 999px 999px 999px 4px;
   background: #0b3a91;
   box-shadow: 0 4px 10px rgba(15, 23, 42, 0.18);
   transform-origin: 50% 100%;
@@ -5759,8 +5759,8 @@ body:has(.map-workspace-page) {
   top: 50%;
   left: 50%;
   display: none;
-  width: 5px;
-  height: 5px;
+  width: 7px;
+  height: 7px;
   border-radius: 999px;
   background: #fff;
   transform: translate(-50%, -50%);

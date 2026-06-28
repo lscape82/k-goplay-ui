@@ -527,8 +527,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         title: busStopTitle(stop),
         icon: {
           content: busStopMarkerContent(stop),
-          size: new naver.maps.Size(18, 18),
-          anchor: new naver.maps.Point(9, 10),
+          size: new naver.maps.Size(26, 26),
+          anchor: new naver.maps.Point(13, 15),
         },
       });
       naver.maps.Event.addListener(marker, "click", () => focusBusStop(stop.id));
