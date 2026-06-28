@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>지도 보기 | 광고플레이 DOOH</title>
     <meta name="description" content="서울 주요 상권의 DOOH 전광판 매체를 지도형 화면에서 비교하고 탐색합니다.">
-    <link rel="stylesheet" href="assets/css/styles.css?v=map-controls-align-20260628">
+    <link rel="stylesheet" href="assets/css/styles.css?v=map-mobile-first-20260629">
   </head>
   <body>
     <a class="skip-link" href="#main">본문 바로가기</a>
@@ -161,12 +161,20 @@
               <a href="estimate.html">온라인 상담</a>
               <a class="primary" href="estimate.html">실시간 라이브 상담</a>
             </div>
+            <button type="button" class="map-mobile-list-toggle" id="mapMobileListToggle" aria-expanded="false" aria-controls="mapListView">
+              <svg class="map-mobile-list-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
+              <span class="map-mobile-list-toggle-label" id="mapMobileListToggleLabel">목록 보기</span>
+            </button>
+            <a class="map-consult-fab" id="mapConsultFab" href="estimate.html?intent=live-talk" aria-label="실시간 상담">
+              <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9.5L5 20.5V16H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/></svg>
+              <span class="map-consult-fab-label">상담</span>
+            </a>
           </section>
         </div>
       </section>
     </main>
     <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1ouo31myef"></script>
     <script src="assets/js/common.js?v=bus-stop-layer-20260619"></script>
-    <script src="assets/js/map.js?v=traffic-target-aligned-20260622"></script>
+    <script src="assets/js/map.js?v=map-mobile-first-20260629"></script>
   </body>
 </html>

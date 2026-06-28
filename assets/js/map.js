@@ -43,6 +43,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const regionClose = document.querySelector("#mapRegionClose");
   const budgetActive = document.querySelector("#mapBudgetActive");
   const periodActive = document.querySelector("#mapPeriodActive");
+  const workspacePage = document.querySelector(".map-workspace-page");
+  const mobileListToggle = document.querySelector("#mapMobileListToggle");
+  const mobileListToggleLabel = document.querySelector("#mapMobileListToggleLabel");
+  const mobileLayoutQuery = window.matchMedia("(max-width: 700px)");
 
   const categoryTabs = [
     { value: "all", label: "옥외광고 전체", summaryLabel: "전체 옥외광고" },
@@ -229,6 +233,19 @@ document.addEventListener("DOMContentLoaded", async () => {
         closeRegionPanel();
         closeCostPanel();
       }
+    });
+  }
+
+  function setMobileListOpen(open) {
+    if (!workspacePage) return;
+    workspacePage.classList.toggle("is-list-open", open);
+    if (mobileListToggle) mobileListToggle.setAttribute("aria-expanded", String(open));
+    if (mobileListToggleLabel) mobileListToggleLabel.textContent = open ? "지도 보기" : "목록 보기";
+  }
+
+  if (mobileListToggle) {
+    mobileListToggle.addEventListener("click", () => {
+      setMobileListOpen(!workspacePage.classList.contains("is-list-open"));
     });
   }
   if (costFilterToggle && costFilterPanel) {
@@ -990,6 +1007,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     selectedMediaSlug = slug;
     detailOpen = true;
     render({ preserveView: true });
+    if (mobileLayoutQuery.matches) {
+      setMobileListOpen(true);
+    }
     if (moveFocus) {
       detailRoot.focus({ preventScroll: true });
     }
