@@ -49,6 +49,45 @@ document.addEventListener("DOMContentLoaded", async () => {
   const curationMobileToggle = document.querySelector("#mapCurationMobileToggle");
   const mobileLayoutQuery = window.matchMedia("(max-width: 700px)");
 
+  // Representative centres for the regions this platform covers, so a region
+  // search (e.g. 광화문) recenters the map even when no media match it.
+  // Naver geocoding is address-only and misses most place/station names.
+  const PLACE_CENTERS = [
+    { keys: ["광화문", "gwanghwamun", "종로", "시청", "세종대로", "광화문역"], lat: 37.5725, lng: 126.9769, zoom: 15 },
+    { keys: ["여의도", "yeouido", "여의도역", "국회의사당"], lat: 37.5283, lng: 126.9294, zoom: 15 },
+    { keys: ["홍대", "hongdae", "홍대입구", "합정", "상수", "홍익대"], lat: 37.5571, lng: 126.9245, zoom: 15 },
+    { keys: ["성수", "seongsu", "성수동", "성수역", "서울숲"], lat: 37.5446, lng: 127.0559, zoom: 15 },
+    { keys: ["잠실", "jamsil", "송파", "롯데월드", "잠실역"], lat: 37.5133, lng: 127.1000, zoom: 14 },
+    { keys: ["서울역", "seoul-station", "서울역광장", "남영", "회현"], lat: 37.5547, lng: 126.9707, zoom: 15 },
+    { keys: ["마포", "공덕", "mapo", "아현", "공덕역", "마포역"], lat: 37.5443, lng: 126.9514, zoom: 14 },
+    { keys: ["명동", "을지로", "myeongdong", "euljiro", "명동역", "을지로입구"], lat: 37.5637, lng: 126.9838, zoom: 15 },
+    { keys: ["도산대로", "dosan", "압구정", "청담", "신사", "압구정로데오"], lat: 37.5232, lng: 127.0386, zoom: 14 },
+    { keys: ["삼성", "코엑스", "samseong", "coex", "무역센터", "삼성역", "선릉"], lat: 37.5089, lng: 127.0631, zoom: 15 },
+    { keys: ["강남", "gangnam", "강남역", "강남대로", "역삼", "교대"], lat: 37.4979, lng: 127.0276, zoom: 14 },
+  ];
+
+  function lookupPlaceCenter(rawQuery) {
+    const q = (rawQuery || "").trim().toLowerCase();
+    if (q.length < 2) return null;
+    return PLACE_CENTERS.find((place) =>
+      place.keys.some((key) => {
+        const k = key.toLowerCase();
+        return q.includes(k) || k.includes(q);
+      })
+    ) || null;
+  }
+
+  function centerOnGeocode(query) {
+    if (!query || !naverMap || !(window.naver && naver.maps.Service && naver.maps.Service.geocode)) return;
+    naver.maps.Service.geocode({ query }, (status, response) => {
+      if (status !== naver.maps.Service.Status.OK) return;
+      const address = response.v2 && response.v2.addresses && response.v2.addresses[0];
+      if (!address) return;
+      naverMap.setCenter(new naver.maps.LatLng(Number(address.y), Number(address.x)));
+      naverMap.setZoom(15);
+    });
+  }
+
   const categoryTabs = [
     { value: "all", label: "옥외광고 전체", summaryLabel: "전체 옥외광고" },
     { value: "large_billboard", label: "전광판·빌보드 광고", categories: ["large_billboard", "package"] },
@@ -213,6 +252,10 @@ document.addEventListener("DOMContentLoaded", async () => {
       selectedMediaSlug = "";
       detailOpen = false;
       render();
+      const q = (searchInput && searchInput.value ? searchInput.value : "").trim();
+      if (q && currentItems.length === 0 && !lookupPlaceCenter(q)) {
+        centerOnGeocode(q);
+      }
     });
   }
   if (searchInput) {
@@ -442,6 +485,13 @@ document.addEventListener("DOMContentLoaded", async () => {
     }
     renderCategoryTabs();
     renderStage(searched, options.preserveView);
+    if (!options.preserveView && query && resultCount === 0) {
+      const place = lookupPlaceCenter(query);
+      if (place && naverMap) {
+        naverMap.setCenter(new naver.maps.LatLng(place.lat, place.lng));
+        naverMap.setZoom(place.zoom || 14);
+      }
+    }
     renderList(searched, busListStops);
     renderDetail(selectedItem(searched));
     syncPanelMode();
