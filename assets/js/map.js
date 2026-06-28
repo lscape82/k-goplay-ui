@@ -779,11 +779,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="map-list-card-body">
           <div class="map-list-title-row">
             <h2>${AdPlay.esc(item.name)}</h2>
-            <strong>${AdPlay.esc(mapCardPriceLabel(item))}</strong>
           </div>
           <p>${AdPlay.esc(compactAddress(item))}</p>
+          <p class="map-card-decision-line">${AdPlay.esc(mapCardDecisionSummary(item))}</p>
+          <p class="map-card-exposure-point">${AdPlay.esc(cardExposurePoint(item))}</p>
           <div class="map-list-tags">
-            ${[item.areaName, AdPlay.categoryLabels[item.category] || item.mediaType, sizeLabel(item)].filter(Boolean).slice(0, 4).map((tag) => `<span>${AdPlay.esc(tag)}</span>`).join("")}
+            ${[item.areaName, AdPlay.categoryLabels[item.category] || item.mediaType].filter(Boolean).slice(0, 3).map((tag) => `<span>${AdPlay.esc(tag)}</span>`).join("")}
           </div>
           <div class="map-card-footer">
             <span>상세보기</span>
@@ -1050,6 +1051,23 @@ document.addEventListener("DOMContentLoaded", async () => {
   function mapCardPriceLabel(item) {
     const min = AdPlay.minMonthlyPrice(item);
     return min ? `월 ${AdPlay.formatKRW(min)}` : "월 비용 상담 필요";
+  }
+
+  function mapCardDecisionSummary(item) {
+    const terms = [mapCardPriceLabel(item), sizeLabel(item)];
+    terms.push(item.shortTermAvailable === false ? "월 단위 집행" : "1개월 미만 협의");
+    return terms.filter(Boolean).join(" · ");
+  }
+
+  function cardExposurePoint(item) {
+    const text = [item.name, item.areaName, item.areaSlug, item.address, item.mapLocation && item.mapLocation.sourceAddress]
+      .filter(Boolean)
+      .join(" ");
+    if (/광화문|종로|시청|청계|gwanghwamun|jongno/i.test(text)) return "광장·보행 동선에서 반복 노출";
+    if (/서울역|KTX|seoul-station|transport/i.test(text)) return "철도·지하철 환승 동선 집중 노출";
+    if (/삼성|코엑스|COEX|samseong|coex/i.test(text)) return "업무·전시 방문객과 차량 동시 노출";
+    if (/신사|강남|도산|가로수|sinsa|gangnam/i.test(text)) return "횡단보도·차량정체 구간 정면 노출";
+    return "주요 보행·차량 동선에서 반복 노출";
   }
 
   function contractSummary(item) {

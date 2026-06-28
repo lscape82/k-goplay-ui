@@ -4935,6 +4935,38 @@ body:has(.map-workspace-page) {
   -webkit-line-clamp: 1;
 }
 
+.map-list-card .map-card-decision-line {
+  min-height: 0;
+  color: #172033;
+  font-size: 12.5px;
+  font-weight: 720;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.map-list-card .map-card-exposure-point {
+  position: relative;
+  min-height: 0;
+  padding-left: 10px;
+  color: #52647e;
+  font-size: 12px;
+  font-weight: 560;
+  line-height: 1.4;
+  white-space: nowrap;
+}
+
+.map-list-card .map-card-exposure-point::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: #0b3a91;
+  transform: translateY(-50%);
+}
+
 .map-list-meta {
   display: flex;
   gap: 8px;
