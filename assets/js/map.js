@@ -55,6 +55,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const favTotalEl = document.querySelector("#mapFavTotal");
   const favCta = document.querySelector("#mapFavCta");
   const favDownload = document.querySelector("#mapFavDownload");
+  const favReco = document.querySelector("#mapFavReco");
   const favClose = document.querySelector("#mapFavClose");
   const mobileLayoutQuery = window.matchMedia("(max-width: 700px)");
 
@@ -207,6 +208,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       favListEl.innerHTML = `<p class="map-fav-empty">아직 담은 관심매체가 없습니다.<br>매체·버스정류장의 "★ 관심" 버튼으로 담아 비교해 보세요.</p>`;
       if (favTotalEl) favTotalEl.textContent = "-";
       if (favCta) { favCta.setAttribute("aria-disabled", "true"); favCta.removeAttribute("href"); }
+      if (favReco) favReco.hidden = true;
       return;
     }
     const compareRows = [
@@ -251,7 +253,28 @@ document.addEventListener("DOMContentLoaded", async () => {
       favCta.setAttribute("href", `estimate.html?intent=bundle&media=${items.map((fav) => encodeURIComponent(fav.favId)).join(",")}`);
       favCta.removeAttribute("aria-disabled");
     }
+    if (favReco) {
+      const reco = favRecommendation(items);
+      favReco.innerHTML = reco ? `<strong>추<br>천</strong><span class="map-fav-reco-body">${AdPlay.esc(reco)}</span>` : "";
+      favReco.hidden = !reco;
+    }
     fitFavTitles();
+  }
+  // 담은 매체 기준 자동 추천 요약 — 도달(일평균 유동) 최고 · 비용 효율(월 비용) 최저 매체를 짚고 묶음 제안
+  function favRecommendation(items) {
+    if (!items || items.length < 2) return "";
+    const num = (s) => { const m = String(s == null ? "" : s).match(/[\d.]+/); return m ? parseFloat(m[0]) : NaN; };
+    const reachList = items.filter((f) => !isNaN(num(f.foot500)));
+    const costList = items.filter((f) => f.monthly > 0);
+    const bestReach = reachList.length ? reachList.slice().sort((a, b) => num(b.foot500) - num(a.foot500))[0] : null;
+    const cheapest = costList.length ? costList.slice().sort((a, b) => a.monthly - b.monthly)[0] : null;
+    let lead;
+    if (bestReach && cheapest && bestReach.favId === cheapest.favId) lead = `‘${bestReach.name}’가 도달·비용 모두 우세합니다.`;
+    else if (bestReach && cheapest) lead = `도달은 ‘${bestReach.name}’, 비용 효율은 ‘${cheapest.name}’가 우세합니다.`;
+    else if (bestReach) lead = `도달은 ‘${bestReach.name}’가 우세합니다.`;
+    else if (cheapest) lead = `비용 효율은 ‘${cheapest.name}’가 우세합니다.`;
+    else return "";
+    return `${lead} 담은 ${items.length}종을 묶으면 도달·비용 균형과 집행 협상력을 함께 높일 수 있습니다.`;
   }
   // 매체명 한 줄 넘어가면 폰트 자동 축소(줄바꿈 방지)
   function fitFavTitles() {
