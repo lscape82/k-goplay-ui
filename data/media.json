@@ -2,6 +2,9 @@
   {
     "slug": "sinsa-h-station",
     "name": "신사동 휴먼타워 H-스테이션 전광판",
+    "playSpec": "20초 · 1일 100회",
+    "exposureShort": "횡단보도 대기 정면 · 강남대로 조망",
+    "exposureLong": "강남대로 본선을 정면으로 마주보는 각도라 신호 대기 차량과 횡단보도 보행자에게 시야가 오래 머물고, 잠원동 방향 유동까지 함께 커버하는 대형 전광판입니다.",
     "areaSlug": "dosan-daero",
     "areaName": "도산대로 프리미엄",
     "category": "large_billboard",
@@ -53,7 +56,7 @@
     "availabilityNote": "모든 매체는 선착순 예약이며 확정 시점에 구좌 가능 여부 확인 필요",
     "shortTermAvailable": false,
     "imageUrl": "assets/images/pdf-pages/page-019.jpg",
-    "videoUrl": "video/대형전광판_260517.mp4",
+    "videoUrl": "video/303.mp4",
     "audienceInsights": {
       "radiusM": 500,
       "averageDailyFootTraffic": {
@@ -124,6 +127,10 @@
   {
     "slug": "sinsa-syh-tower",
     "name": "신사역 사거리 SYH타워",
+    "videoUrl": "video/303.mp4",
+    "playSpec": "30초 · 1일 80회",
+    "exposureShort": "신사역 사거리 코너 · 양방향 시인",
+    "exposureLong": "신사역 사거리 코너에 자리해 도산대로·강남대로 양방향 보행·차량 동선에서 동시에 노출되고, 지하철 출구 유동과도 겹치는 교차로형 매체입니다.",
     "areaSlug": "dosan-daero",
     "areaName": "도산대로 프리미엄",
     "category": "large_billboard",
@@ -191,6 +198,10 @@
   {
     "slug": "sinsa-yk-tower",
     "name": "신사역 YK타워 유경빌딩",
+    "videoUrl": "video/231.mp4",
+    "playSpec": "15초 · 1일 120회",
+    "exposureShort": "고층 세로형 · 원거리 시인",
+    "exposureLong": "건물 고층에 세로형으로 설치돼 원거리에서도 눈에 띄고, 가로수길 진입 보행 동선의 시선을 자연스럽게 끌어오는 랜드마크형 매체입니다.",
     "areaSlug": "dosan-daero",
     "areaName": "도산대로 프리미엄",
     "category": "large_billboard",
@@ -259,6 +270,8 @@
   {
     "slug": "sinsa-peyto",
     "name": "신사동 PEYTO 페이토",
+    "exposureShort": "도산대로 초입 · 가로수길 진입 동선",
+    "exposureLong": "도산대로 초입에 위치해 가로수길로 유입되는 보행 동선과 도산대로 차량 흐름을 함께 잡는 대형 전광판입니다.",
     "areaSlug": "dosan-daero",
     "areaName": "도산대로 프리미엄",
     "category": "large_billboard",
@@ -327,6 +340,8 @@
   {
     "slug": "hakdong-ss-tower",
     "name": "학동사거리 S&S타워",
+    "exposureShort": "학동사거리 정면 · 사거리 대기 동선",
+    "exposureLong": "학동사거리 신호 대기 구간을 정면으로 마주봐 정차 차량과 횡단 보행자에게 반복 노출되는 사거리형 매체입니다.",
     "areaSlug": "dosan-daero",
     "areaName": "도산대로 프리미엄",
     "category": "large_billboard",
@@ -409,6 +424,8 @@
   {
     "slug": "dosan-sgf-cheongdam",
     "name": "도산대로 SGF청담타워",
+    "exposureShort": "청담 방향 · 명품거리 진입 조망",
+    "exposureLong": "도산대로에서 청담 명품거리로 이어지는 진입부를 조망해, 프리미엄 브랜드 타깃 캠페인에 적합한 위치입니다.",
     "areaSlug": "dosan-daero",
     "areaName": "도산대로 프리미엄",
     "category": "large_billboard",
@@ -490,6 +507,8 @@
   {
     "slug": "dosan-sb-tower",
     "name": "도산공원사거리 SB타워",
+    "exposureShort": "도산공원사거리 코너 · 양방향 시인",
+    "exposureLong": "도산공원사거리 코너에 자리해 도산대로 양방향 차량과 공원 방문 보행 동선에서 동시에 보이는 교차로형 매체입니다.",
     "areaSlug": "dosan-daero",
     "areaName": "도산대로 프리미엄",
     "category": "large_billboard",
@@ -543,6 +562,8 @@
   {
     "slug": "dosan-sun-and-vill",
     "name": "도산공원사거리 썬앤빌",
+    "exposureShort": "도산공원사거리 정면 · 도산대로 본선",
+    "exposureLong": "도산공원사거리 본선을 정면으로 마주봐 도산대로 주행 차량의 시선이 오래 머무는 대형 전광판입니다.",
     "areaSlug": "dosan-daero",
     "areaName": "도산대로 프리미엄",
     "category": "large_billboard",
@@ -596,6 +617,8 @@
   {
     "slug": "dosan-sun-vill-hak-pkg",
     "name": "도산 현대썬앤빌 & 학빌딩 PKG",
+    "exposureShort": "썬앤빌·학빌딩 동시 노출 패키지",
+    "exposureLong": "도산공원사거리 인접 썬앤빌·학빌딩 두 면을 묶어, 같은 교차로에서 좌우로 반복 노출을 만드는 패키지형 상품입니다.",
     "areaSlug": "dosan-daero",
     "areaName": "도산대로 프리미엄",
     "category": "package",
@@ -650,6 +673,8 @@
   {
     "slug": "dosan-emporia",
     "name": "도산공원사거리 엠포리아빌딩",
+    "exposureShort": "도산공원사거리 · 압구정 방향 조망",
+    "exposureLong": "도산공원사거리에서 압구정 방향으로 향하는 차량·보행 동선을 조망해, 유동이 몰리는 시간대 노출 효율이 높습니다.",
     "areaSlug": "dosan-daero",
     "areaName": "도산대로 프리미엄",
     "category": "large_billboard",
@@ -717,6 +742,8 @@
   {
     "slug": "dosan-gangnam-building",
     "name": "도산대로 강남빌딩 전광판",
+    "exposureShort": "도산대로 본선 · 정면 시인",
+    "exposureLong": "도산대로 본선 주행 방향을 정면으로 마주봐, 강남 방향 차량 흐름에 자연스럽게 시선이 닿는 매체입니다.",
     "areaSlug": "dosan-daero",
     "areaName": "도산대로 프리미엄",
     "category": "large_billboard",
@@ -784,6 +811,8 @@
   {
     "slug": "dosan-baekyoung-building",
     "name": "도산대로 백영빌딩 전광판",
+    "exposureShort": "도산대로 · 신호 대기 정면",
+    "exposureLong": "도산대로 신호 대기 구간을 정면으로 두어, 정차 차량과 횡단 보행자에게 메시지가 길게 노출됩니다.",
     "areaSlug": "dosan-daero",
     "areaName": "도산대로 프리미엄",
     "category": "large_billboard",
@@ -836,6 +865,8 @@
   {
     "slug": "dosan-hak-building",
     "name": "도산공원사거리 학빌딩",
+    "exposureShort": "도산공원사거리 · 공원 방문 동선",
+    "exposureLong": "도산공원 방문 보행 동선과 도산대로 차량을 함께 커버해, 라이프스타일·F&B 브랜드에 어울리는 위치입니다.",
     "areaSlug": "dosan-daero",
     "areaName": "도산대로 프리미엄",
     "category": "large_billboard",
@@ -890,6 +921,8 @@
   {
     "slug": "dosan-bmw-building",
     "name": "도산공원 사거리 BMW 빌딩",
+    "exposureShort": "도산공원사거리 · 코너 고시인",
+    "exposureLong": "도산공원사거리 코너 건물에 설치돼 교차로 진입 차량의 시선을 넓은 각도로 확보하는 매체입니다.",
     "areaSlug": "dosan-daero",
     "areaName": "도산대로 프리미엄",
     "category": "large_billboard",
@@ -944,6 +977,8 @@
   {
     "slug": "dosan-hakil-building",
     "name": "도산대로 학동사거리 학일빌딩",
+    "exposureShort": "학동사거리 · 논현 방향 진입",
+    "exposureLong": "학동사거리에서 논현 방향으로 이어지는 진입 구간을 조망해, 출퇴근 시간대 차량 유동 노출에 강점이 있습니다.",
     "areaSlug": "dosan-daero",
     "areaName": "도산대로 프리미엄",
     "category": "large_billboard",
@@ -1011,6 +1046,8 @@
   {
     "slug": "dosan-hansum-building",
     "name": "도산대로 한섬빌딩 전광판",
+    "exposureShort": "청담 방향 도산대로 · 패션 상권",
+    "exposureLong": "청담 방향 도산대로 패션 상권 구간에 위치해, 하이엔드 패션·뷰티 브랜드 타깃과 잘 맞는 매체입니다.",
     "areaSlug": "dosan-daero",
     "areaName": "도산대로 프리미엄",
     "category": "large_billboard",
@@ -1077,6 +1114,8 @@
   {
     "slug": "cheongdam-bluepearl-hotel",
     "name": "청담 블루펄호텔 전광판",
+    "exposureShort": "청담 · 호텔 진입 프리미엄 동선",
+    "exposureLong": "청담 호텔·명품거리 진입 동선에 자리해, 프리미엄 소비층과 관광·비즈니스 방문객에게 노출되는 매체입니다.",
     "areaSlug": "dosan-daero",
     "areaName": "도산대로 프리미엄",
     "category": "large_billboard",
@@ -1144,6 +1183,8 @@
   {
     "slug": "dosan-timesync-1",
     "name": "도산대로 사거리 타임싱크 1",
+    "exposureShort": "도산 3면 동시 송출 타임싱크",
+    "exposureLong": "썬앤빌·학빌딩·엠포리아 3개 면을 같은 시간에 동시 송출해, 도산대로 사거리 전체를 한 번에 장악하는 타임싱크 상품입니다.",
     "areaSlug": "dosan-daero",
     "areaName": "도산대로 프리미엄",
     "category": "package",
@@ -1225,6 +1266,8 @@
   {
     "slug": "dosan-timesync-2",
     "name": "도산대로 사거리 타임싱크 2",
+    "exposureShort": "도산 SB·백영 동시 송출 타임싱크",
+    "exposureLong": "SB타워·백영빌딩 면을 동시 송출해, 도산대로 사거리 반대편 동선까지 묶어 커버하는 타임싱크 상품입니다.",
     "areaSlug": "dosan-daero",
     "areaName": "도산대로 프리미엄",
     "category": "package",
@@ -1306,6 +1349,8 @@
   {
     "slug": "samseong-kpop-square-package",
     "name": "삼성동 K-POP 스퀘어 패키지",
+    "exposureShort": "코엑스 K-POP 스퀘어 대형 곡면",
+    "exposureLong": "코엑스 K-POP 스퀘어 대형 곡면 사이니지를 포함한 패키지로, SNS 확산성이 높은 랜드마크형 노출을 제공합니다.",
     "areaSlug": "samseong-coex",
     "areaName": "삼성 코엑스",
     "category": "package",
@@ -1358,6 +1403,8 @@
   {
     "slug": "samseong-coex-kpop-detail",
     "name": "삼성동 COEX K-pop 스퀘어 패키지 상세",
+    "exposureShort": "코엑스 스퀘어 · 광장 집객 동선",
+    "exposureLong": "코엑스 광장 집객 동선 정면에서 대형 스크린이 시야를 채워, 전시·팝업 연계 캠페인에 유리한 위치입니다.",
     "areaSlug": "samseong-coex",
     "areaName": "삼성 코엑스",
     "category": "package",
@@ -1438,6 +1485,8 @@
   {
     "slug": "samseong-hyundai-department",
     "name": "삼성역 현대백화점 전광판",
+    "exposureShort": "현대백화점 · 백화점 방문 동선",
+    "exposureLong": "삼성역 현대백화점 방문 동선과 테헤란로 차량을 함께 커버해, 프리미엄 리테일 타깃에 적합한 매체입니다.",
     "areaSlug": "samseong-coex",
     "areaName": "삼성 코엑스",
     "category": "large_billboard",
@@ -1491,6 +1540,8 @@
   {
     "slug": "samseong-coex-media-tower-cmt",
     "name": "삼성역 코엑스 미디어타워 CMT",
+    "exposureShort": "영동대로 · 코엑스 미디어타워 고층",
+    "exposureLong": "영동대로 코엑스 앞 미디어타워 고층에 설치돼, 광역 차량 동선과 코엑스 방문객에게 원거리부터 노출됩니다.",
     "areaSlug": "samseong-coex",
     "areaName": "삼성 코엑스",
     "category": "large_billboard",
@@ -1558,6 +1609,8 @@
   {
     "slug": "samseong-parnas-media-tower-pmt",
     "name": "삼성역 파르나스 미디어타워 PMT",
+    "exposureShort": "테헤란로 · 파르나스 고층 시인",
+    "exposureLong": "테헤란로 파르나스 타워 고층에 위치해, 업무지구 유동과 차량에게 원거리 시인성을 확보하는 매체입니다.",
     "areaSlug": "samseong-coex",
     "areaName": "삼성 코엑스",
     "category": "large_billboard",
@@ -1625,6 +1678,8 @@
   {
     "slug": "samseong-media-tower-package-cpmt",
     "name": "삼성역 미디어타워 패키지 CPMT",
+    "exposureShort": "코엑스·파르나스 타워 묶음 패키지",
+    "exposureLong": "코엑스(CMT)·파르나스(PMT) 미디어타워를 묶어 삼성역 사거리 양대 타워를 동시에 커버하는 패키지 상품입니다.",
     "areaSlug": "samseong-coex",
     "areaName": "삼성 코엑스",
     "category": "package",
@@ -1692,6 +1747,8 @@
   {
     "slug": "samseong-shilla-stay",
     "name": "삼성동 신라스테이 전광판",
+    "exposureShort": "영동대로 · 호텔 진입 동선",
+    "exposureLong": "영동대로 신라스테이 진입 동선에 자리해, 비즈니스·관광 방문객과 코엑스 유동을 함께 잡는 매체입니다.",
     "areaSlug": "samseong-coex",
     "areaName": "삼성 코엑스",
     "category": "large_billboard",
@@ -1759,6 +1816,8 @@
   {
     "slug": "samseong-superior-tower",
     "name": "삼성역 사거리 슈페리어타워",
+    "exposureShort": "삼성역 사거리 · 테헤란로 정면",
+    "exposureLong": "삼성역 사거리에서 테헤란로 본선을 정면으로 마주봐, 업무지구 출퇴근 차량 노출에 강점이 있습니다.",
     "areaSlug": "samseong-coex",
     "areaName": "삼성 코엑스",
     "category": "large_billboard",
@@ -1826,6 +1885,8 @@
   {
     "slug": "samseong-landmark-building",
     "name": "삼성동 랜드마크빌딩 전광판",
+    "exposureShort": "영동대로 · 잠실 방향 진입 조망",
+    "exposureLong": "영동대로에서 잠실 방향으로 이어지는 진입 구간을 조망해, 광역 이동 차량에게 반복 노출되는 랜드마크형 매체입니다.",
     "areaSlug": "samseong-coex",
     "areaName": "삼성 코엑스",
     "category": "large_billboard",
@@ -1908,6 +1969,8 @@
   {
     "slug": "samseong-luchen-tower",
     "name": "삼성 도심공항터미널 사거리 루첸타워",
+    "exposureShort": "도심공항터미널 사거리 · 여행 동선",
+    "exposureLong": "도심공항터미널 사거리에 위치해 공항 이용객과 테헤란로 차량 동선을 함께 커버하는 교차로형 매체입니다.",
     "areaSlug": "samseong-coex",
     "areaName": "삼성 코엑스",
     "category": "large_billboard",
@@ -1975,6 +2038,8 @@
   {
     "slug": "samseong-vplex",
     "name": "삼성역 포스코사거리 VPLEX 전광판",
+    "exposureShort": "포스코사거리 · 테헤란로 코너",
+    "exposureLong": "포스코사거리 코너에 자리해 테헤란로 양방향 차량과 업무지구 보행 동선에서 동시에 보이는 매체입니다.",
     "areaSlug": "samseong-coex",
     "areaName": "삼성 코엑스",
     "category": "large_billboard",
@@ -2042,6 +2107,8 @@
   {
     "slug": "shopping-coex-9to9-cube",
     "name": "삼성 COEX 9to9 Cube",
+    "exposureShort": "코엑스 메인 입구 · 실내 집객 동선",
+    "exposureLong": "코엑스 메인 입구와 라이브 플라자 실내 집객 동선에 설치돼, 쇼핑·전시 방문객에게 근거리에서 노출되는 DID 매체입니다.",
     "areaSlug": "samseong-coex",
     "areaName": "삼성 코엑스",
     "category": "shopping_mall_did",
@@ -2094,6 +2161,8 @@
   {
     "slug": "subway-gangnam-pmp",
     "name": "강남역 2호선 PMP",
+    "exposureShort": "강남역 2호선 승강장 · 대기 시선",
+    "exposureLong": "강남역 2호선 승강장 대기 동선에 노출돼, 열차를 기다리는 승객의 시선을 반복적으로 확보하는 지하철 매체입니다.",
     "areaSlug": "gangnam-daero",
     "areaName": "강남역/강남대로",
     "category": "subway",
@@ -2146,6 +2215,8 @@
   {
     "slug": "bus-gangnam-shelter",
     "name": "강남대로 디지털 버스쉘터",
+    "exposureShort": "강남대로 버스쉘터 · 보행 눈높이",
+    "exposureLong": "강남대로 버스쉘터 다면 네트워크로, 정류장 대기 승객과 보행자 눈높이에서 근거리 반복 노출을 만드는 매체입니다.",
     "areaSlug": "gangnam-daero",
     "areaName": "강남역/강남대로",
     "category": "bus",
@@ -2198,6 +2269,8 @@
   {
     "slug": "transport-seoul-station-ktx-panorama",
     "name": "서울역 KTX 파노라마 전광판",
+    "exposureShort": "서울역 · KTX 환승 파노라마",
+    "exposureLong": "서울역 KTX 환승 동선의 파노라마 스크린으로, 전국 이동 승객에게 단기 고빈도 고지가 가능한 교통 허브형 매체입니다.",
     "areaSlug": "seoul-station",
     "areaName": "서울역",
     "category": "transport_hub",
@@ -2250,6 +2323,8 @@
   {
     "slug": "daily-apartment-elevator-tv",
     "name": "아파트 엘리베이터 TV",
+    "exposureShort": "아파트 엘리베이터 · 반복 밀착 시청",
+    "exposureLong": "아파트 엘리베이터 내부 TV로, 입주민이 매일 반복 탑승하며 근거리에서 시청하는 생활밀착형 매체입니다.",
     "areaSlug": "other-national",
     "areaName": "전국 생활권",
     "category": "daily_touchpoint",

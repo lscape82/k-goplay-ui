@@ -1,0 +1,366 @@
+/* =====================================================================
+   광고플레이 개선 적용 — 주요 서비스 도크 + 정보접근성 (additive, 미배포)
+   경쟁사 분석(TKAD·HOO·ADVoost·adtype) 근거로 도출한 서비스 메뉴.
+   기존 스타일을 덮어쓰지 않도록 gps- 네임스페이스 사용.
+   ===================================================================== */
+
+:root {
+  --gps-accent: #3b74f2;
+  --gps-accent-ink: #1b46c4;
+  --gps-accent-soft: #7ba0ff;
+  --gps-accent-wash: #eaf0ff;
+  --gps-ink: #0f1420;
+  --gps-ink-soft: #2b3242;
+  --gps-muted: #5b6478;
+  --gps-line: #e2e7f0;
+  --gps-line-soft: #eef1f7;
+  --gps-bg: #f5f7fc;
+  --gps-navy: #0b1b3f;
+  --gps-good: #12a150;   --gps-good-wash: #e6f6ec;
+  --gps-warn: #d68910;   --gps-warn-wash: #fbf1de;
+  --gps-crit: #e0393f;   --gps-crit-wash: #fce9ea;
+  --gps-shadow: 0 1px 2px rgba(15,20,32,.05), 0 10px 30px rgba(15,20,32,.10);
+}
+
+/* 실시간 라이브상담 CTA는 사이트 기존 네이비(#0b3a91, 회원가입·옥외광고전체와 동일)를 유지 */
+/* 상담 카드 배경을 더 또렷하게 → 전화·온라인상담 가독성 향상 */
+.map-contact-card { background: rgba(255, 255, 255, 0.97); }
+
+/* ---------- 서비스 도크 ---------- */
+.gps-dock {
+  position: absolute; right: 16px; top: auto; bottom: 226px; z-index: 7;
+  display: flex; flex-direction: column; gap: 5px; width: 210px;
+}
+
+/* 우측 플로팅 요소 폭·우측선 통일 — 컨트롤(170px)이 도크/상담(210px)과 어긋나 보이던 계단 정렬 해결 */
+.map-mode-toggle,
+.map-utility-controls { width: 210px; }
+.map-contact-card { right: 16px; }
+.gps-dock-h {
+  font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
+  color: #fff; background: rgba(11,27,63,.78); padding: 5px 10px; border-radius: 8px; align-self: flex-start;
+}
+.gps-flow {
+  font-size: 10px; line-height: 1.4; color: rgba(11,27,63,.72);
+  background: rgba(255,255,255,.82); border: 1px solid var(--gps-line); border-radius: 8px; padding: 6px 9px;
+}
+.gps-flow b { color: var(--gps-accent-ink); }
+.gps-svc {
+  display: flex; flex-direction: column; gap: 3px; text-align: left;
+  background: rgba(255,255,255,.97); border: 1px solid var(--gps-line); border-radius: 11px;
+  padding: 9px 11px; box-shadow: var(--gps-shadow); cursor: pointer;
+}
+.gps-svc:hover { border-color: var(--gps-accent); }
+.gps-svc .top { display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 700; color: var(--gps-ink-soft); }
+.gps-svc .ic { width: 22px; height: 22px; flex: none; display: grid; place-items: center; border-radius: 6px; background: var(--gps-accent-wash); font-size: 14px; }
+.gps-svc .bn { margin-left: auto; font-size: 10px; font-weight: 800; color: #fff; background: var(--gps-accent); border-radius: 999px; padding: 1px 7px; }
+.gps-svc .sub { display: none; } /* 상담 카드와 겹치지 않도록 도크 컴팩트화 (라벨만 노출) */
+.gps-dock-collapse { display: none; }
+
+/* ---------- 모달 ---------- */
+.gps-ov {
+  position: fixed; inset: 0; background: rgba(9,12,20,.55); backdrop-filter: blur(3px);
+  display: none; align-items: center; justify-content: center; z-index: 1000; padding: 20px;
+}
+.gps-ov.open { display: flex; }
+.gps-modal {
+  font-family: var(--font-sans, "SUIT Variable", sans-serif); color: var(--gps-ink);
+  background: #fff; border-radius: 18px; width: 100%; max-width: 760px; max-height: 88vh;
+  overflow: hidden; display: flex; flex-direction: column; box-shadow: 0 24px 70px rgba(0,0,0,.35);
+}
+.gps-modal-h { display: flex; align-items: center; gap: 11px; padding: 17px 20px; border-bottom: 1px solid var(--gps-line); }
+.gps-modal-h .mi { width: 32px; height: 32px; border-radius: 9px; background: var(--gps-accent-wash); display: grid; place-items: center; font-size: 16px; flex: none; }
+.gps-modal-h h3 { margin: 0; font-size: 16px; font-weight: 800; }
+.gps-modal-h .msub { font-size: 12px; color: var(--gps-muted); margin-top: 1px; }
+.gps-modal-h .x { margin-left: auto; width: 32px; height: 32px; border: none; background: var(--gps-bg); border-radius: 8px; font-size: 17px; color: var(--gps-muted); cursor: pointer; flex: none; }
+.gps-modal-b { padding: 20px; overflow-y: auto; }
+.gps-modal-f { padding: 13px 20px; border-top: 1px solid var(--gps-line); display: flex; gap: 8px; justify-content: flex-end; flex-wrap: wrap; }
+.gps-bp { font-size: 13px; font-weight: 800; color: #fff; background: var(--gps-accent); border: none; border-radius: 10px; padding: 11px 18px; cursor: pointer; box-shadow: 0 5px 16px rgba(59,116,242,.35); }
+.gps-bs { font-size: 13px; font-weight: 700; color: var(--gps-ink-soft); background: #fff; border: 1px solid var(--gps-line); border-radius: 10px; padding: 11px 16px; cursor: pointer; }
+
+.gps-modal-b .tnum { font-variant-numeric: tabular-nums; }
+.gps-modal-b .mblock { margin-bottom: 16px; }
+.gps-modal-b h4 { margin: 0 0 8px; font-size: 13px; font-weight: 800; display: flex; align-items: center; gap: 7px; }
+.gps-cap { font-size: 11.5px; color: var(--gps-muted); margin: 8px 0 0; }
+.gps-row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.gps-card { background: #fff; border: 1px solid var(--gps-line); border-radius: 12px; padding: 14px; }
+.gps-soft { background: var(--gps-bg); }
+
+.gps-src { display: inline-flex; align-items: center; gap: 5px; font-size: 10.5px; font-weight: 600; color: var(--gps-muted); background: var(--gps-line-soft); border-radius: 6px; padding: 3px 7px; }
+.gps-src::before { content: "근거"; font-size: 8.5px; font-weight: 800; color: #fff; background: var(--gps-accent); padding: 1px 4px; border-radius: 3px; }
+.gps-badge { font-size: 10px; font-weight: 800; padding: 2px 7px; border-radius: 5px; }
+.gps-badge.est { background: var(--gps-warn-wash); color: var(--gps-warn); }
+.gps-badge.act { background: var(--gps-good-wash); color: var(--gps-good); }
+
+.gps-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.gps-chip { font-size: 13px; font-weight: 600; background: var(--gps-bg); border: 1px solid var(--gps-line); border-radius: 9px; padding: 9px 12px; }
+.gps-chip b { color: var(--gps-accent); }
+
+.gps-scen { display: grid; grid-template-columns: repeat(3,1fr); gap: 9px; }
+.gps-sc { border: 1px solid var(--gps-line); border-radius: 11px; padding: 12px; background: #fff; cursor: pointer; }
+.gps-sc.on { border: 2px solid var(--gps-accent); background: var(--gps-accent-wash); }
+.gps-sc .t { font-size: 12.5px; font-weight: 800; }
+.gps-sc .kk { font-size: 10.5px; color: var(--gps-muted); }
+.gps-sc .big { font-size: 18px; font-weight: 800; margin: 7px 0 4px; font-variant-numeric: tabular-nums; }
+.gps-sc .li { font-size: 11.5px; display: flex; justify-content: space-between; padding-top: 5px; margin-top: 5px; border-top: 1px dotted var(--gps-line); }
+.gps-sc .li b { font-variant-numeric: tabular-nums; }
+
+.gps-reach { display: flex; justify-content: space-between; align-items: baseline; padding: 12px 14px; background: var(--gps-navy); color: #fff; border-radius: 10px; }
+.gps-reach b { font-size: 20px; font-variant-numeric: tabular-nums; }
+.gps-alloc { display: flex; height: 30px; border-radius: 8px; overflow: hidden; margin: 12px 0; }
+.gps-alloc div { display: grid; place-items: center; font-size: 11px; font-weight: 800; color: #fff; }
+.gps-poi { display: flex; align-items: center; gap: 11px; padding: 10px 11px; background: var(--gps-bg); border: 1px solid var(--gps-line); border-radius: 10px; margin-bottom: 7px; }
+.gps-poi .th { width: 42px; height: 42px; border-radius: 8px; background: linear-gradient(135deg,#16233f,#33507e); flex: none; }
+.gps-poi .nm { font-size: 13px; font-weight: 700; }
+.gps-poi .mt { font-size: 11.5px; color: var(--gps-muted); }
+.gps-poi .pct { margin-left: auto; text-align: right; }
+.gps-poi .pct b { font-size: 15px; font-weight: 800; color: var(--gps-accent-ink); }
+.gps-poi .pct span { display: block; font-size: 11px; color: var(--gps-muted); }
+
+.gps-kpis { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.gps-kpi { background: var(--gps-bg); border: 1px solid var(--gps-line); border-radius: 12px; padding: 13px; }
+.gps-kpi .k { font-size: 11px; color: var(--gps-muted); display: flex; align-items: center; gap: 5px; }
+.gps-kpi .v { font-size: 22px; font-weight: 800; letter-spacing: -.02em; margin-top: 2px; font-variant-numeric: tabular-nums; }
+.gps-kpi .d { font-size: 11.5px; font-weight: 700; margin-top: 2px; }
+.gps-kpi .d.up { color: var(--gps-good); }
+
+/* tooltip (용어 접근성) */
+.gps-tip { position: relative; display: inline-flex; }
+.gps-tip .ic { width: 14px; height: 14px; border-radius: 50%; background: var(--gps-line); color: var(--gps-muted); font-size: 9px; font-weight: 800; display: grid; place-items: center; cursor: help; }
+.gps-tip .pop { position: absolute; bottom: calc(100% + 7px); left: 50%; transform: translateX(-50%); width: 188px; background: var(--gps-ink); color: #eef; font-size: 11px; font-weight: 500; line-height: 1.5; padding: 9px 11px; border-radius: 8px; opacity: 0; pointer-events: none; transition: opacity .15s; z-index: 5; box-shadow: 0 8px 20px rgba(0,0,0,.3); }
+.gps-tip:hover .pop, .gps-tip:focus-within .pop { opacity: 1; }
+
+/* compare bars */
+.gps-rowh { display: flex; justify-content: space-between; font-size: 11.5px; font-weight: 700; text-transform: uppercase; letter-spacing: .04em; color: var(--gps-muted); margin: 14px 0 8px; }
+.gps-bl { display: grid; grid-template-columns: 108px 1fr 66px; gap: 10px; align-items: center; margin-top: 7px; }
+.gps-bl .l { font-size: 12.5px; font-weight: 600; }
+.gps-bt { background: var(--gps-line-soft); border-radius: 999px; height: 12px; overflow: hidden; }
+.gps-bf { height: 100%; border-radius: 999px; background: linear-gradient(90deg, var(--gps-accent-soft), var(--gps-accent)); }
+.gps-bl.win .gps-bf { background: linear-gradient(90deg,#37c06f,var(--gps-good)); }
+.gps-bl .val { font-size: 12.5px; font-weight: 700; text-align: right; font-variant-numeric: tabular-nums; }
+.gps-bl.win .val { color: var(--gps-good); }
+.gps-bl.win .l::after { content: " ★"; color: var(--gps-good); font-size: 11px; }
+
+/* report toggle */
+.gps-rtoggle { display: inline-flex; background: var(--gps-bg); border: 1px solid var(--gps-line); border-radius: 999px; padding: 3px; gap: 2px; margin-bottom: 12px; }
+.gps-rtoggle button { border: none; background: none; font-size: 12.5px; font-weight: 700; color: var(--gps-muted); padding: 7px 15px; border-radius: 999px; cursor: pointer; }
+.gps-rtoggle button.on { background: var(--gps-ink); color: #fff; }
+.gps-spark { height: 54px; display: flex; align-items: flex-end; gap: 5px; margin-top: 12px; }
+.gps-spark span { flex: 1; border-radius: 3px 3px 0 0; background: linear-gradient(180deg, var(--gps-accent), rgba(59,116,242,.25)); }
+.gps-spark span.hi { background: linear-gradient(180deg, var(--gps-good), rgba(38,194,129,.3)); }
+
+/* calendar */
+.gps-cal-h { display: flex; justify-content: space-between; font-size: 13px; font-weight: 700; margin-bottom: 10px; }
+.gps-cal-h .sel { color: var(--gps-accent); }
+.gps-cgrid { display: grid; grid-template-columns: repeat(7,1fr); gap: 5px; }
+.gps-cd { aspect-ratio: 1; border-radius: 5px; background: var(--gps-good-wash); display: grid; place-items: center; font-size: 11px; color: var(--gps-good); font-weight: 700; font-variant-numeric: tabular-nums; }
+.gps-cd.b { background: var(--gps-warn-wash); color: var(--gps-warn); }
+.gps-cd.f { background: var(--gps-crit-wash); color: var(--gps-crit); }
+.gps-cd.sel { outline: 2px solid var(--gps-accent); background: var(--gps-accent-wash); color: var(--gps-accent-ink); }
+.gps-cd.mut { background: transparent; }
+.gps-calleg { display: flex; gap: 14px; margin-top: 12px; font-size: 11.5px; color: var(--gps-muted); flex-wrap: wrap; }
+.gps-calleg span { display: flex; align-items: center; gap: 6px; }
+.gps-calleg i { width: 11px; height: 11px; border-radius: 3px; font-style: normal; }
+
+/* creative sizes */
+.gps-sizes { display: grid; grid-template-columns: repeat(5,1fr); gap: 9px; }
+.gps-sz { background: var(--gps-bg); border: 1px solid var(--gps-line); border-radius: 10px; padding: 9px; text-align: center; }
+.gps-sz .box { background: linear-gradient(135deg,#16233f,#33507e); border-radius: 6px; position: relative; overflow: hidden; margin-bottom: 6px; }
+.gps-sz .box::after { content: ""; position: absolute; inset: 26% 14%; border-radius: 2px; background: linear-gradient(90deg, var(--gps-accent), var(--gps-accent-soft)); box-shadow: 0 0 10px rgba(74,128,255,.6); }
+.gps-sz .r169 { aspect-ratio: 16/9; } .gps-sz .r916 { aspect-ratio: 9/16; } .gps-sz .r11 { aspect-ratio: 1/1; } .gps-sz .r31 { aspect-ratio: 3/1; } .gps-sz .r219 { aspect-ratio: 21/9; }
+.gps-sz .cap { font-size: 11px; font-weight: 700; }
+.gps-sz .spec { font-size: 9.5px; color: var(--gps-muted); margin-top: 2px; }
+.gps-sz .ok { font-size: 9.5px; font-weight: 800; color: var(--gps-good); margin-top: 4px; }
+
+.gps-note { font-size: 11.5px; color: var(--gps-muted); display: flex; gap: 8px; align-items: flex-start; background: var(--gps-accent-wash); border: 1px solid #d3e0ff; border-radius: 10px; padding: 11px 13px; }
+.gps-note b { color: var(--gps-accent-ink); }
+
+/* 이미지 아래 정보 — 월비용을 제목 바로 아래로(map.js 순서). 셀링포인트 앞 점(•) 제거, 태그 노출 */
+.map-list-card .map-card-exposure-point::before { display: none; }
+.map-list-card .map-card-exposure-point { padding-left: 0; }
+
+/* 리스트 카드 외곽 틀 제거 — 사진+텍스트만 남겨 시원·깔끔하게 (hello ooh·HOO 벤치마크) */
+.map-list-card { border: 0; background: transparent; padding: 0; border-radius: 0; box-shadow: none; gap: 10px; transition: transform .18s ease; }
+/* 호버 강조: 파란 외곽선 없이 살짝 그림자 + 미세한 리프트만 */
+.map-list-card:hover { border-color: transparent; background: transparent; box-shadow: none; transform: translateY(-3px); }
+.map-list-card .map-card-photo-pair { transition: box-shadow .18s ease; }
+.map-list-card:hover .map-card-photo-pair { box-shadow: 0 12px 26px rgba(15,23,42,.20); }
+.map-list-card .map-card-photo-pair { position: relative; } /* 사진 모서리는 배포본과 동일(원래 6px) 사용 — 14px 오버라이드 제거 */
+/* 선택 표시는 박스 대신 사진 테두리로 은은하게 */
+.map-list-card.is-active { background: transparent; box-shadow: none; }
+.map-list-card.is-active .map-card-photo-pair { outline: none; }
+/* 호버·포커스 시 카드 전체를 두르는 파란 외곽선 제거(촌스러움) — 포커스는 사진에만 은은하게 */
+.map-list-card > button:focus-visible { outline: none; }
+.map-list-card:has(> button:focus-visible) { border-color: transparent; box-shadow: none; }
+.map-list-card:has(> button:focus-visible) .map-card-photo-pair { outline: 2px solid rgba(15,23,42,.4); outline-offset: 2px; }
+/* 호버 시 사진 위 좌우 넘김 화살표 + 도트 (경쟁사 방식) */
+.gps-caro { position: absolute; top: 50%; transform: translateY(-50%); width: 30px; height: 30px; border-radius: 50%; border: none; background: rgba(255,255,255,.28); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); color: #fff; font-size: 19px; line-height: 1; font-weight: 800; display: grid; place-items: center; cursor: pointer; opacity: 0; transition: opacity .15s, background .15s; z-index: 4; box-shadow: none; text-shadow: 0 1px 3px rgba(0,0,0,.45); }
+.gps-caro.prev { left: 8px; }
+.gps-caro.next { right: 8px; }
+.gps-caro:hover { background: rgba(255,255,255,.45); }
+.map-list-card:hover .gps-caro { opacity: 1; }
+.gps-caro-dots { position: absolute; bottom: 9px; left: 50%; transform: translateX(-50%); display: flex; gap: 5px; z-index: 4; opacity: 0; transition: opacity .15s; }
+.map-list-card:hover .gps-caro-dots { opacity: 1; }
+.gps-caro-dots span { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,.55); box-shadow: 0 0 2px rgba(0,0,0,.3); }
+.gps-caro-dots span.on { background: #fff; }
+/* 카드 사이 여백을 넉넉히 → 시원한 느낌 */
+.map-sidebar-list { gap: 30px; padding: 16px var(--map-rail-gutter) 32px; }
+
+/* 지도 +/- 줌 버튼 제거 (스크롤·더블클릭으로 확대 가능, 우측 간결화) */
+.map-zoom-controls { display: none; }
+
+/* 좌측 리스트 레일 폭은 배포본과 동일(원래 430px) 유지 — 사진 크기 배포본과 일치 */
+
+
+/* 사진 영역: 원래대로 2장 나란히(기존 크기) + 여러 장은 좌우 화살표로 2장씩 페이지 넘김 */
+
+/* 리스트 카드 태그(도산대로 프리미엄·대형 전광판) 제거 — 상권 태그는 반복·마케팅성, 유형은 사진·필터탭으로 파악. 매체별 특성 문구에 집중 */
+.map-list-card .map-list-tags { display: none; }
+
+/* 관심매체 비교 표 헤더 사진 축소 — 비교 표에선 식별용이면 충분(82px→48px) */
+.map-fav-col img,
+.map-fav-busimg { height: 48px; }
+
+/* 관심매체 비교 — 매체=행(row), 비교 항목=상단 헤더 열. 10개+도 세로 스크롤로 비교. 항목 많으면 가로 스크롤, 매체 열은 좌측 고정 */
+.map-fav-compare--rows table { table-layout: auto; }
+.map-fav-compare--rows thead th { padding: 0 10px 8px; border-bottom: 1px solid #e2e8f0; color: #94a3b8; font-size: 11px; font-weight: 700; white-space: nowrap; text-align: left; vertical-align: bottom; }
+/* 비고(지역) — 매체 왼쪽 고정 열 */
+.map-fav-compare--rows thead th.map-fav-region-h { position: sticky; left: 0; z-index: 2; width: 46px; padding: 0 6px 8px 0; background: #fff; color: #94a3b8; font-size: 11px; font-weight: 700; }
+.map-fav-compare--rows tbody td.map-fav-region { position: sticky; left: 0; z-index: 1; width: 46px; padding: 8px 6px 8px 0; border-top: 1px solid #eef2f7; background: #fff; color: #334155; font-size: 11.5px; font-weight: 800; white-space: nowrap; text-align: left; vertical-align: middle; }
+/* 매체 열은 비고 오른쪽(left:46px)으로 고정 */
+/* 구분(순번) — 최좌측 고정 열 */
+.map-fav-compare--rows thead th.map-fav-no-h { position: sticky; left: 0; z-index: 2; width: 36px; padding: 0 6px 8px 0; background: #fff; text-align: center; color: #94a3b8; font-size: 11px; font-weight: 700; }
+.map-fav-compare--rows tbody td.map-fav-no-cell { position: sticky; left: 0; z-index: 1; width: 36px; padding: 8px 6px; border-top: 1px solid #eef2f7; background: #fff; text-align: center; color: #94a3b8; font-size: 11px; font-weight: 500; vertical-align: middle; }
+/* 매체 열 — 구분 오른쪽(left:36px) 고정. 헤더는 중앙, 셀 내용은 좌측 */
+.map-fav-compare--rows thead th.map-fav-compare-corner { position: sticky; left: 36px; z-index: 2; width: auto; padding: 0 12px 8px 0; background: #fff; text-align: center; }
+.map-fav-compare--rows tbody th.map-fav-rowhead { position: sticky; left: 36px; z-index: 1; min-width: 284px; max-width: 320px; padding: 10px 14px 10px 0; border-top: 1px solid #eef2f7; background: #fff; text-align: left; vertical-align: middle; }
+/* 매체 셀 — 사진(상하 중앙) · [매체명/주소/규격·해상도] 좌측 정렬 */
+.map-fav-media-cell { display: flex; align-items: center; gap: 10px; }
+.map-fav-media-cell img,
+.map-fav-media-cell .map-fav-busimg { flex: 0 0 auto; width: 92px; height: 68px; border-radius: 9px; object-fit: cover; }
+.map-fav-media-info { display: flex; flex-direction: column; align-items: flex-start; gap: 3px; min-width: 0; max-width: 196px; text-align: left; }
+.map-fav-media-info b { display: block; max-width: 100%; min-height: 0; color: #0f172a; font-size: 11px; font-weight: 700; line-height: 1.3; white-space: nowrap; overflow: hidden; }
+.map-fav-media-addr { color: #64748b; font-size: 11px; font-weight: 500; line-height: 1.35; }
+.map-fav-media-tags { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 4px; margin-top: 1px; }
+.map-fav-media-tags span { display: inline-flex; align-items: center; padding: 2px 7px; border-radius: 5px; background: #eef2f7; color: #475569; font-size: 11px; font-weight: 500; white-space: nowrap; }
+/* 유형 이후 비교 값들 — 글씨 색·크기 통일(#334155 / 13px / 600). 방문층은 줄바꿈만 다르게 */
+.map-fav-compare--rows tbody td { color: #334155; font-size: 11px; font-weight: 500; }
+.map-fav-compare--rows tbody td.is-price { color: #334155; font-weight: 500; }
+.map-fav-compare--rows tbody td.is-audience { white-space: normal; min-width: 190px; max-width: 240px; line-height: 1.4; color: #334155; font-weight: 500; }
+.map-fav-compare--rows thead th.is-audience { white-space: normal; max-width: 240px; }
+/* 관심매체 패널 확대 + Excel 다운로드 버튼 */
+.map-fav-sheet { width: min(880px, 96vw); }
+.map-fav-foot .map-fav-total-row { margin-right: auto; }
+.map-fav-download { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 48px; padding: 0 16px; border: 1px solid #cbd5e1; border-radius: 12px; background: #fff; color: #0f172a; font-size: 13.5px; font-weight: 700; cursor: pointer; transition: background .15s ease, color .15s ease; }
+.map-fav-download:hover { background: #eef4ff; border-color: #b7c8e7; color: #0b3a91; }
+.map-fav-download svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+/* 상단 비교 제목·값 가운데 정렬 (지역·매체·주 방문층·비고 셀은 좌측 유지). 1일 보장횟수 줄바꿈/잘림 방지 */
+.map-fav-compare--rows thead th { text-align: center; }
+.map-fav-compare--rows tbody td { text-align: center; }
+.map-fav-compare--rows tbody td.is-audience { text-align: left; }
+.map-fav-compare--rows tbody td.is-numl { text-align: right; }
+.map-fav-compare--rows tbody td.map-fav-remove-cell { text-align: right; }
+.map-fav-compare--rows tbody td.is-playspec { text-align: center; }
+.map-fav-compare--rows .is-playspec { line-height: 1.4; }
+.map-fav-compare--rows tbody td { padding: 8px 10px; border-top: 1px solid #eef2f7; white-space: nowrap; text-align: left; vertical-align: middle; }
+.map-fav-compare--rows tbody td.map-fav-remove-cell { text-align: right; padding-right: 0; }
+.map-fav-compare--rows tbody .map-fav-remove { position: static; }
+/* 규격(화면 크기) 한 줄 */
+.map-list-card .map-card-spec { margin: 0; font-size: 12.5px; font-weight: 600; color: #52647e; }
+/* 상세 '실시간 라이브 상담' — 초록 점만 지도와 동일하게(흰 원 대체), 버튼 크기·높이는 기존 유지 */
+.map-detail-live-card strong::before {
+  content: ""; width: 7px; height: 7px; border: 0; border-radius: 999px;
+  background: #2fd27a; box-shadow: 0 0 0 3px rgba(47, 210, 122, 0.25);
+}
+
+/* 상세페이지 매체명 축소 + 관심 버튼을 메인 리스트 '관심'과 동일 크기(높이24·글자11.5·아이콘13) */
+.map-detail-title-row h2 { font-size: 20px; font-weight: 800; }
+.map-detail-fav { height: 24px; padding: 0 9px 0 7px; font-size: 11.5px; font-weight: 700; }
+.map-detail-fav span { font-size: 11.5px; font-weight: 700; } /* 내부 텍스트가 24px로 따로 지정돼 있어 직접 축소 */
+.map-detail-fav svg { width: 13px; height: 13px; }
+/* 상세페이지 제목 태그(대형 전광판·도산대로 프리미엄) 제거 — 유형은 상세 제원에, "프리미엄"은 마케팅성 */
+.map-detail-view .map-list-tags { display: none; }
+/* 상권 대표 브랜드 칩 글씨 = 매체 소개서(12px)와 동일 크기·톤 */
+.map-detail-selling .map-nearby-brands span { font-size: 12px; font-weight: 600; }
+
+/* 매체 소개서·데이터 리포트·거리뷰 보기 — 호버 강조(연한 블루 배경 + 글자 네이비). 세그먼트라 배경형으로 */
+.map-detail-actions a,
+.map-detail-actions button { transition: background .15s ease; cursor: pointer; }
+.map-detail-actions a:hover,
+.map-detail-actions button:hover { background: #eef4ff; }
+.map-detail-actions a:hover strong,
+.map-detail-actions button:hover strong { color: #0b3a91; }
+
+/* 하단 연락처(전화·온라인 상담·카톡) 텍스트를 좌측 서비스 버튼 라벨(.gps-svc .top)과 동일하게 통일 — 700 / ink-soft. 실시간 라이브 상담(.primary)은 제외 */
+.map-contact-card a:not(.primary) { font-weight: 700; color: var(--gps-ink-soft); }
+/* 연락처 항목 간격을 서비스 도크·지도 컨트롤과 통일 — 5px */
+.map-contact-card { gap: 5px; }
+/* 지도 컨트롤(지도바↔거리뷰바) 간격 3px→5px: 아래 토글 top 58→60 */
+.map-utility-controls { top: 60px; }
+
+/* 큐레이션 팝업 버튼(실시간 상담·소개서 다운로드)을 상세 '매체 소개서'와 동일한 톤·강조로 — 흰 배경 → 호버 시 연한 블루 */
+.map-curation-live,
+.map-curation-download { border-color: #e2e8f0; background: #fff; color: #0f172a; font-size: 12px; transition: background .15s ease, color .15s ease; }
+.map-curation-live:hover,
+.map-curation-download:hover { border-color: #e2e8f0; background: #eef4ff; color: #0b3a91; }
+
+/* 큐레이션 왼쪽 컬럼(헤더·리스트·실시간 상담/소개서 다운로드 영역) 배경을 흰색으로 통일 — 리스트 기본이 흰색이 되면서 틴트 배경만 떠 보이던 문제 해소 */
+.map-curation-copy { background: #fff; }
+
+/* 팝업 내부 타이포 정리 — 리스트 항목 글씨 12px로 통일(헤더 16px은 위계상 유지). 버튼도 12px(위 규칙). 실시간 상담/소개서 다운로드 위 분리 선(리스트 border-bottom) 제거 */
+.map-curation-list strong { font-size: 12px; }
+.map-curation-list { border-bottom: 0; }
+
+/* 큐레이션 리스트 항목 — 기본은 흰색. 호버: 배경 틴트(#f8fafc)만. 클릭(선택): 배경 틴트 + 파란 왼쪽 띠. (선택 규칙을 뒤에 둬 선택 항목은 호버해도 띠 유지) */
+.map-curation-list button { background: #fff; }
+.map-curation-list button:hover { background: #f8fafc; box-shadow: none; }
+.map-curation-list button.is-active { background: #f8fafc; box-shadow: inset 3px 0 0 #0b3a91; }
+
+/* 매체 노출 포인트(3안) — 블루 캡션을 박스 안에 넣어 강조 + 브랜드는 박스 밖 별도 소제목(여유 여백) */
+.map-detail-selling .map-detail-audience-box { margin-top: 2px; padding: 11px 15px; background: #eef4ff; border-radius: 10px; }
+.map-detail-selling .map-audience-cap { margin: 0 0 5px; font-size: 11.5px; font-weight: 800; color: var(--gps-accent-ink); letter-spacing: .02em; }
+.map-detail-selling .map-detail-audience-line { margin: 0; padding: 0; background: none; font-size: 13.5px; font-weight: 700; color: #16233f; line-height: 1.5; }
+.map-detail-selling .map-nearby-label--brands { margin: 10px 0 8px; }
+.map-detail-selling .map-nearby-brands { margin-bottom: 12px; }
+
+/* 상세 상단 hero — videoUrl 있으면 동영상 재생, 없으면 사진(폴백). 박스 꽉 채움 */
+.map-detail-video-preview video { width: 100%; height: 100%; object-fit: cover; display: block; background: #0f172a; }
+
+/* 갤러리 스타일(1안, 각짐) — 바깥/타일 모두 각지게(라운딩 없음), 타일은 딱 붙임(여백 0). 조각별 라운딩/검은 여백 제거로 촌스러움 해소 */
+.map-detail-media-hero { border-radius: 0; gap: 0; background: transparent; }
+.map-detail-media-grid { gap: 0; padding: 0; background: transparent; }
+.map-detail-media-grid figure { border-radius: 0; }
+
+/* '사진 더보기' — 타일 전체를 어둡게 덮던 방식 → 마지막 사진 위 반투명 글라스 칩(우하단) */
+.map-detail-media-grid figure:nth-child(4)::after { display: none; }
+.map-detail-gallery-jump {
+  inset: auto; right: 7px; bottom: 7px; width: auto; height: auto;
+  display: inline-flex; align-items: center; justify-content: center;
+  padding: 5px 11px; border-radius: 999px;
+  background: rgba(15, 23, 42, .48);
+  -webkit-backdrop-filter: blur(7px); backdrop-filter: blur(7px);
+  color: #fff; font-size: 11px; font-weight: 700; line-height: 1;
+  box-shadow: 0 2px 8px rgba(15, 23, 42, .25);
+}
+.map-detail-video-preview.has-video .play { display: none; } /* 데코 재생 삼각형 숨김(실제 컨트롤 사용) */
+
+/* 상세페이지 매체 노출 포인트 — 주 방문층(지역 오디언스) 강조 콜아웃 */
+.map-detail-selling .map-detail-audience { margin: 12px 0 0; padding: 12px 14px; background: var(--gps-accent-wash); border: 1px solid #d3e0ff; border-radius: 10px; font-size: 14px; font-weight: 700; color: var(--gps-ink); line-height: 1.5; }
+.map-detail-selling .map-detail-audience span { display: block; font-size: 11.5px; font-weight: 800; color: var(--gps-accent-ink); margin-bottom: 4px; letter-spacing: .02em; }
+/* 광고주 핵심 지표: 일 유동인구(도달)를 가격 아래 눈에 띄게 */
+.map-list-card .map-card-reach { justify-self: start; margin: 2px 0 0; font-size: 12px; font-weight: 800; color: var(--gps-accent-ink); background: var(--gps-accent-wash); padding: 4px 10px; border-radius: 999px; }
+
+/* 타이포 간결화 — 제목 가볍게(18/820→16/700), 상세보기 작게(16→12), 줄간격 좁게 (hello ooh 톤) */
+.map-list-card .map-list-title-row h2 { font-size: 16px; font-weight: 700; line-height: 1.3; }
+.map-list-card .map-card-footer { font-size: 12px; }
+.map-list-card .map-list-card-body { gap: 6px; }
+
+/* mobile */
+@media (max-width: 860px) {
+  .gps-dock { position: static; width: auto; flex-direction: row; overflow-x: auto; margin: 8px 12px 0; }
+  .gps-dock-h, .gps-flow, .gps-svc .sub { display: none; }
+  .gps-svc { flex: none; }
+  .gps-svc .top { white-space: nowrap; }
+  .gps-row2, .gps-kpis, .gps-scen { grid-template-columns: 1fr; }
+  .gps-sizes { grid-template-columns: repeat(2,1fr); }
+}

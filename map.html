@@ -5,7 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>지도 보기 | 광고플레이 DOOH</title>
     <meta name="description" content="서울 주요 상권의 DOOH 전광판 매체를 지도형 화면에서 비교하고 탐색합니다.">
-    <link rel="stylesheet" href="assets/css/styles.css?v=map-favorites-20260629">
+    <link rel="stylesheet" href="assets/css/styles.css?v=map-nearby-20260629">
+    <link rel="stylesheet" href="assets/css/map-services.css?v=services-20260704z68">
   </head>
   <body>
     <a class="skip-link" href="#main">본문 바로가기</a>
@@ -19,7 +20,7 @@
         <a class="map-nav-media-link is-youtube" href="https://www.youtube.com/channel/UCxXNbNumZkcpjIGzUaOnfnQ" target="_blank" rel="noopener">광고집행사례<span class="map-nav-icon" aria-hidden="true"></span></a>
         <a class="map-nav-media-link is-blog" href="guides.html">광고 인사이트<span class="map-nav-icon" aria-hidden="true"></span></a>
         <button type="button" class="map-filter-entry map-header-filter" id="mapRegionToggle" aria-expanded="false" aria-controls="mapRegionPanel">지역검색</button>
-        <button type="button" class="map-filter-entry map-header-filter" id="mapCostFilterToggle" aria-expanded="false" aria-controls="mapCostFilterPanel">비용·기간 검색</button>
+        <button type="button" class="map-filter-entry map-header-filter" id="mapCostFilterToggle" aria-expanded="false" aria-controls="mapCostFilterPanel">예산·기간 검색</button>
       </nav>
       <div class="map-global-actions">
         <a class="map-actions-media" href="media.html">주요매체</a>
@@ -50,20 +51,20 @@
           </aside>
           <section class="map-canvas-shell" aria-label="매체 위치 지도">
             <div class="map-stage" id="mapStage"></div>
-            <section class="map-cost-filter-panel" id="mapCostFilterPanel" aria-label="비용 및 기간 검색" hidden>
+            <section class="map-cost-filter-panel" id="mapCostFilterPanel" aria-label="예산·기간 검색" hidden>
               <div class="map-cost-filter-head">
-                <h2>원하는 비용 및 기간으로 검색하세요</h2>
-                <button type="button" id="mapCostFilterClose" aria-label="비용 기간 검색 닫기">×</button>
+                <h2>원하는 예산과 기간으로 검색하세요</h2>
+                <button type="button" id="mapCostFilterClose" aria-label="예산·기간 검색 닫기">×</button>
               </div>
               <div class="map-cost-filter-active" aria-live="polite">
                 <span>현재 적용된 조건</span>
-                <b id="mapBudgetActive">비용 전체</b>
+                <b id="mapBudgetActive">예산 전체</b>
                 <b id="mapPeriodActive">기간 전체</b>
               </div>
               <div class="map-cost-filter-grid">
                 <fieldset>
-                  <legend>비용</legend>
-                  <button type="button" class="is-active" data-budget-filter="all">비용 전체</button>
+                  <legend>예산</legend>
+                  <button type="button" class="is-active" data-budget-filter="all">예산 전체</button>
                   <button type="button" data-budget-filter="under100">100만원 미만</button>
                   <button type="button" data-budget-filter="100-300">100 - 300만원 미만</button>
                   <button type="button" data-budget-filter="300-500">300 - 500만원 미만</button>
@@ -144,8 +145,8 @@
               <button type="button">스카이뷰</button>
             </div>
             <div class="map-utility-controls" aria-label="지도 부가 기능">
-              <button type="button">로드뷰</button>
-              <button type="button">실시간<br>교통</button>
+              <button type="button">거리뷰</button>
+              <button type="button">실시간교통</button>
             </div>
             <div class="map-zoom-controls" aria-label="지도 확대 축소">
               <button type="button" aria-label="지도 확대">+</button>
@@ -157,8 +158,13 @@
               <span><i class="bus-stop-pin is-nonlight"><span class="bus-stop-pin-core"><span class="bus-stop-pin-window"></span><span class="bus-stop-pin-body"></span><span class="bus-stop-pin-wheel is-left"></span><span class="bus-stop-pin-wheel is-right"></span></span></i>비조명</span>
             </div>
             <div class="map-contact-card" aria-label="상담 채널">
-              <a href="tel:1533-1975">1533-1975</a>
-              <a href="estimate.html">온라인 상담</a>
+              <a href="tel:1533-1975"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>1533-1975</a>
+              <a href="estimate.html"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 20h4L18.5 9.5l-4-4L4 16v4z"/><path d="M13.5 6l4 4"/></svg>온라인 상담<span class="map-contact-en">Contact</span></a>
+              <a href="#" id="mapKakaoConsult"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 4C7 4 3 7.2 3 11.2c0 2.5 1.6 4.7 4 6-.2.8-.7 2.3-.8 2.6 0 .2.1.4.4.3.3-.2 2.6-1.7 3.4-2.3.6.1 1.3.2 2 .2 5 0 9-3.2 9-7.1S17 4 12 4z"/></svg>카톡상담</a>
+              <button type="button" class="map-contact-fav" id="mapContactFav" data-fav-trigger aria-haspopup="dialog" aria-controls="mapFavPanel" hidden>
+                <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                <span>관심매체(<strong data-fav-count>0</strong>) 비교·상담</span>
+              </button>
               <a class="primary" href="estimate.html">실시간 라이브 상담</a>
             </div>
             <button type="button" class="map-mobile-list-toggle" id="mapMobileListToggle" aria-expanded="false" aria-controls="mapListView">
@@ -173,19 +179,20 @@
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 2l1.9 5.9H20l-4.9 3.6 1.9 5.9L12 13.8 7 17.4l1.9-5.9L4 7.9h6.1z"/></svg>
               <span>맞춤추천</span>
             </button>
-            <button type="button" class="map-fav-bar" id="mapFavBar" aria-haspopup="dialog" aria-controls="mapFavPanel" hidden>
+            <button type="button" class="map-fav-bar" id="mapFavBar" data-fav-trigger aria-haspopup="dialog" aria-controls="mapFavPanel" hidden>
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-              <span>관심매체(<strong id="mapFavCount">0</strong>) 상담신청</span>
+              <span>관심매체(<strong id="mapFavCount" data-fav-count>0</strong>) 비교·상담</span>
             </button>
             <div class="map-fav-panel" id="mapFavPanel" role="dialog" aria-modal="true" aria-label="관심매체 비교" hidden>
               <div class="map-fav-sheet">
                 <div class="map-fav-head">
-                  <h2>관심매체 <strong id="mapFavPanelCount">0</strong></h2>
+                  <h2>관심매체 비교 (<strong id="mapFavPanelCount">0</strong>)</h2>
                   <button type="button" class="map-fav-close" id="mapFavClose" aria-label="관심매체 비교 닫기">×</button>
                 </div>
                 <div class="map-fav-list" id="mapFavList"></div>
                 <div class="map-fav-foot">
                   <div class="map-fav-total-row"><span>예상 월 합계</span><strong id="mapFavTotal">-</strong></div>
+                  <button type="button" class="map-fav-download" id="mapFavDownload"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>다운로드(Excel)</button>
                   <a class="map-fav-cta" id="mapFavCta" href="estimate.html"><span>선택 매체로 상담신청</span></a>
                 </div>
               </div>
@@ -196,6 +203,7 @@
     </main>
     <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1ouo31myef&submodules=geocoder"></script>
     <script src="assets/js/common.js?v=bus-stop-layer-20260619"></script>
-    <script src="assets/js/map.js?v=map-favorites-20260629"></script>
+    <script src="assets/js/map.js?v=map-nearby-20260704z41"></script>
+    <script src="assets/js/map-services.js?v=services-20260704u"></script>
   </body>
 </html>

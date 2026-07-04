@@ -54,6 +54,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const favListEl = document.querySelector("#mapFavList");
   const favTotalEl = document.querySelector("#mapFavTotal");
   const favCta = document.querySelector("#mapFavCta");
+  const favDownload = document.querySelector("#mapFavDownload");
   const favClose = document.querySelector("#mapFavClose");
   const mobileLayoutQuery = window.matchMedia("(max-width: 700px)");
 
@@ -76,22 +77,122 @@ document.addEventListener("DOMContentLoaded", async () => {
     updateFavoritesUI();
     if (favPanel && !favPanel.hidden) renderFavPanel();
   }
-  function favoriteItems() {
-    return favorites
-      .map((slug) => mediaWithLocations.find((item) => item.slug === slug))
-      .filter(Boolean);
+  function topScoreLabel(insight) {
+    const scores = (insight && insight.scores) || [];
+    if (!scores.length) return "-";
+    const top = scores.slice().sort((a, b) => (b.value || 0) - (a.value || 0))[0];
+    return top ? `${top.label} ★${top.value}` : "-";
   }
+  // 비고(지역) — 주소의 '구'를 우선, 없으면 매체명/상권으로 폴백
+  function regionLabel(item) {
+    const addr = item.address || (item.mapLocation && item.mapLocation.sourceAddress) || "";
+    const m = addr.match(/([가-힣]{1,3})구(?![가-힣])/);
+    if (m) return m[1].length >= 2 ? m[1] : m[1] + "구";
+    const text = (item.name || "") + " " + addr;
+    if (/서울역|KTX/i.test(text)) return "서울역";
+    if (/전국|수도권|지방|생활권/i.test(text)) return "전국";
+    return (item.areaName || "-").split(/[\s·/]/)[0];
+  }
+  // 1일 송출(초수·횟수) — media.json playSpec 우선, 없으면 유형별 기본값
+  function playSpecLabel(item) {
+    if (item.playSpec) return item.playSpec;
+    const t = (item.category || "") + " " + (item.mediaType || "");
+    if (/지하철|subway/i.test(t)) return "1일 다회 롤링";
+    if (/버스|bus/i.test(t)) return "1일 다회 롤링";
+    if (/엘리베이터|elevator|생활/i.test(t)) return "10초 · 상시 롤링";
+    if (/DID|쇼핑|9to9/i.test(t)) return "상시 롤링";
+    return "20초 · 1일 100회";
+  }
+  // 비용 표기 "월 1,200만원" → "1,200만원/월"
+  function perMonthPrice(label) {
+    return /만원$/.test(label || "") ? String(label).replace(/^월\s*/, "") + "/월" : (label || "-");
+  }
+  // 승하차 등 "856.1만명" → "856만명" (소수점 제거, 만명 단위 통일)
+  function roundMan(label) {
+    return String(label == null ? "-" : label).replace(/\.\d+(?=\s*만)/, "");
+  }
+  // 유형 — 카테고리 제목 기반, '광고'·'대형' 등 수식 제거(전광판/지하철/버스…)
+  function typeLabel(item) {
+    const map = { large_billboard: "전광판", shopping_mall_did: "쇼핑몰 DID", subway: "지하철", bus: "버스", transport_hub: "철도·터미널", daily_touchpoint: "생활밀착형", package: "패키지", other: "기타" };
+    if (map[item.category]) return map[item.category];
+    return (AdPlay.categoryLabels[item.category] || item.mediaType || "-").replace(/\s*광고$/, "").replace(/^대형\s*/, "");
+  }
+  function favoriteItems() {
+    return favorites.map((favId) => {
+      if (typeof favId === "string" && favId.indexOf("bus:") === 0) {
+        const stop = (busStops || []).find((s) => String(s.id) === favId.slice(4));
+        if (!stop) return null;
+        const p = stop.adProduct || {};
+        return {
+          favId,
+          name: p.stationName || stop.name,
+          image: null,
+          price: p.monthlyCostLabel || formatBusWon(p.minMonthlyCost) || "비용 문의",
+          priceMonthly: perMonthPrice(p.monthlyCostLabel || formatBusWon(p.minMonthlyCost) || "비용 문의"),
+          monthly: Number(p.minMonthlyCost) || 0,
+          size: p.outerSize || p.innerSize || "-",
+          resolution: "-",
+          area: [p.district, p.dong].filter(Boolean).join(" ") || "-",
+          type: "버스 정류장",
+          reach: p.ridershipLabel || "-",
+          target: "-",
+          topSpot: "-",
+          region: (p.district || "").replace(/구$/, "") || "-",
+          playSpec: "1일 다회 롤링",
+          address: [p.district, p.dong, p.stationName].filter(Boolean).join(" ") || "-",
+          audience: "-",
+          operationHours: p.operationHours || "-",
+          foot500: "-",
+          subway: "-",
+          bus: roundMan(p.ridershipLabel || "-"),
+          note: "-",
+          isBus: true,
+        };
+      }
+      const item = mediaWithLocations.find((m) => m.slug === favId);
+      if (!item) return null;
+      const insight = locationInsight(item);
+      return {
+        favId,
+        name: item.name,
+        image: cardImages(item)[0],
+        price: mapCardPriceLabel(item),
+        priceMonthly: perMonthPrice(mapCardPriceLabel(item)),
+        monthly: AdPlay.minMonthlyPrice(item) || 0,
+        size: sizeLabel(item),
+        resolution: (item.mapLocation && item.mapLocation.resolution) || item.resolutionPx || "확인 필요",
+        area: item.areaName || "-",
+        type: typeLabel(item),
+        reach: (cardReachLabel(item) || "").replace("일 유동인구 ", "") || "-",
+        target: (insight.stats && insight.stats.target) || "-",
+        topSpot: topScoreLabel(insight),
+        region: regionLabel(item),
+        playSpec: playSpecLabel(item),
+        address: item.address || "",
+        audience: detailAudience(item) || "-",
+        operationHours: (item.mapLocation && item.mapLocation.operationHours) || item.operationHours || "-",
+        foot500: (insight.stats && insight.stats.daily500) || "-",
+        subway: roundMan((insight.stats && insight.stats.subway) || "-"),
+        bus: roundMan((insight.stats && insight.stats.bus) || "-"),
+        note: item.note || "-",
+        isBus: false,
+      };
+    }).filter(Boolean);
+  }
+  function favStarButton(favId, name, variant) {
+    const on = isFavorite(favId);
+    const label = "관심";
+    return `<button type="button" class="${variant}${on ? " is-active" : ""}" data-fav-toggle="${AdPlay.esc(favId)}" aria-pressed="${on}" aria-label="${AdPlay.esc(name)} 관심매체 ${on ? "제거" : "담기"}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><span>${label}</span></button>`;
+  }
+
   function favHeartButton(item, variant) {
-    const on = isFavorite(item.slug);
-    const label = variant === "map-detail-fav"
-      ? (on ? "관심매체 담김" : "관심매체 담기")
-      : "관심";
-    return `<button type="button" class="${variant}${on ? " is-active" : ""}" data-fav-toggle="${AdPlay.esc(item.slug)}" aria-pressed="${on}" aria-label="${AdPlay.esc(item.name)} 관심매체 ${on ? "제거" : "담기"}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><span>${label}</span></button>`;
+    return favStarButton(item.slug, item.name, variant);
   }
   function updateFavoritesUI() {
     const count = favorites.length;
-    if (favBar) favBar.hidden = count === 0;
-    if (favCountEl) favCountEl.textContent = String(count);
+    document.querySelectorAll("[data-fav-trigger]").forEach((el) => { el.hidden = count === 0; });
+    document.querySelectorAll("[data-fav-count]").forEach((el) => { el.textContent = String(count); });
+    document.querySelectorAll(".gps-svc .bn[data-fav-count]").forEach((el) => { el.hidden = count === 0; });
     document.querySelectorAll("[data-fav-toggle]").forEach((button) => {
       const on = isFavorite(button.dataset.favToggle);
       button.classList.toggle("is-active", on);
@@ -103,35 +204,91 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (favPanelCount) favPanelCount.textContent = String(items.length);
     if (!favListEl) return;
     if (!items.length) {
-      favListEl.innerHTML = `<p class="map-fav-empty">아직 담은 관심매체가 없습니다.<br>매체 카드나 상세의 하트(♥)를 눌러 담아보세요.</p>`;
+      favListEl.innerHTML = `<p class="map-fav-empty">아직 담은 관심매체가 없습니다.<br>매체·버스정류장의 "★ 관심" 버튼으로 담아 비교해 보세요.</p>`;
       if (favTotalEl) favTotalEl.textContent = "-";
       if (favCta) { favCta.setAttribute("aria-disabled", "true"); favCta.removeAttribute("href"); }
       return;
     }
-    favListEl.innerHTML = items.map((item) => `
-      <article class="map-fav-card">
-        <figure><img src="${AdPlay.esc(cardImages(item)[0])}" alt="" loading="lazy" onerror="this.src='${AdPlay.esc(AdPlay.pageImage(item))}'"></figure>
-        <div class="map-fav-card-main">
-          <h3>${AdPlay.esc(item.name)}</h3>
-          <p>${AdPlay.esc(compactAddress(item))}</p>
-          <div class="map-fav-card-meta">
-            ${[item.areaName, sizeLabel(item)].filter(Boolean).map((tag) => `<span>${AdPlay.esc(tag)}</span>`).join("")}
-            <strong>${AdPlay.esc(mapCardPriceLabel(item))}</strong>
-          </div>
-        </div>
-        <button type="button" class="map-fav-remove" data-fav-remove="${AdPlay.esc(item.slug)}" aria-label="${AdPlay.esc(item.name)} 관심매체에서 제거">×</button>
-      </article>`).join("");
-    const total = items.reduce((sum, item) => sum + (AdPlay.minMonthlyPrice(item) || 0), 0);
+    const compareRows = [
+      { label: "유형", value: (fav) => fav.type },
+      { label: "1일 보장횟수", className: "is-playspec", html: true, value: (fav) => AdPlay.esc(fav.playSpec).replace(/\s*·\s*/g, "<br>") },
+      { label: "비용", className: "is-price", value: (fav) => fav.priceMonthly },
+      { label: "운영시간", value: (fav) => fav.operationHours },
+      { label: "주 방문층", className: "is-audience", value: (fav) => fav.audience },
+      { label: "일평균 유동", className: "is-numl", value: (fav) => fav.foot500 },
+      { label: "지하철 승하차", className: "is-numl", value: (fav) => fav.subway },
+      { label: "버스 승하차", className: "is-numl", value: (fav) => fav.bus },
+      { label: "비고", value: (fav) => fav.note },
+    ];
+    const thumb = (fav) => fav.image
+      ? `<img src="${AdPlay.esc(fav.image)}" alt="" loading="lazy">`
+      : `<span class="map-fav-busimg"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10M4 16h16M4 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2M20 16v2a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-2M6 8h12M7 12h.01M17 12h.01"/></svg></span>`;
+    favListEl.innerHTML = `
+      <div class="map-fav-compare map-fav-compare--rows">
+        <table>
+          <thead>
+            <tr>
+              <th class="map-fav-no-h">구분</th>
+              <th class="map-fav-compare-corner">매체</th>
+              ${compareRows.map((row) => `<th class="${row.className || ""}">${AdPlay.esc(row.label)}</th>`).join("")}
+              <th class="map-fav-remove-col" aria-label="삭제"></th>
+            </tr>
+          </thead>
+          <tbody>
+            ${items.map((fav, i) => `
+              <tr>
+                <td class="map-fav-no-cell">${i + 1}</td>
+                <th class="map-fav-rowhead"><span class="map-fav-media-cell">${thumb(fav)}<span class="map-fav-media-info"><b>${AdPlay.esc(fav.name)}</b><span class="map-fav-media-addr">${AdPlay.esc(fav.address)}</span><span class="map-fav-media-tags">${[fav.size, /\d\s*[x×]\s*\d/.test(fav.resolution) ? fav.resolution + "px" : fav.resolution].filter((v) => v && v !== "-" && v !== "확인 필요").map((v) => `<span>${AdPlay.esc(v)}</span>`).join("")}</span></span></span></th>
+                ${compareRows.map((row) => `<td class="${row.className || ""}">${row.html ? row.value(fav) : AdPlay.esc(row.value(fav))}</td>`).join("")}
+                <td class="map-fav-remove-cell"><button type="button" class="map-fav-remove" data-fav-remove="${AdPlay.esc(fav.favId)}" aria-label="${AdPlay.esc(fav.name)} 관심매체에서 제거">×</button></td>
+              </tr>`).join("")}
+          </tbody>
+        </table>
+      </div>`;
+    const total = items.reduce((sum, fav) => sum + (fav.monthly || 0), 0);
     if (favTotalEl) favTotalEl.textContent = total ? `월 ${AdPlay.formatKRW(total)}~` : "상담 필요";
     if (favCta) {
-      favCta.setAttribute("href", `estimate.html?intent=bundle&media=${items.map((item) => encodeURIComponent(item.slug)).join(",")}`);
+      favCta.setAttribute("href", `estimate.html?intent=bundle&media=${items.map((fav) => encodeURIComponent(fav.favId)).join(",")}`);
       favCta.removeAttribute("aria-disabled");
     }
+    fitFavTitles();
+  }
+  // 매체명 한 줄 넘어가면 폰트 자동 축소(줄바꿈 방지)
+  function fitFavTitles() {
+    if (!favListEl) return;
+    favListEl.querySelectorAll(".map-fav-media-info b").forEach((el) => {
+      el.style.fontSize = "";
+      let size = parseFloat(getComputedStyle(el).fontSize);
+      let guard = 0;
+      while (el.scrollWidth > el.clientWidth + 1 && size > 9.5 && guard < 24) {
+        size -= 0.5;
+        el.style.fontSize = size + "px";
+        guard++;
+      }
+    });
+  }
+  function downloadFavExcel() {
+    const items = favoriteItems();
+    if (!items.length) return;
+    const headers = ["지역", "매체명", "주소", "규격", "해상도(px)", "유형", "1일 보장횟수", "비용", "운영시간", "주 방문층", "일평균 유동", "지하철 승하차", "버스 승하차", "비고"];
+    const rows = items.map((f) => [f.region, f.name, f.address, f.size, f.resolution, f.type, f.playSpec, f.priceMonthly, f.operationHours, f.audience, f.foot500, f.subway, f.bus, f.note]);
+    const esc = (v) => `"${String(v == null ? "" : v).replace(/"/g, '""')}"`;
+    const csv = "﻿" + [headers].concat(rows).map((r) => r.map(esc).join(",")).join("\r\n");
+    const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "관심매체_비교.csv";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
   }
   function openFavPanel() {
     if (!favPanel) return;
     renderFavPanel();
     favPanel.hidden = false;
+    requestAnimationFrame(fitFavTitles);
     if (workspacePage) workspacePage.classList.add("is-fav-open");
   }
   function closeFavPanel() {
@@ -398,8 +555,10 @@ document.addEventListener("DOMContentLoaded", async () => {
     setCurationPanel(false);
   }
 
-  if (favBar) favBar.addEventListener("click", openFavPanel);
+  document.querySelectorAll("[data-fav-trigger]").forEach((el) => el.addEventListener("click", openFavPanel));
+  document.addEventListener("gps:open-favorites", openFavPanel); // 서비스 도크 "관심매체 비교" → 실제 통합 패널 열기
   if (favClose) favClose.addEventListener("click", closeFavPanel);
+  if (favDownload) favDownload.addEventListener("click", downloadFavExcel);
   if (favPanel) favPanel.addEventListener("click", (event) => {
     if (event.target === favPanel) closeFavPanel();
   });
@@ -960,7 +1119,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const images = cardImages(item, index);
     const isActive = selectedMediaSlug === item.slug;
     return `
-      <article class="map-list-card${isActive ? " is-active" : ""}">
+      <article class="map-list-card${isActive ? " is-active" : ""}" data-gallery="${AdPlay.esc(detailGalleryImages(item).join(","))}">
         <button type="button" data-map-media="${AdPlay.esc(item.slug)}" aria-label="${AdPlay.esc(item.name)} 상세 보기" aria-current="${isActive ? "true" : "false"}"></button>
         <div class="map-card-photo-pair">
           <figure>
@@ -975,7 +1134,6 @@ document.addEventListener("DOMContentLoaded", async () => {
             <h2>${AdPlay.esc(item.name)}</h2>
             ${favHeartButton(item, "map-card-fav")}
           </div>
-          <p>${AdPlay.esc(compactAddress(item))}</p>
           <p class="map-card-decision-line">${AdPlay.esc(mapCardDecisionSummary(item))}</p>
           <p class="map-card-exposure-point">${AdPlay.esc(cardExposurePoint(item))}</p>
           <div class="map-list-tags">
@@ -997,12 +1155,15 @@ document.addEventListener("DOMContentLoaded", async () => {
     const image = cardImages(item)[0];
     const galleryImages = detailGalleryImages(item);
     const insight = locationInsight(item);
+    const nearby = nearbyDistrict(item);
     const roadviewUrl = `https://map.naver.com/v5/search/${encodeURIComponent(location.sourceAddress || item.address)}`;
     detailRoot.innerHTML = `
       <button type="button" class="map-detail-close" id="mapDetailClose" aria-label="목록으로 돌아가기">×</button>
       <section class="map-detail-media-hero" aria-label="현장 사진과 영상">
-        <figure class="map-detail-video-preview">
-          <img src="${AdPlay.esc(galleryImages[1] || image)}" alt="${AdPlay.esc(item.name)} 광고 현장 영상 미리보기">
+        <figure class="map-detail-video-preview${item.videoUrl ? " has-video" : ""}">
+          ${item.videoUrl
+            ? `<video src="${AdPlay.esc(item.videoUrl)}" poster="${AdPlay.esc(galleryImages[1] || image)}" autoplay muted loop playsinline preload="metadata" controls aria-label="${AdPlay.esc(item.name)} 광고 현장 영상"><img src="${AdPlay.esc(galleryImages[1] || image)}" alt="${AdPlay.esc(item.name)} 광고 현장"></video>`
+            : `<img src="${AdPlay.esc(galleryImages[1] || image)}" alt="${AdPlay.esc(item.name)} 광고 현장 영상 미리보기">`}
         </figure>
         <div class="map-detail-media-grid">
           ${galleryImages.slice(0, 4).map((src, index) => `
@@ -1028,7 +1189,6 @@ document.addEventListener("DOMContentLoaded", async () => {
           <a href="${roadviewUrl}" target="_blank" rel="noopener"><strong>거리뷰 보기</strong><span>Street View</span></a>
         </div>
         <section class="map-detail-section map-detail-section-top" id="detailSpecs">
-          <h3>상세 제원</h3>
           <dl class="map-detail-specs">
             ${detailFact("크기", location.size || sizeLabel(item))}
             ${detailFact("해상도", location.resolution || item.resolutionPx || "확인 필요")}
@@ -1040,6 +1200,12 @@ document.addEventListener("DOMContentLoaded", async () => {
         <section class="map-detail-section map-detail-selling">
           <h3>매체 노출 포인트</h3>
           <p class="map-detail-copy">${AdPlay.esc(mediaSellingPoint(item))}</p>
+          ${detailAudience(item) ? `<div class="map-detail-audience-box">
+            <p class="map-audience-cap">이 앞을 지나는 주 방문층</p>
+            <p class="map-detail-audience-line">${AdPlay.esc(detailAudience(item))}</p>
+          </div>` : ""}
+          ${nearby.brands && nearby.brands.length ? `<p class="map-nearby-label map-nearby-label--brands">상권 대표 브랜드</p>
+          <div class="map-nearby-brands">${nearby.brands.map((brand) => `<span>${AdPlay.esc(brand)}</span>`).join("")}</div>` : ""}
         </section>
         <a class="map-detail-live-card" href="estimate.html?intent=live-talk&media=${encodeURIComponent(item.slug)}">
           <strong>실시간 라이브 상담</strong>
@@ -1053,7 +1219,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           <button type="button" class="map-detail-more">사진 더보기</button>
         </section>
         <section class="map-detail-section" id="detailRoadview">
-          <h3>로드뷰</h3>
+          <h3>거리뷰</h3>
           <a class="map-detail-roadview" href="${roadviewUrl}" target="_blank" rel="noopener">
             <img src="${AdPlay.esc(galleryImages[0] || image)}" alt="${AdPlay.esc(item.name)} 거리뷰 미리보기">
             <span>거리뷰 보기</span>
@@ -1066,13 +1232,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         </section>
         <section class="map-detail-section" id="detailLocation">
           <h3>입지 특성</h3>
-          <p class="map-detail-copy">${AdPlay.esc(insight.location)}</p>
           <div class="map-insight-score">
             ${insight.scores.map((score) => `<div><span>${AdPlay.esc(score.label)}</span><i style="--score:${score.value}"></i><strong>${score.value}</strong></div>`).join("")}
           </div>
-        </section>
-        <section class="map-detail-section" id="detailFacilities">
-          <h3>주요시설 및 행사</h3>
+          <p class="map-nearby-label">주요 시설·행사</p>
           <dl class="map-detail-table">
             ${insight.facilities.map((row) => `<dt>${AdPlay.esc(row.label)}</dt><dd>${AdPlay.esc(row.value)}</dd>`).join("")}
           </dl>
@@ -1166,6 +1329,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function mediaSellingPoint(item) {
+    if (item.exposureLong) return item.exposureLong; // 매체별 실데이터 우선(있으면), 없으면 아래 상권 키워드 폴백
     const text = [item.name, item.areaName, item.areaSlug, item.address].filter(Boolean).join(" ");
     if (/광화문|종로|시청|청계|gwanghwamun|jongno|jung/i.test(text)) {
       return "광장과 횡단보도 대기 동선에서 정면 시야가 형성되고, 주변 공공기관·언론사·문화시설 방문객에게 반복 노출되는 도심 랜드마크형 매체입니다.";
@@ -1252,12 +1416,27 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function mapCardDecisionSummary(item) {
-    const terms = [mapCardPriceLabel(item), sizeLabel(item)];
+    const terms = [mapCardPriceLabel(item)];
     terms.push(item.shortTermAvailable === false ? "월 단위 집행" : "1개월 미만 협의");
     return terms.filter(Boolean).join(" · ");
   }
 
+  function cardReachLabel(item) {
+    const area = areaBySlug.get(item.areaSlug);
+    const ft = area && Number(area.dailyFootTraffic);
+    if (!ft) return "";
+    const man = Math.round((ft / 10000) * 10) / 10;
+    return `일 유동인구 ${man}만명`;
+  }
+
+  function detailAudience(item) {
+    const area = areaBySlug.get(item.areaSlug);
+    const list = (area && area.primaryTargets) || [];
+    return list.join(" · ");
+  }
+
   function cardExposurePoint(item) {
+    if (item.exposureShort) return item.exposureShort; // 매체별 실데이터 우선(있으면), 없으면 아래 상권 키워드 폴백
     const text = [item.name, item.areaName, item.areaSlug, item.address, item.mapLocation && item.mapLocation.sourceAddress]
       .filter(Boolean)
       .join(" ");
@@ -1344,7 +1523,7 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function filterLabel(type, value) {
     const budget = {
-      all: "비용 전체",
+      all: "예산 전체",
       under100: "100만원 미만",
       "100-300": "100 - 300만원 미만",
       "300-500": "300 - 500만원 미만",
@@ -1423,9 +1602,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     ];
     const audienceRows = insight.audience || [];
     return `
-      <div class="map-traffic-lead">
-        <p>반경별 유동, 대중교통 승하차, 도로 교통량을 함께 보며 매체 주변 도달 규모와 노출 피크를 판단할 수 있습니다.</p>
-      </div>
       <div class="map-traffic-kpis">
         <article class="is-primary"><span>일평균 유동 500m</span><strong>${AdPlay.esc(stats.daily500)}</strong><em>상권 반경 추정</em></article>
         <article><span>일평균 유동 300m</span><strong>${AdPlay.esc(stats.daily300)}</strong><em>매체 근접권</em></article>
@@ -1480,7 +1656,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       <div class="map-traffic-segments" aria-label="타깃 및 방문 동기">
         <div class="map-traffic-segments-head">
           <h4>타깃·방문 동기</h4>
-          <p>광고 메시지를 누구에게 맞출지 판단하는 보조 지표입니다.</p>
         </div>
         <div class="map-age-distribution">
           <div class="map-age-distribution-head">
@@ -1498,6 +1673,36 @@ document.addEventListener("DOMContentLoaded", async () => {
           ${audienceRows.map((row) => `<div class="map-traffic-segment"><span>${AdPlay.esc(row.label)}</span><i style="--bar:${row.value}"></i><strong>${AdPlay.esc(row.note)}</strong></div>`).join("")}
         </div>
       </div>`;
+  }
+
+  function nearbyDistrict(item) {
+    // 실데이터 우선: 배치로 수집한 item.nearbyBrands가 있으면 사용, 없으면 아래 키워드 폴백
+    if (Array.isArray(item.nearbyBrands) && item.nearbyBrands.length) {
+      return { summary: item.nearbySummary || "", brands: item.nearbyBrands.slice(0, 8) };
+    }
+    const text = [item.name, item.areaName, item.areaSlug, item.address, item.mapLocation && item.mapLocation.sourceAddress].filter(Boolean).join(" ");
+    if (/삼성|코엑스|COEX|samseong|coex/i.test(text)) {
+      return {
+        summary: "전시·쇼핑·업무가 겹치는 복합 상권으로, 백화점·몰 방문객과 B2B 유동이 함께 발생합니다.",
+        brands: ["현대백화점", "스타필드 코엑스", "메가박스", "스타벅스", "올리브영", "무신사 스탠다드", "자라", "별마당도서관"],
+      };
+    }
+    if (/서울역|KTX|seoul-station|transport/i.test(text)) {
+      return {
+        summary: "철도·지하철·버스 환승 허브로, 출퇴근·출장·관광 유동이 반복 교차하는 교통 중심 상권입니다.",
+        brands: ["롯데마트", "롯데아울렛 서울역", "스타벅스", "파리바게뜨", "버거킹", "던킨", "CU", "서울로7017"],
+      };
+    }
+    if (/광화문|종로|시청|청계|gwanghwamun|jongno|jung/i.test(text)) {
+      return {
+        summary: "도심 랜드마크 입지로, 직장인 출퇴근·점심 유동과 관광·문화행사 동선이 함께 형성됩니다.",
+        brands: ["교보문고", "광화문 D타워", "세종문화회관", "스타벅스", "올리브영", "파리바게뜨", "GS25", "덕수궁"],
+      };
+    }
+    return {
+      summary: "강남·도산·신사를 잇는 프리미엄 소비 동선으로, 2030·구매력 직장인이 밀집하고 뷰티·패션·F&B가 강세입니다.",
+      brands: ["올리브영", "무신사", "애플 가로수길", "스타벅스", "다이소", "투썸플레이스", "자라", "CU"],
+    };
   }
 
   function locationInsight(item) {
@@ -1703,8 +1908,9 @@ document.addEventListener("DOMContentLoaded", async () => {
       <article class="map-list-card map-bus-stop-card${isActive ? " is-active" : ""}">
         <button type="button" data-map-bus-stop="${AdPlay.esc(String(stop.id))}" aria-label="${AdPlay.esc(title)} 위치 보기" aria-current="${isActive ? "true" : "false"}"></button>
         <div class="map-list-card-body">
-          <div class="map-list-title-row">
+          <div class="map-list-title-row map-bus-title-row">
             <h2>${AdPlay.esc(title)}${arsLabel ? `<span class="map-bus-stop-ars">${AdPlay.esc(arsLabel)}</span>` : ""}</h2>
+            ${favStarButton("bus:" + stop.id, title, "map-card-fav")}
             <strong class="map-bus-stop-price">${AdPlay.esc(monthly)}${vatNote ? `<small>${AdPlay.esc(vatNote)}</small>` : ""}</strong>
           </div>
           ${isActive ? `<span class="map-bus-stop-selected-label">지도에서 선택한 정류장</span>` : ""}

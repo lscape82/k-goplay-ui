@@ -2,9 +2,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   const form = document.querySelector("#estimateForm");
   if (!form) return;
 
-  const [media, areas] = await Promise.all([
+  const [media, areas, busStops] = await Promise.all([
     AdPlay.loadJson("data/media.json"),
     AdPlay.loadJson("data/areas.json"),
+    AdPlay.loadJson("data/bus_stops.json").catch(() => []),
   ]);
 
   const areaSelect = form.querySelector("[name='area']");
@@ -17,22 +18,35 @@ document.addEventListener("DOMContentLoaded", async () => {
   media.forEach((item) => mediaSelect.appendChild(new Option(item.name, item.name)));
 
   const mediaParam = AdPlay.getParam("media") || "";
-  const selectedMedia = mediaParam
+  const selected = mediaParam
     .split(",")
-    .map((slug) => media.find((item) => item.slug === slug.trim()))
+    .map((raw) => raw.trim())
+    .filter(Boolean)
+    .map((id) => {
+      if (id.indexOf("bus:") === 0) {
+        const stop = (busStops || []).find((s) => String(s.id) === id.slice(4));
+        if (!stop) return null;
+        const p = stop.adProduct || {};
+        return { name: `${p.stationName || stop.name} (버스정류장 광고)`, area: p.district || "", isMedia: false };
+      }
+      const item = media.find((m) => m.slug === id);
+      return item ? { name: item.name, area: item.areaName, isMedia: true } : null;
+    })
     .filter(Boolean);
 
-  if (selectedMedia.length === 1) {
-    mediaSelect.value = selectedMedia[0].name;
-    areaSelect.value = selectedMedia[0].areaName;
-  } else if (selectedMedia.length > 1) {
-    mediaSelect.value = selectedMedia[0].name;
-    const areaNames = new Set(selectedMedia.map((item) => item.areaName).filter(Boolean));
-    if (areaNames.size === 1) areaSelect.value = selectedMedia[0].areaName;
-    const messageField = form.querySelector("[name='message']");
-    if (messageField && !messageField.value.trim()) {
-      const lines = selectedMedia.map((item, index) => `${index + 1}. ${item.name}${item.areaName ? ` (${item.areaName})` : ""}`);
-      messageField.value = `관심매체 ${selectedMedia.length}개에 대한 견적·상담을 요청합니다.\n${lines.join("\n")}`;
+  if (selected.length) {
+    const firstMedia = selected.find((s) => s.isMedia);
+    if (firstMedia) {
+      mediaSelect.value = firstMedia.name;
+      const areas = new Set(selected.map((s) => s.area).filter(Boolean));
+      if (areas.size === 1 && firstMedia.area) areaSelect.value = firstMedia.area;
+    }
+    if (selected.length > 1 || selected.some((s) => !s.isMedia)) {
+      const messageField = form.querySelector("[name='message']");
+      if (messageField && !messageField.value.trim()) {
+        const lines = selected.map((s, index) => `${index + 1}. ${s.name}${s.area ? ` (${s.area})` : ""}`);
+        messageField.value = `관심매체 ${selected.length}개에 대한 견적·상담을 요청합니다.\n${lines.join("\n")}`;
+      }
     }
   }
 
