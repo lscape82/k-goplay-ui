@@ -1213,11 +1213,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         </div>
         <section class="map-detail-section map-detail-section-top" id="detailSpecs">
           <dl class="map-detail-specs">
-            ${detailFact("크기", location.size || sizeLabel(item))}
-            ${detailFact("해상도", location.resolution || item.resolutionPx || "확인 필요")}
+            ${detailFact("규격", location.size || sizeLabel(item))}
+            ${detailFact("해상도", (function (r) { return (/px\s*$/i.test(r) || !/\d\s*[x×]\s*\d/.test(r)) ? r : r + "px"; })(location.resolution || item.resolutionPx || "확인 필요"))}
             ${detailFact("유형", AdPlay.categoryLabels[item.category] || item.mediaType)}
             ${detailFact("운영시간", location.operationHours || item.operationHours)}
-            ${detailFact("집행조건", contractSummary(item))}
+            <dt>계약정보<br><span class="map-detail-fact-sub">비용(VAT별도)</span></dt><dd>${AdPlay.esc(contractSummary(item) || "확인 필요")}</dd>
           </dl>
         </section>
         <section class="map-detail-section map-detail-selling">
