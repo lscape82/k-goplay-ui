@@ -3,20 +3,46 @@
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>지도 보기 | 광고플레이 DOOH</title>
-    <meta name="description" content="서울 주요 상권의 DOOH 전광판 매체를 지도형 화면에서 비교하고 탐색합니다.">
-    <link rel="stylesheet" href="assets/css/styles.css?v=map-nearby-20260629">
-    <link rel="stylesheet" href="assets/css/map-services.css?v=services-20260704z75">
+    <title>전광판 광고 지도검색 – 전국 옥외광고(DOOH) 매체 | 광고플레이</title>
+    <meta name="description" content="전광판 광고·디지털 옥외광고(DOOH) 매체를 지도에서 검색하세요. 강남·코엑스 등 전국 상권의 전광판 위치·규격·광고비를 비교하고 바로 견적을 문의할 수 있습니다.">
+    <meta name="keywords" content="전광판 광고, 옥외광고, 디지털 옥외광고, DOOH, 전광판 광고 지도, 옥외광고 매체, 강남 전광판, 코엑스 전광판, 광고플레이">
+    <link rel="canonical" href="https://lscape82.github.io/k-goplay-ui/map.html">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="광고플레이">
+    <meta property="og:title" content="전광판 광고 지도검색 – 전국 옥외광고(DOOH) 매체 | 광고플레이">
+    <meta property="og:description" content="전광판 광고·디지털 옥외광고(DOOH) 매체를 지도에서 검색하고 위치·규격·광고비를 비교하세요.">
+    <meta property="og:url" content="https://lscape82.github.io/k-goplay-ui/map.html">
+    <meta property="og:image" content="https://lscape82.github.io/k-goplay-ui/assets/images/k-goplay-logo-new.png">
+    <meta name="twitter:card" content="summary">
+    <link rel="stylesheet" href="assets/css/styles.css?v=icontune-20260705a1">
+    <link rel="stylesheet" href="assets/css/map-services.css?v=icontune-20260705a2-hdr9">
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebPage",
+      "name": "전광판 광고 지도검색 | 광고플레이",
+      "url": "https://lscape82.github.io/k-goplay-ui/map.html",
+      "description": "전국 전광판 광고·디지털 옥외광고(DOOH) 매체를 지도에서 검색하고 위치·규격·광고비를 비교합니다.",
+      "isPartOf": { "@type": "WebSite", "name": "광고플레이", "url": "https://lscape82.github.io/k-goplay-ui/" },
+      "about": ["전광판 광고", "디지털 옥외광고", "DOOH", "옥외광고 매체"],
+      "provider": {
+        "@type": "Organization",
+        "name": "광고플레이",
+        "url": "https://lscape82.github.io/k-goplay-ui/",
+        "telephone": "+82-1533-1975"
+      }
+    }
+    </script>
   </head>
   <body>
     <a class="skip-link" href="#main">본문 바로가기</a>
     <header class="map-global-header">
-      <a class="map-global-brand" href="media.html" aria-label="광고플레이 홈">
+      <a class="map-global-brand" href="map.html" aria-label="광고플레이 지도 홈">
         <span class="brand-mark">AD</span>
         <strong>광고플레이</strong>
       </a>
       <nav class="map-global-nav" aria-label="지도 메뉴">
-        <button type="button" class="is-active" id="mapCurationToggle" aria-expanded="true" aria-controls="mapCurationPanel">테마별 맞춤광고</button>
+        <button type="button" class="is-active" id="mapCurationToggle" aria-expanded="true" aria-controls="mapCurationPanel">추천 큐레이션</button>
         <a class="map-nav-media-link is-youtube" href="https://www.youtube.com/channel/UCxXNbNumZkcpjIGzUaOnfnQ" target="_blank" rel="noopener">광고집행사례<span class="map-nav-icon" aria-hidden="true"></span></a>
         <a class="map-nav-media-link is-blog" href="guides.html">광고 인사이트<span class="map-nav-icon" aria-hidden="true"></span></a>
         <button type="button" class="map-filter-entry map-header-filter" id="mapRegionToggle" aria-expanded="false" aria-controls="mapRegionPanel">지역검색</button>
@@ -30,6 +56,7 @@
       </div>
     </header>
     <main id="main">
+      <h1 class="sr-only">전광판 광고·디지털 옥외광고(DOOH) 매체 지도 검색 | 광고플레이</h1>
       <section class="map-workspace-page" id="media-map">
         <div class="map-category-strip">
           <form class="map-global-search map-category-search" role="search">
@@ -120,7 +147,7 @@
                 </div>
               </div>
             </section>
-            <article class="map-curation-panel" id="mapCurationPanel" aria-label="테마별 맞춤광고 추천">
+            <article class="map-curation-panel" id="mapCurationPanel" aria-label="추천 큐레이션">
               <div class="map-curation-copy">
                 <div class="map-curation-title-row">
                   <div>
@@ -198,9 +225,10 @@
         </div>
       </section>
     </main>
-    <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1ouo31myef&submodules=geocoder"></script>
+    <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1ouo31myef&submodules=geocoder,panorama"></script>
+    <script src="assets/js/marker-clustering.js?v=real-data-20260705c"></script>
     <script src="assets/js/common.js?v=bus-stop-layer-20260619"></script>
-    <script src="assets/js/map.js?v=map-nearby-20260704z49"></script>
+    <script src="assets/js/map.js?v=icontune-20260705a1"></script>
     <script src="assets/js/map-services.js?v=services-20260704u"></script>
   </body>
 </html>

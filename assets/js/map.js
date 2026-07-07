@@ -2,12 +2,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   const root = document.querySelector("#media-map");
   if (!root) return;
 
-  const [media, locations, areas, busStops, busStopPositionOverrides] = await Promise.all([
+  const [media, locations, areas, busStops, busStopPositionOverrides, elevatorData, elevatorSitesData] = await Promise.all([
     AdPlay.loadJson("data/media.json"),
     AdPlay.loadJson("data/media_locations.json"),
     AdPlay.loadJson("data/areas.json"),
     AdPlay.loadJson("data/bus_stops.json"),
     AdPlay.loadJson("data/bus_stop_position_overrides.json"),
+    AdPlay.loadJson("data/elevator-networks.json").catch(() => ({ networks: [] })),
+    AdPlay.loadJson("data/elevator-sites.json").catch(() => ({})),
   ]);
   const areaBySlug = new Map((areas || []).map((area) => [area.slug, area]));
 
@@ -366,8 +368,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     { value: "transport_hub", label: "공항·터미널·기차 광고", categories: ["transport_hub"] },
     { value: "bus", label: "버스 정류장 광고", categories: ["bus"] },
     { value: "mobility", label: "이동매체 광고", categories: ["transport_hub", "bus"] },
+    { value: "daily_touchpoint", label: "엘리베이터 광고", categories: ["daily_touchpoint"], alwaysShow: true },
     { value: "shopping_mall_did", label: "쇼핑·문화시설 광고", categories: ["shopping_mall_did"] },
-    { value: "daily_touchpoint", label: "엘리베이터 광고", categories: ["daily_touchpoint"] },
     { value: "other", label: "기타 옥외 광고", categories: ["daily_touchpoint", "shopping_mall_did"] },
   ];
 
@@ -493,10 +495,31 @@ document.addEventListener("DOMContentLoaded", async () => {
   let pendingPeriod = "all";
   let naverMap = null;
   let naverMarkers = [];
+  let mediaCluster = null; // 매체 마커 클러스터링 인스턴스
   let naverBusMarkers = [];
   let busStopIdleListener = null;
   let currentItems = [];
   let selectedBusStopId = "";
+  // 엘리베이터 광고 — 상품(네트워크) 단위 리스트 카드 + 실제 지오코딩 핀
+  const elevatorNetworks = (elevatorData && elevatorData.networks) || [];
+  const elevatorSites = elevatorSitesData || {};
+  let elevatorType = "apartment"; // apartment | office (좌측 리스트 세그먼트)
+  let selectedNetworkId = "";
+  let elevatorMarkers = [];
+  let elevatorFavorites = (() => {
+    try { return JSON.parse(localStorage.getItem("goplay:elevFav") || "[]"); } catch (error) { return []; }
+  })();
+  // 상품별 대표 샘플 사진(첨부 사진으로 교체 예정). 없으면 onerror로 대체 이미지.
+  const ELEV_IMAGES = {
+    townboard: ["assets/images/elevator/elevator-apt-1.jpg", "assets/images/elevator/elevator-apt-2.jpg"],
+    fmk: ["assets/images/elevator/elevator-apt-2.jpg", "assets/images/elevator/elevator-apt-1.jpg"],
+    gsa: ["assets/images/elevator/elevator-apt-1.jpg", "assets/images/elevator/elevator-apt-2.jpg"],
+    officebiz: ["assets/images/elevator/elevator-office-1.jpg", "assets/images/elevator/elevator-office-2.jpg"],
+    asa: ["assets/images/elevator/elevator-office-2.jpg", "assets/images/elevator/elevator-office-1.jpg"],
+  };
+  const ELEV_IMAGE_FALLBACK = "assets/images/map-samples/gangnam-wide.jpg";
+  // 첫/기본 화면: 서울 전역 1000m 스케일(줌13) — 클러스터로 묶여 표시(강북·강남 균형 중심)
+  const DEFAULT_VIEW = { latitude: 37.5350, longitude: 127.0000, zoom: 13 };
   const BUS_STOP_CLUSTER_MAX_ZOOM = 13;
 
   function setCurationPanel(isOpen) {
@@ -682,7 +705,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   function renderCategoryTabs() {
     const available = new Set(mediaWithLocations.map((item) => item.category));
     categoryBar.innerHTML = categoryTabs
-      .filter((tab) => tab.value === "all" || (tab.categories || [tab.value]).some((category) => available.has(category)))
+      .filter((tab) => tab.value === "all" || tab.alwaysShow || (tab.categories || [tab.value]).some((category) => available.has(category)))
       .map(({ value, label }) => `
         <button type="button" class="map-category-pill${activeCategory === value ? " is-active" : ""}" data-map-category="${AdPlay.esc(value)}" aria-pressed="${activeCategory === value ? "true" : "false"}">
           ${AdPlay.esc(label)}
@@ -693,6 +716,7 @@ document.addEventListener("DOMContentLoaded", async () => {
       button.addEventListener("click", () => {
         activeCategory = button.dataset.mapCategory;
         selectedMediaSlug = "";
+        selectedNetworkId = "";
         detailOpen = false;
         render();
       });
@@ -732,6 +756,10 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function render(options = {}) {
+    if (activeCategory === "daily_touchpoint" && elevatorNetworks.length) {
+      renderElevator(options);
+      return;
+    }
     const query = (searchInput && searchInput.value ? searchInput.value : "").trim().toLowerCase();
     const activeTab = categoryTabs.find((tab) => tab.value === activeCategory) || categoryTabs[0];
     const activeCategories = activeTab.categories || [activeTab.value];
@@ -807,19 +835,22 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (!naverMap) {
         stage.innerHTML = "";
         naverMap = new naver.maps.Map(stage, {
-          center: new naver.maps.LatLng(37.5172, 127.0473),
-          zoom: 12,
+          center: new naver.maps.LatLng(DEFAULT_VIEW.latitude, DEFAULT_VIEW.longitude),
+          zoom: DEFAULT_VIEW.zoom,
           minZoom: 8,
           mapTypeControl: false,
           zoomControl: false,
         });
         busStopIdleListener = naver.maps.Event.addListener(naverMap, "idle", () => {
           if (activeCategory === "bus") syncBusStopLayer();
+          else if (activeCategory === "daily_touchpoint") syncElevatorLayer();
         });
       }
 
+      if (mediaCluster) { mediaCluster.setMap(null); mediaCluster = null; }
       naverMarkers.forEach((marker) => marker.setMap(null));
       naverMarkers = [];
+      if (typeof clearElevatorLayer === "function") clearElevatorLayer();
       if (!items.length) {
         clearBusStopLayer();
         return;
@@ -830,7 +861,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         const latlng = new naver.maps.LatLng(item.mapLocation.latitude, item.mapLocation.longitude);
         bounds.extend(latlng);
         const marker = new naver.maps.Marker({
-          map: naverMap,
           position: latlng,
           title: item.name,
           icon: {
@@ -844,9 +874,11 @@ document.addEventListener("DOMContentLoaded", async () => {
       });
 
       if (!preserveView) {
-        if (activeCategory === "bus") {
-          naverMap.setCenter(new naver.maps.LatLng(37.55, 126.99));
-          naverMap.setZoom(12);
+        const query = (searchInput && searchInput.value ? searchInput.value : "").trim();
+        if (!query) {
+          // 옥외광고 전체 및 모든 카테고리 탭: 첫 화면 스케일 동일(서울 1000m 기준)
+          naverMap.setCenter(new naver.maps.LatLng(DEFAULT_VIEW.latitude, DEFAULT_VIEW.longitude));
+          naverMap.setZoom(DEFAULT_VIEW.zoom);
         } else if (items.length === 1) {
           const item = items[0];
           naverMap.setCenter(new naver.maps.LatLng(item.mapLocation.latitude, item.mapLocation.longitude));
@@ -855,6 +887,35 @@ document.addEventListener("DOMContentLoaded", async () => {
           naverMap.fitBounds(bounds, { top: 76, right: 76, bottom: 76, left: 76 });
         }
       }
+
+      // 매체 마커 클러스터링 — 가까운 매체를 +N으로 묶고 확대 시 개별 핀으로 분리
+      if (typeof MarkerClustering === "function") {
+        // 묶음 아이콘: 사진핀과 동일한 크기(단일), 강조 블루
+        const clusterIcons = [{
+          content: `<div class="map-cluster"></div>`,
+          size: new naver.maps.Size(30, 30),
+          anchor: new naver.maps.Point(15, 15),
+        }];
+        mediaCluster = new MarkerClustering({
+          map: naverMap,
+          markers: naverMarkers,
+          minClusterSize: 5, // 5개 미만 무리는 묶지 않고 개별 사진핀으로 표시(작은 +2·+3 클러스터 제거)
+          maxZoom: 16, // 줌16(100m)에서만 묶음 완전 해제. 300m·500m·1000m는 묶음 유지
+          gridSize: 90, // 묶는 반경(px)
+          disableClickZoom: false,
+          icons: clusterIcons,
+          indexGenerator: [10, 30, 80, 200],
+          stylingFunction: (clusterMarker, count) => {
+            const el = clusterMarker.getElement();
+            const target = el.querySelector("div:first-child") || el;
+            target.textContent = count;
+          },
+        });
+      } else {
+        // 라이브러리 미로드 시: 개별 마커라도 표시(폴백)
+        naverMarkers.forEach((marker) => marker.setMap(naverMap));
+      }
+
       if (activeCategory === "bus") {
         syncBusStopLayer();
       } else {
@@ -868,6 +929,345 @@ document.addEventListener("DOMContentLoaded", async () => {
   function clearBusStopLayer() {
     naverBusMarkers.forEach((marker) => marker.setMap(null));
     naverBusMarkers = [];
+  }
+
+  // ── 엘리베이터 광고 — 상품 카드 리스트 + 실제 지오코딩 핀 ───────────────
+  function elevatorFmt(n) {
+    if (n >= 10000) return `${(n / 10000).toFixed(n >= 100000 ? 0 : 1).replace(/\.0$/, "")}만`;
+    if (n >= 1000) return `${(n / 1000).toFixed(1).replace(/\.0$/, "")}천`;
+    return String(n);
+  }
+
+  function elevatorReachLabel(net) {
+    if (net.households) return `세대 ${elevatorFmt(net.households)} 도달`;
+    if (net.population) return net.type === "office" ? `입주 ${elevatorFmt(net.population)}명 규모` : `인구 ${elevatorFmt(net.population)} 도달`;
+    return net.topRegion ? `${net.topRegion} ${net.topRegionShare}% 집중` : "";
+  }
+
+  function elevatorPriceLabel(net) {
+    if (!net.prices || !net.prices.length) return "단가 상담";
+    const lo = Math.min(...net.prices).toLocaleString("ko-KR");
+    const hi = Math.max(...net.prices).toLocaleString("ko-KR");
+    return lo === hi ? `대당 월 ${lo}원` : `대당 월 ${lo}~${hi}원`;
+  }
+
+  function elevatorImages(net) {
+    return ELEV_IMAGES[net.id] || [ELEV_IMAGE_FALLBACK, ELEV_IMAGE_FALLBACK];
+  }
+
+  function isElevFav(id) { return elevatorFavorites.includes(id); }
+  function toggleElevFav(id) {
+    elevatorFavorites = isElevFav(id) ? elevatorFavorites.filter((x) => x !== id) : [...elevatorFavorites, id];
+    try { localStorage.setItem("goplay:elevFav", JSON.stringify(elevatorFavorites)); } catch (error) { /* ignore */ }
+    listRoot.querySelectorAll(`[data-elev-fav="${CSS.escape(id)}"]`).forEach((button) => {
+      const on = isElevFav(id);
+      button.classList.toggle("is-on", on);
+      button.setAttribute("aria-pressed", on ? "true" : "false");
+    });
+  }
+
+  function elevatorNetworksByType() {
+    return elevatorNetworks.filter((net) => net.type === elevatorType);
+  }
+
+  function renderElevator(options = {}) {
+    renderCategoryTabs();
+    if (busStopLegend) { busStopLegend.hidden = true; busStopLegend.classList.remove("is-visible"); }
+    const nets = elevatorNetworksByType();
+    if (selectedNetworkId && !nets.some((net) => net.id === selectedNetworkId)) {
+      selectedNetworkId = "";
+      detailOpen = false;
+    }
+    if (summaryRoot) {
+      const monitors = nets.reduce((sum, net) => sum + net.monitors, 0);
+      summaryRoot.innerHTML = `<span class="sr-only">전국 ${nets.length}개 ${elevatorType === "apartment" ? "아파트" : "오피스"} 엘리베이터 네트워크, 모니터 ${monitors.toLocaleString("ko-KR")}대</span>`;
+    }
+    updateCostFilterLabels();
+    renderElevatorStage(options.preserveView);
+    renderElevatorList(nets);
+    renderElevatorDetail(nets.find((net) => net.id === selectedNetworkId) || null);
+    syncPanelMode();
+  }
+
+  function elevatorHero(nets) {
+    const complexes = nets.reduce((sum, net) => sum + net.complexes, 0);
+    const monitors = nets.reduce((sum, net) => sum + net.monitors, 0);
+    const isApt = elevatorType === "apartment";
+    const reach = nets.reduce((sum, net) => sum + (isApt ? (net.households || 0) : (net.population || 0)), 0);
+    const reachLabel = isApt ? "세대 도달" : "입주 직장인";
+    const desc = isApt ? "가족 단위 · 생활 동선 반복 노출" : "업무 상주 · 점심·퇴근 동선 노출";
+    return `
+      <div class="map-elev-hero">
+        <div class="map-elev-hero-stats">
+          <div><b>${complexes.toLocaleString("ko-KR")}</b><span>단지·빌딩</span></div>
+          <div><b>${elevatorFmt(monitors)}</b><span>모니터</span></div>
+          <div><b>${elevatorFmt(reach)}</b><span>${reachLabel}</span></div>
+        </div>
+        <p class="map-elev-hero-desc">${AdPlay.esc(desc)}</p>
+      </div>`;
+  }
+
+  function elevatorCard(net) {
+    const isSel = selectedNetworkId === net.id;
+    return `
+      <button type="button" class="map-elev-card${isSel ? " is-active" : ""}" data-elev-net="${AdPlay.esc(net.id)}" aria-current="${isSel ? "true" : "false"}">
+        <div class="map-elev-card-head">
+          <span class="map-elev-card-brand">${AdPlay.esc(net.brand)}</span>
+          ${net.highlights && net.highlights[0] ? `<span class="map-elev-card-badge">${AdPlay.esc(net.highlights[0])}</span>` : ""}
+        </div>
+        <p class="map-elev-card-spec">${AdPlay.esc(net.placement)}</p>
+        <div class="map-elev-card-metrics">
+          <div><b>${net.complexes.toLocaleString("ko-KR")}</b><span>단지·빌딩</span></div>
+          <div><b>${net.monitors.toLocaleString("ko-KR")}</b><span>모니터</span></div>
+        </div>
+        <div class="map-elev-card-foot">
+          <span class="map-elev-card-reach">${AdPlay.esc(elevatorReachLabel(net))}</span>
+          <span class="map-elev-card-price">${AdPlay.esc(elevatorPriceLabel(net))}</span>
+        </div>
+      </button>`;
+  }
+
+  function renderElevatorList(nets) {
+    listRoot.innerHTML = `
+      <div class="map-elev-seg" role="tablist" aria-label="엘리베이터 광고 유형">
+        <button type="button" role="tab" data-elev-type="apartment" aria-selected="${elevatorType === "apartment"}" class="${elevatorType === "apartment" ? "is-active" : ""}">아파트 주거민</button>
+        <button type="button" role="tab" data-elev-type="office" aria-selected="${elevatorType === "office"}" class="${elevatorType === "office" ? "is-active" : ""}">오피스 직장인</button>
+      </div>
+      ${elevatorHero(nets)}
+      <p class="map-elev-cards-cap">매체 네트워크 <span>· 커버리지·단가로 비교하세요</span></p>
+      <div class="map-elev-cards">${nets.map(elevatorCard).join("")}</div>`;
+
+    listRoot.querySelectorAll("[data-elev-type]").forEach((button) => {
+      button.addEventListener("click", () => {
+        if (elevatorType === button.dataset.elevType) return;
+        elevatorType = button.dataset.elevType;
+        selectedNetworkId = "";
+        detailOpen = false;
+        render({ preserveView: true });
+      });
+    });
+    listRoot.querySelectorAll("[data-elev-net]").forEach((button) => {
+      button.addEventListener("click", () => openNetwork(button.dataset.elevNet));
+    });
+  }
+
+  function openNetwork(id) {
+    const net = elevatorNetworks.find((entry) => entry.id === id);
+    if (!net) return;
+    selectedNetworkId = id;
+    detailOpen = true;
+    render({ preserveView: true });
+    if (mobileLayoutQuery.matches) setMobileListOpen(true);
+    detailRoot.focus({ preventScroll: true });
+  }
+
+  function renderElevatorDetail(net) {
+    if (!net) { detailRoot.innerHTML = ""; return; }
+    const imgs = elevatorImages(net);
+    const sites = elevatorSites[net.id] || [];
+    const regionMax = Math.max(1, ...net.regions.map((region) => region.monitors));
+    const regionBars = net.regions.slice(0, 8).map((region) => `
+      <div class="map-elev-region-row">
+        <span class="map-elev-region-name">${AdPlay.esc(region.name)}</span>
+        <span class="map-elev-region-bar"><i style="--w:${Math.round(region.monitors / regionMax * 100)}%"></i></span>
+        <span class="map-elev-region-val">${region.monitors.toLocaleString("ko-KR")}</span>
+      </div>`).join("");
+    const gallery = [imgs[0], imgs[1], imgs[0], imgs[1]];
+    detailRoot.innerHTML = `
+      <button type="button" class="map-detail-close" id="mapDetailClose" aria-label="목록으로 돌아가기">×</button>
+      <section class="map-detail-media-hero" aria-label="매체 사진">
+        <figure class="map-detail-video-preview">
+          <img src="${AdPlay.esc(imgs[0])}" alt="${AdPlay.esc(net.brand)} 매체 현장" onerror="this.onerror=null;this.src='${ELEV_IMAGE_FALLBACK}'">
+        </figure>
+        <div class="map-detail-media-grid">
+          ${gallery.slice(0, 4).map((src, index) => `
+            <figure><img src="${AdPlay.esc(src)}" alt="${AdPlay.esc(net.brand)} 현장 ${index + 1}" loading="lazy" onerror="this.onerror=null;this.src='${ELEV_IMAGE_FALLBACK}'"></figure>
+          `).join("")}
+        </div>
+      </section>
+      <div class="map-detail-body">
+        <div class="map-detail-title-row"><h2>${AdPlay.esc(net.brand)}</h2></div>
+        <p class="map-detail-address">${AdPlay.esc(net.vendor)} · ${net.type === "apartment" ? "아파트 엘리베이터" : "오피스 엘리베이터"}</p>
+        <div class="map-list-tags">${[net.type === "apartment" ? "아파트" : "오피스", "엘리베이터 광고", "네트워크"].map((tag) => `<span>${AdPlay.esc(tag)}</span>`).join("")}</div>
+        <div class="map-elev-detail-metrics">
+          <div><b>${net.complexes.toLocaleString("ko-KR")}</b><span>단지·빌딩</span></div>
+          <div><b>${net.monitors.toLocaleString("ko-KR")}</b><span>모니터</span></div>
+          <div><b>${AdPlay.esc(elevatorReachLabel(net))}</b><span>도달 규모</span></div>
+        </div>
+        ${sites.length ? `<p class="map-elev-site-note"><b>${sites.length}곳</b> 실측 위치를 지도에 표시 중 (대표 샘플 · 전체 ${net.complexes.toLocaleString("ko-KR")}단지)</p>` : ""}
+        <section class="map-detail-section map-detail-section-top">
+          <dl class="map-detail-specs">
+            ${detailFact("모니터 위치", net.placement)}
+            ${detailFact("모니터 규격", net.spec)}
+            ${detailFact("주요 지역", net.topRegion ? `${net.topRegion} (${net.topRegionShare}%)` : "전국")}
+            <dt>대당 단가<br><span class="map-detail-fact-sub">월 · VAT별도</span></dt><dd class="map-detail-contract">${AdPlay.esc(elevatorPriceLabel(net).replace(/^대당 월 /, ""))}</dd>
+          </dl>
+        </section>
+        <section class="map-detail-section map-detail-selling">
+          <h3>타깃 · 노출 포인트</h3>
+          <p class="map-detail-copy">${AdPlay.esc(net.target)}</p>
+          ${net.highlights && net.highlights.length ? `<div class="map-detail-audience-box">
+            <p class="map-audience-cap">네트워크 강점</p>
+            <p class="map-detail-audience-line">${net.highlights.map((h) => AdPlay.esc(h)).join(" · ")}</p>
+          </div>` : ""}
+        </section>
+        <section class="map-detail-section">
+          <h3>지역별 커버리지 <span class="map-elev-region-unit">모니터 수</span></h3>
+          <div class="map-elev-region-list">${regionBars}</div>
+        </section>
+        <a class="map-detail-live-card" href="estimate.html?intent=live-talk&elevator=${encodeURIComponent(net.id)}">
+          <strong>이 상품으로 상담 신청</strong>
+          <span>지역·예산·기간 맞춤 견적과 단지 리스트는 1533-1975 또는 라이브 상담</span>
+        </a>
+      </div>`;
+    const close = detailRoot.querySelector("#mapDetailClose");
+    if (close) close.addEventListener("click", () => {
+      detailOpen = false;
+      selectedNetworkId = "";
+      render({ preserveView: true });
+      if (mobileLayoutQuery.matches) setMobileListOpen(true);
+    });
+  }
+
+  function clearElevatorLayer() {
+    elevatorMarkers.forEach((marker) => marker.setMap(null));
+    elevatorMarkers = [];
+  }
+
+  function ensureNaverMap() {
+    if (naverMap || !window.naver || !window.naver.maps) return;
+    stage.classList.add("has-naver-map");
+    stage.innerHTML = "";
+    naverMap = new naver.maps.Map(stage, {
+      center: new naver.maps.LatLng(DEFAULT_VIEW.latitude, DEFAULT_VIEW.longitude),
+      zoom: DEFAULT_VIEW.zoom,
+      minZoom: 8,
+      mapTypeControl: false,
+      zoomControl: false,
+    });
+    busStopIdleListener = naver.maps.Event.addListener(naverMap, "idle", () => {
+      if (activeCategory === "bus") syncBusStopLayer();
+      else if (activeCategory === "daily_touchpoint") syncElevatorLayer();
+    });
+  }
+
+  // 현재 유형(또는 선택 네트워크)에 해당하는 지오코딩된 사이트 목록
+  function elevatorSitesForType() {
+    const ids = selectedNetworkId ? [selectedNetworkId] : elevatorNetworksByType().map((net) => net.id);
+    const out = [];
+    ids.forEach((id) => {
+      const net = elevatorNetworks.find((entry) => entry.id === id);
+      (elevatorSites[id] || []).forEach((site) => {
+        if (Number.isFinite(site.lat) && Number.isFinite(site.lng)) {
+          out.push({ ...site, networkId: id, brand: net ? net.brand : "", type: net ? net.type : "" });
+        }
+      });
+    });
+    return out;
+  }
+
+  function elevatorClusterGroups(sites) {
+    const grouped = new Map();
+    sites.forEach((site) => {
+      const key = String(site.sido || "기타");
+      const group = grouped.get(key) || { name: key, count: 0, lat: 0, lng: 0 };
+      group.count += 1;
+      group.lat += site.lat;
+      group.lng += site.lng;
+      grouped.set(key, group);
+    });
+    return [...grouped.values()]
+      .map((group) => {
+        const size = Math.max(34, Math.min(72, 28 + Math.sqrt(group.count) * 4.8));
+        return { ...group, lat: group.lat / group.count, lng: group.lng / group.count, size };
+      })
+      .sort((a, b) => b.count - a.count);
+  }
+
+  function elevatorClusterContent(group) {
+    return `
+      <button type="button" class="bus-stop-cluster" style="--cluster-size: ${group.size}px" aria-label="${AdPlay.esc(group.name)} 엘리베이터 광고 ${group.count.toLocaleString("ko-KR")}개 보기">
+        <span>${AdPlay.esc(group.name)}</span>
+        <strong>${group.count.toLocaleString("ko-KR")}</strong>
+      </button>`;
+  }
+
+  function elevatorPinContent(site) {
+    const office = site.type === "office";
+    return `
+      <span class="bus-stop-pin ${office ? "is-elev-office" : "is-elev-apt"}" role="img" aria-label="${AdPlay.esc(site.brand)} · ${AdPlay.esc(site.name)}">
+        <span class="bus-stop-pin-core"></span>
+      </span>`;
+  }
+
+  // 버스 정류장 광고와 동일한 노출 방식: 낮은 줌=구역 클러스터, 높은 줌=개별 핀, 지도 이동 시 재동기화
+  function syncElevatorLayer() {
+    if (!naverMap || !window.naver || !window.naver.maps || activeCategory !== "daily_touchpoint") {
+      clearElevatorLayer();
+      return;
+    }
+    clearElevatorLayer();
+    const sites = elevatorSitesForType();
+    const zoom = typeof naverMap.getZoom === "function" ? naverMap.getZoom() : 12;
+
+    if (zoom <= BUS_STOP_CLUSTER_MAX_ZOOM) {
+      elevatorClusterGroups(sites).forEach((group) => {
+        const marker = new naver.maps.Marker({
+          map: naverMap,
+          position: new naver.maps.LatLng(group.lat, group.lng),
+          title: `${group.name} 엘리베이터 광고 ${group.count.toLocaleString("ko-KR")}개`,
+          icon: {
+            content: elevatorClusterContent(group),
+            size: new naver.maps.Size(group.size, group.size),
+            anchor: new naver.maps.Point(group.size / 2, group.size / 2),
+          },
+        });
+        naver.maps.Event.addListener(marker, "click", () => {
+          naverMap.setCenter(new naver.maps.LatLng(group.lat, group.lng));
+          naverMap.setZoom(Math.max(naverMap.getZoom() + 2, BUS_STOP_CLUSTER_MAX_ZOOM + 1));
+        });
+        elevatorMarkers.push(marker);
+      });
+      return;
+    }
+
+    const bounds = naverMap.getBounds();
+    const sw = bounds ? bounds.getSW() : null;
+    const ne = bounds ? bounds.getNE() : null;
+    sites
+      .filter((site) => !sw || (site.lat >= sw.lat() && site.lat <= ne.lat() && site.lng >= sw.lng() && site.lng <= ne.lng()))
+      .slice(0, 650)
+      .forEach((site) => {
+        const marker = new naver.maps.Marker({
+          map: naverMap,
+          position: new naver.maps.LatLng(site.lat, site.lng),
+          title: `${site.brand} · ${site.name}`,
+          icon: {
+            content: elevatorPinContent(site),
+            size: new naver.maps.Size(26, 26),
+            anchor: new naver.maps.Point(13, 15),
+          },
+        });
+        naver.maps.Event.addListener(marker, "click", () => openNetwork(site.networkId));
+        elevatorMarkers.push(marker);
+      });
+  }
+
+  function renderElevatorStage(preserveView) {
+    if (!window.naver || !window.naver.maps) return;
+    ensureNaverMap();
+    if (!naverMap) return;
+    if (mediaCluster) { mediaCluster.setMap(null); mediaCluster = null; }
+    naverMarkers.forEach((marker) => marker.setMap(null));
+    naverMarkers = [];
+    clearBusStopLayer();
+
+    // 첫 진입 화면은 '옥외광고 전체'와 동일하게 서울 1000m 기본 뷰로 고정
+    if (!preserveView) {
+      naverMap.setCenter(new naver.maps.LatLng(DEFAULT_VIEW.latitude, DEFAULT_VIEW.longitude));
+      naverMap.setZoom(DEFAULT_VIEW.zoom);
+    }
+    syncElevatorLayer();
   }
 
   function syncBusStopLayer() {
@@ -1179,6 +1579,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     const galleryImages = detailGalleryImages(item);
     const insight = locationInsight(item);
     const nearby = nearbyDistrict(item);
+    const profile = audienceProfile(item);
+    const sv = item.streetView || (location && location.streetView) || null;
     const roadviewUrl = `https://map.naver.com/v5/search/${encodeURIComponent(location.sourceAddress || item.address)}`;
     detailRoot.innerHTML = `
       <button type="button" class="map-detail-close" id="mapDetailClose" aria-label="목록으로 돌아가기">×</button>
@@ -1209,7 +1611,9 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="map-detail-actions">
           <a href="media-detail.html?slug=${encodeURIComponent(item.slug)}"><strong>매체 소개서</strong><span>Brochure</span></a>
           <a href="#detailTraffic"><strong>데이터 리포트</strong><span>Data Report</span></a>
-          <a href="${roadviewUrl}" target="_blank" rel="noopener"><strong>거리뷰 보기</strong><span>Street View</span></a>
+          ${sv
+            ? `<a href="#detailRoadview"><strong>거리뷰 보기</strong><span>Street View</span></a>`
+            : `<a href="${roadviewUrl}" target="_blank" rel="noopener"><strong>거리뷰 보기</strong><span>Street View</span></a>`}
         </div>
         <section class="map-detail-section map-detail-section-top" id="detailSpecs">
           <dl class="map-detail-specs">
@@ -1217,7 +1621,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             ${detailFact("해상도", (function (r) { return (/px\s*$/i.test(r) || !/\d\s*[x×]\s*\d/.test(r)) ? r : r + "px"; })(location.resolution || item.resolutionPx || "확인 필요"))}
             ${detailFact("유형", AdPlay.categoryLabels[item.category] || item.mediaType)}
             ${detailFact("운영시간", location.operationHours || item.operationHours)}
-            <dt>계약정보<br><span class="map-detail-fact-sub">비용(VAT별도)</span></dt><dd>${AdPlay.esc(contractSummary(item) || "확인 필요")}</dd>
+            <dt>계약정보<br><span class="map-detail-fact-sub">비용(VAT별도)</span></dt><dd class="map-detail-contract">${contractDetailHtml(item)}</dd>
           </dl>
         </section>
         <section class="map-detail-section map-detail-selling">
@@ -1251,7 +1655,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <section class="map-detail-section" id="detailTraffic">
           <h3>유동인구와 타깃</h3>
           <p class="map-detail-copy">${AdPlay.esc(insight.traffic)}</p>
-          ${trafficVisualization(insight)}
+          ${trafficVisualization(insight, profile)}
         </section>
         <section class="map-detail-section" id="detailLocation">
           <h3>입지 특성</h3>
@@ -1349,6 +1753,28 @@ document.addEventListener("DOMContentLoaded", async () => {
       const firstInput = formSection.querySelector("input[name='name']");
       if (firstInput) firstInput.focus({ preventScroll: true });
     });
+    // 거리뷰: 거리뷰좌표(pan/tilt/fov)로 네이버 파노라마 인라인 표시
+    if (sv) {
+      const panoEl = detailRoot.querySelector("#detailRoadviewPano");
+      const panoFallback = () => {
+        if (panoEl) panoEl.outerHTML = `<a class="map-detail-roadview-link" href="${roadviewUrl}" target="_blank" rel="noopener">네이버 지도에서 거리뷰 보기</a>`;
+      };
+      if (panoEl && window.naver && naver.maps && naver.maps.Panorama) {
+        try {
+          new naver.maps.Panorama(panoEl, {
+            position: new naver.maps.LatLng(sv.lat, sv.lng),
+            pov: { pan: sv.pan, tilt: sv.tilt, fov: sv.fov },
+            flightSpot: true,
+            aroundControl: true,
+          });
+        } catch (error) {
+          console.warn("거리뷰 파노라마 초기화 실패", error);
+          panoFallback();
+        }
+      } else {
+        panoFallback();
+      }
+    }
   }
 
   function mediaSellingPoint(item) {
@@ -1475,6 +1901,21 @@ document.addEventListener("DOMContentLoaded", async () => {
     const monthly = min ? `월 ${AdPlay.formatKRW(min)}` : "월 비용 상담 필요";
     return `${monthly} · 1개월 미만 집행 협의 가능`;
   }
+  // 계약정보 원문(줄단위) 표시 — 실데이터 우선, 없으면 요약 폴백
+  function contractDetailHtml(item) {
+    const location = item.mapLocation || {};
+    let lines = Array.isArray(item.contractLines) ? item.contractLines.slice() : [];
+    if (!lines.length && location.contract) {
+      lines = String(location.contract).split(/\n+/).map((line) => line.trim()).filter(Boolean);
+    }
+    if (!lines.length && item.contractText) {
+      lines = [String(item.contractText).trim()];
+    }
+    if (!lines.length) return AdPlay.esc(contractSummary(item) || "확인 필요");
+    return lines
+      .map((line) => `<span class="map-contract-line${/^\*/.test(line) ? " is-note" : ""}">${AdPlay.esc(line)}</span>`)
+      .join("");
+  }
 
   function matchesCostPeriod(item) {
     const days = activePeriod === "all" ? 30 : Number(activePeriod);
@@ -1579,7 +2020,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     return [...new Set(all)].slice(0, 6);
   }
 
-  function trafficVisualization(insight) {
+  function trafficVisualization(insight, profile) {
     const stats = insight.stats || {
       daily500: "7.6만명",
       daily300: "3.1만명",
@@ -1615,7 +2056,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     ];
     const topDay = dayBars.reduce((top, row) => row[1] > top[1] ? row : top, dayBars[0]);
     const topTime = timeBars.reduce((top, row) => row[1] > top[1] ? row : top, timeBars[0]);
-    const ageRows = [
+    const ageRows = (profile && profile.age) || [
       ["10대", 8, 27, "학생·동반"],
       ["20대", 24, 78, "활동층"],
       ["30대", 27, 88, "구매 핵심"],
@@ -1623,6 +2064,8 @@ document.addEventListener("DOMContentLoaded", async () => {
       ["50대", 13, 43, "가족 소비"],
       ["60대+", 6, 22, "생활권"],
     ];
+    const gender = (profile && profile.gender) || { female: 52, male: 48 };
+    const ageTopIndex = ageRows.reduce((top, row, index) => row[1] > ageRows[top][1] ? index : top, 0);
     const audienceRows = insight.audience || [];
     return `
       <div class="map-traffic-kpis">
@@ -1680,12 +2123,22 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="map-traffic-segments-head">
           <h4>타깃·방문 동기</h4>
         </div>
+        <div class="map-gender-split">
+          <div class="map-gender-split-head">
+            <h5>성별 비중</h5>
+            <b>여성 ${gender.female}% · 남성 ${gender.male}%</b>
+          </div>
+          <div class="map-gender-bar">
+            <span class="f" style="width:${gender.female}%">여성 ${gender.female}%</span>
+            <span class="m" style="width:${gender.male}%">남성 ${gender.male}%</span>
+          </div>
+        </div>
         <div class="map-age-distribution">
           <div class="map-age-distribution-head">
             <h5>연령대 분포</h5>
-            <b>20~40대 중심</b>
+            <b>${AdPlay.esc(ageRows[ageTopIndex][0])} 최다</b>
           </div>
-          ${ageRows.map(([label, percent, value, note]) => `<div class="map-age-row ${percent === 27 ? "is-peak" : ""}">
+          ${ageRows.map(([label, percent, value, note], index) => `<div class="map-age-row ${index === ageTopIndex ? "is-peak" : ""}">
             <span>${label}</span>
             <i style="--bar:${value}"></i>
             <em>${percent}%</em>
@@ -1695,7 +2148,27 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="map-traffic-segment-list">
           ${audienceRows.map((row) => `<div class="map-traffic-segment"><span>${AdPlay.esc(row.label)}</span><i style="--bar:${row.value}"></i><strong>${AdPlay.esc(row.note)}</strong></div>`).join("")}
         </div>
+        ${profile && profile.source ? `<p class="map-audience-src"><span class="map-est-badge">추정</span>${AdPlay.esc(profile.source)}</p>` : ""}
       </div>`;
+  }
+
+  function audienceProfile(item) {
+    const text = [item.name, item.areaName, item.areaSlug, item.address, item.mapLocation && item.mapLocation.sourceAddress].filter(Boolean).join(" ");
+    const source = "출처: 소상공인 상권정보 · 통계청 KOSIS (2026, 상권 기준)";
+    if (/삼성|코엑스|COEX|samseong|coex/i.test(text)) {
+      return { gender: { female: 48, male: 52 }, worker: "높음", note: "업무·전시 방문과 쇼핑 체류가 섞인 3040 중심", source,
+        age: [["10대", 5, 17, "학생·동반"], ["20대", 22, 73, "활동층"], ["30대", 28, 93, "구매 핵심"], ["40대", 24, 80, "직장인"], ["50대", 14, 47, "가족 소비"], ["60대+", 7, 23, "생활권"]] };
+    }
+    if (/서울역|KTX|seoul-station|transport/i.test(text)) {
+      return { gender: { female: 45, male: 55 }, worker: "보통", note: "출장·관광·통근이 겹쳐 전 연령 고른 분포", source,
+        age: [["10대", 6, 20, "학생·동반"], ["20대", 20, 67, "활동층"], ["30대", 24, 80, "구매 핵심"], ["40대", 23, 77, "직장인"], ["50대", 16, 53, "가족 소비"], ["60대+", 11, 37, "생활권"]] };
+    }
+    if (/광화문|종로|시청|청계|gwanghwamun|jongno|jung/i.test(text)) {
+      return { gender: { female: 47, male: 53 }, worker: "매우 높음", note: "도심 오피스 직장인 3040·40대 이상 비중 높음", source,
+        age: [["10대", 4, 13, "학생·동반"], ["20대", 18, 60, "활동층"], ["30대", 26, 87, "구매 핵심"], ["40대", 26, 87, "직장인"], ["50대", 16, 53, "가족 소비"], ["60대+", 10, 33, "생활권"]] };
+    }
+    return { gender: { female: 58, male: 42 }, worker: "높음", note: "뷰티·패션 소비층, 2030 여성 비중 우세", source,
+      age: [["10대", 6, 20, "학생·동반"], ["20대", 28, 93, "활동층"], ["30대", 30, 100, "구매 핵심"], ["40대", 20, 67, "직장인"], ["50대", 11, 37, "가족 소비"], ["60대+", 5, 17, "생활권"]] };
   }
 
   function nearbyDistrict(item) {

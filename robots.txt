@@ -1,0 +1,26 @@
+# 광고플레이 (k-goplay.com) — 크롤 허용 및 사이트맵 안내
+User-agent: *
+Allow: /
+
+# 네이버 검색 크롤러
+User-agent: Yeti
+Allow: /
+
+# 구글 크롤러
+User-agent: Googlebot
+Allow: /
+
+# AI 검색/인용 크롤러 (GEO)
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+Sitemap: https://lscape82.github.io/k-goplay-ui/sitemap.xml

@@ -147,6 +147,11 @@ def normalize_update_value(value):
 
 
 class ApiHandler(SimpleHTTPRequestHandler):
+    def end_headers(self):
+        # 로컬 개발 서버: 브라우저가 옛 HTML/JS/CSS를 캐싱하지 않도록(변경 즉시 반영)
+        self.send_header("Cache-Control", "no-store, must-revalidate")
+        super().end_headers()
+
     def do_GET(self):
         parsed = urllib.parse.urlparse(self.path)
         if parsed.path == "/api/geocode/config":

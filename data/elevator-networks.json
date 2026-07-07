@@ -1,0 +1,488 @@
+{
+  "note": "엘리베이터 광고 네트워크 집계 데이터. 개별 매체 핀이 아닌 네트워크·지역 단위 집계.",
+  "centroids": {
+    "서울": [
+      37.5665,
+      126.978
+    ],
+    "경기": [
+      37.4,
+      127.2
+    ],
+    "인천": [
+      37.4563,
+      126.7052
+    ],
+    "부산": [
+      35.1796,
+      129.0756
+    ],
+    "대구": [
+      35.8714,
+      128.6014
+    ],
+    "광주": [
+      35.1595,
+      126.8526
+    ],
+    "대전": [
+      36.3504,
+      127.3845
+    ],
+    "울산": [
+      35.5384,
+      129.3114
+    ],
+    "세종": [
+      36.4801,
+      127.289
+    ],
+    "강원": [
+      37.8228,
+      128.1555
+    ],
+    "충북": [
+      36.6357,
+      127.4917
+    ],
+    "충남": [
+      36.6588,
+      126.6728
+    ],
+    "전북": [
+      35.7175,
+      127.153
+    ],
+    "전남": [
+      34.8161,
+      126.463
+    ],
+    "경북": [
+      36.576,
+      128.5056
+    ],
+    "경남": [
+      35.4606,
+      128.2132
+    ],
+    "제주": [
+      33.4996,
+      126.5312
+    ]
+  },
+  "networks": [
+    {
+      "id": "townboard",
+      "vendor": "T사",
+      "brand": "타운보드",
+      "type": "apartment",
+      "spec": "25형 · 55형 게시판",
+      "placement": "엘리베이터 내부 게시판",
+      "target": "아파트 주거 가구 · 출입 동선 반복 노출",
+      "highlights": [
+        "전국 최대 커버리지",
+        "가구 도달 규모 1위"
+      ],
+      "complexes": 3682,
+      "monitors": 66122,
+      "households": 2418788,
+      "population": 0,
+      "prices": [],
+      "topRegion": "경기",
+      "topRegionShare": 34,
+      "regions": [
+        {
+          "name": "경기",
+          "complexes": 1203,
+          "monitors": 22736,
+          "centroid": [
+            37.4,
+            127.2
+          ]
+        },
+        {
+          "name": "서울",
+          "complexes": 611,
+          "monitors": 9502,
+          "centroid": [
+            37.5665,
+            126.978
+          ]
+        },
+        {
+          "name": "인천",
+          "complexes": 278,
+          "monitors": 5153,
+          "centroid": [
+            37.4563,
+            126.7052
+          ]
+        },
+        {
+          "name": "부산",
+          "complexes": 253,
+          "monitors": 4818,
+          "centroid": [
+            35.1796,
+            129.0756
+          ]
+        },
+        {
+          "name": "대구",
+          "complexes": 227,
+          "monitors": 4003,
+          "centroid": [
+            35.8714,
+            128.6014
+          ]
+        },
+        {
+          "name": "경남",
+          "complexes": 203,
+          "monitors": 3674,
+          "centroid": [
+            35.4606,
+            128.2132
+          ]
+        },
+        {
+          "name": "충남",
+          "complexes": 137,
+          "monitors": 2581,
+          "centroid": [
+            36.6588,
+            126.6728
+          ]
+        },
+        {
+          "name": "대전",
+          "complexes": 97,
+          "monitors": 2421,
+          "centroid": [
+            36.3504,
+            127.3845
+          ]
+        },
+        {
+          "name": "경북",
+          "complexes": 130,
+          "monitors": 2267,
+          "centroid": [
+            36.576,
+            128.5056
+          ]
+        },
+        {
+          "name": "전북",
+          "complexes": 131,
+          "monitors": 2258,
+          "centroid": [
+            35.7175,
+            127.153
+          ]
+        },
+        {
+          "name": "세종",
+          "complexes": 80,
+          "monitors": 1919,
+          "centroid": [
+            36.4801,
+            127.289
+          ]
+        },
+        {
+          "name": "충북",
+          "complexes": 98,
+          "monitors": 1639,
+          "centroid": [
+            36.6357,
+            127.4917
+          ]
+        },
+        {
+          "name": "강원",
+          "complexes": 106,
+          "monitors": 1454,
+          "centroid": [
+            37.8228,
+            128.1555
+          ]
+        },
+        {
+          "name": "울산",
+          "complexes": 87,
+          "monitors": 1306,
+          "centroid": [
+            35.5384,
+            129.3114
+          ]
+        },
+        {
+          "name": "광주",
+          "complexes": 19,
+          "monitors": 266,
+          "centroid": [
+            35.1595,
+            126.8526
+          ]
+        },
+        {
+          "name": "전남",
+          "complexes": 5,
+          "monitors": 97,
+          "centroid": [
+            34.8161,
+            126.463
+          ]
+        },
+        {
+          "name": "제주",
+          "complexes": 4,
+          "monitors": 28,
+          "centroid": [
+            33.4996,
+            126.5312
+          ]
+        }
+      ]
+    },
+    {
+      "id": "fmk",
+      "vendor": "F사",
+      "brand": "FMK",
+      "type": "apartment",
+      "spec": "21.5형 · 25형",
+      "placement": "엘리베이터 내부 · 대기공간",
+      "target": "수도권 아파트·주상복합 주거민",
+      "highlights": [
+        "대당 단가 공개",
+        "인구 도달 규모 최다"
+      ],
+      "complexes": 4693,
+      "monitors": 61480,
+      "households": 2734132,
+      "population": 6755108,
+      "prices": [
+        10000,
+        12000,
+        15000
+      ],
+      "topRegion": "경기",
+      "topRegionShare": 55,
+      "regions": [
+        {
+          "name": "경기",
+          "complexes": 2205,
+          "monitors": 33935,
+          "centroid": [
+            37.4,
+            127.2
+          ]
+        },
+        {
+          "name": "서울",
+          "complexes": 1972,
+          "monitors": 19741,
+          "centroid": [
+            37.5665,
+            126.978
+          ]
+        },
+        {
+          "name": "인천",
+          "complexes": 516,
+          "monitors": 7804,
+          "centroid": [
+            37.4563,
+            126.7052
+          ]
+        }
+      ]
+    },
+    {
+      "id": "gsa",
+      "vendor": "G사",
+      "brand": "G사 망",
+      "type": "apartment",
+      "spec": "게시판형",
+      "placement": "엘리베이터 내부 · 대기공간",
+      "target": "수도권 집중 아파트 주거민",
+      "highlights": [
+        "서울·경기 집중"
+      ],
+      "complexes": 869,
+      "monitors": 16573,
+      "households": 578914,
+      "population": 0,
+      "prices": [],
+      "topRegion": "경기",
+      "topRegionShare": 42,
+      "regions": [
+        {
+          "name": "경기",
+          "complexes": 339,
+          "monitors": 6925,
+          "centroid": [
+            37.4,
+            127.2
+          ]
+        },
+        {
+          "name": "서울",
+          "complexes": 289,
+          "monitors": 5006,
+          "centroid": [
+            37.5665,
+            126.978
+          ]
+        },
+        {
+          "name": "인천",
+          "complexes": 67,
+          "monitors": 1340,
+          "centroid": [
+            37.4563,
+            126.7052
+          ]
+        },
+        {
+          "name": "충남",
+          "complexes": 51,
+          "monitors": 1009,
+          "centroid": [
+            36.6588,
+            126.6728
+          ]
+        },
+        {
+          "name": "대구",
+          "complexes": 57,
+          "monitors": 944,
+          "centroid": [
+            35.8714,
+            128.6014
+          ]
+        },
+        {
+          "name": "충북",
+          "complexes": 41,
+          "monitors": 735,
+          "centroid": [
+            36.6357,
+            127.4917
+          ]
+        },
+        {
+          "name": "세종",
+          "complexes": 20,
+          "monitors": 425,
+          "centroid": [
+            36.4801,
+            127.289
+          ]
+        },
+        {
+          "name": "대전",
+          "complexes": 5,
+          "monitors": 189,
+          "centroid": [
+            36.3504,
+            127.3845
+          ]
+        }
+      ]
+    },
+    {
+      "id": "officebiz",
+      "vendor": "H사",
+      "brand": "오피스비즈TV",
+      "type": "office",
+      "spec": "A타입 25형 · B타입 21.5형",
+      "placement": "엘리베이터 내부 · 대기공간 · 디지털게시판",
+      "target": "오피스 상주 직장인 · 방문 고객",
+      "highlights": [
+        "15초 단가 공개",
+        "프라임 오피스 밀집"
+      ],
+      "complexes": 176,
+      "monitors": 2068,
+      "households": 0,
+      "population": 39457,
+      "prices": [
+        10000,
+        12000,
+        15000
+      ],
+      "topRegion": "서울",
+      "topRegionShare": 64,
+      "regions": [
+        {
+          "name": "서울",
+          "complexes": 130,
+          "monitors": 1329,
+          "centroid": [
+            37.5665,
+            126.978
+          ]
+        },
+        {
+          "name": "경기",
+          "complexes": 46,
+          "monitors": 739,
+          "centroid": [
+            37.4,
+            127.2
+          ]
+        }
+      ]
+    },
+    {
+      "id": "asa",
+      "vendor": "A사",
+      "brand": "A사 망",
+      "type": "office",
+      "spec": "내부 · 외부 모니터",
+      "placement": "엘리베이터 내부 · 외부",
+      "target": "CBD·GBD·YBD 오피스 직장인",
+      "highlights": [
+        "핵심 업무권역(CBD/GBD/YBD) 커버"
+      ],
+      "complexes": 747,
+      "monitors": 4847,
+      "households": 0,
+      "population": 0,
+      "prices": [],
+      "topRegion": "서울",
+      "topRegionShare": 89,
+      "regions": [
+        {
+          "name": "서울",
+          "complexes": 683,
+          "monitors": 4336,
+          "centroid": [
+            37.5665,
+            126.978
+          ]
+        },
+        {
+          "name": "경기",
+          "complexes": 60,
+          "monitors": 460,
+          "centroid": [
+            37.4,
+            127.2
+          ]
+        },
+        {
+          "name": "인천",
+          "complexes": 4,
+          "monitors": 51,
+          "centroid": [
+            37.4563,
+            126.7052
+          ]
+        }
+      ]
+    }
+  ]
+}

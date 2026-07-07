@@ -4,6 +4,54 @@
    기존 스타일을 덮어쓰지 않도록 gps- 네임스페이스 사용.
    ===================================================================== */
 
+/* 매체 마커 클러스터 배지 (+N) — 슬레이트 + 흰 숫자, 외곽선 없음 */
+.map-cluster {
+  box-sizing: border-box;
+  width: 30px;
+  height: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 999px;
+  background: #4a5c8c;
+  color: #fff;
+  font-weight: 700;
+  font-size: 12px;
+  line-height: 1;
+  border: none;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+/* 상세페이지 거리뷰 인라인 파노라마 (거리뷰좌표 기반) */
+.map-detail-pano {
+  width: 100%;
+  height: 300px;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #eef1f5;
+}
+.map-detail-pano .nppr-minimap,
+.map-detail-pano .nppr-btn-around { z-index: 2; }
+.map-detail-roadview-link {
+  display: inline-block;
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--gps-accent-ink, #1b46c4);
+  text-decoration: underline;
+}
+/* 계약정보 원문 — 줄바꿈 표시 */
+.map-detail-contract { display: block; }
+.map-detail-contract .map-contract-line {
+  display: block;
+  line-height: 1.5;
+}
+.map-detail-contract .map-contract-line.is-note {
+  color: #6b7280;
+  font-size: 0.92em;
+  margin-top: 2px;
+}
+
 :root {
   --gps-accent: #3b74f2;
   --gps-accent-ink: #1b46c4;
@@ -372,3 +420,114 @@
   .gps-row2, .gps-kpis, .gps-scen { grid-template-columns: 1fr; }
   .gps-sizes { grid-template-columns: repeat(2,1fr); }
 }
+
+/* ── 엘리베이터 광고(집계형): 네트워크 카드 + 지역 커버리지 + 지도 집계 버블 ── */
+.map-elev-seg { display: flex; gap: 4px; padding: 4px; margin: 2px 0 12px; background: var(--gps-bg); border: 1px solid var(--gps-line); border-radius: 12px; }
+.map-elev-seg button { flex: 1; padding: 9px 10px; border: 0; border-radius: 9px; background: transparent; color: var(--gps-muted); font-size: 13px; font-weight: 700; cursor: pointer; transition: background .15s, color .15s; }
+.map-elev-seg button.is-active { background: #fff; color: var(--gps-ink); box-shadow: 0 1px 3px rgba(15,23,42,.12); }
+
+.map-elev-hero { padding: 14px 16px; margin-bottom: 14px; background: var(--gps-accent-wash); border-radius: 12px; }
+.map-elev-hero-stats { display: flex; gap: 18px; flex-wrap: wrap; }
+.map-elev-hero-stats div { display: flex; flex-direction: column; }
+.map-elev-hero-stats b { font-size: 21px; font-weight: 800; color: var(--gps-accent-ink); line-height: 1.15; }
+.map-elev-hero-stats span { font-size: 11.5px; font-weight: 700; color: var(--gps-accent-ink); opacity: .8; margin-top: 1px; }
+.map-elev-hero-desc { margin: 10px 0 0; font-size: 12.5px; font-weight: 600; color: var(--gps-accent-ink); opacity: .9; }
+
+.map-elev-cards-cap { margin: 0 0 8px; font-size: 12.5px; font-weight: 700; color: var(--gps-ink-soft); }
+.map-elev-cards-cap span { font-weight: 600; color: var(--gps-muted); }
+.map-elev-cards { display: flex; flex-direction: column; gap: 10px; }
+
+.map-elev-card { display: block; width: 100%; text-align: left; padding: 13px 15px; border: 1px solid var(--gps-line); border-radius: 12px; background: #fff; cursor: pointer; transition: border-color .15s, box-shadow .15s, transform .05s; }
+.map-elev-card:hover { border-color: var(--gps-accent-soft); box-shadow: 0 3px 12px rgba(27,70,196,.1); }
+.map-elev-card:active { transform: scale(.995); }
+.map-elev-card.is-active { border-color: var(--gps-accent); box-shadow: 0 0 0 2px var(--gps-accent-wash); }
+.map-elev-card-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.map-elev-card-brand { font-size: 15px; font-weight: 800; color: var(--gps-ink); }
+.map-elev-card-badge { flex: none; font-size: 10.5px; font-weight: 800; color: var(--gps-accent-ink); background: var(--gps-accent-wash); padding: 3px 8px; border-radius: 999px; }
+.map-elev-card-spec { margin: 4px 0 0; font-size: 12px; font-weight: 600; color: var(--gps-muted); }
+.map-elev-card-metrics { display: flex; gap: 20px; margin: 10px 0; }
+.map-elev-card-metrics div { display: flex; flex-direction: column; }
+.map-elev-card-metrics b { font-size: 17px; font-weight: 800; color: var(--gps-ink); line-height: 1.1; }
+.map-elev-card-metrics span { font-size: 11px; font-weight: 600; color: var(--gps-muted); margin-top: 1px; }
+.map-elev-card-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 9px; border-top: 1px solid var(--gps-line-soft); }
+.map-elev-card-reach { font-size: 12px; font-weight: 800; color: var(--gps-accent-ink); }
+.map-elev-card-price { font-size: 11.5px; font-weight: 700; color: var(--gps-ink-soft); }
+
+.map-elev-detail-metrics { display: flex; gap: 8px; margin: 12px 0 4px; }
+.map-elev-detail-metrics div { flex: 1; padding: 11px 12px; background: var(--gps-bg); border-radius: 10px; }
+.map-elev-detail-metrics b { display: block; font-size: 17px; font-weight: 800; color: var(--gps-ink); line-height: 1.15; }
+.map-elev-detail-metrics span { display: block; font-size: 11px; font-weight: 600; color: var(--gps-muted); margin-top: 2px; }
+
+.map-elev-region-unit { font-size: 11px; font-weight: 700; color: var(--gps-muted); }
+.map-elev-region-list { display: flex; flex-direction: column; gap: 7px; margin-top: 4px; }
+.map-elev-region-row { display: grid; grid-template-columns: 34px 1fr 52px; align-items: center; gap: 10px; }
+.map-elev-region-name { font-size: 12.5px; font-weight: 700; color: var(--gps-ink-soft); }
+.map-elev-region-bar { height: 8px; border-radius: 999px; background: var(--gps-line-soft); overflow: hidden; }
+.map-elev-region-bar i { display: block; height: 100%; width: var(--w); border-radius: 999px; background: var(--gps-accent); }
+.map-elev-region-val { font-size: 12px; font-weight: 700; color: var(--gps-ink-soft); text-align: right; }
+
+.map-elev-bubble { display: flex; flex-direction: column; align-items: center; justify-content: center; border-radius: 50%; background: rgba(27,70,196,.86); color: #fff; box-shadow: 0 2px 10px rgba(15,23,42,.28); border: 2px solid #fff; line-height: 1.05; text-align: center; }
+.map-elev-bubble b { font-size: 12px; font-weight: 800; }
+.map-elev-bubble i { font-size: 10.5px; font-weight: 700; font-style: normal; opacity: .92; }
+
+/* 엘리베이터 상품 카드 — 관심 별 토글(전광판 카드 재사용 + 별 아이콘) */
+.map-elev-fav span { color: #b4bdca; font-size: 12px; line-height: 1; transition: color .14s ease; }
+.map-elev-fav.is-on { border-color: #b9caea; background: #f3f7ff; color: #0b3a91; }
+.map-elev-fav.is-on span { color: #f5b301; }
+
+/* 엘리베이터 상세 — 실측 위치 안내줄 */
+.map-elev-site-note { margin: 8px 0 2px; padding: 8px 11px; background: var(--gps-accent-wash); border-radius: 8px; font-size: 12px; font-weight: 600; color: var(--gps-accent-ink); }
+.map-elev-site-note b { font-weight: 800; }
+
+/* 엘리베이터 실제 위치 핀(지오코딩) — 아파트=블루, 오피스=그린 티어드롭 */
+.map-elev-pin { display: flex; align-items: center; justify-content: center; width: 26px; height: 26px; border-radius: 50% 50% 50% 0; background: #1b46c4; border: 2px solid #fff; box-shadow: 0 2px 7px rgba(15,23,42,.34); transform: rotate(-45deg); }
+.map-elev-pin i { width: 8px; height: 8px; border-radius: 50%; background: #fff; transform: rotate(45deg); }
+.map-elev-pin.is-office { background: #0f9d76; }
+
+/* 엘리베이터 사이트 핀 — 버스 정류장 핀 형태 재사용, 색만 유형별로(아파트=블루, 오피스=그린) */
+.bus-stop-pin.is-elev-apt { background: #1b46c4; }
+.bus-stop-pin.is-elev-office { background: #0f9d76; }
+
+/* ===== 지도 헤더 전체 텍스트 통일 — 14px/800/#344054, 배경 없이 깔끔(호버·활성=색만 진해짐). 필터(지역검색·예산·기간)도 알약 제거하고 동일 텍스트+▼. 회원가입(.join)만 네이비 알약 보존 ===== */
+.map-global-nav a,
+.map-global-nav button,
+.map-global-nav .map-header-filter,
+.map-filter-entry,
+.map-global-actions a:not(.join) { color: #344054; font-size: 14px; font-weight: 650; }
+.map-global-nav a,
+.map-global-nav button:not(.map-filter-entry),
+.map-global-actions a:not(.join) { min-height: 34px; padding: 0; border: 0; background: transparent; transition: color .15s ease, transform .15s ease; }
+.map-global-actions a:not(.join) { display: inline-flex; align-items: center; }
+/* 헤더 nav 첫 글자 '추'를 아래 카테고리 '옥'(탭 안쪽 패딩 17px)과 좌측 정렬 */
+.map-global-nav { padding-left: 17px; }
+
+/* 필터(지역검색·예산·기간 검색) 화살표 — 작고 얇은 무채색 회색(은은), 호버 시 진해짐 */
+.map-filter-entry::after { width: 5px; height: 5px; margin-left: 6px; border-right: 1.5px solid #9aa4b2; border-bottom: 1.5px solid #9aa4b2; transform: translateY(-1px) rotate(45deg); transition: border-color .15s ease; }
+.map-filter-entry:hover::after, .map-filter-entry:focus::after { border-color: #0b1b3f; }
+
+/* 활성(추천 큐레이션 패널 열림) 강조 제거 — 다른 항목과 동일한 색·굵기. 진해지는 건 호버 때만 */
+.map-global-nav button.is-active:not(.map-filter-entry) { color: #344054; font-weight: 650; }
+.map-global-nav a:hover, .map-global-nav a:focus,
+.map-global-nav button:not(.map-filter-entry):hover, .map-global-nav button:not(.map-filter-entry):focus,
+.map-global-actions a:not(.join):hover, .map-global-actions a:not(.join):focus { background: transparent; color: #0b1b3f; }
+.map-global-nav .map-header-filter,
+.map-filter-entry { min-height: 34px; padding: 0; border: 0; border-radius: 0; background: transparent; box-shadow: none; }
+.map-global-nav .map-header-filter:hover, .map-global-nav .map-header-filter:focus,
+.map-filter-entry:hover, .map-filter-entry:focus { background: transparent; border-color: transparent; color: #0b1b3f; }
+.map-global-nav .map-header-filter[aria-expanded="true"], .map-global-nav .map-header-filter.has-filter,
+.map-filter-entry[aria-expanded="true"], .map-filter-entry.has-filter { background: transparent; border-color: transparent; color: #0b3a91; }
+
+/* 유튜브·블로그 마크 — 기본 무채색, 마우스(손) 올리면 원래 컬러 */
+.map-nav-media-link .map-nav-icon { filter: grayscale(1); opacity: .5; transition: filter .15s ease, opacity .15s ease, transform .15s ease; }
+.map-nav-media-link:hover .map-nav-icon,
+.map-nav-media-link:focus .map-nav-icon { filter: grayscale(0); opacity: 1; }
+
+/* 헤더 버튼 호버 피드백 — 글자 살짝 위로(추천 큐레이션·지역검색·예산·기간 검색·주요매체 등 통일) */
+.map-global-nav a,
+.map-global-nav button,
+.map-filter-entry,
+.map-global-actions a:not(.join) { transition: color .15s ease, transform .15s ease; }
+.map-global-nav a:hover, .map-global-nav a:focus,
+.map-global-nav button:hover, .map-global-nav button:focus,
+.map-filter-entry:hover, .map-filter-entry:focus,
+.map-global-actions a:not(.join):hover, .map-global-actions a:not(.join):focus { transform: translateY(-2px); }
