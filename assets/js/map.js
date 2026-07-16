@@ -505,6 +505,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const elevatorSites = elevatorSitesData || {};
   let elevatorType = "apartment"; // apartment | office (좌측 리스트 세그먼트)
   let selectedNetworkId = "";
+  let selectedComplexId = ""; // 단지별 카드/핀 선택(포커스)
   let elevatorMarkers = [];
   let elevatorFavorites = (() => {
     try { return JSON.parse(localStorage.getItem("goplay:elevFav") || "[]"); } catch (error) { return []; }
@@ -518,6 +519,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     asa: ["assets/images/elevator/elevator-office-2.jpg", "assets/images/elevator/elevator-office-1.jpg"],
   };
   const ELEV_IMAGE_FALLBACK = "assets/images/map-samples/gangnam-wide.jpg";
+  // 상품별 송출 보장(제품 고정값)
+  const ELEV_BROADCAST = { townboard: "15초 · 1일 100회" };
   // 첫/기본 화면: 서울 전역 1000m 스케일(줌13) — 클러스터로 묶여 표시(강북·강남 균형 중심)
   const DEFAULT_VIEW = { latitude: 37.5350, longitude: 127.0000, zoom: 13 };
   const BUS_STOP_CLUSTER_MAX_ZOOM = 13;
@@ -717,6 +720,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         activeCategory = button.dataset.mapCategory;
         selectedMediaSlug = "";
         selectedNetworkId = "";
+        selectedComplexId = "";
         detailOpen = false;
         render();
       });
@@ -973,160 +977,136 @@ document.addEventListener("DOMContentLoaded", async () => {
   function renderElevator(options = {}) {
     renderCategoryTabs();
     if (busStopLegend) { busStopLegend.hidden = true; busStopLegend.classList.remove("is-visible"); }
-    const nets = elevatorNetworksByType();
-    if (selectedNetworkId && !nets.some((net) => net.id === selectedNetworkId)) {
-      selectedNetworkId = "";
-      detailOpen = false;
-    }
+    detailOpen = false;
     if (summaryRoot) {
-      const monitors = nets.reduce((sum, net) => sum + net.monitors, 0);
-      summaryRoot.innerHTML = `<span class="sr-only">전국 ${nets.length}개 ${elevatorType === "apartment" ? "아파트" : "오피스"} 엘리베이터 네트워크, 모니터 ${monitors.toLocaleString("ko-KR")}대</span>`;
+      const sites = elevatorSitesForType();
+      summaryRoot.innerHTML = `<span class="sr-only">${elevatorType === "apartment" ? "아파트" : "오피스"} 엘리베이터 광고, 지오코딩된 단지 ${sites.length.toLocaleString("ko-KR")}곳</span>`;
     }
     updateCostFilterLabels();
-    renderElevatorStage(options.preserveView);
-    renderElevatorList(nets);
-    renderElevatorDetail(nets.find((net) => net.id === selectedNetworkId) || null);
+    renderElevatorList(elevatorComplexesForView()); // 리스트는 지도와 독립적으로 항상 렌더
+    try { renderElevatorStage(options.preserveView); } catch (error) { console.warn("elevator map skipped", error); }
     syncPanelMode();
   }
 
-  function elevatorHero(nets) {
-    const complexes = nets.reduce((sum, net) => sum + net.complexes, 0);
-    const monitors = nets.reduce((sum, net) => sum + net.monitors, 0);
-    const isApt = elevatorType === "apartment";
-    const reach = nets.reduce((sum, net) => sum + (isApt ? (net.households || 0) : (net.population || 0)), 0);
-    const reachLabel = isApt ? "세대 도달" : "입주 직장인";
-    const desc = isApt ? "가족 단위 · 생활 동선 반복 노출" : "업무 상주 · 점심·퇴근 동선 노출";
-    return `
-      <div class="map-elev-hero">
-        <div class="map-elev-hero-stats">
-          <div><b>${complexes.toLocaleString("ko-KR")}</b><span>단지·빌딩</span></div>
-          <div><b>${elevatorFmt(monitors)}</b><span>모니터</span></div>
-          <div><b>${elevatorFmt(reach)}</b><span>${reachLabel}</span></div>
-        </div>
-        <p class="map-elev-hero-desc">${AdPlay.esc(desc)}</p>
-      </div>`;
+  // 시도 접두어를 떼어 구·동 위주로 간결 표기
+  function elevatorComplexAddr(site) {
+    const stripped = String(site.address || "").replace(/^(서울특별시|부산광역시|대구광역시|인천광역시|광주광역시|대전광역시|울산광역시|세종특별자치시|경기도|강원특별자치도|강원도|충청북도|충청남도|전북특별자치도|전라북도|전라남도|경상북도|경상남도|제주특별자치도)\s*/, "").trim();
+    return stripped || site.address || "주소 확인 필요";
   }
 
-  function elevatorCard(net) {
-    const isSel = selectedNetworkId === net.id;
-    return `
-      <button type="button" class="map-elev-card${isSel ? " is-active" : ""}" data-elev-net="${AdPlay.esc(net.id)}" aria-current="${isSel ? "true" : "false"}">
-        <div class="map-elev-card-head">
-          <span class="map-elev-card-brand">${AdPlay.esc(net.brand)}</span>
-          ${net.highlights && net.highlights[0] ? `<span class="map-elev-card-badge">${AdPlay.esc(net.highlights[0])}</span>` : ""}
-        </div>
-        <p class="map-elev-card-spec">${AdPlay.esc(net.placement)}</p>
-        <div class="map-elev-card-metrics">
-          <div><b>${net.complexes.toLocaleString("ko-KR")}</b><span>단지·빌딩</span></div>
-          <div><b>${net.monitors.toLocaleString("ko-KR")}</b><span>모니터</span></div>
-        </div>
-        <div class="map-elev-card-foot">
-          <span class="map-elev-card-reach">${AdPlay.esc(elevatorReachLabel(net))}</span>
-          <span class="map-elev-card-price">${AdPlay.esc(elevatorPriceLabel(net))}</span>
-        </div>
-      </button>`;
+  function elevWon(value) {
+    if (!value) return "";
+    if (value >= 10000) {
+      const man = value / 10000;
+      return `${Number.isInteger(man) ? man : man.toFixed(1)}만원`;
+    }
+    return `${value.toLocaleString("ko-KR")}원`;
   }
 
-  function renderElevatorList(nets) {
+  function elevatorSitesForType() {
+    const out = [];
+    elevatorNetworksByType().forEach((net) => {
+      (elevatorSites[net.id] || []).forEach((site) => {
+        if (Number.isFinite(site.lat) && Number.isFinite(site.lng)) {
+          out.push({ ...site, networkId: net.id, brand: net.brand, type: net.type });
+        }
+      });
+    });
+    return out;
+  }
+
+  function elevatorComplexesForView() {
+    const sites = elevatorSitesForType();
+    let list = sites;
+    if (naverMap && window.naver && window.naver.maps && activeCategory === "daily_touchpoint") {
+      const bounds = naverMap.getBounds();
+      if (bounds) {
+        const sw = bounds.getSW();
+        const ne = bounds.getNE();
+        const inView = sites.filter((s) => s.lat >= sw.lat() && s.lat <= ne.lat() && s.lng >= sw.lng() && s.lng <= ne.lng());
+        list = inView.length ? inView : sites;
+      }
+    }
+    list = list.slice().sort((a, b) => (b.monitors || 0) - (a.monitors || 0));
+    if (selectedComplexId) {
+      const sel = list.find((s) => s.id === selectedComplexId);
+      if (sel) list = [sel, ...list.filter((s) => s.id !== selectedComplexId)];
+    }
+    return list.slice(0, 120);
+  }
+
+  function elevatorComplexCard(site) {
+    const isSel = selectedComplexId === site.id;
+    const gubun = site.gubun || (site.type === "office" ? "오피스" : "아파트");
+    const facts = [];
+    if (site.pyeong) facts.push(`평형 ${site.pyeong}`);
+    if (site.households) facts.push(`세대 ${site.households.toLocaleString("ko-KR")}`);
+    else if (site.tenants) facts.push(`입주사 ${site.tenants.toLocaleString("ko-KR")}`);
+    if (site.year) facts.push(`입주 ${site.year}`);
+    if (site.monitorSize) facts.push(site.monitorSize);
+    facts.push(`모니터 ${(site.monitors || 0).toLocaleString("ko-KR")}대`);
+    const unit = site.unitPrice ? `개별 ${elevWon(site.unitPrice)}` : "";
+    const monthly = site.monthlyCost || site.price || 0;
+    const broadcast = ELEV_BROADCAST[site.networkId] || "";
+    return `
+      <article class="map-elev-complex${isSel ? " is-active" : ""}">
+        <button type="button" data-elev-complex="${AdPlay.esc(site.id)}" aria-label="${AdPlay.esc(site.name)} 지도에서 보기" aria-current="${isSel ? "true" : "false"}"></button>
+        <div class="map-elev-complex-head">
+          <h3><span class="map-elev-gubun">${AdPlay.esc(gubun)}</span>${AdPlay.esc(String(site.name).replace(/_[LS]$/, ""))}</h3>
+          <span class="map-elev-op-tag${site.type === "office" ? " is-office" : ""}">${AdPlay.esc(site.brand)}</span>
+        </div>
+        <p class="map-elev-complex-addr">${AdPlay.esc(site.address || "주소 확인 필요")}</p>
+        <div class="map-elev-complex-facts">${facts.map((f) => `<span>${AdPlay.esc(f)}</span>`).join("")}</div>
+        ${unit || broadcast ? `<div class="map-elev-complex-sub">
+          ${unit ? `<span>${AdPlay.esc(unit)}</span>` : ""}
+          ${broadcast ? `<span class="map-elev-broadcast">송출 ${AdPlay.esc(broadcast)}</span>` : ""}
+        </div>` : ""}
+        <div class="map-elev-complex-foot">
+          <span class="map-elev-complex-price">${monthly ? `월 ${AdPlay.esc(elevWon(monthly))}` : "가격 상담"}</span>
+          <span class="map-elev-complex-cta">지도에서 보기</span>
+        </div>
+      </article>`;
+  }
+
+  function renderElevatorList(complexes) {
+    const total = elevatorSitesForType().length;
     listRoot.innerHTML = `
       <div class="map-elev-seg" role="tablist" aria-label="엘리베이터 광고 유형">
         <button type="button" role="tab" data-elev-type="apartment" aria-selected="${elevatorType === "apartment"}" class="${elevatorType === "apartment" ? "is-active" : ""}">아파트 주거민</button>
         <button type="button" role="tab" data-elev-type="office" aria-selected="${elevatorType === "office"}" class="${elevatorType === "office" ? "is-active" : ""}">오피스 직장인</button>
       </div>
-      ${elevatorHero(nets)}
-      <p class="map-elev-cards-cap">매체 네트워크 <span>· 커버리지·단가로 비교하세요</span></p>
-      <div class="map-elev-cards">${nets.map(elevatorCard).join("")}</div>`;
+      <p class="map-elev-cards-cap">이 화면 <b>${complexes.length.toLocaleString("ko-KR")}</b>개 단지 <span>· 지도 이동 시 갱신 (표본 ${total.toLocaleString("ko-KR")}곳)</span></p>
+      <div class="map-elev-complex-list">${
+        complexes.length
+          ? complexes.map(elevatorComplexCard).join("")
+          : `<div class="empty">이 지역에 표시할 단지가 없습니다. 지도를 이동하거나 축소해 보세요.</div>`
+      }</div>`;
 
     listRoot.querySelectorAll("[data-elev-type]").forEach((button) => {
       button.addEventListener("click", () => {
         if (elevatorType === button.dataset.elevType) return;
         elevatorType = button.dataset.elevType;
-        selectedNetworkId = "";
-        detailOpen = false;
+        selectedComplexId = "";
         render({ preserveView: true });
       });
     });
-    listRoot.querySelectorAll("[data-elev-net]").forEach((button) => {
-      button.addEventListener("click", () => openNetwork(button.dataset.elevNet));
+    listRoot.querySelectorAll("[data-elev-complex]").forEach((button) => {
+      button.addEventListener("click", () => focusComplex(button.dataset.elevComplex));
     });
   }
 
-  function openNetwork(id) {
-    const net = elevatorNetworks.find((entry) => entry.id === id);
-    if (!net) return;
-    selectedNetworkId = id;
-    detailOpen = true;
-    render({ preserveView: true });
+  function focusComplex(id) {
+    const site = elevatorSitesForType().find((s) => s.id === id);
+    if (!site) return;
+    selectedComplexId = id;
+    if (naverMap && window.naver && window.naver.maps) {
+      naverMap.setCenter(new naver.maps.LatLng(site.lat, site.lng));
+      if (naverMap.getZoom() <= BUS_STOP_CLUSTER_MAX_ZOOM) naverMap.setZoom(BUS_STOP_CLUSTER_MAX_ZOOM + 2);
+      syncElevatorLayer();
+    } else {
+      renderElevatorList(elevatorComplexesForView());
+    }
     if (mobileLayoutQuery.matches) setMobileListOpen(true);
-    detailRoot.focus({ preventScroll: true });
-  }
-
-  function renderElevatorDetail(net) {
-    if (!net) { detailRoot.innerHTML = ""; return; }
-    const imgs = elevatorImages(net);
-    const sites = elevatorSites[net.id] || [];
-    const regionMax = Math.max(1, ...net.regions.map((region) => region.monitors));
-    const regionBars = net.regions.slice(0, 8).map((region) => `
-      <div class="map-elev-region-row">
-        <span class="map-elev-region-name">${AdPlay.esc(region.name)}</span>
-        <span class="map-elev-region-bar"><i style="--w:${Math.round(region.monitors / regionMax * 100)}%"></i></span>
-        <span class="map-elev-region-val">${region.monitors.toLocaleString("ko-KR")}</span>
-      </div>`).join("");
-    const gallery = [imgs[0], imgs[1], imgs[0], imgs[1]];
-    detailRoot.innerHTML = `
-      <button type="button" class="map-detail-close" id="mapDetailClose" aria-label="목록으로 돌아가기">×</button>
-      <section class="map-detail-media-hero" aria-label="매체 사진">
-        <figure class="map-detail-video-preview">
-          <img src="${AdPlay.esc(imgs[0])}" alt="${AdPlay.esc(net.brand)} 매체 현장" onerror="this.onerror=null;this.src='${ELEV_IMAGE_FALLBACK}'">
-        </figure>
-        <div class="map-detail-media-grid">
-          ${gallery.slice(0, 4).map((src, index) => `
-            <figure><img src="${AdPlay.esc(src)}" alt="${AdPlay.esc(net.brand)} 현장 ${index + 1}" loading="lazy" onerror="this.onerror=null;this.src='${ELEV_IMAGE_FALLBACK}'"></figure>
-          `).join("")}
-        </div>
-      </section>
-      <div class="map-detail-body">
-        <div class="map-detail-title-row"><h2>${AdPlay.esc(net.brand)}</h2></div>
-        <p class="map-detail-address">${AdPlay.esc(net.vendor)} · ${net.type === "apartment" ? "아파트 엘리베이터" : "오피스 엘리베이터"}</p>
-        <div class="map-list-tags">${[net.type === "apartment" ? "아파트" : "오피스", "엘리베이터 광고", "네트워크"].map((tag) => `<span>${AdPlay.esc(tag)}</span>`).join("")}</div>
-        <div class="map-elev-detail-metrics">
-          <div><b>${net.complexes.toLocaleString("ko-KR")}</b><span>단지·빌딩</span></div>
-          <div><b>${net.monitors.toLocaleString("ko-KR")}</b><span>모니터</span></div>
-          <div><b>${AdPlay.esc(elevatorReachLabel(net))}</b><span>도달 규모</span></div>
-        </div>
-        ${sites.length ? `<p class="map-elev-site-note"><b>${sites.length}곳</b> 실측 위치를 지도에 표시 중 (대표 샘플 · 전체 ${net.complexes.toLocaleString("ko-KR")}단지)</p>` : ""}
-        <section class="map-detail-section map-detail-section-top">
-          <dl class="map-detail-specs">
-            ${detailFact("모니터 위치", net.placement)}
-            ${detailFact("모니터 규격", net.spec)}
-            ${detailFact("주요 지역", net.topRegion ? `${net.topRegion} (${net.topRegionShare}%)` : "전국")}
-            <dt>대당 단가<br><span class="map-detail-fact-sub">월 · VAT별도</span></dt><dd class="map-detail-contract">${AdPlay.esc(elevatorPriceLabel(net).replace(/^대당 월 /, ""))}</dd>
-          </dl>
-        </section>
-        <section class="map-detail-section map-detail-selling">
-          <h3>타깃 · 노출 포인트</h3>
-          <p class="map-detail-copy">${AdPlay.esc(net.target)}</p>
-          ${net.highlights && net.highlights.length ? `<div class="map-detail-audience-box">
-            <p class="map-audience-cap">네트워크 강점</p>
-            <p class="map-detail-audience-line">${net.highlights.map((h) => AdPlay.esc(h)).join(" · ")}</p>
-          </div>` : ""}
-        </section>
-        <section class="map-detail-section">
-          <h3>지역별 커버리지 <span class="map-elev-region-unit">모니터 수</span></h3>
-          <div class="map-elev-region-list">${regionBars}</div>
-        </section>
-        <a class="map-detail-live-card" href="estimate.html?intent=live-talk&elevator=${encodeURIComponent(net.id)}">
-          <strong>이 상품으로 상담 신청</strong>
-          <span>지역·예산·기간 맞춤 견적과 단지 리스트는 1533-1975 또는 라이브 상담</span>
-        </a>
-      </div>`;
-    const close = detailRoot.querySelector("#mapDetailClose");
-    if (close) close.addEventListener("click", () => {
-      detailOpen = false;
-      selectedNetworkId = "";
-      render({ preserveView: true });
-      if (mobileLayoutQuery.matches) setMobileListOpen(true);
-    });
   }
 
   function clearElevatorLayer() {
@@ -1149,21 +1129,6 @@ document.addEventListener("DOMContentLoaded", async () => {
       if (activeCategory === "bus") syncBusStopLayer();
       else if (activeCategory === "daily_touchpoint") syncElevatorLayer();
     });
-  }
-
-  // 현재 유형(또는 선택 네트워크)에 해당하는 지오코딩된 사이트 목록
-  function elevatorSitesForType() {
-    const ids = selectedNetworkId ? [selectedNetworkId] : elevatorNetworksByType().map((net) => net.id);
-    const out = [];
-    ids.forEach((id) => {
-      const net = elevatorNetworks.find((entry) => entry.id === id);
-      (elevatorSites[id] || []).forEach((site) => {
-        if (Number.isFinite(site.lat) && Number.isFinite(site.lng)) {
-          out.push({ ...site, networkId: id, brand: net ? net.brand : "", type: net ? net.type : "" });
-        }
-      });
-    });
-    return out;
   }
 
   function elevatorClusterGroups(sites) {
@@ -1194,18 +1159,20 @@ document.addEventListener("DOMContentLoaded", async () => {
 
   function elevatorPinContent(site) {
     const office = site.type === "office";
+    const active = selectedComplexId === site.id ? " is-active" : "";
     return `
-      <span class="bus-stop-pin ${office ? "is-elev-office" : "is-elev-apt"}" role="img" aria-label="${AdPlay.esc(site.brand)} · ${AdPlay.esc(site.name)}">
+      <span class="bus-stop-pin ${office ? "is-elev-office" : "is-elev-apt"}${active}" role="img" aria-label="${AdPlay.esc(site.brand)} · ${AdPlay.esc(site.name)}">
         <span class="bus-stop-pin-core"></span>
       </span>`;
   }
 
-  // 버스 정류장 광고와 동일한 노출 방식: 낮은 줌=구역 클러스터, 높은 줌=개별 핀, 지도 이동 시 재동기화
+  // 버스 정류장 광고와 동일 노출: 낮은 줌=구역 클러스터, 높은 줌=개별 핀, 지도 이동마다 재동기화 + 리스트 갱신
   function syncElevatorLayer() {
     if (!naverMap || !window.naver || !window.naver.maps || activeCategory !== "daily_touchpoint") {
       clearElevatorLayer();
       return;
     }
+    try {
     clearElevatorLayer();
     const sites = elevatorSitesForType();
     const zoom = typeof naverMap.getZoom === "function" ? naverMap.getZoom() : 12;
@@ -1228,46 +1195,51 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
         elevatorMarkers.push(marker);
       });
-      return;
-    }
-
-    const bounds = naverMap.getBounds();
-    const sw = bounds ? bounds.getSW() : null;
-    const ne = bounds ? bounds.getNE() : null;
-    sites
-      .filter((site) => !sw || (site.lat >= sw.lat() && site.lat <= ne.lat() && site.lng >= sw.lng() && site.lng <= ne.lng()))
-      .slice(0, 650)
-      .forEach((site) => {
-        const marker = new naver.maps.Marker({
-          map: naverMap,
-          position: new naver.maps.LatLng(site.lat, site.lng),
-          title: `${site.brand} · ${site.name}`,
-          icon: {
-            content: elevatorPinContent(site),
-            size: new naver.maps.Size(26, 26),
-            anchor: new naver.maps.Point(13, 15),
-          },
+    } else {
+      const bounds = naverMap.getBounds();
+      const sw = bounds ? bounds.getSW() : null;
+      const ne = bounds ? bounds.getNE() : null;
+      sites
+        .filter((site) => !sw || (site.lat >= sw.lat() && site.lat <= ne.lat() && site.lng >= sw.lng() && site.lng <= ne.lng()))
+        .slice(0, 650)
+        .forEach((site) => {
+          const marker = new naver.maps.Marker({
+            map: naverMap,
+            position: new naver.maps.LatLng(site.lat, site.lng),
+            title: `${site.brand} · ${site.name}`,
+            icon: {
+              content: elevatorPinContent(site),
+              size: new naver.maps.Size(26, 26),
+              anchor: new naver.maps.Point(13, 15),
+            },
+          });
+          naver.maps.Event.addListener(marker, "click", () => focusComplex(site.id));
+          elevatorMarkers.push(marker);
         });
-        naver.maps.Event.addListener(marker, "click", () => openNetwork(site.networkId));
-        elevatorMarkers.push(marker);
-      });
+    }
+    } catch (error) { console.warn("elevator markers skipped", error); }
+    renderElevatorList(elevatorComplexesForView());
   }
 
   function renderElevatorStage(preserveView) {
-    if (!window.naver || !window.naver.maps) return;
-    ensureNaverMap();
-    if (!naverMap) return;
-    if (mediaCluster) { mediaCluster.setMap(null); mediaCluster = null; }
-    naverMarkers.forEach((marker) => marker.setMap(null));
-    naverMarkers = [];
-    clearBusStopLayer();
-
-    // 첫 진입 화면은 '옥외광고 전체'와 동일하게 서울 1000m 기본 뷰로 고정
-    if (!preserveView) {
-      naverMap.setCenter(new naver.maps.LatLng(DEFAULT_VIEW.latitude, DEFAULT_VIEW.longitude));
-      naverMap.setZoom(DEFAULT_VIEW.zoom);
+    if (window.naver && window.naver.maps) {
+      ensureNaverMap();
+      if (naverMap) {
+        if (mediaCluster) { mediaCluster.setMap(null); mediaCluster = null; }
+        naverMarkers.forEach((marker) => marker.setMap(null));
+        naverMarkers = [];
+        clearBusStopLayer();
+        // 첫 진입 화면은 '옥외광고 전체'와 동일하게 서울 1000m 기본 뷰로 고정
+        if (!preserveView) {
+          naverMap.setCenter(new naver.maps.LatLng(DEFAULT_VIEW.latitude, DEFAULT_VIEW.longitude));
+          naverMap.setZoom(DEFAULT_VIEW.zoom);
+        }
+        syncElevatorLayer();
+        return;
+      }
     }
-    syncElevatorLayer();
+    // 네이버 지도 미로드: 리스트만 렌더
+    renderElevatorList(elevatorComplexesForView());
   }
 
   function syncBusStopLayer() {
@@ -1659,6 +1631,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         </section>
         <section class="map-detail-section" id="detailLocation">
           <h3>입지 특성</h3>
+          ${item.locationFeature ? `<p class="map-detail-copy map-detail-location-feature">${AdPlay.esc(item.locationFeature)}</p>` : ""}
           <div class="map-insight-score">
             ${insight.scores.map((score) => `<div><span>${AdPlay.esc(score.label)}</span><i style="--score:${score.value}"></i><strong>${score.value}</strong></div>`).join("")}
           </div>

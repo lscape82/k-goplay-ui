@@ -33,7 +33,7 @@
       { href: "media.html", label: "매체 찾기" },
       { href: "map.html", label: "지도 보기" },
       { href: "areas.html", label: "지역 보기" },
-      { href: "guides.html", label: "가이드" },
+      { href: "insights.html", label: "옥외광고 가이드" },
       { href: "geocode.html", label: "주소 변환" },
       { href: "estimate.html", label: "견적 문의" },
       { href: "media-management.html", label: "매체 관리" },
@@ -115,7 +115,13 @@
         <nav class="nav" aria-label="주요 메뉴">
           <a class="brand" href="${esc(config.brandHref)}"><span class="brand-mark">${esc(config.brandMark)}</span><span>${esc(config.brandName)}</span></a>
           <div class="nav-links">
-            ${config.navItems.map((item) => `<a data-nav href="${esc(item.href)}">${esc(item.label)}</a>`).join("")}
+            ${config.navItems.map((item) => `<a data-nav href="${esc(item.href)}"${item.external ? ` target="_blank" rel="noopener"` : ``}>${esc(item.label)}</a>`).join("")}
+            <span class="nav-social" style="display:inline-flex;align-items:center;gap:12px;margin-left:6px;padding-left:14px;border-left:1px solid #e5e7eb">
+              <a href="#" aria-label="페이스북" target="_blank" rel="noopener" style="color:#9aa4b2;line-height:0"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.6l.4-3H13.5V8.1c0-.87.24-1.46 1.5-1.46H16.6V4a20 20 0 0 0-2.3-.12c-2.3 0-3.8 1.4-3.8 3.95V10H7.9v3h2.6v8z"/></svg></a>
+              <a href="#" aria-label="인스타그램" target="_blank" rel="noopener" style="color:#9aa4b2;line-height:0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="3.8"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></a>
+              <a href="https://blog.naver.com/k-goplay" aria-label="네이버 블로그" target="_blank" rel="noopener" style="line-height:0"><span style="display:inline-flex;align-items:center;justify-content:center;height:17px;padding:0 4px;border-radius:4px;background:#9aa4b2;color:#fff;font:900 9px/1 system-ui;letter-spacing:.02em">blog</span></a>
+              <a href="https://www.youtube.com/channel/UCxXNbNumZkcpjIGzUaOnfnQ" aria-label="유튜브" target="_blank" rel="noopener" style="color:#9aa4b2;line-height:0"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.2 3.6z"/></svg></a>
+            </span>
           </div>
         </nav>`;
     });

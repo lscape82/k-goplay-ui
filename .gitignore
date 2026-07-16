@@ -18,3 +18,7 @@ data/pdf_pages_text.json
 # public-safe thumbnails are split into a separate folder.
 # assets/images/pdf-pages/
 .vercel
+
+# 로컬 전용(공개 저장소 제외)
+.claude/
+scratch-backup/

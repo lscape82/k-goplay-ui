@@ -531,3 +531,118 @@
 .map-global-nav button:hover, .map-global-nav button:focus,
 .map-filter-entry:hover, .map-filter-entry:focus,
 .map-global-actions a:not(.join):hover, .map-global-actions a:not(.join):focus { transform: translateY(-2px); }
+
+
+/* ===== [A] 좌측 매체 리스트 정리 — 고고스타트 톤(헤어라인 구분 + 여백 + 자간 라벨) ===== */
+#mapMediaList { gap: 0; }
+.map-list-card:not(:last-child) { padding-bottom: 20px; margin-bottom: 20px; border-bottom: 1px solid #edf1f7; }
+.map-list-card .map-card-footer span { letter-spacing: .04em; }
+.map-list-card .map-list-tags span { letter-spacing: .02em; }
+
+/* ===== [B] 상세페이지 정리 — 고고스타트 톤(섹션 간 헤어라인·여백 + 제목 자간) ===== */
+#mapDetailView .map-detail-section { margin-top: 18px; padding-top: 18px; border-top: 1px solid #edf1f7; }
+#mapDetailView .map-detail-section.map-detail-section-top { margin-top: 0; padding-top: 0; border-top: 0; }
+#mapDetailView .map-detail-section h3 { letter-spacing: -0.01em; margin-bottom: 11px; }
+
+/* 타깃·방문 동기 — 방문동기 바 목록(평일 직장인 등)도 성별/연령과 동일한 흰 박스로(칸 밖에 뜨던 것 정리) */
+.map-traffic-segments .map-traffic-segment-list { border: 1px solid #dbe7fb; background: #fff; border-radius: 8px; padding: 14px 18px; }
+
+/* =====================================================================
+   [C] 큐레이션 팝업 · 관심매체 비교 — [A]/[B]와 같은 톤(여백·강약·자간)
+   ===================================================================== */
+/* 큐레이션 리스트: 행 여백 확보(여백) + 기본 라벨은 세미볼드로 낮추고 활성 항목만 강조(강약). 한글 자간 미세 조임 */
+.map-curation-list button { padding-top: 7px; padding-bottom: 7px; }
+.map-curation-list strong { font-weight: 650; letter-spacing: -0.01em; }
+.map-curation-list button.is-active strong { font-weight: 800; }
+/* 관심매체 비교: 열 라벨(유형·비용·운영시간 등)에 미세 자간 부여 — 라벨 위계 또렷하게([A] 카드 푸터와 동일 톤) */
+.map-fav-compare--rows thead th { letter-spacing: .02em; }
+
+/* 관심매체 비교 — 긴 주소가 옆(유형) 칸을 침범하던 문제: 1줄 말줄임으로 칸 안에 가둠(행 높이 균일) */
+.map-fav-media-addr {
+  max-width: 100%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* 상단 카테고리 칩 — 회색 필은 무겁고 원래 아웃라인(#e4e7ec)은 번잡했음 → 흰 배경 + '아주 약한 선'만.
+   호버 때만 선·글자가 살짝 또렷해짐. 활성(네이비 채움)은 base 그대로라 대비는 유지 */
+.map-category-pill:not(.is-active) { border-color: #edf0f5; background: #fff; color: #475467; }
+.map-category-pill:not(.is-active):hover { border-color: #cfdaea; background: #f8fafc; color: #0b3a91; }
+
+/* 카테고리 칩 글자 13→12px — 헤더(14)와 위계 분리, 고고스타트풍 작은 라벨 톤. 굵기·높이·필은 유지 */
+.map-category-pill { font-size: 12px; }
+
+/* 좌측 검색칸을 카테고리 칩과 통일 — 높이 42→38, 글자 13→12(칩과 동일) */
+.map-category-search { height: 38px; }
+.map-category-search button { width: 38px; height: 38px; }
+.map-global-search input { font-size: 12px; }
+
+/* 카테고리 칩 줄 하단 가로 스크롤바 — 브라우저가 10~15px 두꺼운 바를 예약해 칩이 검색칸보다 위로 뜨고 시각적으로도 번잡. 커스텀 얇은 바는 scrollbar-width 지정 시 무시되므로, 바를 숨겨 시각 부담 0·칩과 세로 정렬 유지(스크롤 기능은 그대로, 마지막 칩이 잘려 스크롤 가능함을 암시) */
+.map-category-list { scrollbar-width: none; -ms-overflow-style: none; }
+.map-category-list::-webkit-scrollbar { display: none; }
+
+/* 카테고리 칩 줄 커스텀 가로 스크롤바(map-category-scroll.js) — 얇고 연하게, 절대배치라 정렬 영향 없음 */
+.map-cat-scrollbar { position: absolute; bottom: 4px; height: 4px; z-index: 6; display: none; cursor: pointer; }
+.map-cat-scrollbar-thumb { height: 4px; border-radius: 999px; background: rgba(148, 163, 184, 0.32); transition: background .15s ease; }
+.map-cat-scrollbar:hover .map-cat-scrollbar-thumb { background: rgba(100, 116, 139, 0.5); }
+
+/* 상단 pill(999px)이 촌스럽고, 8px는 너무 딱딱 → 고고스타트풍 '부드러운 사각' 12px로: 카테고리 칩·검색칸·회원가입 버튼 */
+.map-category-pill { border-radius: 12px; }
+.map-category-search { border-radius: 12px; }
+.map-category-search button { border-radius: 0 12px 12px 0; }
+.map-global-actions .join { border-radius: 12px; }
+
+/* 오른쪽 도크·토글·상담 버튼 코너도 상단(12px)과 통일 — 내부 세그먼트 버튼만 8px로 한 단계 낮춰 위계 */
+.map-mode-toggle, .map-utility-controls { border-radius: 12px; }
+.map-mode-toggle button, .map-utility-controls button { border-radius: 8px; }
+.gps-svc { border-radius: 12px; }
+.map-contact-card { border-radius: 14px; }
+.map-contact-card a.primary { border-radius: 12px; }
+
+/* 엘리베이터 단지별 카드(hello-ooh식) — 지도 화면과 연동되는 단지 리스트 */
+.map-elev-complex-list { display: flex; flex-direction: column; gap: 9px; }
+.map-elev-complex { position: relative; padding: 12px 14px; border: 1px solid var(--gps-line); border-radius: 12px; background: #fff; transition: border-color .14s, box-shadow .14s; }
+.map-elev-complex:hover { border-color: var(--gps-accent-soft); box-shadow: 0 3px 12px rgba(27,70,196,.09); }
+.map-elev-complex.is-active { border-color: var(--gps-accent); box-shadow: 0 0 0 2px var(--gps-accent-wash); }
+.map-elev-complex > button { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: transparent; cursor: pointer; z-index: 1; }
+.map-elev-complex-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.map-elev-complex-head h3 { margin: 0; font-size: 14.5px; font-weight: 800; color: var(--gps-ink); line-height: 1.3; }
+.map-elev-op-tag { position: relative; z-index: 2; flex: none; font-size: 10.5px; font-weight: 800; color: #1b46c4; background: #eaf0ff; padding: 3px 8px; border-radius: 999px; white-space: nowrap; }
+.map-elev-op-tag.is-office { color: #0a6b50; background: #e2f5ee; }
+.map-elev-complex-addr { margin: 4px 0 0; font-size: 12px; font-weight: 600; color: var(--gps-muted); line-height: 1.4; }
+.map-elev-complex-facts { display: flex; flex-wrap: wrap; gap: 5px 8px; margin: 8px 0; }
+.map-elev-complex-facts span { font-size: 11.5px; font-weight: 700; color: var(--gps-ink-soft); background: var(--gps-bg); padding: 3px 8px; border-radius: 6px; }
+.map-elev-complex-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 8px; border-top: 1px solid var(--gps-line-soft); }
+.map-elev-complex-price { font-size: 13px; font-weight: 800; color: var(--gps-accent-ink); }
+.map-elev-complex-cta { position: relative; z-index: 2; font-size: 11.5px; font-weight: 700; color: var(--gps-muted); }
+.bus-stop-pin.is-elev-apt.is-active, .bus-stop-pin.is-elev-office.is-active { background: #e53935 !important; }
+
+/* 타운보드 단지 카드 확장 — 구분 배지·개별단가/송출·월비용 */
+.map-elev-complex-head h3 { display: inline; }
+.map-elev-gubun { display: inline-block; margin-right: 5px; padding: 1px 6px; font-size: 10.5px; font-weight: 800; color: #475569; background: #eef1f5; border-radius: 5px; vertical-align: 1px; }
+.map-elev-complex-sub { display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px; margin: 6px 0; font-size: 11.5px; font-weight: 700; color: var(--gps-ink-soft); }
+.map-elev-broadcast { color: var(--gps-muted); }
+.map-elev-complex-sub .map-elev-broadcast::before { content: ""; }
+
+/* 상단(헤더+카테고리) 정리 3종
+   1) 경계선 하나로 — 헤더 아래 선을 없애 헤더+카테고리가 한 덩어리로 읽히게(맨 아래 스트립 선 하나만 지도와 분리)
+   2) 카테고리 줄 높이 64→58 (부모 그리드 행이 고정이라 행+패딩 함께 조정)
+   3) 칩 간격 10→14로 넓혀 여백 확보 */
+.map-global-header { border-bottom: 0; }
+.map-workspace-page { grid-template-rows: 58px minmax(0, 1fr); }
+.map-category-strip { padding: 10px 0; }
+.map-category-list { gap: 14px; }
+
+/* 좌측 목록 카드 사진 — 2장 나란히(기존 유지). 높이만 소폭 확대: 기존 1.24/1(폭186→150px) → 1.06/1(≈175px).
+   가로형 원본이 크게 잘리지 않는 선에서만 키움 */
+.map-card-photo-pair img { aspect-ratio: 1.06 / 1; }
+
+/* 좌측 목록 여백 축소 — 사진을 패널 폭 가까이 넓힘.
+   카드 폭은 #mapMediaList 좌우 패딩(24)이, 검색칸은 --map-rail-gutter(24)가 결정하므로 둘 다 12로 낮춰 좌우 라인을 맞춤.
+   폭이 371→395로 넓어지면 사진 1장은 197.5px → 높이 175px 유지를 위해 비율을 1.06→1.13으로 보정 */
+body:has(.map-workspace-page) { --map-rail-gutter: 16px; }
+#mapMediaList { padding-left: 16px; padding-right: 16px; }
+/* 사진 비율은 원래대로 1.24/1(가로형) 유지 — 세로로 늘리면 가로형 원본이 좌우로 더 잘리고 카드도 길어져 스캔 밀도가 떨어짐.
+   대신 위 여백 축소로 폭이 186→194px 넓어진 만큼 높이도 150→156px로 자연스럽게 커짐 */
+.map-card-photo-pair img { aspect-ratio: 1.24 / 1; height: auto; }
