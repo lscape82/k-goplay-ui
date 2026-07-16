@@ -1,54 +1,5 @@
 [
   {
-    "slug": "m-89",
-    "sourceId": "89",
-    "name": "잠실 유토피아 전광판",
-    "company": "㈜라이프스케이프",
-    "category": "large_billboard",
-    "mediaType": "대형 전광판",
-    "areaSlug": "",
-    "areaName": "",
-    "address": "서울특별시 송파구 올림픽로 336 대우유토피아오피스텔",
-    "jibunAddress": "서울특별시 송파구 방이동 22 대우유토피아오피스텔",
-    "locationDescription": "서울시 송파구 인구수 1위 총 65만8,006명 , 잠실역(롯데월드타워) 유동인구 및 교통량 최다. 관공서, 공공기관, 글로벌 기업오피스와 롯데캐슬, 롯데월드타워 등 고급 주거시설 및 VIP 6성급 호텔 등 혼합 밀집",
-    "locationFeature": "서울시 송파구 인구수 1위 총 65만8,006명 , 잠실역(롯데월드타워) 유동인구 및 교통량 최다. 관공서, 공공기관, 글로벌 기업오피스와 롯데캐슬, 롯데월드타워 등 고급 주거시설 및 VIP 6성급 호텔 등 혼합 밀집",
-    "exposureShort": "잠실역 유동인구 및 교통량 최다",
-    "exposureLong": "잠실역 유동인구 및 교통량 최다. 송파구 롯데월드몰 송파구청 일대에 위치해, 횡단보도 대기·차량 정체 구간에서 정면 시야가 오래 머뭅니다. 브랜드 런칭·시즌 캠페인의 인지 확산에 강점이 있습니다.",
-    "tags": [
-      "롯데월드몰",
-      "송파구청"
-    ],
-    "widthM": 14.5,
-    "heightM": 15.5,
-    "sizeText": "14.5m x 15.5m",
-    "resolutionPx": "832 x 1008",
-    "operationHours": "06:00 - 24:00",
-    "pricing": [
-      {
-        "label": "20초 100회",
-        "durationSec": 20,
-        "dailyPlays": 100,
-        "monthlyPriceKRW": 10000000,
-        "rawText": "1일 20초 100회 - 1,000만원/월"
-      }
-    ],
-    "contractText": "1일 20초 100회 - 1,000만원/월",
-    "contractLines": [
-      "1일 20초 100회 - 1,000만원/월"
-    ],
-    "taxNote": "VAT 별도",
-    "shortTermAvailable": false,
-    "imageUrl": "assets/images/map-samples/gangnam-wide.jpg",
-    "videoUrl": "video/303.mp4",
-    "streetView": {
-      "lat": 37.5153685,
-      "lng": 127.1060816,
-      "pan": 62.0940591948745,
-      "tilt": 16.644043832922435,
-      "fov": 90.0
-    }
-  },
-  {
     "slug": "m-98",
     "sourceId": "98",
     "name": "청계광장 전광판",
@@ -95,71 +46,22 @@
     ],
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
-    "imageUrl": "assets/images/map-samples/gangnam-close.jpg",
-    "videoUrl": "video/231.mp4",
+    "images": [
+      "assets/images/media/cheonggye-plaza/1.jpg",
+      "assets/images/media/cheonggye-plaza/2.jpg",
+      "assets/images/media/cheonggye-plaza/3.jpg",
+      "assets/images/media/cheonggye-plaza/4.jpg",
+      "assets/images/media/cheonggye-plaza/5.jpg",
+      "assets/images/media/cheonggye-plaza/6.jpg",
+      "assets/images/media/cheonggye-plaza/7.jpg"
+    ],
+    "imageUrl": "assets/images/media/cheonggye-plaza/1.jpg",
+    "videoUrl": "assets/videos/cheonggye-plaza.mp4",
     "streetView": {
       "lat": 37.5689904,
       "lng": 126.9788962,
       "pan": -51.15749670133236,
       "tilt": 17.08379458159659,
-      "fov": 90.0
-    }
-  },
-  {
-    "slug": "m-215",
-    "sourceId": "215",
-    "name": "명동 을지한국빌딩",
-    "company": "㈜라이프스케이프",
-    "category": "large_billboard",
-    "mediaType": "대형 전광판",
-    "areaSlug": "",
-    "areaName": "",
-    "address": "서울특별시 중구 을지로 50 을지 한국빌딩",
-    "jibunAddress": "서울특별시 중구 을지로2가 198 을지 한국빌딩",
-    "locationDescription": "국내 최대 상권이자 대표적인 관광특구, 서울 문화・금융의 중심지, 관광・쇼핑의 중심지",
-    "locationFeature": "국내 최대 상권이자 대표적인 관광특구, 서울 문화・금융의 중심지, 관광・쇼핑의 중심지",
-    "exposureShort": "국내 최대 상권이자 대표적인 관광특구",
-    "exposureLong": "국내 최대 상권이자 대표적인 관광특구. 중구 명동 교차로 일대에 위치해, 횡단보도 대기·차량 정체 구간에서 정면 시야가 오래 머뭅니다. 브랜드 런칭·시즌 캠페인의 인지 확산에 강점이 있습니다.",
-    "tags": [
-      "명동",
-      "교차로",
-      "관광특구"
-    ],
-    "widthM": 20.3,
-    "heightM": 11.0,
-    "sizeText": "20.3m x 11m",
-    "resolutionPx": "1872 x 1008",
-    "operationHours": "06:00 - 24:00",
-    "pricing": [
-      {
-        "label": "20초 100회",
-        "durationSec": 20,
-        "dailyPlays": 100,
-        "monthlyPriceKRW": 12000000,
-        "rawText": "1일 20초 100회 - 1,200만원/월"
-      },
-      {
-        "label": "30초 70회",
-        "durationSec": 30,
-        "dailyPlays": 70,
-        "monthlyPriceKRW": 12000000,
-        "rawText": "1일 30초 70회 - 1,200만원/월"
-      }
-    ],
-    "contractText": "1일 20초 100회 - 1,200만원/월1일 30초 70회 - 1,200만원/월",
-    "contractLines": [
-      "1일 20초 100회 - 1,200만원/월",
-      "1일 30초 70회 - 1,200만원/월"
-    ],
-    "taxNote": "VAT 별도",
-    "shortTermAvailable": false,
-    "imageUrl": "assets/images/map-samples/cheonggye-wide.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
-    "streetView": {
-      "lat": 37.5668853,
-      "lng": 126.9826288,
-      "pan": 135.11632650911477,
-      "tilt": -0.2699897816943601,
       "fov": 90.0
     }
   },
@@ -211,14 +113,208 @@
     ],
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
-    "imageUrl": "assets/images/map-samples/cheonggye-close.jpg",
-    "videoUrl": "video/303.mp4",
+    "images": [
+      "assets/images/media/gyeongbokgung-jeokseon/1.jpg",
+      "assets/images/media/gyeongbokgung-jeokseon/2.jpg",
+      "assets/images/media/gyeongbokgung-jeokseon/3.jpg",
+      "assets/images/media/gyeongbokgung-jeokseon/4.jpg",
+      "assets/images/media/gyeongbokgung-jeokseon/5.jpg"
+    ],
+    "imageUrl": "assets/images/media/gyeongbokgung-jeokseon/1.jpg",
+    "videoUrl": "assets/videos/gyeongbokgung-jeokseon.mp4",
     "streetView": {
       "lat": 37.575612,
       "lng": 126.975385,
       "pan": -123.51615120274923,
       "tilt": -0.8934707903780328,
       "fov": 100.0
+    }
+  },
+  {
+    "slug": "m-303",
+    "sourceId": "303",
+    "name": "강남역 점프밀라노",
+    "company": "인앤아웃컴퍼니",
+    "category": "large_billboard",
+    "mediaType": "대형 전광판",
+    "areaSlug": "",
+    "areaName": "",
+    "address": "서울 강남구 강남대로 432 (역삼동)",
+    "jibunAddress": "서울특별시 강남구 역삼동 815 점프밀라노",
+    "locationDescription": "강남대로 중심 메인 상권 거리의 중앙에 위치. 유동인구가 많은 버스정류장과 횡단보도 인접 교차로 방향으로 정면 노출",
+    "locationFeature": "강남대로 중심 메인 상권 거리의 중앙에 위치. 유동인구가 많은 버스정류장과 횡단보도 인접 교차로 방향으로 정면 노출",
+    "exposureShort": "강남대로 중심 메인 상권 거리의",
+    "exposureLong": "강남대로 중심 메인 상권 거리의. 강남구 강남대로 교차로 일대에 위치해, 횡단보도 대기·차량 정체 구간에서 정면 시야가 오래 머뭅니다. 브랜드 런칭·시즌 캠페인의 인지 확산에 강점이 있습니다.",
+    "tags": [
+      "강남대로",
+      "교차로",
+      "2030"
+    ],
+    "widthM": 11.2,
+    "heightM": 20.0,
+    "sizeText": "11.2 x 20.0m",
+    "resolutionPx": "1104 x 1968",
+    "operationHours": "06:00 - 24:00",
+    "pricing": [
+      {
+        "label": "20초 150회",
+        "durationSec": 20,
+        "dailyPlays": 150,
+        "monthlyPriceKRW": 15000000,
+        "rawText": "1일 20초 150회 - 1,500만원/월"
+      },
+      {
+        "label": "30초 100회",
+        "durationSec": 30,
+        "dailyPlays": 100,
+        "monthlyPriceKRW": 15000000,
+        "rawText": "1일 30초 100회 - 1,500만원/월"
+      }
+    ],
+    "contractText": "1일 20초 150회 - 1,500만원/월1일 30초 100회 - 1,500만원/월*기재된 내용 외의 기간 및 비용 협의 가능",
+    "contractLines": [
+      "1일 20초 150회 - 1,500만원/월",
+      "1일 30초 100회 - 1,500만원/월",
+      "*기재된 내용 외의 기간 및 비용 협의 가능"
+    ],
+    "taxNote": "VAT 별도",
+    "shortTermAvailable": false,
+    "images": [
+      "assets/images/media/gangnam-jump-milano/1.jpg",
+      "assets/images/media/gangnam-jump-milano/2.jpg",
+      "assets/images/media/gangnam-jump-milano/3.jpg",
+      "assets/images/media/gangnam-jump-milano/4.jpg",
+      "assets/images/media/gangnam-jump-milano/5.jpg"
+    ],
+    "imageUrl": "assets/images/media/gangnam-jump-milano/1.jpg",
+    "videoUrl": "assets/videos/gangnam-jump-milano.mp4",
+    "streetView": {
+      "lat": 37.5008895,
+      "lng": 127.0260646,
+      "pan": -326.5468063633558,
+      "tilt": 23.55331506009082,
+      "fov": 100.0
+    }
+  },
+  {
+    "slug": "m-89",
+    "sourceId": "89",
+    "name": "잠실 유토피아 전광판",
+    "company": "㈜라이프스케이프",
+    "category": "large_billboard",
+    "mediaType": "대형 전광판",
+    "areaSlug": "",
+    "areaName": "",
+    "address": "서울특별시 송파구 올림픽로 336 대우유토피아오피스텔",
+    "jibunAddress": "서울특별시 송파구 방이동 22 대우유토피아오피스텔",
+    "locationDescription": "서울시 송파구 인구수 1위 총 65만8,006명 , 잠실역(롯데월드타워) 유동인구 및 교통량 최다. 관공서, 공공기관, 글로벌 기업오피스와 롯데캐슬, 롯데월드타워 등 고급 주거시설 및 VIP 6성급 호텔 등 혼합 밀집",
+    "locationFeature": "서울시 송파구 인구수 1위 총 65만8,006명 , 잠실역(롯데월드타워) 유동인구 및 교통량 최다. 관공서, 공공기관, 글로벌 기업오피스와 롯데캐슬, 롯데월드타워 등 고급 주거시설 및 VIP 6성급 호텔 등 혼합 밀집",
+    "exposureShort": "잠실역 유동인구 및 교통량 최다",
+    "exposureLong": "잠실역 유동인구 및 교통량 최다. 송파구 롯데월드몰 송파구청 일대에 위치해, 횡단보도 대기·차량 정체 구간에서 정면 시야가 오래 머뭅니다. 브랜드 런칭·시즌 캠페인의 인지 확산에 강점이 있습니다.",
+    "tags": [
+      "롯데월드몰",
+      "송파구청"
+    ],
+    "widthM": 14.5,
+    "heightM": 15.5,
+    "sizeText": "14.5m x 15.5m",
+    "resolutionPx": "832 x 1008",
+    "operationHours": "06:00 - 24:00",
+    "pricing": [
+      {
+        "label": "20초 100회",
+        "durationSec": 20,
+        "dailyPlays": 100,
+        "monthlyPriceKRW": 10000000,
+        "rawText": "1일 20초 100회 - 1,000만원/월"
+      }
+    ],
+    "contractText": "1일 20초 100회 - 1,000만원/월",
+    "contractLines": [
+      "1일 20초 100회 - 1,000만원/월"
+    ],
+    "taxNote": "VAT 별도",
+    "shortTermAvailable": false,
+    "images": [
+      "assets/images/media/jamsil-utopia/1.jpg",
+      "assets/images/media/jamsil-utopia/2.jpg",
+      "assets/images/media/jamsil-utopia/3.jpg"
+    ],
+    "imageUrl": "assets/images/media/jamsil-utopia/1.jpg",
+    "videoUrl": "assets/videos/jamsil-utopia.mp4",
+    "streetView": {
+      "lat": 37.5153685,
+      "lng": 127.1060816,
+      "pan": 62.0940591948745,
+      "tilt": 16.644043832922435,
+      "fov": 90.0
+    }
+  },
+  {
+    "slug": "m-215",
+    "sourceId": "215",
+    "name": "명동 을지한국빌딩",
+    "company": "㈜라이프스케이프",
+    "category": "large_billboard",
+    "mediaType": "대형 전광판",
+    "areaSlug": "",
+    "areaName": "",
+    "address": "서울특별시 중구 을지로 50 을지 한국빌딩",
+    "jibunAddress": "서울특별시 중구 을지로2가 198 을지 한국빌딩",
+    "locationDescription": "국내 최대 상권이자 대표적인 관광특구, 서울 문화・금융의 중심지, 관광・쇼핑의 중심지",
+    "locationFeature": "국내 최대 상권이자 대표적인 관광특구, 서울 문화・금융의 중심지, 관광・쇼핑의 중심지",
+    "exposureShort": "국내 최대 상권이자 대표적인 관광특구",
+    "exposureLong": "국내 최대 상권이자 대표적인 관광특구. 중구 명동 교차로 일대에 위치해, 횡단보도 대기·차량 정체 구간에서 정면 시야가 오래 머뭅니다. 브랜드 런칭·시즌 캠페인의 인지 확산에 강점이 있습니다.",
+    "tags": [
+      "명동",
+      "교차로",
+      "관광특구"
+    ],
+    "widthM": 20.3,
+    "heightM": 11.0,
+    "sizeText": "20.3m x 11m",
+    "resolutionPx": "1872 x 1008",
+    "operationHours": "06:00 - 24:00",
+    "pricing": [
+      {
+        "label": "20초 100회",
+        "durationSec": 20,
+        "dailyPlays": 100,
+        "monthlyPriceKRW": 12000000,
+        "rawText": "1일 20초 100회 - 1,200만원/월"
+      },
+      {
+        "label": "30초 70회",
+        "durationSec": 30,
+        "dailyPlays": 70,
+        "monthlyPriceKRW": 12000000,
+        "rawText": "1일 30초 70회 - 1,200만원/월"
+      }
+    ],
+    "contractText": "1일 20초 100회 - 1,200만원/월1일 30초 70회 - 1,200만원/월",
+    "contractLines": [
+      "1일 20초 100회 - 1,200만원/월",
+      "1일 30초 70회 - 1,200만원/월"
+    ],
+    "taxNote": "VAT 별도",
+    "shortTermAvailable": false,
+    "images": [
+      "assets/images/media/myeongdong-euljiro/1.jpg",
+      "assets/images/media/myeongdong-euljiro/2.jpg",
+      "assets/images/media/myeongdong-euljiro/3.jpg",
+      "assets/images/media/myeongdong-euljiro/4.jpg",
+      "assets/images/media/myeongdong-euljiro/5.jpg",
+      "assets/images/media/myeongdong-euljiro/6.jpg",
+      "assets/images/media/myeongdong-euljiro/7.jpg"
+    ],
+    "imageUrl": "assets/images/media/myeongdong-euljiro/1.jpg",
+    "videoUrl": "assets/videos/myeongdong-euljiro.mp4",
+    "streetView": {
+      "lat": 37.5668853,
+      "lng": 126.9826288,
+      "pan": 135.11632650911477,
+      "tilt": -0.2699897816943601,
+      "fov": 90.0
     }
   },
   {
@@ -744,65 +840,6 @@
       "lng": 126.8068704,
       "pan": -315.2821774215737,
       "tilt": 4.535110353185194,
-      "fov": 100.0
-    }
-  },
-  {
-    "slug": "m-303",
-    "sourceId": "303",
-    "name": "강남역 점프밀라노",
-    "company": "인앤아웃컴퍼니",
-    "category": "large_billboard",
-    "mediaType": "대형 전광판",
-    "areaSlug": "",
-    "areaName": "",
-    "address": "서울 강남구 강남대로 432 (역삼동)",
-    "jibunAddress": "서울특별시 강남구 역삼동 815 점프밀라노",
-    "locationDescription": "강남대로 중심 메인 상권 거리의 중앙에 위치. 유동인구가 많은 버스정류장과 횡단보도 인접 교차로 방향으로 정면 노출",
-    "locationFeature": "강남대로 중심 메인 상권 거리의 중앙에 위치. 유동인구가 많은 버스정류장과 횡단보도 인접 교차로 방향으로 정면 노출",
-    "exposureShort": "강남대로 중심 메인 상권 거리의",
-    "exposureLong": "강남대로 중심 메인 상권 거리의. 강남구 강남대로 교차로 일대에 위치해, 횡단보도 대기·차량 정체 구간에서 정면 시야가 오래 머뭅니다. 브랜드 런칭·시즌 캠페인의 인지 확산에 강점이 있습니다.",
-    "tags": [
-      "강남대로",
-      "교차로",
-      "2030"
-    ],
-    "widthM": 11.2,
-    "heightM": 20.0,
-    "sizeText": "11.2 x 20.0m",
-    "resolutionPx": "1104 x 1968",
-    "operationHours": "06:00 - 24:00",
-    "pricing": [
-      {
-        "label": "20초 150회",
-        "durationSec": 20,
-        "dailyPlays": 150,
-        "monthlyPriceKRW": 15000000,
-        "rawText": "1일 20초 150회 - 1,500만원/월"
-      },
-      {
-        "label": "30초 100회",
-        "durationSec": 30,
-        "dailyPlays": 100,
-        "monthlyPriceKRW": 15000000,
-        "rawText": "1일 30초 100회 - 1,500만원/월"
-      }
-    ],
-    "contractText": "1일 20초 150회 - 1,500만원/월1일 30초 100회 - 1,500만원/월*기재된 내용 외의 기간 및 비용 협의 가능",
-    "contractLines": [
-      "1일 20초 150회 - 1,500만원/월",
-      "1일 30초 100회 - 1,500만원/월",
-      "*기재된 내용 외의 기간 및 비용 협의 가능"
-    ],
-    "taxNote": "VAT 별도",
-    "shortTermAvailable": false,
-    "imageUrl": "assets/images/map-samples/cheonggye-wide.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
-    "streetView": {
-      "lat": 37.5008895,
-      "lng": 127.0260646,
-      "pan": -326.5468063633558,
-      "tilt": 23.55331506009082,
       "fov": 100.0
     }
   },

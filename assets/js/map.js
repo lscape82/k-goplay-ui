@@ -1980,6 +1980,9 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function detailGalleryImages(item) {
+    // 실사진이 있는 매체는 자기 사진만 노출(샘플 섞이지 않게)
+    const own = ownImages(item);
+    if (own.length) return [...new Set(own)].slice(0, 6);
     const images = cardImages(item);
     const all = [
       ...images,
@@ -2415,7 +2418,14 @@ document.addEventListener("DOMContentLoaded", async () => {
     return rows.map(([label, value, note]) => ({ label, value, note }));
   }
 
+  // 매체 자체 사진(images)이 있으면 그것만 사용. 없는 매체는 기존처럼 샘플 사진으로 대체.
+  function ownImages(item) {
+    return Array.isArray(item && item.images) ? item.images.filter(Boolean) : [];
+  }
+
   function cardImages(item) {
+    const own = ownImages(item);
+    if (own.length) return own.length >= 2 ? own.slice(0, 2) : [own[0], own[0]];
     const samples = {
       gangnam: ["assets/images/map-samples/gangnam-wide.jpg", "assets/images/map-samples/gangnam-close.jpg"],
       cheonggye: ["assets/images/map-samples/cheonggye-wide.jpg", "assets/images/map-samples/cheonggye-close.jpg"],
