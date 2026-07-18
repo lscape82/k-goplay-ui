@@ -14,8 +14,8 @@
     <meta property="og:url" content="https://lscape82.github.io/k-goplay-ui/map.html">
     <meta property="og:image" content="https://lscape82.github.io/k-goplay-ui/assets/images/k-goplay-logo-new.png">
     <meta name="twitter:card" content="summary">
-    <link rel="stylesheet" href="assets/css/styles.css?v=complexcards-20260710a">
-    <link rel="stylesheet" href="assets/css/map-services.css?v=complexcards-20260710a-wide4">
+    <link rel="stylesheet" href="assets/css/styles.css?v=fullpage-20260717a">
+    <link rel="stylesheet" href="assets/css/map-services.css?v=float-nav-1">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -25,12 +25,41 @@
       "description": "전국 전광판 광고·디지털 옥외광고(DOOH) 매체를 지도에서 검색하고 위치·규격·광고비를 비교합니다.",
       "isPartOf": { "@type": "WebSite", "name": "광고플레이", "url": "https://lscape82.github.io/k-goplay-ui/" },
       "about": ["전광판 광고", "디지털 옥외광고", "DOOH", "옥외광고 매체"],
-      "provider": {
-        "@type": "Organization",
-        "name": "광고플레이",
-        "url": "https://lscape82.github.io/k-goplay-ui/",
-        "telephone": "+82-1533-1975"
-      }
+      "provider": { "@id": "https://lscape82.github.io/k-goplay-ui/#organization" }
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "@id": "https://lscape82.github.io/k-goplay-ui/#organization",
+      "name": "광고플레이",
+      "alternateName": ["ADplay", "Adplay Co., Ltd", "광고플레이 주식회사"],
+      "legalName": "광고플레이 주식회사",
+      "url": "https://lscape82.github.io/k-goplay-ui/",
+      "logo": "https://lscape82.github.io/k-goplay-ui/assets/images/k-goplay-logo-new.png",
+      "description": "광고플레이는 전국 대형 전광판·디지털 옥외광고(DOOH)·교통·생활밀착형 매체를 데이터 기반으로 기획·집행하는 옥외광고 대행사입니다.",
+      "knowsAbout": ["옥외광고", "전광판 광고", "디지털 옥외광고", "DOOH", "옥외광고 대행", "교통 광고"],
+      "taxID": "148-81-03399",
+      "identifier": [
+        { "@type": "PropertyValue", "name": "사업자등록번호", "value": "148-81-03399" },
+        { "@type": "PropertyValue", "name": "통신판매업신고번호", "value": "제2024-세종아름-0724" }
+      ],
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "한누리대로 350, 뱅크빌딩 6층 D45호(어진동)",
+        "addressLocality": "세종특별자치시",
+        "addressCountry": "KR"
+      },
+      "telephone": "+82-1533-1975",
+      "faxNumber": "+82-44-902-6029",
+      "email": "info@k-goplay.com",
+      "areaServed": "KR",
+      "sameAs": [
+        "https://www.k-goplay.com",
+        "https://blog.naver.com/k-goplay",
+        "https://www.youtube.com/channel/UCxXNbNumZkcpjIGzUaOnfnQ"
+      ]
     }
     </script>
   </head>
@@ -41,15 +70,17 @@
         <span class="brand-mark">AD</span>
         <strong>광고플레이</strong>
       </a>
-      <nav class="map-global-nav" aria-label="지도 메뉴">
+      <!-- 좌: 누르면 이 화면에서 패널이 열리는 것만 (추천·지역·예산) -->
+      <nav class="map-global-nav" aria-label="지도 검색 도구">
         <button type="button" class="is-active" id="mapCurationToggle" aria-expanded="true" aria-controls="mapCurationPanel">추천 큐레이션</button>
-        <a class="map-nav-media-link is-guide" href="cases.html">광고집행사례</a>
-        <a class="map-nav-media-link is-guide" href="insights.html">광고 인사이트</a>
         <button type="button" class="map-filter-entry map-header-filter" id="mapRegionToggle" aria-expanded="false" aria-controls="mapRegionPanel">지역검색</button>
         <button type="button" class="map-filter-entry map-header-filter" id="mapCostFilterToggle" aria-expanded="false" aria-controls="mapCostFilterPanel">예산·기간 검색</button>
       </nav>
+      <!-- 우: 누르면 다른 페이지로 가는 것만. 순서 = 찾기 → 판단 근거 → 신뢰 → 계정 -->
       <div class="map-global-actions">
-        <a class="map-actions-media" href="media.html">주요매체</a>
+        <a class="map-actions-media" href="media-catalog.html">옥외광고 목록</a>
+        <a class="map-nav-media-link is-guide" href="cases.html">광고집행사례</a>
+        <a class="map-nav-media-link is-guide" href="insights.html">광고 인사이트</a>
         <a href="about.html">회사소개</a>
         <a href="login.html">로그인</a>
         <a class="join" href="join.html">회원가입</a>
@@ -167,13 +198,21 @@
                 </figure>
               </div>
             </article>
-            <div class="map-mode-toggle" aria-label="지도 보기 방식">
-              <button type="button" class="is-active">지도</button>
-              <button type="button">스카이뷰</button>
-            </div>
-            <div class="map-utility-controls" aria-label="지도 부가 기능">
-              <button type="button">거리뷰</button>
-              <button type="button">실시간교통</button>
+            <!-- 지도 보기 컨트롤 — 상자 하나 안에 성격이 다른 두 그룹을 구분선으로 나눠 담는다.
+                 왼쪽(.map-mode-toggle) = 택일 모드, 오른쪽(.map-utility-controls) = on/off 레이어.
+                 구분선이 있어야 '지도'와 '실시간교통'이 동시에 켜져도 3분할 택일로 오해되지 않는다.
+                 안쪽 두 div 는 라이브가 쓰는 선택자라 유지하고, 감싸기만 해서 한 상자로 보이게 한다.
+                 스카이뷰 제거: 위성이라 벽면 전광판의 광고면·시야를 판단할 수 없어 이 제품엔 쓸모가 없음.
+                 실시간교통 유지: '어느 구간이 정체인지'를 공간 전체로 보여줘 정체 = 체류↑ = 노출↑ 매체를
+                 찾는 탐색 근거가 된다. 상세페이지의 '도로 교통량'은 고른 매체를 검증하는 값이라 대체재가 아님. -->
+            <div class="map-view-controls" role="group" aria-label="지도 보기">
+              <div class="map-mode-toggle" aria-label="지도 보기 방식">
+                <button type="button" class="is-active">지도</button>
+                <button type="button">거리뷰</button>
+              </div>
+              <div class="map-utility-controls" aria-label="지도 레이어">
+                <button type="button" aria-pressed="false">실시간교통</button>
+              </div>
             </div>
             <div class="map-zoom-controls" aria-label="지도 확대 축소">
               <button type="button" aria-label="지도 확대">+</button>
@@ -206,17 +245,18 @@
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
               <span>관심매체(<strong id="mapFavCount" data-fav-count>0</strong>) 비교·상담</span>
             </button>
-            <div class="map-fav-panel" id="mapFavPanel" role="dialog" aria-modal="true" aria-label="관심매체 비교" hidden>
+            <div class="map-fav-panel" id="mapFavPanel" role="dialog" aria-modal="true" aria-label="관심매체 비교·상담" hidden>
               <div class="map-fav-sheet">
                 <div class="map-fav-head">
-                  <h2>관심매체 비교 (<strong id="mapFavPanelCount">0</strong>)</h2>
-                  <button type="button" class="map-fav-close" id="mapFavClose" aria-label="관심매체 비교 닫기">×</button>
+                  <h2>관심매체 비교·상담 (<strong id="mapFavPanelCount">0</strong>)</h2>
+                  <button type="button" class="map-fav-close" id="mapFavClose" aria-label="관심매체 비교·상담 닫기">×</button>
                 </div>
                 <div class="map-fav-list" id="mapFavList"></div>
                 <p class="map-fav-reco" id="mapFavReco" hidden></p>
                 <div class="map-fav-foot">
                   <div class="map-fav-total-row"><span>예상 월 합계</span><strong id="mapFavTotal">-</strong></div>
                   <button type="button" class="map-fav-download" id="mapFavDownload"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>다운로드(Excel)</button>
+                  <button type="button" class="map-fav-download" id="mapFavPdf"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>제안서(PDF)</button>
                   <a class="map-fav-cta" id="mapFavCta" href="estimate.html"><span>선택 매체로 상담신청</span></a>
                 </div>
               </div>
@@ -228,8 +268,8 @@
     <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1ouo31myef&submodules=geocoder,panorama"></script>
     <script src="assets/js/marker-clustering.js?v=real-data-20260705c"></script>
     <script src="assets/js/common.js?v=bus-stop-layer-20260619"></script>
-    <script src="assets/js/map.js?v=realphoto-20260717a"></script>
-    <script src="assets/js/map-services.js?v=services-20260717b"></script>
-    <script src="assets/js/map-category-scroll.js?v=catscroll-20260713e"></script>
-  </body>
+    <script src="assets/js/map.js?v=defaultview-1"></script>
+    <script src="assets/js/map-services.js?v=icons-20260717d"></script>
+    <script src="assets/js/map-rail-toggle.js?v=rail-20260717b"></script>
+    <script src="assets/js/map-category-scroll.js?v=catscroll-20260713e"></script>  </body>
 </html>

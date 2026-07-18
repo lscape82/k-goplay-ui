@@ -1,0 +1,227 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>광고 소재 제작 의뢰 | 광고플레이</title>
+    <meta name="description" content="옥외광고(DOOH) 소재 제작을 의뢰하세요. 촬영 여부와 보유 소재만 선택하면 예상 제작비 범위를 즉시 확인하고, 24시간 이내 정식 견적서를 받아보실 수 있습니다.">
+    <link rel="stylesheet" href="assets/css/styles.css?v=creative-request-20260717">
+    <style>
+      /* ── 소재 제작 의뢰서 전용 (styles.css 뒤에 와야 유산 규칙을 이깁니다) ── */
+      .cr-step{display:flex;align-items:center;gap:8px;margin:0 0 6px}
+      .cr-step-no{font:700 11px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.04em;background:#111827;color:#fff;padding:4px 7px;border-radius:5px;flex:none}
+      .cr-step h2{font-size:16px;font-weight:700;margin:0;letter-spacing:-.01em}
+      .cr-step .cr-req{font-size:11px;font-weight:700;color:#d92b32;flex:none}
+      .cr-hint{font-size:12.5px;color:#6b7280;margin:0 0 12px;line-height:1.6}
+      .cr-block{padding:20px 0;border-bottom:1px solid #e7e8ee}
+      .cr-block:last-of-type{border-bottom:none}
+
+      /* 선택 카드 (라디오/체크 공용) */
+      .cr-opts{display:grid;gap:8px}
+      .cr-opts.cols2{grid-template-columns:repeat(2,minmax(0,1fr))}
+      .cr-opts.cols3{grid-template-columns:repeat(3,minmax(0,1fr))}
+      .cr-opt{display:flex;gap:10px;align-items:flex-start;padding:12px 13px;border:1.5px solid #e7e8ee;border-radius:10px;background:#fff;cursor:pointer;transition:border-color .15s,background .15s}
+      .cr-opt:hover{border-color:#c7cad4}
+      .cr-opt input{margin:2px 0 0;flex:none;accent-color:#111827}
+      .cr-opt-t{font-size:13.5px;font-weight:650;line-height:1.4;display:block}
+      .cr-opt-d{font-size:12px;color:#6b7280;line-height:1.5;display:block;margin-top:2px}
+      .cr-opt:has(input:checked){border-color:#111827;background:#f7f8fa}
+      .cr-opt:has(input:focus-visible){outline:2px solid #111827;outline-offset:2px}
+
+      /* 촬영 분기 = 가장 중요한 질문이라 크게 */
+      .cr-opts.hero{grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+      .cr-opts.hero .cr-opt{flex-direction:column;gap:6px;padding:16px 15px}
+      .cr-opts.hero .cr-opt-t{font-size:14.5px}
+      .cr-opts.hero .cr-tag{font:700 10.5px/1 ui-monospace,Menlo,monospace;letter-spacing:.03em;padding:3px 7px;border-radius:20px;background:#f1f2f5;color:#4b5563;align-self:flex-start}
+      .cr-opts.hero .cr-opt:has(input:checked) .cr-tag{background:#111827;color:#fff}
+
+      /* 조건부 노출 */
+      .cr-cond{margin-top:12px;padding:14px;border:1px dashed #c7cad4;border-radius:10px;background:#fafbfc}
+      .cr-cond[hidden]{display:none}
+      .cr-cond-h{font-size:12.5px;font-weight:700;margin:0 0 8px;color:#374151}
+
+      /* 견적 미리보기 */
+      .cr-quote{border:1px solid #e7e8ee;border-radius:10px;overflow:hidden;background:#fff}
+      .cr-quote-h{display:flex;align-items:baseline;gap:8px;padding:11px 13px;background:#111827;color:#fff}
+      .cr-quote-h b{font-size:13px;font-weight:700}
+      .cr-quote-h span{font-size:11px;color:#9ca3af;margin-left:auto}
+      .cr-line{display:flex;align-items:baseline;gap:10px;padding:9px 13px;border-bottom:1px dotted #e7e8ee;font-size:12.5px}
+      .cr-line:last-child{border-bottom:none}
+      .cr-line .l{color:#4b5563}
+      .cr-line .v{margin-left:auto;font-variant-numeric:tabular-nums;font-family:ui-monospace,Menlo,Consolas,monospace;font-weight:650;color:#111827}
+      .cr-line.off{opacity:.4}
+      .cr-line.off .v{text-decoration:line-through}
+      .cr-total{display:flex;align-items:baseline;gap:10px;padding:13px;background:#f7f8fa;border-top:2px solid #111827}
+      .cr-total .l{font-size:12.5px;font-weight:700}
+      .cr-total .v{margin-left:auto;font-variant-numeric:tabular-nums;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:19px;font-weight:800;letter-spacing:-.02em}
+      .cr-note{font-size:11.5px;color:#6b7280;line-height:1.6;margin:10px 0 0}
+      .cr-note b{color:#374151}
+      .cr-src{display:inline-block;font:600 10.5px/1 ui-monospace,Menlo,monospace;background:#f1f2f5;color:#4b5563;padding:4px 7px;border-radius:5px;margin-top:8px}
+
+      .cr-empty{padding:22px 14px;text-align:center;font-size:12.5px;color:#9ca3af;line-height:1.7}
+
+      @media (max-width:720px){
+        .cr-opts.cols2,.cr-opts.cols3,.cr-opts.hero{grid-template-columns:1fr}
+      }
+      @media (prefers-reduced-motion:reduce){.cr-opt{transition:none}}
+    </style>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">본문 바로가기</a>
+    <header class="site-header" data-site-header></header>
+    <main id="main">
+      <section class="page-title">
+        <div class="container">
+          <h1>광고 소재 제작 의뢰</h1>
+          <p>촬영 여부와 보유 소재만 선택하시면 <strong>예상 제작비 범위를 바로</strong> 확인하실 수 있습니다. 정식 견적서는 24시간 이내 발송됩니다.</p>
+        </div>
+      </section>
+      <section class="section">
+        <div class="container">
+          <div class="estimate-layout">
+            <form id="creativeForm" class="estimate-form-card">
+
+              <div class="cr-block">
+                <div class="cr-step"><span class="cr-step-no">01</span><h2>연락처</h2><span class="cr-req">필수</span></div>
+                <div class="form-grid">
+                  <div class="field"><label for="brand">회사명 / 브랜드명</label><input id="brand" name="brand" autocomplete="organization" placeholder="예: 고고스타트"></div>
+                  <div class="field"><label for="contact">연락처 (전화 또는 이메일)</label><input id="contact" name="contact" autocomplete="tel" placeholder="010-0000-0000 / name@company.com"></div>
+                </div>
+              </div>
+
+              <div class="cr-block">
+                <div class="cr-step"><span class="cr-step-no">02</span><h2>촬영이 필요하신가요?</h2><span class="cr-req">필수</span></div>
+                <p class="cr-hint">제작비를 가장 크게 가르는 항목입니다. <strong>촬영을 하면 편집비가 오히려 줄어듭니다</strong> — 실사가 있으면 그래픽으로 만들어낼 게 없기 때문입니다.</p>
+                <div class="cr-opts hero">
+                  <label class="cr-opt">
+                    <input type="radio" name="shoot" value="none" checked>
+                    <span class="cr-tag">약 400~500만</span>
+                    <span class="cr-opt-t">보유 소재로 제작</span>
+                    <span class="cr-opt-d">주신 이미지·로고로 인포그래픽·모션그래픽 제작. 촬영 없음.</span>
+                  </label>
+                  <label class="cr-opt">
+                    <input type="radio" name="shoot" value="shoot">
+                    <span class="cr-tag">약 700~900만</span>
+                    <span class="cr-opt-t">새로 촬영</span>
+                    <span class="cr-opt-d">현장·제품·모델을 직접 촬영해 실사 영상으로 제작.</span>
+                  </label>
+                  <label class="cr-opt">
+                    <input type="radio" name="shoot" value="ask">
+                    <span class="cr-tag">상담 후 결정</span>
+                    <span class="cr-opt-t">추천해 주세요</span>
+                    <span class="cr-opt-d">목적·예산을 듣고 적합한 방식을 제안드립니다.</span>
+                  </label>
+                </div>
+
+                <div class="cr-cond" id="crActorBlock" hidden>
+                  <p class="cr-cond-h">촬영에 출연자가 필요하신가요?</p>
+                  <div class="cr-opts cols2">
+                    <label class="cr-opt">
+                      <input type="radio" name="actor" value="none" checked>
+                      <span><span class="cr-opt-t">제품·공간만 촬영</span><span class="cr-opt-d">출연자 없음</span></span>
+                    </label>
+                    <label class="cr-opt">
+                      <input type="radio" name="actor" value="actor">
+                      <span><span class="cr-opt-t">모델·배우 필요</span><span class="cr-opt-d">캐스팅 포함 · 약 200만원 추가</span></span>
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="cr-block">
+                <div class="cr-step"><span class="cr-step-no">03</span><h2>보유하신 소재</h2></div>
+                <p class="cr-hint">주실 수 있는 자료가 많을수록 제작비가 내려갑니다.</p>
+                <div class="cr-opts cols3">
+                  <label class="cr-opt"><input type="checkbox" name="asset" value="로고·CI"><span class="cr-opt-t">로고 · CI</span></label>
+                  <label class="cr-opt"><input type="checkbox" name="asset" value="제품 이미지"><span class="cr-opt-t">제품 이미지</span></label>
+                  <label class="cr-opt"><input type="checkbox" name="asset" value="기존 영상"><span class="cr-opt-t">기존 영상</span></label>
+                  <label class="cr-opt"><input type="checkbox" name="asset" value="카피·문구"><span class="cr-opt-t">카피 · 문구</span></label>
+                  <label class="cr-opt"><input type="checkbox" name="asset" value="브랜드 가이드"><span class="cr-opt-t">브랜드 가이드</span></label>
+                  <label class="cr-opt"><input type="checkbox" name="asset" value="없음"><span class="cr-opt-t">없음</span></label>
+                </div>
+              </div>
+
+              <div class="cr-block">
+                <div class="cr-step"><span class="cr-step-no">04</span><h2>집행할 매체</h2></div>
+                <p class="cr-hint">매체마다 송출 규격이 달라, 선택한 규격 수만큼 최적화 편집이 들어갑니다.</p>
+                <div class="cr-opts cols3">
+                  <label class="cr-opt"><input type="checkbox" name="medium" value="대형 전광판·빌보드"><span class="cr-opt-t">대형 전광판 · 빌보드</span></label>
+                  <label class="cr-opt"><input type="checkbox" name="medium" value="쇼핑몰 DID"><span class="cr-opt-t">쇼핑몰 DID</span></label>
+                  <label class="cr-opt"><input type="checkbox" name="medium" value="지하철"><span class="cr-opt-t">지하철</span></label>
+                  <label class="cr-opt"><input type="checkbox" name="medium" value="버스정류장·랩핑"><span class="cr-opt-t">버스정류장 · 랩핑</span></label>
+                  <label class="cr-opt"><input type="checkbox" name="medium" value="엘리베이터"><span class="cr-opt-t">엘리베이터</span></label>
+                  <label class="cr-opt"><input type="checkbox" name="medium" value="온라인·SNS"><span class="cr-opt-t">온라인 · SNS</span></label>
+                </div>
+              </div>
+
+              <div class="cr-block">
+                <div class="cr-step"><span class="cr-step-no">05</span><h2>영상 길이와 추가 옵션</h2></div>
+                <div class="cr-opts cols3" style="margin-bottom:10px">
+                  <label class="cr-opt"><input type="radio" name="length" value="15초" checked><span class="cr-opt-t">15초</span></label>
+                  <label class="cr-opt"><input type="radio" name="length" value="20초"><span class="cr-opt-t">20초</span></label>
+                  <label class="cr-opt"><input type="radio" name="length" value="30초"><span class="cr-opt-t">30초</span></label>
+                </div>
+                <div class="cr-opts cols3">
+                  <label class="cr-opt">
+                    <input type="checkbox" name="voice" value="1">
+                    <span><span class="cr-opt-t">성우 · 내레이션</span><span class="cr-opt-d">약 100만원 추가</span></span>
+                  </label>
+                  <label class="cr-opt">
+                    <input type="checkbox" name="multilang" value="1">
+                    <span><span class="cr-opt-t">다국어 자막</span><span class="cr-opt-d">영 · 일 · 중 (별도 협의)</span></span>
+                  </label>
+                  <label class="cr-opt">
+                    <input type="checkbox" name="addon" value="1" checked>
+                    <span><span class="cr-opt-t">기획 · 카피 대행</span><span class="cr-opt-d">아이디어부터 저희가</span></span>
+                  </label>
+                </div>
+              </div>
+
+              <div class="cr-block">
+                <div class="cr-step"><span class="cr-step-no">06</span><h2>예산과 일정</h2></div>
+                <div class="form-grid">
+                  <div class="field">
+                    <label for="budget">예산 범위</label>
+                    <select id="budget" name="budget">
+                      <option value="">예산 범위 선택</option>
+                      <option>100만원 미만</option>
+                      <option>100~300만원</option>
+                      <option>300~500만원</option>
+                      <option>500~1,000만원</option>
+                      <option>1,000만원 이상</option>
+                      <option>협의 후 결정</option>
+                    </select>
+                  </div>
+                  <div class="field"><label for="due">희망 납기일</label><input id="due" name="due" type="date"></div>
+                  <div class="field full"><label for="reference">참고 영상 링크 (선택)</label><input id="reference" name="reference" placeholder="https://"></div>
+                  <div class="field full"><label for="message">추가로 알려주실 내용 (선택)</label><textarea id="message" name="message" placeholder="제품 특징, 강조하고 싶은 메시지, 참고사항 등"></textarea></div>
+                </div>
+              </div>
+
+            </form>
+
+            <aside class="estimate-preview-panel">
+              <div class="estimate-preview-card">
+                <div class="estimate-preview-head">
+                  <div><h2>예상 제작비</h2></div>
+                  <em>자동 계산</em>
+                </div>
+                <div id="crQuote" class="summary-box" aria-live="polite"></div>
+                <div class="estimate-preview-footer">
+                  <div class="estimate-actions">
+                    <a id="crMailLink" class="button" href="#">의뢰서 보내기</a>
+                    <button id="crCopyButton" class="button secondary" type="button">의뢰 내용 복사하기</button>
+                  </div>
+                  <p class="estimate-info">🔒 보내주신 내용은 제작 견적 산출 외 용도로 사용하지 않습니다.</p>
+                </div>
+              </div>
+            </aside>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer class="site-footer" data-site-footer></footer>
+    <script src="assets/js/common.js?v=creative-request-20260717"></script>
+    <script src="assets/js/creative-request.js?v=creative-request-20260717"></script>
+  </body>
+</html>

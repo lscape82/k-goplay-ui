@@ -24,18 +24,25 @@
     brandHref: "media.html",
     phone: "1533-1975",
     email: "info@k-goplay.com",
-    copyright: "저작권자 © 광고플레이. 무단전재 및 재배포 금지.",
+    companyName: "광고플레이 주식회사(Adplay Co., Ltd)",
+    ceo: "임정언",
+    address: "세종특별자치시 한누리대로 350, 뱅크빌딩 6층 D45호(어진동)",
+    fax: "044-902-6029",
+    bizNo: "148-81-03399",
+    mailOrderNo: "제2024-세종아름-0724",
+    copyright: "Copyright ⓒ Adplay Korea Co., Ltd. All Rights Reserved.",
     placeholderImage: "assets/images/placeholders/media-placeholder.svg",
     priceNotice: "표기된 광고비는 VAT 별도 기준의 참고가입니다. 최종 비용 및 구좌 가능 여부는 상담 시점에 확인이 필요합니다.",
     featuredAreaSlugs: ["dosan-daero", "samseong-coex", "gangnam-daero"],
     homeCategoryOrder: ["large_billboard", "package", "shopping_mall_did", "subway", "bus", "daily_touchpoint"],
     navItems: [
-      { href: "media.html", label: "매체 찾기" },
+      { href: "media-catalog.html", label: "옥외광고 매체" },
       { href: "map.html", label: "지도 보기" },
       { href: "areas.html", label: "지역 보기" },
       { href: "insights.html", label: "옥외광고 가이드" },
       { href: "geocode.html", label: "주소 변환" },
       { href: "estimate.html", label: "견적 문의" },
+      { href: "creative-request.html", label: "소재 제작 의뢰" },
       { href: "media-management.html", label: "매체 관리" },
     ],
   };
@@ -128,9 +135,20 @@
     document.querySelectorAll("[data-site-footer]").forEach((root) => {
       root.innerHTML = `
         <div class="footer-inner">
-          <strong>${esc(config.brandName)}</strong>
-          <span>Tel. ${esc(config.phone)} · E-mail. ${esc(config.email)}</span>
-          <small>${esc(config.copyright)}</small>
+          <nav class="foot-nav" aria-label="회사 정보 메뉴">
+            <a href="about.html">회사소개</a><a href="terms.html">이용약관</a><a href="privacy.html">개인정보처리방침</a><a href="media-policy.html">매체관리규정</a>
+          </nav>
+          <address class="foot-info">
+            <span><b>회사명</b> ${esc(config.companyName)}</span>
+            <span><b>대표자</b> ${esc(config.ceo)}</span>
+            <span><b>이용문의</b> ${esc(config.phone)}</span>
+            <span><b>팩스</b> ${esc(config.fax)}</span>
+            <span><b>이메일</b> ${esc(config.email)}</span>
+            <span><b>주소</b> ${esc(config.address)}</span>
+            <span><b>통신판매업신고</b> ${esc(config.mailOrderNo)}</span>
+            <span><b>사업자등록번호</b> ${esc(config.bizNo)}</span>
+          </address>
+          <small class="foot-copy">${esc(config.copyright)}</small>
         </div>`;
     });
     document.querySelectorAll("[data-price-notice]").forEach((root) => {

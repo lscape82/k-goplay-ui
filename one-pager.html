@@ -1,0 +1,137 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>매체 제안서 | 광고플레이</title>
+    <meta name="robots" content="noindex">
+    <style>
+      /* =================================================================
+         한장제안서 — A4 가로 1장 = 매체 1개
+         PDF는 라이브러리로 만들지 않고 브라우저 인쇄(PDF로 저장)를 씁니다.
+         한글 폰트 임베딩(수 MB)·사진·지도가 전부 그냥 해결되고 의존성이 0이며
+         텍스트가 살아 있어 복사·검색이 됩니다.
+         ================================================================= */
+      @page { size: A4 landscape; margin: 10mm; }
+
+      :root{
+        --ink:#111827; --ink-soft:#374151; --muted:#6b7280;
+        --line:#e5e7eb; --line-strong:#d1d5db;
+        --brand:#0b1b3f; --accent:#1f4fd8;
+        --bg:#f3f4f6;
+      }
+      *{box-sizing:border-box}
+      body{
+        margin:0; background:var(--bg); color:var(--ink);
+        font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Apple SD Gothic Neo","Segoe UI","Malgun Gothic",sans-serif;
+        -webkit-font-smoothing:antialiased; line-height:1.5;
+      }
+
+      /* ── 화면 전용 툴바 ── */
+      .op-bar{
+        position:sticky; top:0; z-index:10; display:flex; align-items:center; gap:14px;
+        padding:12px 18px; background:#fff; border-bottom:1px solid var(--line);
+        box-shadow:0 1px 3px rgba(0,0,0,.06);
+      }
+      .op-bar h1{font-size:15px;font-weight:750;margin:0;letter-spacing:-.01em}
+      .op-bar .count{font:600 12px/1 ui-monospace,Menlo,Consolas,monospace;color:var(--muted);font-variant-numeric:tabular-nums}
+      .op-actions{margin-left:auto;display:flex;gap:8px}
+      .op-btn{
+        appearance:none;border:1px solid var(--line-strong);background:#fff;color:var(--ink);
+        font-size:13px;font-weight:650;padding:8px 14px;border-radius:7px;cursor:pointer;
+        font-family:inherit;transition:background .15s,border-color .15s;
+      }
+      .op-btn:hover{background:#f9fafb;border-color:var(--muted)}
+      .op-btn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+      .op-btn.primary:hover{background:#152a5c}
+      .op-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+      .op-tip{font-size:12px;color:var(--muted);padding:9px 18px;background:#fffbea;border-bottom:1px solid #fde68a}
+      .op-tip b{color:#92400e}
+
+      /* 시트가 277mm 고정폭이라 좁은 화면에선 넘친다 — 본문이 아니라 이 컨테이너가 스크롤되게.
+         align-items:center는 넘칠 때 왼쪽이 잘려 스크롤이 닿지 않으므로 safe를 붙인다. */
+      .op-stage{padding:20px;display:flex;flex-direction:column;gap:20px;align-items:safe center;overflow-x:auto}
+
+      /* ── 한장제안서 시트 (A4 가로 = 297 x 210mm) ── */
+      .sheet{
+        width:277mm; height:190mm;      /* A4 가로 - 여백 */
+        background:#fff; padding:0; overflow:hidden;
+        display:grid; grid-template-columns:55fr 45fr;
+        box-shadow:0 2px 10px rgba(0,0,0,.12); border-radius:2px;
+      }
+      .sheet-photo{position:relative;background:#111827;overflow:hidden}
+      .sheet-photo img{width:100%;height:100%;object-fit:cover;display:block}
+      .sheet-photo .ph-empty{
+        position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+        color:#6b7280;font-size:13px;background:repeating-linear-gradient(45deg,#1f2937,#1f2937 10px,#111827 10px,#111827 20px);
+      }
+      .sheet-photo .ph-badge{
+        position:absolute;left:0;bottom:0;padding:7px 12px;background:rgba(11,27,63,.86);color:#fff;
+        font-size:11px;font-weight:600;letter-spacing:.02em;
+      }
+
+      .sheet-body{padding:9mm 9mm 7mm;display:flex;flex-direction:column;min-width:0}
+      .sheet-name{font-size:21px;font-weight:800;letter-spacing:-.03em;margin:0 0 4px;line-height:1.2}
+      .sheet-tags{display:flex;flex-wrap:wrap;gap:5px;margin:0 0 10px}
+      .sheet-tags span{font-size:11px;font-weight:600;color:var(--ink-soft)}
+
+      table.spec{width:100%;border-collapse:collapse;font-size:11.5px;table-layout:fixed}
+      table.spec th,table.spec td{padding:6px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+      table.spec th{width:58px;font-weight:700;color:var(--ink-soft);font-size:11px}
+      table.spec td{color:var(--ink)}
+      table.spec tr:first-child th,table.spec tr:first-child td{border-top:2px solid var(--ink)}
+
+      /* 광고비 매트릭스 */
+      .price-grid{display:grid;gap:3px}
+      .price-row{display:grid;grid-template-columns:82px 1fr;gap:8px;align-items:baseline}
+      .price-row .pl{font-size:10.5px;font-weight:700;color:var(--ink-soft);white-space:nowrap}
+      .price-row .pv{font-size:11.5px;font-variant-numeric:tabular-nums;letter-spacing:-.01em}
+      .price-row .pv b{font-weight:700}
+      .price-note{font-size:10px;color:var(--muted);margin-top:3px;line-height:1.45}
+
+      .sheet-map{margin-top:auto;padding-top:7px}
+      .map-canvas{width:100%;height:62mm;border:1px solid var(--line);border-radius:3px;background:#e5e7eb;overflow:hidden}
+
+      .sheet-foot{display:flex;align-items:center;gap:8px;padding-top:6px;font-size:9.5px;color:var(--muted)}
+      .sheet-foot .brand{font-weight:800;color:var(--brand);letter-spacing:-.01em}
+      .sheet-foot .sep{margin-left:auto}
+
+      /* ── 인쇄 ── */
+      @media print{
+        body{background:#fff}
+        .op-bar,.op-tip{display:none !important}
+        .op-stage{padding:0;gap:0;display:block}
+        .sheet{
+          width:100%; height:auto; aspect-ratio:277/190;
+          box-shadow:none; border-radius:0;
+          break-inside:avoid; page-break-inside:avoid;
+          break-after:page; page-break-after:always;
+        }
+        .sheet:last-child{break-after:auto;page-break-after:auto}
+        .map-canvas{height:60mm}
+      }
+      @media (max-width:1200px){
+        .op-stage{padding:12px}
+      }
+    </style>
+  </head>
+  <body>
+    <div class="op-bar">
+      <h1>매체 제안서</h1>
+      <span class="count" id="opCount">준비 중…</span>
+      <div class="op-actions">
+        <button type="button" class="op-btn" id="opBack">← 돌아가기</button>
+        <button type="button" class="op-btn primary" id="opPrint">PDF로 저장 / 인쇄</button>
+      </div>
+    </div>
+    <p class="op-tip">
+      <b>PDF로 저장하는 법</b> — [PDF로 저장 / 인쇄] 클릭 → 대상(프린터)에서 <b>"PDF로 저장"</b> 선택 →
+      용지 <b>A4 · 가로</b>, 배율 <b>기본</b>, <b>배경 그래픽 켜기</b>를 확인하고 저장하세요.
+    </p>
+    <div class="op-stage" id="opStage"></div>
+
+    <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1ouo31myef"></script>
+    <script src="assets/js/common.js?v=onepager-20260717"></script>
+    <script src="assets/js/one-pager.js?v=onepager-20260717"></script>
+  </body>
+</html>

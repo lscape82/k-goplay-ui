@@ -7,7 +7,7 @@ import json, os, sys
 import openpyxl
 import xlrd
 
-SRC = os.environ.get("ELEV_SRC", r"C:\Users\lscap\Desktop")
+SRC = os.environ.get("ELEV_SRC", r"E:\2. 광고플레이(주)\★★★플랫폼개발2_2026_업데이트_언니,부장님\★★★플랫폼UI리모델링\2026 UI활용데이터\엘리베이터")
 OUT = os.path.join(os.path.dirname(__file__), "..", "data", "elevator-networks.json")
 
 # 시도 정규화 + 대표 좌표(집계 버블 위치)
@@ -110,6 +110,36 @@ def build_gsa():
     wb.close()
     return a
 
+def build_primeliving():
+    """프라임리빙(spaceAdd) — 패키지 전용. 68빌딩·521기·세대/유동인구 집계."""
+    wb = load_xlsx(os.path.join(SRC, "[spaceAdd] 2월_프라임리빙_판매안 리스트(대외용)_260107.xlsx"))
+    ws = wb["판매안_프라임리빙_26년 2월"]
+    data = list(ws.iter_rows(min_row=21, values_only=True))
+    hdr = data[0]
+    def gi(name):
+        return header_index(hdr, name)
+    ni, ai = gi("빌딩명"), gi("주소")
+    ei, ii, hi = gi("E/V 외부"), gi("E/V 내부"), gi("세대수")
+    complexes = monitors = households = 0
+    regions = {}
+    for r in data[1:]:
+        if ni is None or ni >= len(r) or not r[ni]:
+            continue
+        addr = r[ai] if ai is not None and ai < len(r) else ""
+        if not addr:
+            continue
+        complexes += 1
+        m = to_int(r[ei] if ei is not None and ei < len(r) else 0) + to_int(r[ii] if ii is not None and ii < len(r) else 0)
+        monitors += m
+        households += to_int(r[hi] if hi is not None and hi < len(r) else 0)
+        sido = norm_sido(str(addr).split()[0]) or "서울"
+        g = regions.setdefault(sido, {"complexes": 0, "monitors": 0})
+        g["complexes"] += 1
+        g["monitors"] += m
+    wb.close()
+    return dict(complexes=complexes, monitors=monitors, households=households,
+                population=0, prices=[], regions=regions)
+
 def build_officebiz():
     wb = xlrd.open_workbook(os.path.join(SRC, "H_오피스 엘리베이터.xls"))
     ws = wb.sheet_by_name("오피스보드")
@@ -164,23 +194,30 @@ def build_asa():
     return dict(complexes=complexes, monitors=monitors, households=0, population=0, prices=[], regions=regions)
 
 NETWORKS = [
-    dict(id="townboard", vendor="T사", brand="타운보드", type="apartment",
+    # vendor = 매체사 코드(고정), brand = 상품명, saleUnit = 판매 단위(site=개별 단지/건물, package=패키지 전용)
+    dict(id="townboard", vendor="T사", brand="타운보드", type="apartment", saleUnit="site",
          spec="25형 · 55형 게시판", placement="엘리베이터 내부 게시판",
          target="아파트 주거 가구 · 출입 동선 반복 노출",
          highlights=["전국 최대 커버리지", "가구 도달 규모 1위"], build=build_townboard),
-    dict(id="fmk", vendor="F사", brand="FMK", type="apartment",
+    dict(id="fmk", vendor="F사", brand="포커스", type="apartment", saleUnit="site",
          spec="21.5형 · 25형", placement="엘리베이터 내부 · 대기공간",
          target="수도권 아파트·주상복합 주거민",
          highlights=["대당 단가 공개", "인구 도달 규모 최다"], build=build_fmk),
-    dict(id="gsa", vendor="G사", brand="G사 망", type="apartment",
+    dict(id="gsa", vendor="G사", brand="미디어믿", type="apartment", saleUnit="site",
          spec="게시판형", placement="엘리베이터 내부 · 대기공간",
          target="수도권 집중 아파트 주거민",
          highlights=["서울·경기 집중"], build=build_gsa),
-    dict(id="officebiz", vendor="H사", brand="오피스비즈TV", type="office",
+    dict(id="officebiz", vendor="H사", brand="오피스비즈TV", type="office", saleUnit="site",
          spec="A타입 25형 · B타입 21.5형", placement="엘리베이터 내부 · 대기공간 · 디지털게시판",
          target="오피스 상주 직장인 · 방문 고객",
          highlights=["15초 단가 공개", "프라임 오피스 밀집"], build=build_officebiz),
-    dict(id="asa", vendor="A사", brand="A사 망", type="office",
+    # spaceAdd 프라임리빙 — 주거(주상복합·레지던스·오피스텔), 패키지 전용
+    dict(id="primeliving", vendor="A사", brand="프라임리빙", type="apartment", saleUnit="package",
+         spec="E/V 외부 · 내부", placement="엘리베이터 외부 · 내부",
+         target="도심 주상복합·레지던스 거주 직장인 가구",
+         highlights=["CBD·GBD 핵심 권역", "패키지 전용"], build=build_primeliving),
+    # spaceAdd 프라임오피스 — 패키지 전용(개별 가격 없음)
+    dict(id="asa", vendor="A사", brand="프라임오피스", type="office", saleUnit="package",
          spec="내부 · 외부 모니터", placement="엘리베이터 내부 · 외부",
          target="CBD·GBD·YBD 오피스 직장인",
          highlights=["핵심 업무권역(CBD/GBD/YBD) 커버"], build=build_asa),
@@ -199,6 +236,7 @@ def main():
         top_share = round(regions[0]["monitors"] / total_m * 100) if regions else 0
         networks.append(dict(
             id=cfg["id"], vendor=cfg["vendor"], brand=cfg["brand"], type=cfg["type"],
+            saleUnit=cfg.get("saleUnit", "site"),
             spec=cfg["spec"], placement=cfg["placement"], target=cfg["target"],
             highlights=cfg["highlights"],
             complexes=data["complexes"], monitors=data["monitors"],

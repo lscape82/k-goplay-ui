@@ -10,13 +10,33 @@
     else document.addEventListener("DOMContentLoaded", fn);
   }
 
+  // 아이콘은 단색 SVG 라인으로 통일 — 이모지는 OS마다 그림이 다르고(Windows/Mac/Android),
+  // 22px 크기에선 형태가 뭉개지며, 알록달록해서 사이트 톤(네이비 단색)을 깬다.
+  // 은유도 바로잡음: AI=로봇(옛 은유)→반짝임, 비교=저울(법률 뉘앙스)→나란한 두 패널.
+  function svg(inner) {
+    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" ' +
+      'stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + inner + '</svg>';
+  }
+  var ICONS = {
+    // AI = 반짝임(요즘 표준 은유)
+    planner: svg('<path d="M11 3.5l1.6 4L16.5 9l-3.9 1.6L11 14.5 9.4 10.6 5.5 9l3.9-1.5z"/>' +
+                 '<path d="M17.5 14.5l.8 2 2 .8-2 .8-.8 2-.8-2-2-.8 2-.8z"/>'),
+    // 비교 = 나란한 두 패널(성과 리포트의 막대그래프와 형태가 겹치지 않게)
+    compare: svg('<rect x="3.5" y="5" width="7" height="14" rx="1.5"/>' +
+                 '<rect x="13.5" y="5" width="7" height="14" rx="1.5"/>'),
+    creative: svg('<rect x="3" y="4.5" width="18" height="15" rx="2"/>' +
+                  '<circle cx="8.5" cy="10" r="1.6"/><path d="M21 15.5l-4.5-4L10 19"/>')
+  };
+
+  // 6개 → 3개 축소(2026-07-17 확정). 도크는 "사기 전"에 쓰는 자리라 구매 후 기능은 두지 않는다.
+  //  · 가용 캘린더 삭제 — 매체주가 제각각이고 선착순이라 실시간 재고를 알 수 없음(원천 불가).
+  //    목업의 "잔여 슬롯 2/6"은 만들 수 없는 숫자였다.
+  //  · 제안서 만들기 삭제 — 관심매체 비교 패널의 PDF 버튼으로 흡수(one-pager.html).
+  //  · 성과 리포트 이동 — 계약 광고주용이라 로그인 → 마이페이지로.
   var SERVICES = [
-    { key: "planner",  icon: "🤖", label: "AI 추천 플래너", sub: "예산·업종·지역 → 매체 조합 자동 설계" },
-    { key: "compare",  icon: "⚖️", label: "관심매체 비교", sub: "담은 매체를 지표별로 비교" },
-    { key: "calendar", icon: "🗓️", label: "실시간 가용 캘린더", sub: "집행 가능일 확인·예약" },
-    { key: "proposal", icon: "📄", label: "제안서 만들기", sub: "데이터·견적 담은 제안서 생성" },
-    { key: "report",   icon: "📊", label: "성과 리포트", sub: "예상·실측 성과 확인" },
-    { key: "creative", icon: "🎬", label: "AI 소재 제작", sub: "규격별 소재 자동 생성" }
+    { key: "planner",  icon: ICONS.planner,  label: "AI 추천 플래너", sub: "예산·업종·지역 → 매체 조합 자동 설계" },
+    { key: "compare",  icon: ICONS.compare,  label: "관심매체 비교·상담", sub: "담은 매체 비교 · 제안서(PDF)·엑셀 받기" },
+    { key: "creative", icon: ICONS.creative, label: "소재 제작 의뢰", sub: "의뢰서 작성하면 제작 견적 발송", href: "creative-request.html" }
   ];
 
   function tip(text) {
@@ -27,19 +47,6 @@
       '</span><span class="gps-bt"><span class="gps-bf" style="width:' + w + '%"></span></span>' +
       '<span class="val tnum">' + val + '</span></div>';
   }
-  function calGrid(startDow, days, states) {
-    var out = '<div class="gps-cgrid">';
-    for (var i = 0; i < startDow; i++) out += '<div class="gps-cd mut"></div>';
-    for (var d = 1; d <= days; d++) out += '<div class="gps-cd ' + (states[d] || "") + '">' + d + "</div>";
-    return out + "</div>";
-  }
-  function marchStates() {
-    var s = {}; [1, 2].forEach(function (d) { s[d] = "f"; }); [3, 4, 5].forEach(function (d) { s[d] = "b"; });
-    for (var d = 10; d <= 23; d++) s[d] = "sel";
-    [28, 29, 30, 31].forEach(function (d) { s[d] = "b"; });
-    return s;
-  }
-
   var FEAT = {
     planner: {
       icon: "🤖", title: "AI 추천 플래너", sub: "예산·업종·지역·목표로 최적 매체 조합을 설계합니다",
@@ -75,7 +82,7 @@
       foot: '<button class="gps-bs">관심매체로 담기</button><button class="gps-bp">제안서 만들기 →</button>'
     },
     compare: {
-      icon: "⚖️", title: "관심매체 비교", sub: "담은 매체를 지표별로 나란히 비교합니다",
+      icon: "⚖️", title: "관심매체 비교·상담", sub: "담은 매체를 지표별로 나란히 비교하고 바로 상담합니다",
       body:
         '<div class="gps-card cmp">' +
           '<div class="gps-rowh"><span>일 유동인구 · 많을수록 유리</span></div>' +
@@ -87,86 +94,6 @@
         '</div>' +
         '<div class="gps-note" style="margin-top:14px"><span>◆</span><span><b>추천:</b> 효율은 서울역, 타깃 적합은 신사가 우세 — 인지도 목표라면 신사+서울역 2종 묶음이 CPM·도달 균형이 가장 좋습니다.</span></div>',
       foot: '<button class="gps-bs">제안서로 내보내기</button><button class="gps-bp">묶음 상담 신청 →</button>'
-    },
-    calendar: {
-      icon: "🗓️", title: "실시간 가용 캘린더", sub: "신사 H스퀘어 · 2026년 3월",
-      body:
-        '<div class="gps-chips" style="margin-bottom:12px"><span class="gps-chip" style="background:var(--gps-accent-wash);border-color:var(--gps-accent);color:var(--gps-accent-ink)"><b>신사 H스퀘어</b></span><span class="gps-chip">코엑스 K-POP</span><span class="gps-chip">서울역 파노라마</span></div>' +
-        '<div class="gps-cal-h"><span>집행 가능 구간을 선택하세요</span><span class="sel">선택: 3/10–3/23 (14일)</span></div>' +
-        calGrid(0, 31, marchStates()) +
-        '<div class="gps-calleg"><span><i style="background:var(--gps-good)"></i>집행 가능</span><span><i style="background:var(--gps-warn)"></i>대기·예약중</span><span><i style="background:var(--gps-crit)"></i>마감</span><span><i style="background:var(--gps-accent)"></i>선택 구간</span></div>' +
-        '<div class="gps-row2" style="margin-top:14px">' +
-          '<div class="gps-card gps-soft"><h4>선택 요약</h4><div class="gps-kpis">' +
-            '<div class="gps-kpi"><div class="k">잔여 슬롯 ' + tip("한 화면을 여러 광고가 순환 송출합니다. 남은 광고 자리 수입니다.") + '</div><div class="v tnum">2 / 6</div></div>' +
-            '<div class="gps-kpi"><div class="k">예상 금액</div><div class="v tnum">₩840만</div></div>' +
-          '</div></div>' +
-          '<div class="gps-card"><h4>가격 단위</h4><div class="gps-kpis">' +
-            '<div class="gps-kpi"><div class="k">1일</div><div class="v tnum" style="font-size:16px">₩60만</div></div>' +
-            '<div class="gps-kpi"><div class="k">1개월</div><div class="v tnum" style="font-size:16px">₩1,800만</div></div>' +
-          '</div><div style="margin-top:8px"><span class="gps-src">매체사 예약 시스템 · 실시간</span></div></div>' +
-        '</div>',
-      foot: '<button class="gps-bs">대기 알림 신청</button><button class="gps-bp">이 구간 예약 문의 →</button>'
-    },
-    proposal: {
-      icon: "📄", title: "제안서 만들기", sub: "관심매체 조합을 공유 가능한 제안서로 자동 생성",
-      body:
-        '<div class="gps-row2">' +
-          '<div class="mblock"><h4>구성 옵션</h4>' +
-            '<div class="gps-card" style="display:flex;flex-direction:column;gap:8px">' +
-              '<label style="font-size:13px;font-weight:600"><input type="checkbox" checked> 표지 · 캠페인 개요</label>' +
-              '<label style="font-size:13px;font-weight:600"><input type="checkbox" checked> 매체 상세 (사진·규격·위치)</label>' +
-              '<label style="font-size:13px;font-weight:600"><input type="checkbox" checked> 오디언스 데이터 (정부 근거)</label>' +
-              '<label style="font-size:13px;font-weight:600"><input type="checkbox" checked> 견적표 · 예산 배분</label>' +
-              '<label style="font-size:13px;font-weight:600;color:var(--gps-muted)"><input type="checkbox"> 집행 스케줄 캘린더</label>' +
-              '<label style="font-size:13px;font-weight:600;color:var(--gps-muted)"><input type="checkbox"> 광고주 로고 삽입</label>' +
-            '</div>' +
-          '</div>' +
-          '<div class="mblock"><h4>미리보기</h4>' +
-            '<div class="gps-card">' +
-              '<div style="background:linear-gradient(120deg,#0b1b3f,#12245a);color:#fff;border-radius:8px;padding:14px;margin-bottom:10px"><div style="font-size:14px;font-weight:800">강남 F&amp;B 캠페인 매체 제안</div><div style="font-size:11px;color:#c3ccdf;margin-top:3px">광고플레이 · 2026.03 · 3개 매체</div></div>' +
-              '<div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px dotted var(--gps-line)"><span>신사 H스퀘어</span><b class="tnum">₩1,800만</b></div>' +
-              '<div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0;border-bottom:1px dotted var(--gps-line)"><span>서울역 파노라마</span><b class="tnum">₩2,400만</b></div>' +
-              '<div style="display:flex;justify-content:space-between;font-size:12px;padding:6px 0"><span>합계 · CPM</span><b class="tnum">₩4,720만 · ₩3,100</b></div>' +
-            '</div>' +
-          '</div>' +
-        '</div>' +
-        '<div class="gps-note"><span>◆</span><span><b>차별점:</b> 도달·타깃 수치에 출처 라벨(국토부·통계청·상권정보)이 함께 인쇄돼, 광고주 내부 보고에 그대로 쓸 수 있습니다.</span></div>',
-      foot: '<button class="gps-bs">링크 공유</button><button class="gps-bs">PPT</button><button class="gps-bp">PDF 생성 →</button>'
-    },
-    report: {
-      icon: "📊", title: "성과 리포트", sub: "집행 결과를 예상 대비로 보여주고 재집행을 유도합니다",
-      body:
-        '<div class="gps-rtoggle"><button class="on">실측</button><button>예상</button></div> <span class="gps-badge act">실측 · 매체 송출로그 기반</span>' +
-        '<div class="gps-kpis" style="grid-template-columns:repeat(5,1fr);margin-top:12px">' +
-          '<div class="gps-kpi"><div class="k">총 노출</div><div class="v tnum">4,210만</div><div class="d up">▲ +12%</div></div>' +
-          '<div class="gps-kpi"><div class="k">순 도달</div><div class="v tnum">168만</div><div class="d up">▲ +8%</div></div>' +
-          '<div class="gps-kpi"><div class="k">평균 빈도</div><div class="v tnum">3.6회</div><div class="d">1인</div></div>' +
-          '<div class="gps-kpi"><div class="k">달성 CPM</div><div class="v tnum">₩2,980</div><div class="d up">▼ 목표↓</div></div>' +
-          '<div class="gps-kpi"><div class="k">목표 달성률</div><div class="v tnum">112%</div><div class="d up">초과</div></div>' +
-        '</div>' +
-        '<div class="gps-card" style="margin-top:14px"><h4>일별 노출 추이</h4>' +
-          '<div class="gps-spark"><span style="height:50%"></span><span style="height:58%"></span><span style="height:46%"></span><span style="height:70%"></span><span style="height:64%"></span><span style="height:80%"></span><span style="height:76%"></span><span class="hi" style="height:100%"></span></div>' +
-          '<div style="margin-top:10px"><span class="gps-src">매체사 송출 로그 · 유동 데이터 보정</span></div>' +
-        '</div>',
-      foot: '<button class="gps-bs">리포트 PDF</button><button class="gps-bp">같은 조건 재집행 →</button>'
-    },
-    creative: {
-      icon: "🎬", title: "AI 소재 제작", sub: "원본 1개 → 매체 규격별 자동 리사이즈·검수",
-      body:
-        '<div class="gps-card gps-soft" style="display:flex;align-items:center;gap:14px;margin-bottom:14px">' +
-          '<div style="width:74px;aspect-ratio:16/9;border-radius:8px;background:linear-gradient(135deg,#16233f,#33507e);flex:none"></div>' +
-          '<div><div style="font-size:14px;font-weight:800">원본 소재 업로드 완료</div><div style="font-size:12px;color:var(--gps-muted)">brand_launch.mp4 · 3840×2160 · 15초 · 42MB</div></div>' +
-          '<button class="gps-bs" style="margin-left:auto">교체</button>' +
-        '</div>' +
-        '<div class="mblock"><h4>매체 규격별 자동 생성</h4><div class="gps-sizes">' +
-          '<div class="gps-sz"><div class="box r169"></div><div class="cap">전광판 16:9</div><div class="spec">1920×1080</div><div class="ok">✓ 완료</div></div>' +
-          '<div class="gps-sz"><div class="box r916"></div><div class="cap">세로 9:16</div><div class="spec">1080×1920</div><div class="ok">✓ 완료</div></div>' +
-          '<div class="gps-sz"><div class="box r11"></div><div class="cap">정사각 1:1</div><div class="spec">1080×1080</div><div class="ok">✓ 완료</div></div>' +
-          '<div class="gps-sz"><div class="box r219"></div><div class="cap">와이드 21:9</div><div class="spec">2560×1080</div><div class="ok" style="color:var(--gps-warn)">⚙ 조정</div></div>' +
-          '<div class="gps-sz"><div class="box r31"></div><div class="cap">버스 3:1</div><div class="spec">1500×500</div><div class="ok">✓ 완료</div></div>' +
-        '</div></div>' +
-        '<div class="gps-note"><span>◆</span><span><b>ADVoost AutoClip 벤치마크</b> — 매체별 소재 제작 부담을 없애 소액·초심 광고주의 진입장벽을 낮춥니다.</span></div>',
-      foot: '<button class="gps-bs">규격 추가</button><button class="gps-bp">5종 소재 생성 →</button>'
     }
   };
 
@@ -231,6 +158,8 @@
       if (!b) return;
       var key = b.getAttribute("data-gps");
       if (key === "compare") { document.dispatchEvent(new CustomEvent("gps:open-favorites")); return; } // 실제 관심매체 패널(비교+합계+상담) 열기
+      var svc = SERVICES.filter(function (s) { return s.key === key; })[0];
+      if (svc && svc.href) { location.href = svc.href; return; } // 소재 제작 의뢰 = 모달이 아니라 별도 페이지
       open(key);
     });
     ov.querySelector(".x").addEventListener("click", close);

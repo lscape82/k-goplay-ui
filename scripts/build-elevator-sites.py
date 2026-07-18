@@ -5,7 +5,7 @@ CAP를 늘리면 커버리지를 확장할 수 있다."""
 import json, os, re, time, urllib.parse, urllib.request, urllib.error
 import openpyxl, xlrd
 
-SRC = os.environ.get("ELEV_SRC", r"C:\Users\lscap\Desktop")
+SRC = os.environ.get("ELEV_SRC", r"E:\2. 광고플레이(주)\★★★플랫폼개발2_2026_업데이트_언니,부장님\★★★플랫폼UI리모델링\2026 UI활용데이터\엘리베이터")
 ROOT = os.path.join(os.path.dirname(__file__), "..")
 OUT = os.path.join(ROOT, "data", "elevator-sites.json")
 CAP = int(os.environ.get("ELEV_CAP", "45"))
@@ -25,10 +25,17 @@ ENV = load_env()
 CID = ENV.get("NAVER_MAPS_CLIENT_ID")
 CSECRET = ENV.get("NAVER_MAPS_CLIENT_SECRET")
 
+METRO = ["서울", "부산", "대구", "인천", "광주", "대전", "울산", "세종"]
+
 def norm_sido(v):
     if not v:
         return "기타"
     s = str(v).strip()
+    if s.startswith("전남광주통합"):  # T사 원본의 손상 라벨 = 광주광역시
+        return "광주"
+    for m in METRO:  # 서울시/서울특별시/세종특별자치시 등 광역시·특별시 계열
+        if s.startswith(m):
+            return m
     for t in ["특별자치도", "특별자치시", "특별시", "광역시"]:
         s = s.replace(t, "")
     if s.endswith("도"):
@@ -37,6 +44,20 @@ def norm_sido(v):
              "충청북": "충북", "충청남": "충남", "전라북": "전북", "전라남": "전남",
              "경상북": "경북", "경상남": "경남"}
     return alias.get(s, s)
+
+def derive_region(address):
+    """지오코딩된 주소에서 sido·district(구/군/시)를 일관되게 도출.
+    예) '서울특별시 마포구 성암로 41' -> ('서울','마포구'), '경기도 수원시 영통구 …' -> ('경기','수원시')"""
+    toks = str(address or "").split()
+    sido = norm_sido(toks[0]) if toks else "기타"
+    district = ""
+    for t in toks[1:]:
+        if t.endswith(("구", "군", "시")):
+            district = t
+            break
+    if not district:
+        district = sido  # 세종 등 하위 구 없는 경우
+    return sido, district
 
 def hidx(hdr, name):
     for i, h in enumerate(hdr):
@@ -115,6 +136,118 @@ def rows_townboard(path):
     wb.close()
     return out
 
+def rows_fmk(path):
+    """포커스(F사) — FMK 시트만 사용. 가격은 '4주 금액' 그대로(월 환산 금지)."""
+    wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
+    ws = wb["FMK"]
+    data = list(ws.iter_rows(min_row=4, values_only=True))
+    hdr = data[0]
+    c = {k: hidx(hdr, k) for k in ["단지명", "도시", "주소(도로명)", "건물유형", "준공연도",
+                                   "기준평형", "총 세대수", "판매수량", "대당단가", "4주 금액"]}
+    out = []
+    for r in data[1:]:
+        name, addr = cell(r, c["단지명"]), cell(r, c["주소(도로명)"])
+        if not name or not addr:
+            continue
+        monitors = to_int(cell(r, c["판매수량"]))
+        if monitors <= 0:      # 판매수량 0 = 판매 구좌 없음 → 제외
+            continue
+        out.append(dict(
+            gubun=str(cell(r, c["건물유형"]) or "아파트").strip(),
+            name=str(name).strip(), year=to_int(cell(r, c["준공연도"])),
+            sido=norm_sido(cell(r, c["도시"])), address=str(addr).strip(),
+            pyeong=str(cell(r, c["기준평형"]) or "").strip(),
+            households=to_int(cell(r, c["총 세대수"])), monitors=monitors,
+            unitPrice=to_int(cell(r, c["대당단가"])),
+            monthlyCost=to_int(cell(r, c["4주 금액"])),  # 4주 금액 그대로
+        ))
+    wb.close()
+    return out
+
+def rows_gsa(path):
+    """미디어믿(G사) — 15초/30초 2축 단가."""
+    wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
+    ws = wb["설치 리스트"]
+    data = list(ws.iter_rows(min_row=5, values_only=True))
+    hdr = data[0]
+    c = {k: hidx(hdr, k) for k in ["구분", "아파트명", "지역1", "주 소", "합계", "준공년도",
+                                   "최소평형", "최대평형", "세대수", "15초 단가", "월 광고료(15초)",
+                                   "30초 단가", "월 광고료(30초)"]}
+    out = []
+    for r in data[1:]:
+        name, addr = cell(r, c["아파트명"]), cell(r, c["주 소"])
+        if not name or not addr:
+            continue
+        lo, hi = to_int(cell(r, c["최소평형"])), to_int(cell(r, c["최대평형"]))
+        pyeong = f"{lo}~{hi}" if lo and hi and lo != hi else (str(lo) if lo else "")
+        out.append(dict(
+            gubun=str(cell(r, c["구분"]) or "아파트").strip(),
+            name=str(name).strip(), year=to_int(cell(r, c["준공년도"])),
+            sido=norm_sido(cell(r, c["지역1"])), address=str(addr).strip(),
+            pyeong=pyeong, households=to_int(cell(r, c["세대수"])),
+            monitors=to_int(cell(r, c["합계"])),
+            unitPrice=to_int(cell(r, c["15초 단가"])),
+            monthlyCost=to_int(cell(r, c["월 광고료(15초)"])),
+            unitPrice30=to_int(cell(r, c["30초 단가"])),
+            monthlyCost30=to_int(cell(r, c["월 광고료(30초)"])),
+        ))
+    wb.close()
+    return out
+
+def rows_primeliving(path):
+    """프라임리빙(spaceAdd) — 패키지 전용(가격 열 없음). 주거(주상복합·레지던스·오피스텔)."""
+    wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
+    ws = wb["판매안_프라임리빙_26년 2월"]
+    data = list(ws.iter_rows(min_row=21, values_only=True))
+    hdr = data[0]
+    c = {k: hidx(hdr, k) for k in ["권역", "빌딩명", "주소", "층수", "E/V 외부", "E/V 내부", "세대수", "유동인구"]}
+    out = []
+    for r in data[1:]:
+        name, addr = cell(r, c["빌딩명"]), cell(r, c["주소"])
+        if not name or not addr:
+            continue
+        monitors = to_int(cell(r, c["E/V 외부"])) + to_int(cell(r, c["E/V 내부"]))
+        addr = str(addr).strip()
+        out.append(dict(
+            gubun="주상복합", name=str(name).strip(), year=0,
+            sido=norm_sido(addr.split()[0] if addr else None) or "서울",
+            address=addr, pyeong="", households=to_int(cell(r, c["세대수"])),
+            monitors=monitors, unitPrice=0, monthlyCost=0,
+            district=str(cell(r, c["권역"]) or "").strip(),
+            floors=str(cell(r, c["층수"]) or "").strip(),
+            traffic=to_int(cell(r, c["유동인구"])),
+        ))
+    wb.close()
+    return out
+
+def rows_primeoffice(path):
+    """프라임오피스(asa) 핀 소스 — F사 파일의 '프라임오피스' 시트(주소 보강용, 606빌딩).
+    ※ 네트워크 집계(747·4,847)는 A사 정본에서 별도로 잡히고, 여기선 주소 있는 606건만 지오코딩."""
+    wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
+    ws = wb["프라임오피스"]
+    data = list(ws.iter_rows(min_row=21, values_only=True))
+    hdr = data[0]
+    c = {k: hidx(hdr, k) for k in ["권역", "빌딩명", "주소", "층수", "E/V 외부", "E/V 내부",
+                                   "주요입주사", "유동인구", "단가"]}
+    out = []
+    for r in data[1:]:
+        name, addr = cell(r, c["빌딩명"]), cell(r, c["주소"])
+        if not name or not addr:
+            continue
+        addr = str(addr).strip()
+        monitors = to_int(cell(r, c["E/V 외부"])) + to_int(cell(r, c["E/V 내부"]))
+        out.append(dict(
+            gubun="오피스", name=str(name).strip(), year=0, pyeong="",
+            sido=norm_sido(addr.split()[0] if addr else None) or "서울", address=addr,
+            households=0, monitors=monitors, unitPrice=to_int(cell(r, c["단가"])), monthlyCost=0,
+            district=str(cell(r, c["권역"]) or "").strip(),
+            floors=str(cell(r, c["층수"]) or "").strip(),
+            traffic=to_int(cell(r, c["유동인구"])),
+            keyTenants=str(cell(r, c["주요입주사"]) or "").strip(),  # 텍스트(입주사 수 아님)
+        ))
+    wb.close()
+    return out
+
 def rows_asa(path):
     wb = openpyxl.load_workbook(path, read_only=True, data_only=True)
     ws = wb["Sheet1"]
@@ -148,16 +281,20 @@ def rows_h(path):
         return None
     ni, ai, mi = idx("건물명"), idx("상세주소"), idx("모니터 합계")
     tenant_i, price_i = idx("입주업체"), idx("1개월 금액")
+    unit_i, size_i = idx("15초 단가"), idx("모니터 형태")
     out = []
     for i in range(5, ws.nrows):
         name = ws.cell_value(i, ni) if ni is not None else None
         addr = ws.cell_value(i, ai) if ai is not None else None
         if not name or not addr:
             continue
-        out.append(dict(name=str(name).strip(), sido="서울", address=str(addr).strip(),
+        out.append(dict(gubun="오피스", name=str(name).strip(), sido="서울",
+                        address=str(addr).strip(), year=0, pyeong="",
                         monitors=to_int(ws.cell_value(i, mi)) if mi is not None else 0,
-                        households=0, year=0,
-                        price=to_int(ws.cell_value(i, price_i)) if price_i is not None else 0,
+                        households=0,
+                        unitPrice=to_int(ws.cell_value(i, unit_i)) if unit_i is not None else 0,
+                        monthlyCost=to_int(ws.cell_value(i, price_i)) if price_i is not None else 0,
+                        monitorSize=str(ws.cell_value(i, size_i)).strip() if size_i is not None else "",
                         tenants=to_int(ws.cell_value(i, tenant_i)) if tenant_i is not None else 0))
     return out
 
@@ -196,16 +333,20 @@ def geocode(query):
         return None
 
 PRODUCTS = [
+    # 정본: T사_아파트 엘리베이터.xlsx (build-elevator-data.py와 동일 파일)
     dict(id="townboard", cap=None,  # 전량 지오코딩
-         fn=lambda: rows_townboard(os.path.join(SRC, "타운보드 가동리스트(로컬상품)_260706.xlsx"))),
-    dict(id="fmk", fn=lambda: rows_xlsx(os.path.join(SRC, "F사_아파트 엘리베이터.xlsx"),
-         "FMK", 4, "도시", "도시", "주소(도로명)", "판매수량",
-         household_c="총 세대수", year_c="준공연도", unitprice_c="대당단가")),
-    dict(id="gsa", fn=lambda: rows_xlsx(os.path.join(SRC, "G사_아파트 엘리베이터.xlsx"),
-         "설치 리스트", 5, "아파트명", "지역1", "주 소", "합계",
-         household_c="세대수", year_c="준공년도")),
-    dict(id="officebiz", fn=lambda: rows_h(os.path.join(SRC, "H_오피스 엘리베이터.xls"))),
-    dict(id="asa", fn=lambda: rows_asa(os.path.join(SRC, "A사_오피스 엘리베이터.xlsx"))),
+         fn=lambda: rows_townboard(os.path.join(SRC, "T사_아파트 엘리베이터.xlsx"))),
+    dict(id="fmk", cap=None,
+         fn=lambda: rows_fmk(os.path.join(SRC, "F사_아파트 엘리베이터.xlsx"))),
+    dict(id="gsa", cap=None,
+         fn=lambda: rows_gsa(os.path.join(SRC, "G사_아파트 엘리베이터.xlsx"))),
+    dict(id="officebiz", cap=None,
+         fn=lambda: rows_h(os.path.join(SRC, "H_오피스 엘리베이터.xls"))),
+    dict(id="primeliving", cap=None,
+         fn=lambda: rows_primeliving(os.path.join(SRC, "[spaceAdd] 2월_프라임리빙_판매안 리스트(대외용)_260107.xlsx"))),
+    # 프라임오피스 핀 — A사엔 주소 없음 → F사 '프라임오피스' 시트로 주소 보강(606/747, 나머지 141 주소 부재)
+    dict(id="asa", cap=None,
+         fn=lambda: rows_primeoffice(os.path.join(SRC, "F사_아파트 엘리베이터.xlsx"))),
 ]
 
 ONLY = os.environ.get("ELEV_ONLY", "").strip()  # 특정 상품만 재생성(쉼표구분)
@@ -239,6 +380,8 @@ def main():
             site["id"] = f"{p['id']}-{idx}"
             site["address"] = g["roadAddress"] or s["address"]
             site["lat"], site["lng"] = g["lat"], g["lng"]
+            # sido·district를 주소에서 재도출(하드코딩 sido·비표준값 교정 + 구 단위 클러스터용)
+            site["sido"], site["district"] = derive_region(site["address"])
             sites.append(site)
             if (idx + 1) % 300 == 0:
                 print(f"    ...{idx + 1}/{len(sample)} (좌표 {len(sites)})")

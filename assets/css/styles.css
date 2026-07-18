@@ -3168,6 +3168,45 @@ body:has(#media-management) .page-title p {
   color: #a6b8dd;
 }
 
+.footer-inner .foot-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 18px;
+  margin-bottom: 4px;
+}
+
+.footer-inner .foot-nav a {
+  color: #fff;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 13.5px;
+}
+
+.footer-inner .foot-nav a:hover {
+  color: #93c5fd;
+}
+
+.footer-inner .foot-info {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 20px;
+  font-style: normal;
+  font-size: 13px;
+  line-height: 1.7;
+  color: #a6b8dd;
+}
+
+.footer-inner .foot-info b {
+  color: #dbeafe;
+  font-weight: 650;
+  margin-right: 4px;
+}
+
+.footer-inner .foot-copy {
+  color: #8fa3cd;
+  margin-top: 6px;
+}
+
 @media (max-width: 760px) {
   .hero-inner {
     grid-template-columns: 1fr;
@@ -6819,6 +6858,34 @@ body:has(.map-workspace-page) {
   border-radius: 8px;
 }
 
+/* 지도 상세패널 → 해당 매체 정적 상세 페이지(고유 URL·공유 가능·봇 크롤 대상)로 연결 */
+.map-detail-fullpage {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 11px 13px;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  background: #f8fafc;
+  color: #0b3a91;
+  font-size: 13.5px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background .15s ease, border-color .15s ease;
+}
+
+.map-detail-fullpage:hover {
+  background: #eef4ff;
+  border-color: #c7d7f5;
+}
+
+.map-detail-fullpage span {
+  flex: none;
+  font-weight: 800;
+}
+
 .map-detail-actions a,
 .map-detail-actions button {
   display: grid;
@@ -7723,6 +7790,41 @@ body:has(.map-workspace-page) {
   color: #8a5606;
   font-size: 10px;
   font-weight: 800;
+}
+
+.map-traffic-src {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 10px;
+  margin: 8px 0 0;
+  color: #94a3b8;
+  font-size: 11px;
+  line-height: 1.4;
+}
+
+.map-traffic-src-label {
+  display: inline-flex;
+  padding: 2px 7px;
+  border-radius: 5px;
+  background: #eef2f7;
+  color: #64748b;
+  font-size: 10px;
+  font-weight: 800;
+}
+
+.map-traffic-src a {
+  color: #64748b;
+  text-decoration: underline;
+  text-decoration-color: #cbd5e1;
+  text-underline-offset: 2px;
+  word-break: keep-all;
+}
+
+.map-traffic-src a:hover,
+.map-traffic-src a:focus-visible {
+  color: #0b3a91;
+  text-decoration-color: #0b3a91;
 }
 
 .map-age-distribution {

@@ -11,6 +11,7 @@ import csv, json, re, sys, io
 SRC = r"data/source-media-list.csv"
 OUT_MEDIA = r"data/media.json"
 OUT_LOC = r"data/media_locations.json"
+AREAS = r"data/areas.json"
 
 SAMPLE_IMAGES = [
     "assets/images/map-samples/gangnam-wide.jpg",
@@ -217,6 +218,41 @@ def region_of(road, jibun):
     return ""
 
 
+# 원본 CSV에 권역 컬럼이 없어 주소(도로명·법정동)로 areas.json 권역을 추정한다.
+# 이 값이 있어야 상세의 지하철·버스 KPI가 areas.json 실측치를 쓴다(없으면 하드코딩 폴백).
+# 순서 = 우선순위. 좁은 권역을 먼저 두어 '테헤란로+삼성동' 같은 중복은 좁은 쪽이 이긴다.
+# 11개 권역은 서울 도심 일부만 덮으므로 지방·비권역 매체는 의도적으로 ""로 남는다.
+AREA_RULES = [
+    ("dosan-daero", r"도산대로|압구정로|가로수길|신사동|압구정동|청담동|학동로"),
+    ("samseong-coex", r"삼성동|봉은사로|영동대로|코엑스"),
+    ("seoul-station", r"서울역|한강대로|봉래동|청파로|남대문로5"),
+    ("myeongdong-euljiro", r"명동|을지로|충무로|소공동|회현동|남대문로[1-4]"),
+    ("gwanghwamun", r"세종대로|청계천로|광화문|태평로|서린동|수송동|종로[1-6]가|율곡로"),
+    ("yeouido", r"여의도동|여의대로|국제금융로|여의공원로|여의나루로"),
+    ("hongdae", r"서교동|동교동|양화로|홍익로|연남동|와우산로"),
+    ("seongsu", r"성수동|성수이로|아차산로|연무장"),
+    ("jamsil", r"잠실동|올림픽로|송파대로|신천동"),
+    ("mapo", r"공덕동|도화동|마포대로|백범로"),
+    ("gangnam-daero", r"강남대로|역삼동|테헤란로|서초대로|서초동"),
+]
+
+
+def area_of(name, road, jibun):
+    """주소·매체명으로 areas.json 권역 slug 추정. 확신이 없으면 ""(폴백)."""
+    text = " ".join(x for x in (name, road, jibun) if x)
+    if "서울" not in text:
+        return ""
+    for slug, pattern in AREA_RULES:
+        if re.search(pattern, text):
+            return slug
+    return ""
+
+
+def load_area_names():
+    with open(AREAS, encoding="utf-8") as f:
+        return {a["slug"]: a.get("name", "") for a in json.load(f)}
+
+
 # 입지특성에서 '설치 위치 장점'을 짧게 뽑기
 _ADV_MARKERS = ("최다", "최대", "1위", "핵심", "랜드마크", "명소", "특구", "최고",
                 "대표", "요충", "밀집", "집중", "유일", "제일")
@@ -277,6 +313,8 @@ def main():
     media = []
     locations = {}
     cat_counts = {}
+    area_names = load_area_names()
+    area_counts = {}
     for i, r in enumerate(data):
         idx = g(r, 0)
         name = clean_name(g(r, 1))
@@ -301,6 +339,8 @@ def main():
         w, h = parse_wh(size_raw)
         pricing = parse_pricing(contract_raw)
         region = region_of(road, jibun)
+        area_slug = area_of(name, road, jibun)
+        area_counts[area_slug or "(폴백)"] = area_counts.get(area_slug or "(폴백)", 0) + 1
         # 카드(짧게): 입지특성 장점 요약 or 키워드 요약
         if feature:
             benefit = benefit_summary(feature)
@@ -320,8 +360,8 @@ def main():
             "company": company,
             "category": category,
             "mediaType": CATEGORY_LABELS.get(category, "기타"),
-            "areaSlug": "",
-            "areaName": "",
+            "areaSlug": area_slug,
+            "areaName": area_names.get(area_slug, ""),
             "address": road or jibun,
             "jibunAddress": jibun,
             "locationDescription": feature,
@@ -371,6 +411,10 @@ def main():
     print(f"  with streetView: {with_sv}")
     print(f"  with >=1 parsed price: {with_price}")
     print(f"  categories: {cat_counts}")
+    # 권역이 붙은 매체만 상세에서 지하철·버스 실측치를 쓴다. 나머지는 폴백이므로 수치를 눈으로 확인할 것.
+    with_area = sum(1 for m in media if m["areaSlug"])
+    print(f"  with areaSlug: {with_area} / {len(media)} (폴백: {len(media) - with_area})")
+    print(f"  areas: {area_counts}")
 
 
 if __name__ == "__main__":

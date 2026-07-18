@@ -4,23 +4,52 @@
    기존 스타일을 덮어쓰지 않도록 gps- 네임스페이스 사용.
    ===================================================================== */
 
-/* 매체 마커 클러스터 배지 (+N) — 슬레이트 + 흰 숫자, 외곽선 없음 */
+/* 매체 마커 클러스터 배지 (+N) — 채운 원. 개수가 많을수록 '크고 진하게'(연보라→네이비) 5단계.
+   흰 얇은 링 + 옅은 그림자로 지도 위에서 분리. 크기·색이 밀집도를 말하고 숫자는 보조.
+   --s/--m/--l/--xl/--xxl 은 JS clusterIcons 의 size/anchor 와 짝을 이룬다. */
 .map-cluster {
   box-sizing: border-box;
-  width: 30px;
-  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 999px;
-  background: #4a5c8c;
-  color: #fff;
+  color: #fff;                 /* 숫자는 전 단계 흰색 통일 */
+  font-size: 10px;             /* 크기도 tier 상관없이 동일 — 더 작게(보조 역할 강화) */
   font-weight: 700;
-  font-size: 12px;
   line-height: 1;
-  border: none;
-  font-family: inherit;
+  font-family: "SUIT Variable", "SUIT", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+  text-shadow: 0 1px 2px rgba(15, 23, 42, .35);  /* 연한 원 위에서도 흰 숫자가 읽히게 */
   cursor: pointer;
+  border: none;
+}
+/* 딱딱한 흰 외곽선 대신 '같은 색의 반투명 헤일로'(box-shadow spread) + 위쪽 하이라이트 radial-gradient 로
+   부드러운 그라데이션 느낌. 헤일로 색은 tier 배경색과 맞춰 자연스럽게 번지게 한다. */
+/* H285 인디고 톤 팔레트 — 단일 색상, 톤만 단계별. 채도를 올려 작은 원(대부분의 화면)도
+   흐린 라벤더가 아니라 '확실한 인디고'로 보이게 한다. 숫자는 전 단계 연한 흰색으로 통일. */
+.map-cluster--s {
+  width: 30px; height: 30px;
+  background: radial-gradient(circle at 50% 34%, #b3c2e6, #93a8d6 72%);
+  box-shadow: 0 0 0 4px rgba(147, 168, 214, .30), 0 2px 6px rgba(15, 23, 42, .26);
+}
+.map-cluster--m {
+  width: 38px; height: 38px;
+  background: radial-gradient(circle at 50% 34%, #849dd3, #5f80c1 72%);
+  box-shadow: 0 0 0 4px rgba(95, 128, 193, .28), 0 2px 7px rgba(15, 23, 42, .28);
+}
+.map-cluster--l {
+  width: 46px; height: 46px;
+  background: radial-gradient(circle at 50% 34%, #5c7cbf, #3a5faa 72%);
+  box-shadow: 0 0 0 5px rgba(58, 95, 170, .28), 0 2px 8px rgba(15, 23, 42, .3);
+}
+.map-cluster--xl {
+  width: 54px; height: 54px;
+  background: radial-gradient(circle at 50% 34%, #3a63ab, #1c4796 72%);
+  box-shadow: 0 0 0 5px rgba(28, 71, 150, .28), 0 3px 9px rgba(15, 23, 42, .32);
+}
+.map-cluster--xxl {
+  width: 62px; height: 62px;
+  background: radial-gradient(circle at 50% 34%, #2a54a2, #0b3a91 72%);
+  box-shadow: 0 0 0 6px rgba(11, 58, 145, .30), 0 3px 10px rgba(15, 23, 42, .34);
 }
 
 /* 상세페이지 거리뷰 인라인 파노라마 (거리뷰좌표 기반) */
@@ -81,8 +110,7 @@
 }
 
 /* 우측 플로팅 요소 폭·우측선 통일 — 컨트롤(170px)이 도크/상담(210px)과 어긋나 보이던 계단 정렬 해결 */
-.map-mode-toggle,
-.map-utility-controls { width: 210px; }
+.map-mode-toggle { width: 210px; }
 .map-contact-card { right: 16px; }
 .gps-dock-h {
   font-size: 10px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase;
@@ -96,10 +124,17 @@
 .gps-svc {
   display: flex; flex-direction: column; gap: 3px; text-align: left;
   background: rgba(255,255,255,.97); border: 1px solid var(--gps-line); border-radius: 11px;
-  padding: 9px 11px; box-shadow: var(--gps-shadow); cursor: pointer;
+  padding: 9px 11px; cursor: pointer;
+  /* 그림자를 조인다: --gps-shadow(0 10px 30px)는 41px 카드 아래로 40px 번져,
+     촘촘히 쌓인 카드들이 서로/지도로 흐려 '뿌옇게 퍼지는' 느낌을 냈다.
+     블러 30→8, offsetY 10→2 로 지면에 붙여 또렷하게. (CTA 는 그림자 0이어도 또렷하다) */
+  box-shadow: 0 2px 8px rgba(15, 20, 32, .12);
+  transition: transform .18s ease;
 }
-.gps-svc:hover { border-color: var(--gps-accent); }
-.gps-svc .top { display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 700; color: var(--gps-ink-soft); }
+/* hover — 파란 외곽선 대신 목록 카드처럼 살짝 들리는 움직임만.
+   외곽선은 지도 위에서 파란 테두리 덩어리를 만들었다. 테두리·그림자는 그대로 두고 transform 만. */
+.gps-svc:hover { transform: translateY(-2px); }
+.gps-svc .top { display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 620; color: #475467; } /* 헤더 메뉴와 통일(13/620/#475467) */
 .gps-svc .ic { width: 22px; height: 22px; flex: none; display: grid; place-items: center; border-radius: 6px; background: var(--gps-accent-wash); font-size: 14px; }
 .gps-svc .bn { margin-left: auto; font-size: 10px; font-weight: 800; color: #fff; background: var(--gps-accent); border-radius: 999px; padding: 1px 7px; }
 .gps-svc .sub { display: none; } /* 상담 카드와 겹치지 않도록 도크 컴팩트화 (라벨만 노출) */
@@ -229,10 +264,12 @@
 
 /* 리스트 카드 외곽 틀 제거 — 사진+텍스트만 남겨 시원·깔끔하게 (hello ooh·HOO 벤치마크) */
 .map-list-card { border: 0; background: transparent; padding: 0; border-radius: 0; box-shadow: none; gap: 10px; transition: transform .18s ease; }
-/* 호버 강조: 파란 외곽선 없이 살짝 그림자 + 미세한 리프트만 */
+/* 호버 강조: 그림자 없이 미세한 리프트(움직임)만.
+   그림자는 12/26/.20 → 5/14/.13 으로 줄여봤지만, 줄여도 회색이 사진 주변으로 퍼지는 건 그대로였다.
+   카드가 촘촘히 쌓인 목록에서는 퍼짐이 옆 카드 여백까지 흐려 지저분해진다.
+   '반응했다'는 신호는 3px 리프트 하나로 충분하다 — 그림자는 그 신호를 보강하는 게 아니라 흐린다. */
 .map-list-card:hover { border-color: transparent; background: transparent; box-shadow: none; transform: translateY(-3px); }
-.map-list-card .map-card-photo-pair { transition: box-shadow .18s ease; }
-.map-list-card:hover .map-card-photo-pair { box-shadow: 0 12px 26px rgba(15,23,42,.20); }
+.map-list-card:hover .map-card-photo-pair { box-shadow: none; }
 .map-list-card .map-card-photo-pair { position: relative; } /* 사진 모서리는 배포본과 동일(원래 6px) 사용 — 14px 오버라이드 제거 */
 /* 선택 표시는 박스 대신 사진 테두리로 은은하게 */
 .map-list-card.is-active { background: transparent; box-shadow: none; }
@@ -321,6 +358,22 @@
 .map-fav-compare--rows tbody td { padding: 8px 10px; border-top: 1px solid #eef2f7; white-space: nowrap; text-align: left; vertical-align: middle; }
 .map-fav-compare--rows tbody td.map-fav-remove-cell { text-align: right; padding-right: 0; }
 .map-fav-compare--rows tbody .map-fav-remove { position: static; }
+/* 상담 대상 체크박스 — 매우 연한 회색. native accent-color 는 체크가 흰색이라 배경을 연하게 하면
+   체크가 안 보인다 → appearance:none 커스텀으로 '연회색 박스 + 회색 체크'를 직접 그린다. */
+.map-fav-incl {
+  appearance: none; -webkit-appearance: none;
+  width: 16px; height: 16px; margin: 0; cursor: pointer; vertical-align: middle;
+  position: relative; border: 1.5px solid #d0d5dd; border-radius: 4px; background: #fff;
+}
+.map-fav-incl:checked { background: #eceef1; border-color: #cbd2dd; }
+.map-fav-incl:checked::after {
+  content: ""; position: absolute; left: 4.5px; top: 1px;
+  width: 4px; height: 8px; border: solid #98a2b3; border-width: 0 1.6px 1.6px 0;
+  transform: rotate(45deg);
+}
+.map-fav-incl:focus-visible { outline: 2px solid #b7c8e7; outline-offset: 1px; }
+/* 체크 해제한 행 — 완전 삭제가 아니라 '제외'. 체크박스 칸만 또렷이 남기고 나머지는 흐리게. */
+.map-fav-compare--rows tbody tr.is-excluded > *:not(.map-fav-no-cell) { opacity: .4; }
 /* 규격(화면 크기) 한 줄 */
 .map-list-card .map-card-spec { margin: 0; font-size: 12.5px; font-weight: 600; color: #52647e; }
 /* 상세 '실시간 라이브 상담' — 초록 점만 지도와 동일하게(흰 원 대체), 버튼 크기·높이는 기존 유지 */
@@ -331,9 +384,12 @@
 
 /* 상세페이지 매체명 축소 + 관심 버튼을 메인 리스트 '관심'과 동일 크기(높이24·글자11.5·아이콘13) */
 .map-detail-title-row h2 { font-size: 20px; font-weight: 800; }
-.map-detail-fav { height: 24px; padding: 0 9px 0 7px; font-size: 11.5px; font-weight: 700; }
-.map-detail-fav span { font-size: 11.5px; font-weight: 700; } /* 내부 텍스트가 24px로 따로 지정돼 있어 직접 축소 */
-.map-detail-fav svg { width: 13px; height: 13px; }
+/* 관심 버튼 — 각지게(6px) + 얇고 연한 외곽선 + 더 작게. 지도 목록·상세 공통. */
+.map-card-fav, .map-detail-fav {
+  border: 1px solid #eef1f6; border-radius: 6px; height: 20px; padding: 0 6px 0 5px; gap: 2px; font-weight: 700;
+}
+.map-card-fav span, .map-detail-fav span { font-size: 11px; font-weight: 700; }
+.map-card-fav svg, .map-detail-fav svg { width: 12px; height: 12px; }
 /* 상세페이지 제목 태그(대형 전광판·도산대로 프리미엄) 제거 — 유형은 상세 제원에, "프리미엄"은 마케팅성 */
 .map-detail-view .map-list-tags { display: none; }
 /* 상권 대표 브랜드 칩 글씨 = 매체 소개서(12px)와 동일 크기·톤 */
@@ -348,11 +404,9 @@
 .map-detail-actions button:hover strong { color: #0b3a91; }
 
 /* 하단 연락처(전화·온라인 상담·카톡) 텍스트를 좌측 서비스 버튼 라벨(.gps-svc .top)과 동일하게 통일 — 700 / ink-soft. 실시간 라이브 상담(.primary)은 제외 */
-.map-contact-card a:not(.primary) { font-weight: 700; color: var(--gps-ink-soft); }
+.map-contact-card a:not(.primary) { font-size: 13px; font-weight: 620; color: #475467; } /* 헤더 메뉴와 통일(13/620/#475467) */
 /* 연락처 항목 간격을 서비스 도크·지도 컨트롤과 통일 — 5px */
 .map-contact-card { gap: 5px; }
-/* 지도 컨트롤(지도바↔거리뷰바) 간격 3px→5px: 아래 토글 top 58→60 */
-.map-utility-controls { top: 60px; }
 
 /* 큐레이션 팝업 버튼(실시간 상담·소개서 다운로드)을 상세 '매체 소개서'와 동일한 톤·강조로 — 흰 배경 → 호버 시 연한 블루 */
 .map-curation-live,
@@ -382,8 +436,35 @@
 /* 상세 상단 hero — videoUrl 있으면 동영상 재생, 없으면 사진(폴백). 박스 꽉 채움 */
 .map-detail-video-preview video { width: 100%; height: 100%; object-fit: cover; display: block; background: #0f172a; }
 
-/* 갤러리 스타일(1안, 각짐) — 바깥/타일 모두 각지게(라운딩 없음), 타일은 딱 붙임(여백 0). 조각별 라운딩/검은 여백 제거로 촌스러움 해소 */
-.map-detail-media-hero { border-radius: 0; gap: 0; background: transparent; }
+/* 헤더 backdrop-filter 제거 (지도 페이지 한정) — 효과 0, 비용만 있는 속성이라 걷어낸다.
+   근거: 지도는 y=112 에서 시작하고 스트립은 y=112 에서 끝나 겹치는 구간이 0,
+   문서 높이 = 뷰포트라 페이지 스크롤도 없다 → 헤더 뒤엔 body(#f8fafc) 단색뿐이라
+   16px 로 흐려도 결과가 같다. 반면 backdrop-filter 는 매 프레임 뒤쪽을 합성하며
+   GPU 레이어를 강제하는데, 지도를 드래그·줌하는 페이지에서 이건 공짜가 아니다.
+   덤: 도크를 누렇게 만들었던 게 정확히 이 속성(반투명+blur 가 지도의 노란 도로를 빨아들임)이라,
+   나중에 헤더가 지도 위로 오거나 페이지가 스크롤되게 바뀌면 같은 증상이 재발할 지뢰였다.
+   다른 페이지(media-m-*, about 등)는 헤더가 실제로 스크롤 콘텐츠 위에 떠 있어 유지 —
+   그래서 styles.css 원본을 고치지 않고 지도 전용 오버라이드로만 끈다. */
+.map-global-header { -webkit-backdrop-filter: none; backdrop-filter: none; }
+
+/* 헤더·카테고리 줄 완전 불투명 (지도 페이지 한정) — '영상 위쪽이 누렇게 퍼진다'는 증상 제거.
+   둘 다 반투명이었다: 헤더 98%(2% 통과), 스트립 94%(6% 통과). 뒤가 흰 배경일 땐 티가 안 나지만,
+   뒤로 밝은 것(재생 중인 광고 영상, 지도의 노란 도로)이 지나가는 순간 그 색이 배어 나온다.
+   뷰포트가 낮으면(예: 노트북 1440x720) 문서(734) > 뷰포트라 페이지가 스크롤되고,
+   sticky 헤더(z-index:30) 밑으로 콘텐츠가 지나가므로 이 조건이 실제로 만들어진다.
+   투명도로 얻는 게 없다 — 둘 다 흰색으로 읽히길 의도한 면이다. 그래서 100%로 못 박는다.
+   (도크를 누렇게 만든 것도 같은 원리였다: 반투명이 지도의 노란색을 빨아들임) */
+.map-global-header { background: #fff; }
+.map-category-strip { background: #fff; }
+
+/* 갤러리 스타일(1안, 각짐) — 타일은 딱 붙이고(여백 0) 조각별 라운딩 없음.
+   단 사진 블록의 '아래' 두 모서리만 6px — 목록 카드의 사진쌍(.map-card-photo-pair)과 같은 값.
+   이 페이지의 코너는 2단 위계다: 지도 위에 '떠 있는 상자' = 9px(도크·지도 컨트롤·카테고리 칩·
+   검색칸·회원가입), 그 '안쪽 요소' = 6px(컨트롤 버튼·목록 사진쌍).
+   상세 사진은 떠 있는 상자가 아니라 패널 안의 내용물이고, 성격상 목록 사진과 같은 것이므로 6px.
+   위/좌/우는 패널 가장자리에 붙은 full-bleed 라 각지게 두고 아래만 굴린다.
+   overflow:hidden 이라야 안쪽 타일이 실제로 깎인다. */
+.map-detail-media-hero { border-radius: 0 0 6px 6px; overflow: hidden; gap: 0; background: transparent; }
 .map-detail-media-grid { gap: 0; padding: 0; background: transparent; }
 .map-detail-media-grid figure { border-radius: 0; }
 
@@ -424,7 +505,7 @@
 /* ── 엘리베이터 광고(집계형): 네트워크 카드 + 지역 커버리지 + 지도 집계 버블 ── */
 .map-elev-seg { display: flex; gap: 4px; padding: 4px; margin: 2px 0 12px; background: var(--gps-bg); border: 1px solid var(--gps-line); border-radius: 12px; }
 .map-elev-seg button { flex: 1; padding: 9px 10px; border: 0; border-radius: 9px; background: transparent; color: var(--gps-muted); font-size: 13px; font-weight: 700; cursor: pointer; transition: background .15s, color .15s; }
-.map-elev-seg button.is-active { background: #fff; color: var(--gps-ink); box-shadow: 0 1px 3px rgba(15,23,42,.12); }
+.map-elev-seg button.is-active { background: #eef4ff; color: #0b3a91; box-shadow: inset 0 0 0 1px #b9caea; }
 
 .map-elev-hero { padding: 14px 16px; margin-bottom: 14px; background: var(--gps-accent-wash); border-radius: 12px; }
 .map-elev-hero-stats { display: flex; gap: 18px; flex-wrap: wrap; }
@@ -485,15 +566,20 @@
 .map-elev-pin.is-office { background: #0f9d76; }
 
 /* 엘리베이터 사이트 핀 — 버스 정류장 핀 형태 재사용, 색만 유형별로(아파트=블루, 오피스=그린) */
-.bus-stop-pin.is-elev-apt { background: #1b46c4; }
+.bus-stop-pin.is-elev-apt { background: #0b3a91; }
 .bus-stop-pin.is-elev-office { background: #0f9d76; }
 
-/* ===== 지도 헤더 전체 텍스트 통일 — 14px/800/#344054, 배경 없이 깔끔(호버·활성=색만 진해짐). 필터(지역검색·예산·기간)도 알약 제거하고 동일 텍스트+▼. 회원가입(.join)만 네이비 알약 보존 ===== */
+/* ===== 지도 헤더 전체 텍스트 통일 — 배경 없이 깔끔(호버·활성=색만 진해짐).
+   필터(지역검색·예산·기간)도 알약 제거하고 동일 텍스트+▼.
+   굵기/색: 650 + #344054(회청색) 였는데 이건 '굵고 연한' 최악의 조합이었다
+   — 굵어서 번잡한데 색이 흐려 잘 안 읽힘(두 불만이 같은 원인).
+   Canva(400/#0f1015)·Land-book(500/#151414) 실측처럼 '얇은 글자 + 진한 색'으로 전환:
+   500 + #0f172a → 조용해지면서 오히려 또렷해지고, 브랜드(760)와의 위계도 살아난다. ===== */
 .map-global-nav a,
 .map-global-nav button,
 .map-global-nav .map-header-filter,
 .map-filter-entry,
-.map-global-actions a:not(.join) { color: #344054; font-size: 14px; font-weight: 650; }
+.map-global-actions a:not(.join) { color: #475467; font-size: 13px; font-weight: 620; } /* 카테고리(12/580)보다 한 단계 위 — 주 내비게이션이라 13px·620 */
 .map-global-nav a,
 .map-global-nav button:not(.map-filter-entry),
 .map-global-actions a:not(.join) { min-height: 34px; padding: 0; border: 0; background: transparent; transition: color .15s ease, transform .15s ease; }
@@ -506,7 +592,7 @@
 .map-filter-entry:hover::after, .map-filter-entry:focus::after { border-color: #0b1b3f; }
 
 /* 활성(추천 큐레이션 패널 열림) 강조 제거 — 다른 항목과 동일한 색·굵기. 진해지는 건 호버 때만 */
-.map-global-nav button.is-active:not(.map-filter-entry) { color: #344054; font-weight: 650; }
+.map-global-nav button.is-active:not(.map-filter-entry) { color: #475467; font-weight: 620; }
 .map-global-nav a:hover, .map-global-nav a:focus,
 .map-global-nav button:not(.map-filter-entry):hover, .map-global-nav button:not(.map-filter-entry):focus,
 .map-global-actions a:not(.join):hover, .map-global-actions a:not(.join):focus { background: transparent; color: #0b1b3f; }
@@ -565,13 +651,22 @@
   text-overflow: ellipsis;
 }
 
-/* 상단 카테고리 칩 — 회색 필은 무겁고 원래 아웃라인(#e4e7ec)은 번잡했음 → 흰 배경 + '아주 약한 선'만.
-   호버 때만 선·글자가 살짝 또렷해짐. 활성(네이비 채움)은 base 그대로라 대비는 유지 */
-.map-category-pill:not(.is-active) { border-color: #edf0f5; background: #fff; color: #475467; }
-.map-category-pill:not(.is-active):hover { border-color: #cfdaea; background: #f8fafc; color: #0b3a91; }
+/* 상단 카테고리 칩 — 비활성은 '맨 텍스트'(상자 제거), 활성만 칩(네이비 채움).
+   Canva 서브탭 방식: 7개 중 활성 하나만 배경을 갖고 나머지는 텍스트라 화면의 '상자'가 1개뿐이다.
+   (우리는 7개 전부 테두리 박스여서 지도 위에서 특히 번잡했음. 요소 '개수'가 아니라 '상자 수'가 문제)
+   버튼 좌우 패딩(17px)은 그대로라 항목 간 간격은 유지되고, 호버 때만 연회색 칩이 나타난다. */
+.map-category-pill:not(.is-active) { border-color: transparent; background: transparent; color: #475467; }
+.map-category-pill:not(.is-active):hover { border-color: transparent; background: #e8f0fd; color: #475467; }
 
-/* 카테고리 칩 글자 13→12px — 헤더(14)와 위계 분리, 고고스타트풍 작은 라벨 톤. 굵기·높이·필은 유지 */
+/* 카테고리 칩 글자 12px — 헤더 메뉴(13/700)보다 한 단계 낮춰 위계 분리. */
 .map-category-pill { font-size: 12px; }
+/* 활성 칩 배경(연블루)이 12px 글자에 비해 큼직 → 높이·좌우 여백을 줄여 배경을 텍스트에 붙인다. */
+.map-category-pill { min-height: 32px; padding: 0 12px; }
+/* 카테고리 굵기 통일 — 원래 비활성 620 / 활성 700 로 어긋났다. 둘 다 580 으로 맞춘다
+   (500 은 얇아 보였고, 이전 620 보다는 가볍게). 활성은 연블루 배경 + 네이비 글자로 이미 구분되므로
+   굵기로 더 강조하지 않는다 — 활성/비활성 굵기를 같게 두는 게 핵심. */
+.map-category-pill,
+.map-category-pill.is-active { font-weight: 580; }
 
 /* 좌측 검색칸을 카테고리 칩과 통일 — 높이 42→38, 글자 13→12(칩과 동일) */
 .map-category-search { height: 38px; }
@@ -588,33 +683,50 @@
 .map-cat-scrollbar:hover .map-cat-scrollbar-thumb { background: rgba(100, 116, 139, 0.5); }
 
 /* 상단 pill(999px)이 촌스럽고, 8px는 너무 딱딱 → 고고스타트풍 '부드러운 사각' 12px로: 카테고리 칩·검색칸·회원가입 버튼 */
-.map-category-pill { border-radius: 12px; }
-.map-category-search { border-radius: 12px; }
-.map-category-search button { border-radius: 0 12px 12px 0; }
-.map-global-actions .join { border-radius: 12px; }
+.map-category-pill { border-radius: 6px; }
+.map-category-search { border-radius: 9px; }
+.map-category-search button { border-radius: 0 9px 9px 0; }
+.map-global-actions .join { border-radius: 9px; }
 
-/* 오른쪽 도크·토글·상담 버튼 코너도 상단(12px)과 통일 — 내부 세그먼트 버튼만 8px로 한 단계 낮춰 위계 */
-.map-mode-toggle, .map-utility-controls { border-radius: 12px; }
-.map-mode-toggle button, .map-utility-controls button { border-radius: 8px; }
-.gps-svc { border-radius: 12px; }
-.map-contact-card { border-radius: 14px; }
-.map-contact-card a.primary { border-radius: 12px; }
+/* 코너 2단 위계 — 지도 위에 '떠 있는 상자' = 9px, 그 '안쪽 요소' = 6px.
+   9px: 지도 컨트롤 상자·도크 카드·연락처 카드·카테고리 칩·검색칸·회원가입
+   6px: 컨트롤 세그먼트 버튼·목록 사진쌍·상세 사진 블록
+   (연락처 카드는 11px 로 혼자 떠 있었다 — 코너값을 9로 정리할 때 빠진 잔재라 여기서 맞춤) */
+.map-mode-toggle { border-radius: 9px; }
+.map-mode-toggle button { border-radius: 6px; }
+.gps-svc { border-radius: 9px; }
+.map-contact-card { border-radius: 9px; }
+/* 연락처 카드 그림자 조임 — 원본(styles.css) 0 16px 42px 는 58px 아래로 번져 도크와 함께
+   뿌옇게 퍼졌다. 도크·지도 컨트롤과 같은 톤(블러 8~10)으로 지면에 붙인다. */
+.map-contact-card { box-shadow: 0 3px 10px rgba(15, 23, 42, .14); }
+
+/* 연락처 아이콘(전화·펜·카톡) — 네이비 스트로크 → 라벨과 같은 기본 글자색.
+   도크 픽토그램과 같은 방침: 파란 아이콘은 튀니 라벨과 한 톤으로 두고, 강조는 CTA 하나만.
+   .primary 는 svg 가 없어 안 걸린다(흰 점은 ::before 라 그대로). */
+.map-contact-card a svg { stroke: #0f172a; }
+/* hover — 외곽선·그림자 없이 움직임만. 행은 가로 링크라 오른쪽으로 살짝 밀고(translateX),
+   CTA(.primary)는 버튼이라 살짝 들린다(translateY). 목록·도크와 같은 '움직임만' 방침. */
+.map-contact-card a { transition: transform .16s ease; }
+.map-contact-card a:not(.primary):hover { transform: translateX(3px); }
+.map-contact-card a.primary:hover { transform: translateY(-2px); }
+.map-contact-card a.primary { border-radius: 6px; }
 
 /* 엘리베이터 단지별 카드(hello-ooh식) — 지도 화면과 연동되는 단지 리스트 */
-.map-elev-complex-list { display: flex; flex-direction: column; gap: 9px; }
-.map-elev-complex { position: relative; padding: 12px 14px; border: 1px solid var(--gps-line); border-radius: 12px; background: #fff; transition: border-color .14s, box-shadow .14s; }
-.map-elev-complex:hover { border-color: var(--gps-accent-soft); box-shadow: 0 3px 12px rgba(27,70,196,.09); }
-.map-elev-complex.is-active { border-color: var(--gps-accent); box-shadow: 0 0 0 2px var(--gps-accent-wash); }
+/* 버스 정류장 카드와 톤 통일 — 투명 배경 · 하단 실선만 · 라운드 제거 */
+.map-elev-complex-list { display: flex; flex-direction: column; gap: 0; }
+.map-elev-complex { position: relative; padding: 12px 6px; border: 0; border-bottom: 1px solid #a8c0ee; border-radius: 0; background: transparent; transition: background .14s; }
+.map-elev-complex:hover { background: rgba(11,58,145,.04); }
+.map-elev-complex.is-active { background: rgba(11,58,145,.07); }
 .map-elev-complex > button { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: transparent; cursor: pointer; z-index: 1; }
 .map-elev-complex-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.map-elev-complex-head h3 { margin: 0; font-size: 14.5px; font-weight: 800; color: var(--gps-ink); line-height: 1.3; }
-.map-elev-op-tag { position: relative; z-index: 2; flex: none; font-size: 10.5px; font-weight: 800; color: #1b46c4; background: #eaf0ff; padding: 3px 8px; border-radius: 999px; white-space: nowrap; }
+.map-elev-complex-head h3 { margin: 0; font-size: 16px; font-weight: 700; color: #111827; line-height: 1.3; }
+.map-elev-op-tag { position: relative; z-index: 2; flex: none; font-size: 10.5px; font-weight: 800; color: #0b3a91; background: #eaf0ff; padding: 3px 8px; border-radius: 999px; white-space: nowrap; }
 .map-elev-op-tag.is-office { color: #0a6b50; background: #e2f5ee; }
-.map-elev-complex-addr { margin: 4px 0 0; font-size: 12px; font-weight: 600; color: var(--gps-muted); line-height: 1.4; }
+.map-elev-complex-addr { margin: 4px 0 0; font-size: 10.5px; font-weight: 560; color: #64748b; line-height: 1.5; }
 .map-elev-complex-facts { display: flex; flex-wrap: wrap; gap: 5px 8px; margin: 8px 0; }
 .map-elev-complex-facts span { font-size: 11.5px; font-weight: 700; color: var(--gps-ink-soft); background: var(--gps-bg); padding: 3px 8px; border-radius: 6px; }
-.map-elev-complex-foot { display: flex; align-items: center; justify-content: space-between; gap: 8px; padding-top: 8px; border-top: 1px solid var(--gps-line-soft); }
-.map-elev-complex-price { font-size: 13px; font-weight: 800; color: var(--gps-accent-ink); }
+.map-elev-complex-foot { display: flex; align-items: center; justify-content: flex-end; gap: 8px; padding-top: 8px; border-top: 1px solid var(--gps-line-soft); }
+.map-elev-complex-price { font-size: 13px; font-weight: 700; color: #172033; }
 .map-elev-complex-cta { position: relative; z-index: 2; font-size: 11.5px; font-weight: 700; color: var(--gps-muted); }
 .bus-stop-pin.is-elev-apt.is-active, .bus-stop-pin.is-elev-office.is-active { background: #e53935 !important; }
 
@@ -646,3 +758,321 @@ body:has(.map-workspace-page) { --map-rail-gutter: 16px; }
 /* 사진 비율은 원래대로 1.24/1(가로형) 유지 — 세로로 늘리면 가로형 원본이 좌우로 더 잘리고 카드도 길어져 스캔 밀도가 떨어짐.
    대신 위 여백 축소로 폭이 186→194px 넓어진 만큼 높이도 150→156px로 자연스럽게 커짐 */
 .map-card-photo-pair img { aspect-ratio: 1.24 / 1; height: auto; }
+
+/* 목록 스크롤 시 맨 위 카드 사진이 중간에 잘리지 않도록 — 카드 단위로 맞물리게(snap).
+   mandatory는 스크롤이 튀어 답답하므로 proximity(가까울 때만 스냅). scroll-margin은 리스트 상단 패딩(16px) 보정 */
+.map-list-view { scroll-snap-type: y proximity; }
+.map-list-card { scroll-snap-align: start; scroll-margin-top: 16px; }
+
+/* 지도 사진 핀 — 링·화살표가 전부 흰색이라 밝은 지도 배경에서 사라지던 문제.
+   파란 틴트는 '선택된 핀(네이비)'과 의미가 겹치므로 색은 중립으로 두고,
+   아주 연한 회색 헤어라인 + 은은한 그림자로 분리감을 만든다(밝은/어두운 배경 모두에서 통함). */
+.media-map-pin-image {
+  box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.13), 0 2px 6px rgba(15, 23, 42, 0.28);
+}
+.media-map-pin::after {
+  border-right-color: rgba(15, 23, 42, 0.13);
+  border-bottom-color: rgba(15, 23, 42, 0.13);
+  box-shadow: 2px 2px 4px rgba(15, 23, 42, 0.16);
+}
+/* 선택 핀은 기존 네이비 강조 유지 + 그림자만 살짝 */
+.media-map-pin.is-active .media-map-pin-image {
+  box-shadow: 0 0 0 3px #0b3a91, 0 3px 9px rgba(11, 58, 145, 0.38);
+}
+.media-map-pin.is-active::after {
+  border-right-color: #0b3a91;
+  border-bottom-color: #0b3a91;
+}
+
+/* 도크 배지(관심매체 비교 개수) 색을 '실시간 라이브 상담' CTA와 동일한 네이비로 통일
+   — 기존 밝은 파랑(#3b74f2)이 혼자 튀어 사이트 기본 네이비(#0b3a91)와 어긋났음 */
+.gps-svc .bn { background: #0b3a91; }
+
+/* ================= 오버레이 패널 모델 (데스크톱) =================
+   지도가 항상 전체 폭을 차지하고, 목록·상세 패널이 그 '위에 떠서' 동시에 보인다.
+   기존 그리드 컬럼 방식은 패널이 늘어난 만큼 지도가 줄어(1280 화면에서 지도 420px)
+   지도 중심 서비스에 불리했다. 모바일(≤700px)은 화면이 좁아 기존 목록↔상세 전환 유지. */
+@media (min-width: 701px) {
+  .map-workspace { grid-template-columns: minmax(0, 1fr); position: relative; }
+
+  /* 목록 패널 — 지도 위에 오버레이
+     NOTE: transform/left 에 transition 을 걸면 일부 환경에서 값이 시작 상태에 멈춰
+     접기·이동 자체가 동작하지 않는다(grid-template-columns 도 동일 증상). 즉시 전환으로 둔다. */
+  .map-sidebar {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: var(--map-left-rail); z-index: 5;
+    overflow: visible; /* 상세 패널이 옆으로 나올 수 있게 */
+  }
+
+  /* 상세 패널 — 기본은 목록 자리(x=0)에 표시해 지도 보이는 영역을 최대로 확보.
+     ☰(펼치기)를 누르면 목록 옆(left:100%)으로 나와 둘이 나란히 보인다. */
+  .map-detail-view {
+    position: absolute; left: 0; top: 0; bottom: 0;
+    width: var(--map-left-rail);
+    border-right: 1px solid #e4e7ec;
+    z-index: 5;
+  }
+  .map-workspace-page.is-panels-expanded .map-detail-view { left: 100%; }
+
+  /* 패널 오른쪽 그림자 — box-shadow 를 걷어내고 오른쪽 가장자리 그라데이션으로 대체.
+     왜: `box-shadow: 8px 0 24px` 는 세로 오프셋이 0이라 블러(24px)의 절반이 패널 '위'로도
+     번진다 → 패널 top(112)에서 약 12px 위, 즉 검색칸 바로 아래(y≈100~112)에 회색이 퍼졌다.
+     사이드바는 z-index:5 라 흰 카테고리 줄 '위에' 그려져서 그게 그대로 보였다.
+     ('영상 위쪽이 퍼진다'의 정체 — 배경색·투명도·blur 가 아니라 이 그림자였다.
+      상세를 닫아도 남았던 건 .map-sidebar 자체에 걸려 있었기 때문.)
+     그림자의 목적은 '패널과 지도를 오른쪽에서 가르는 것' 하나뿐이므로,
+     세로로 전혀 번지지 않는 가로 그라데이션으로 같은 일을 시킨다. */
+  .map-sidebar,
+  .map-detail-view { box-shadow: none; }
+  .map-sidebar::after,
+  .map-workspace-page.is-panels-expanded .map-detail-view::after {
+    content: "";
+    position: absolute; top: 0; bottom: 0; left: 100%;
+    width: 14px;
+    pointer-events: none;
+    background: linear-gradient(to right, rgba(15, 23, 42, .06), rgba(15, 23, 42, 0));
+  }
+
+  /* 접기 — 열린 패널 전체를 왼쪽으로 밀어냄(순수 지도 전체 화면).
+     상세가 열려 있으면 목록+상세 2칸(-200%)만큼 밀어야 상세가 화면에 남지 않는다. */
+  .map-workspace-page.is-rail-collapsed .map-sidebar { transform: translateX(-100%); }
+  .map-workspace-page.is-rail-collapsed.is-detail-open.is-panels-expanded .map-sidebar { transform: translateX(-200%); }
+
+  /* 열려 있는 오버레이 패널들의 총 폭 — 토글 위치 기준.
+     (is-detail-open 뒤에 is-rail-collapsed 를 둬야 둘 다 걸렸을 때 0 이 이긴다) */
+  .map-workspace-page { --gp-panels-w: var(--map-left-rail); --gp-list-w: var(--map-left-rail); }
+  .map-workspace-page.is-detail-open.is-panels-expanded { --gp-panels-w: calc(var(--map-left-rail) * 2); }
+  .map-workspace-page.is-rail-collapsed { --gp-panels-w: 0px; --gp-list-w: 0px; }
+
+  /* 토글은 열린 패널의 오른쪽 경계로 이동.
+     NOTE: 아래 기본 .gp-rail-toggle 규칙이 파일에서 뒤에 오므로(같은 구체성이면 뒤가 이김)
+     .map-workspace-page 를 붙여 구체성을 올려야 left 값이 적용된다. */
+  .map-workspace-page .gp-rail-toggle { left: var(--gp-panels-w); }
+
+  /* 지도 위 좌측 팝업들(큐레이션·예산·지역)은 예전엔 지도 시작점(x=430) 기준이라 목록 오른쪽에 떴다.
+     오버레이 모델에선 지도가 x=0부터라 그대로 두면 목록 뒤에 깔리거나(큐레이션 z-index:3)
+     목록을 덮는다(예산·지역 z-index:10). 그래서 left·width 를 보정하되,
+     기준은 '목록 폭'(--gp-list-w)만 쓴다. 상세 폭까지 더하면 좁은 화면에서 팝업이 27px로 찌부러짐.
+     상세가 열려 있으면 팝업이 그 위를 덮고, 팝업을 닫으면 상세가 다시 드러난다(상태 유실 없음).
+     그래서 큐레이션은 z-index 를 사이드바(5)보다 위로 올린다(원래 3이라 상세 뒤에 깔림). */
+  .map-workspace-page .map-curation-panel,
+  .map-workspace-page .map-cost-filter-panel,
+  .map-workspace-page .map-region-panel { left: calc(var(--gp-list-w) + 18px); }
+  .map-workspace-page .map-curation-panel { z-index: 6; width: min(660px, calc(100% - var(--gp-list-w) - 36px)); }
+  .map-workspace-page .map-cost-filter-panel { width: min(350px, calc(100% - var(--gp-list-w) - 36px)); }
+  .map-workspace-page .map-region-panel { width: min(420px, calc(100% - var(--gp-list-w) - 36px)); }
+}
+
+/* 경계에 붙는 탭 버튼 */
+.gp-rail-toggle {
+  position: absolute; left: 0; top: 50%; transform: translateY(-50%);
+  z-index: 6; width: 22px; height: 48px; padding: 0;
+  display: grid; place-items: center; cursor: pointer;
+  /* 22px 폭에 10px 라운딩은 비율상 과해 콩알처럼 뭉툭해 보였음 → 각진 네모 */
+  border: 1px solid #e4e7ec; border-left: 0; border-radius: 0;
+  background: #fff; box-shadow: 2px 0 8px rgba(15, 23, 42, .10);
+  transition: background .15s ease;
+}
+.gp-rail-toggle:hover { background: #f8fafc; }
+.gp-rail-toggle:hover .ic { border-right-color: #0b3a91; border-left-color: #0b3a91; }
+/* 펼쳐진 상태: ◀ (접기) */
+.gp-rail-toggle .ic {
+  width: 0; height: 0; border-style: solid;
+  border-width: 5px 6px 5px 0; border-color: transparent #64748b transparent transparent;
+}
+/* 넓힐 수 있는 상태: ▶ (map-rail-toggle.js 가 is-widen 을 붙임) */
+.gp-rail-toggle.is-widen .ic {
+  border-width: 5px 0 5px 6px; border-color: transparent transparent transparent #64748b;
+}
+
+
+/* 헤더 우측 끝(회원가입)을 우측 플로팅 열(도크·지도토글·연락처 카드 = right:16px)과 같은 라인에 맞춤.
+   기존 clamp(28px,4vw,56px) 는 화면폭에 따라 28~56px 로 흔들려 우측 세로 라인이 회원가입에서만 깨졌다. */
+.map-global-actions { padding-right: 16px; }
+
+/* 회원가입 = 연그레이 아웃라인 — 네이비 채움이 우하단 '실시간 라이브 상담'(같은 네이비)과 경쟁했다.
+   1순위 행동은 상담이므로 네이비 채움은 상담에만 남기고 회원가입은 한 단계 낮춘다.
+   테두리는 카테고리 칩(흰 배경 + #edf0f5 헤어라인)보다 뚜렷한 그레이로 잡아, 칩과 같은 종류로
+   읽히지 않게 한다. 호버 때만 네이비로 살아나 액션임을 알린다.
+   위계: 로그인(텍스트) < 회원가입(그레이 아웃라인) < 실시간 라이브 상담(네이비 채움) */
+.map-global-actions .join {
+  background: #fff;
+  border: 1px solid #cbd2dd;
+  color: #0f172a;
+  box-shadow: none;
+}
+.map-global-actions .join:hover { border-color: #0b3a91; color: #0b3a91; background: #fff; }
+
+/* 헤더를 동작 성격으로 갈랐다 — 좌측 nav = 이 화면에서 패널이 열리는 것(추천·지역·예산),
+   우측 actions = 다른 페이지로 가는 것. 생김새가 같은데 결과가 달라 예측이 안 되던 문제.
+   그래서 광고집행사례·광고 인사이트를 nav → actions 로 옮겼다.
+   단 nav 는 760px 이하에서 display:none 이라 두 링크도 모바일에선 원래 안 보였는데,
+   actions 로 옮기면 갑자기 나타나 6개가 nowrap 한 줄에 몰려 넘친다.
+   → 모바일 동작은 이전과 동일하게 유지(콘텐츠 링크는 데스크톱에서만).
+   선택자에 a 를 붙인 이유: 위쪽 `.map-global-actions a:not(.join){display:inline-flex}` 가
+   :not(.join) 때문에 (0,2,1) 이라, 클래스만 쓴 (0,2,0) 규칙은 명시도에서 져서 안 먹는다. */
+@media (max-width: 760px) {
+  .map-global-actions a.map-nav-media-link { display: none; }
+}
+
+/* 도크 아이콘 — 이모지에서 단색 SVG 라인으로 교체(map-services.js).
+   색은 라벨(.gps-svc .top = --gps-ink-soft)과 같은 기본 글자색으로. 네이비였으나 파란 아이콘이
+   지도 위에서 튀어, 아이콘은 라벨과 한 덩어리로 조용히 두고 강조는 CTA 하나만 남긴다. */
+.gps-svc .ic { color: var(--gps-ink-soft); }
+.gps-svc .ic svg { width: 15px; height: 15px; display: block; }
+
+/* 도크 버튼은 97% 불투명 유지(=base 값). 토글과 재질을 맞추려 92%+blur 로 내려봤으나,
+   지도의 노란 도로·초록 공원 색을 blur 가 빨아들여 흰 카드가 누렇게 번져 더 지저분했다.
+   지도 위 '컨트롤'은 배경색을 통제할 수 없으므로 거의 불투명한 흰색이 옳다. */
+
+/* 도크 아이콘 칩 배경 — 연한 블루(#eaf0ff)는 이미 색으로 복잡한 지도 위에서 파란 덩어리 6개로 경쟁했다.
+   사이트에서 쓰는 연회색(#f2f4f7)으로 중립화. 아이콘 자체는 네이비라 식별성은 유지. */
+.gps-svc .ic { background: #f2f4f7; }
+
+/* 관심매체가 많아지면 스크롤 시 열 제목이 사라져 무슨 값인지 알 수 없다 → 제목행 고정.
+   NOTE: 세로 스크롤을 .map-fav-list 가 갖고 있으면 표 안의 sticky top 이 동작하지 않는다
+   (.map-fav-compare 가 overflow-x:auto 라 자체 스크롤 컨테이너가 되어 기준이 갈림).
+   그래서 가로·세로 스크롤을 표 하나(.map-fav-compare)로 모아 기준을 통일한다.
+   또한 목록은 flex 안에서 '줄어들 수 있어야' 한다(min-height:0). 이게 없으면 목록이 내용만큼 자라
+   시트(flex column + overflow:hidden) 밖으로 푸터(예상 합계·다운로드·상담신청)가 밀려나 잘린다. */
+.map-fav-list { overflow: hidden; min-height: 0; }
+.map-fav-compare { overflow: auto; max-height: 100%; }
+.map-fav-compare--rows thead th { position: sticky; top: 0; z-index: 3; background: #fff; }
+/* 구분·매체 제목은 세로+가로 양쪽으로 고정되므로 교차점이라 더 위로 */
+.map-fav-compare--rows thead th.map-fav-no-h,
+.map-fav-compare--rows thead th.map-fav-compare-corner { z-index: 4; }
+
+/* 숫자 열(비용·일평균 유동·지하철·버스)은 값·제목 모두 우측 정렬 —
+   원단위로 바뀌면서 자릿수가 길어졌는데, 우측 정렬해야 자릿수가 맞아떨어져 크기 비교가 된다.
+   (비용은 is-price 라 그동안 가운데 정렬이었음) */
+.map-fav-compare--rows tbody td.is-price,
+.map-fav-compare--rows tbody td.is-numl,
+.map-fav-compare--rows thead th.is-price,
+.map-fav-compare--rows thead th.is-numl { text-align: right; }
+
+/* 활성 카테고리 칩 — 연블루 채움(#eef4ff) + 네이비 글자.
+   원래 네이비 채움(+글로우)이었던 걸 이 값으로 낮췄다. 근거는 '네이비 채움은 진짜 CTA
+   (실시간 라이브 상담) 하나만' + 지도 위 진한 덩어리 제거.
+   2026-07-17 에 네이비로 되돌려 화면으로 확인해봤으나, 연하늘색 쪽이 낫다는 판단으로 재복귀.
+   → 이 값이 화면 검증을 거친 결론이다. 다시 네이비로 올리자는 제안은 이미 한 번 기각됐다. */
+.map-category-pill.is-active {
+  background: #e8f0fd;   /* 선택된 칩 — 지도 위 연한 블루 계열의 연한 하늘색 배경(hover 와 동일, 클릭 시 유지) */
+  border-color: transparent;
+  color: #475467;        /* 텍스트는 파란색으로 안 바꾼다 — 기본 회색 유지 */
+  box-shadow: none;
+}
+
+/* 지도 뷰 컨트롤 활성 — 도크 픽토그램과 같은 회색(#f2f4f7) 채움 + 네이비 글자.
+   위계: 카테고리 활성 = 네이비(무엇을 볼지, 주요 결정) > 지도 컨트롤 활성 = 회색(어떻게 볼지, 보조 chrome).
+   같은 '선택됨'이라도 무게가 달라야 해서 색을 나눈다.
+
+   hover 의 채움을 반드시 같이 걷어내야 한다:
+   base 의 hover 는 rgba(11,58,145,.06) → 흰 위 합성 rgb(240,243,248) 인데,
+   활성 #f2f4f7 = rgb(242,244,247) 과 차이가 2/1/1 이라 사실상 같은 색이다.
+   그대로 두면 비활성 버튼에 마우스만 올려도 활성과 구별되지 않는다.
+   → hover 는 채움 없이 글자색만 바꾼다. 규칙이 '채움 = 선택됨' 하나로 단순해진다.
+
+   NOTE: 마크업/구조는 건드리지 않음 — 이 컨트롤은 라이브에 이미 구현돼 있어 DOM 을 바꾸면 그쪽과 어긋난다. */
+.map-view-controls .map-mode-toggle button.is-active,
+.map-view-controls .map-utility-controls button[aria-pressed="true"] {
+  background: #f2f4f7;   /* 연회색 채움만으로 '선택됨'을 표시 */
+  color: #475569;        /* 기본 글자색(비활성과 동일) 유지 — 색·굵기 안 바꾼다.
+                            이 컨트롤은 보조 chrome 이라 최대한 조용해야 한다.
+                            NOTE: styles.css 의 .map-mode-toggle button.is-active{color:#fff} 를
+                            덮으려면 color 를 반드시 명시해야 한다(안 쓰면 흰 글자가 남음). */
+}
+.map-view-controls .map-mode-toggle button:not(.is-active):hover,
+.map-view-controls .map-utility-controls button[aria-pressed="false"]:hover {
+  background: rgba(15, 23, 42, .04);  /* 활성(#f2f4f7)보다 옅게 — 구별 유지 */
+  color: #475569;                     /* hover 에서도 글자색 안 바꿈 */
+}
+
+/* 지도 보기 컨트롤 — 상자 2개(39+7+39=85px)를 하나(39px)로 합쳐 우측 벽을 46px 덜어낸다.
+   base 의 두 div 는 각자 absolute 상자였다. 여기서 껍데기를 벗겨 정적 흐름에 넣고,
+   래퍼가 유일한 상자가 된다. 안쪽 선택자는 그대로라 라이브 JS 훅은 안 깨진다. */
+.map-view-controls {
+  position: absolute; top: 16px; right: 16px; z-index: 4;
+  display: flex; align-items: stretch; width: 210px; padding: 3px;
+  border: 1px solid rgba(226, 232, 240, .92); border-radius: 9px;
+  background: rgba(255, 255, 255, .92); box-shadow: 0 2px 8px rgba(15, 23, 42, .12);
+}
+.map-view-controls .map-mode-toggle,
+.map-view-controls .map-utility-controls {
+  position: static; top: auto; right: auto; z-index: auto;
+  width: auto; padding: 0; gap: 2px;
+  border: 0; border-radius: 0; background: none; box-shadow: none;
+}
+.map-view-controls .map-mode-toggle { flex: 1 1 auto; grid-template-columns: 1fr 1fr; }
+/* 구분선 — '왼쪽은 택일, 오른쪽은 on/off'를 말해주는 유일한 신호. 이게 없으면 3분할 택일로 읽힌다. */
+.map-view-controls .map-utility-controls {
+  flex: 0 0 auto; grid-template-columns: 1fr;
+  margin-left: 5px; padding-left: 5px; border-left: 1px solid #e4e7ec;
+}
+.map-view-controls .map-utility-controls button { white-space: nowrap; padding: 0 8px; }
+.map-view-controls button { border-radius: 6px; }
+/* 활성/켜짐 색은 위(#f2f4f7 회색 채움)에서 한 곳으로 정의한다 — 여기 있던 #eef4ff 중복 선언은 제거.
+   같은 specificity 라 파일 뒤쪽인 이게 이겨서 위 규칙을 되돌려놓고 있었다. */
+
+/* 패키지 전용 상품 — 개별 가격 대신 패키지 표기 */
+.map-elev-complex-price.is-package { color: var(--gps-muted); font-weight: 700; }
+
+/* 2차 — 상품 필터 버튼(규모 숫자 노출) */
+.map-elev-prods { display: flex; flex-wrap: wrap; gap: 6px; margin: 10px 0; }
+.map-elev-prod { padding: 7px 11px; border: 1px solid var(--gps-line); border-radius: 999px; background: #fff; color: var(--gps-ink-soft); font-size: 12px; font-weight: 700; cursor: pointer; transition: border-color .14s, background .14s, color .14s; }
+.map-elev-prod b { font-weight: 800; color: var(--gps-muted); margin-left: 2px; }
+.map-elev-prod:hover { border-color: var(--gps-accent-soft); }
+.map-elev-prod.is-active { background: #0b3a91; border-color: #0b3a91; color: #fff; }
+.map-elev-prod.is-active b { color: #fff; opacity: .85; }
+
+/* 3 — 상품 요약 줄(버튼 아래 고정) */
+.map-elev-sum { padding: 11px 13px; margin-bottom: 10px; background: var(--gps-accent-wash); border-radius: 10px; }
+.map-elev-sum-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
+.map-elev-sum-head strong { font-size: 14px; font-weight: 800; color: #0b3a91; }
+.map-elev-sum-link { border: 0; background: transparent; padding: 0; font-size: 11.5px; font-weight: 800; color: #0b3a91; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.map-elev-sum-scale { margin: 4px 0 0; font-size: 12.5px; font-weight: 700; color: var(--gps-ink-soft); }
+.map-elev-sum-price { margin: 2px 0 0; font-size: 12px; font-weight: 700; color: #0b3a91; }
+.map-elev-sum-warn { margin: 4px 0 0; font-size: 11.5px; font-weight: 800; color: #9a5b00; background: #fff4e2; padding: 5px 8px; border-radius: 6px; }
+
+/* 3차 — 타운보드 전용 토글(요약 줄 내부) */
+.map-elev-tier { display: flex; gap: 6px; margin-top: 8px; }
+.map-elev-tier-btn { flex: 1; padding: 6px 8px; border: 1px solid #c9d8f7; border-radius: 7px; background: #fff; color: var(--gps-ink-soft); font-size: 11.5px; font-weight: 700; cursor: pointer; }
+.map-elev-tier-btn b { font-weight: 800; color: var(--gps-muted); margin-left: 3px; }
+.map-elev-tier-btn.is-active { background: #0b3a91; border-color: #0b3a91; color: #fff; }
+.map-elev-tier-btn.is-active b { color: #fff; opacity: .85; }
+
+/* 4 — 카드 계산식 */
+.map-elev-formula { margin: 7px 0 0; font-size: 13px; font-weight: 800; color: var(--gps-ink); letter-spacing: -.01em; }
+.map-elev-formula.is-package { font-weight: 700; color: var(--gps-muted); }
+p.map-elev-broadcast { margin: 3px 0 0; font-size: 11px; font-weight: 600; color: var(--gps-muted); }
+.map-elev-complex-cta { white-space: nowrap; }
+
+/* 상세 — 지역 등급별 단가표 */
+.map-elev-price-table { width: 100%; border-collapse: collapse; margin-top: 6px; }
+.map-elev-price-table th, .map-elev-price-table td { padding: 7px 6px; border-bottom: 1px solid var(--gps-line-soft); font-size: 12px; text-align: left; }
+.map-elev-price-table th { width: 76px; font-weight: 800; color: #0b3a91; }
+.map-elev-price-table td:first-of-type { width: 68px; font-weight: 700; color: var(--gps-ink-soft); }
+.map-elev-price-table td:last-child { color: var(--gps-muted); font-weight: 600; }
+
+/* 관심버튼을 브랜드 태그 옆(제목 줄 우측)에 배치 */
+.map-elev-head-right { display: flex; align-items: center; gap: 6px; flex: none; }
+.map-elev-complex-head h3 { flex: 1; min-width: 0; }
+
+/* 매체 카드 톤 정비 — 세대·년·평형 한 줄(연한 회색) + footer 액션만 파랑 */
+.map-elev-complex-meta { display: flex; align-items: baseline; justify-content: space-between; gap: 8px; margin: 3px 0 0; font-size: 10.5px; font-weight: 560; color: #64748b; line-height: 1.5; }
+.map-elev-formula { color: #172033; }
+.map-elev-complex-foot { margin-top: 7px; }
+.map-elev-complex-cta { color: var(--gps-muted); }              /* "VAT 별도" 등 주석은 회색 */
+.map-elev-complex-cta.is-action { color: #0b3a91; font-weight: 800; }  /* "패키지 →" 등 액션만 파랑 */
+
+/* 카드 재설계 — 브랜드 회색 배지 · 설치위치 · 계산식+비용 한 줄 · 상세보기 링크(파랑) */
+.map-elev-vendor { position: relative; z-index: 2; flex: none; font-size: 10.5px; font-weight: 700; color: #64748b; background: #eef1f5; padding: 2px 7px; border-radius: 5px; white-space: nowrap; }
+.map-elev-install { flex: none; color: #8892a4; }
+.map-elev-calc { margin: 5px 0 0; font-size: 12px; font-weight: 560; color: #64748b; line-height: 1.45; }
+.map-elev-calc b { font-weight: 800; color: #172033; }
+.map-elev-calc small { font-size: 10px; font-weight: 560; color: #94a3b8; }
+.map-elev-calc.is-package { color: #64748b; }
+.map-elev-detail-link { position: relative; z-index: 2; font-size: 12px; font-weight: 800; color: #0b3a91; text-decoration: none; }
+.map-elev-detail-link:hover { text-decoration: underline; text-underline-offset: 2px; }
+/* 좌측 상단 패키지 안내 버튼 */
+.map-elev-pkg-link { display: flex; align-items: center; justify-content: space-between; margin: 0 0 10px; padding: 10px 12px; border: 1px solid #b9caea; border-radius: 10px; background: #f5f9ff; color: #0b3a91; font-size: 13px; font-weight: 700; text-decoration: none; }
+.map-elev-pkg-link:hover { background: #eef4ff; }
