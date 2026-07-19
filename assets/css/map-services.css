@@ -600,8 +600,8 @@
 .map-global-nav button:not(.map-filter-entry),
 .map-global-actions a:not(.join) { min-height: 34px; padding: 0; border: 0; background: transparent; transition: color .15s ease, transform .15s ease; }
 .map-global-actions a:not(.join) { display: inline-flex; align-items: center; }
-/* 헤더 nav 첫 글자 '추'를 아래 카테고리 '옥'(탭 안쪽 패딩 17px)과 좌측 정렬 */
-.map-global-nav { padding-left: 17px; }
+/* 헤더 nav 첫 글자 '추'를 아래 카테고리 '옥외광고 전체'의 '옥'과 좌측 정렬 */
+.map-global-nav { padding-left: 12px; }
 
 /* 필터(지역검색·예산·기간 검색) 화살표 — 작고 얇은 무채색 회색(은은), 호버 시 진해짐 */
 .map-filter-entry::after { width: 5px; height: 5px; margin-left: 6px; border-right: 1.5px solid #9aa4b2; border-bottom: 1.5px solid #9aa4b2; transform: translateY(-1px) rotate(45deg); transition: border-color .15s ease; }
@@ -882,10 +882,9 @@ body:has(.map-workspace-page) { --map-rail-gutter: 16px; }
      기준은 '목록 폭'(--gp-list-w)만 쓴다. 상세 폭까지 더하면 좁은 화면에서 팝업이 27px로 찌부러짐.
      상세가 열려 있으면 팝업이 그 위를 덮고, 팝업을 닫으면 상세가 다시 드러난다(상태 유실 없음).
      그래서 큐레이션은 z-index 를 사이드바(5)보다 위로 올린다(원래 3이라 상세 뒤에 깔림). */
+  .map-workspace-page .map-curation-panel,
   .map-workspace-page .map-cost-filter-panel,
   .map-workspace-page .map-region-panel { left: calc(var(--gp-list-w) + 18px); }
-  /* 큐레이션 팝업만 인셋 없이 목록 우측 edge(=카테고리 칩 좌측)에 맞춰 텍스트 열 정렬 */
-  .map-workspace-page .map-curation-panel { left: var(--gp-list-w); }
   .map-workspace-page .map-curation-panel { z-index: 6; width: min(660px, calc(100% - var(--gp-list-w) - 36px)); }
   .map-workspace-page .map-cost-filter-panel { width: min(350px, calc(100% - var(--gp-list-w) - 36px)); }
   .map-workspace-page .map-region-panel { width: min(420px, calc(100% - var(--gp-list-w) - 36px)); }
