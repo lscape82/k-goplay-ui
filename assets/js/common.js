@@ -36,14 +36,12 @@
     featuredAreaSlugs: ["dosan-daero", "samseong-coex", "gangnam-daero"],
     homeCategoryOrder: ["large_billboard", "package", "shopping_mall_did", "subway", "bus", "daily_touchpoint"],
     navItems: [
-      { href: "media-catalog.html", label: "옥외광고 매체" },
-      { href: "map.html", label: "지도 보기" },
-      { href: "areas.html", label: "지역 보기" },
-      { href: "insights.html", label: "옥외광고 가이드" },
-      { href: "geocode.html", label: "주소 변환" },
-      { href: "estimate.html", label: "견적 문의" },
-      { href: "creative-request.html", label: "소재 제작 의뢰" },
-      { href: "media-management.html", label: "매체 관리" },
+      { href: "media-catalog.html", label: "옥외광고 목록" },
+      { href: "map.html", label: "옥외광고 지도" },
+      { href: "insights.html", label: "광고 인사이트" },
+      // 운영자 도구(주소 변환·매체 관리)는 관리자 허브(admin.html)로 통합
+      { href: "admin.html", label: "관리자" },
+      // 삭제(2026-07-19): 지역 보기→도크 '지역으로 보기', 견적 문의→상담 CTA, 소재 제작 의뢰→지도 도크로 흡수
     ],
   };
 
@@ -104,7 +102,7 @@
   function setActiveNav() {
     const current = window.location.pathname.split("/").pop() || "index.html";
     document.querySelectorAll("[data-nav]").forEach((link) => {
-      if (link.getAttribute("href") === current) link.classList.add("is-active");
+      if (link.getAttribute("href") === current) link.classList.add("is-active", "on");
     });
   }
 
@@ -118,25 +116,31 @@
 
   function renderSiteChrome() {
     document.querySelectorAll("[data-site-header]").forEach((root) => {
+      // 옛 JS 헤더(.nav/.nav-links)를 새 공통 헤더(.hd)로 교체 — 정적 앱 페이지와 동일 메뉴.
+      root.classList.remove("site-header");
+      root.classList.add("hd");
       root.innerHTML = `
-        <nav class="nav" aria-label="주요 메뉴">
-          <a class="brand" href="${esc(config.brandHref)}"><span class="brand-mark">${esc(config.brandMark)}</span><span>${esc(config.brandName)}</span></a>
-          <div class="nav-links">
-            ${config.navItems.map((item) => `<a data-nav href="${esc(item.href)}"${item.external ? ` target="_blank" rel="noopener"` : ``}>${esc(item.label)}</a>`).join("")}
-            <span class="nav-social" style="display:inline-flex;align-items:center;gap:12px;margin-left:6px;padding-left:14px;border-left:1px solid #e5e7eb">
-              <a href="#" aria-label="페이스북" target="_blank" rel="noopener" style="color:#9aa4b2;line-height:0"><svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.6l.4-3H13.5V8.1c0-.87.24-1.46 1.5-1.46H16.6V4a20 20 0 0 0-2.3-.12c-2.3 0-3.8 1.4-3.8 3.95V10H7.9v3h2.6v8z"/></svg></a>
-              <a href="#" aria-label="인스타그램" target="_blank" rel="noopener" style="color:#9aa4b2;line-height:0"><svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="3.8"/><circle cx="17.3" cy="6.7" r="1.1" fill="currentColor" stroke="none"/></svg></a>
-              <a href="https://blog.naver.com/k-goplay" aria-label="네이버 블로그" target="_blank" rel="noopener" style="line-height:0"><span style="display:inline-flex;align-items:center;justify-content:center;height:17px;padding:0 4px;border-radius:4px;background:#9aa4b2;color:#fff;font:900 9px/1 system-ui;letter-spacing:.02em">blog</span></a>
-              <a href="https://www.youtube.com/channel/UCxXNbNumZkcpjIGzUaOnfnQ" aria-label="유튜브" target="_blank" rel="noopener" style="color:#9aa4b2;line-height:0"><svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.2 3.6z"/></svg></a>
-            </span>
+        <div class="hd-in">
+          <a class="hd-brand" href="map.html" aria-label="광고플레이 홈"><span class="brand-mark">${esc(config.brandMark)}</span><strong>${esc(config.brandName)}</strong></a>
+          <nav class="hd-nav" aria-label="주요 메뉴">
+            <a data-nav href="map.html">옥외광고 지도</a>
+            <a data-nav href="media-catalog.html">옥외광고 목록</a>
+            <a data-nav href="cases.html">광고집행사례</a>
+            <a data-nav href="insights.html">광고 인사이트</a>
+          </nav>
+          <div class="hd-act">
+            <a data-nav href="about.html">회사소개</a>
+            <a href="admin.html">관리자</a>
+            <a href="login.html">로그인</a>
+            <a href="join.html">회원가입</a>
           </div>
-        </nav>`;
+        </div>`;
     });
     document.querySelectorAll("[data-site-footer]").forEach((root) => {
       root.innerHTML = `
         <div class="footer-inner">
           <nav class="foot-nav" aria-label="회사 정보 메뉴">
-            <a href="about.html">회사소개</a><a href="terms.html">이용약관</a><a href="privacy.html">개인정보처리방침</a><a href="media-policy.html">매체관리규정</a>
+            <a href="index.html">홈</a><a href="about.html">회사소개</a><a href="terms.html">이용약관</a><a href="privacy.html">개인정보처리방침</a><a href="media-policy.html">매체관리규정</a>
           </nav>
           <address class="foot-info">
             <span><b>회사명</b> ${esc(config.companyName)}</span>
@@ -156,6 +160,42 @@
     });
   }
 
+  function audienceProfile(item) {
+    const text = [item.name, item.areaName, item.areaSlug, item.address, item.locationDescription, item.mapLocation && item.mapLocation.sourceAddress].filter(Boolean).join(" ");
+    const source = "출처: 소상공인 상권정보 · 통계청 KOSIS (2026, 상권 기준)";
+    if (/삼성|코엑스|COEX|samseong|coex/i.test(text)) {
+      return { archetype: "coex", gender: { female: 48, male: 52 }, worker: "높음", note: "업무·전시 방문과 쇼핑 체류가 섞인 3040 중심", source,
+        age: [["10대", 5, 17, "학생·동반"], ["20대", 22, 73, "활동층"], ["30대", 28, 93, "구매 핵심"], ["40대", 24, 80, "직장인"], ["50대", 14, 47, "가족 소비"], ["60대+", 7, 23, "생활권"]] };
+    }
+    if (/서울역|KTX|seoul-station|transport/i.test(text)) {
+      return { archetype: "seoul-station", gender: { female: 45, male: 55 }, worker: "보통", note: "출장·관광·통근이 겹쳐 전 연령 고른 분포", source,
+        age: [["10대", 6, 20, "학생·동반"], ["20대", 20, 67, "활동층"], ["30대", 24, 80, "구매 핵심"], ["40대", 23, 77, "직장인"], ["50대", 16, 53, "가족 소비"], ["60대+", 11, 37, "생활권"]] };
+    }
+    if (/광화문|종로|시청|청계|gwanghwamun|jongno|jung/i.test(text)) {
+      return { archetype: "gwanghwamun", gender: { female: 47, male: 53 }, worker: "매우 높음", note: "도심 오피스 직장인 3040·40대 이상 비중 높음", source,
+        age: [["10대", 4, 13, "학생·동반"], ["20대", 18, 60, "활동층"], ["30대", 26, 87, "구매 핵심"], ["40대", 26, 87, "직장인"], ["50대", 16, 53, "가족 소비"], ["60대+", 10, 33, "생활권"]] };
+    }
+    return { archetype: "gangnam", gender: { female: 58, male: 42 }, worker: "높음", note: "뷰티·패션 소비층, 2030 여성 비중 우세", source,
+      age: [["10대", 6, 20, "학생·동반"], ["20대", 28, 93, "활동층"], ["30대", 30, 100, "구매 핵심"], ["40대", 20, 67, "직장인"], ["50대", 11, 37, "가족 소비"], ["60대+", 5, 17, "생활권"]] };
+  }
+
+  // 출처 표기 공통 방식 — 작은 '출처' 라벨 + 호버 메모 툴팁(.srcpop). 지도·목록·상세가 공유.
+  // 각 줄은 실제 공공데이터 출처 링크. opts.traffic=true 면 도로 교통량 출처도 표기(지도 전용).
+  // 문구·링크는 지도(map.js)·목록 상세(build-media-pages.py)가 똑같이 쓰도록 여기 한 곳에서 정의.
+  function sourceChip(opts) {
+    opts = opts || {};
+    const S = [
+      ["일평균 유동인구 · 소상공인 상권정보 빅데이터 (2026)", "https://bigdata.sbiz.or.kr/"],
+      ["인구·성별·연령 · 통계청 KOSIS (2025)", "https://kosis.kr/"],
+      ["버스 승하차 · 서울 열린데이터광장 (2026)", "https://data.seoul.go.kr/"],
+      ["지하철 승하차 · 국가철도공단 철도통계 (2025)", "https://www.kric.go.kr/"],
+    ];
+    if (opts.traffic) S.push(["도로 교통량 · 서울 TOPIS (2025)", "https://topis.seoul.go.kr/"]);
+    const rows = S.map(([label, href]) =>
+      `<a href="${href}" target="_blank" rel="noopener noreferrer">${esc(label)}</a>`).join("");
+    return `<span class="srcpop" tabindex="0" role="note" aria-label="데이터 출처">출처<span class="srcpop-body"><b>데이터 출처</b>${rows}</span></span>`;
+  }
+
   window.AdPlay = {
     config,
     loadJson,
@@ -169,6 +209,8 @@
     categoryLabels,
     pageImage,
     priceNotice,
+    audienceProfile,
+    sourceChip,
   };
 
   async function renderHome() {

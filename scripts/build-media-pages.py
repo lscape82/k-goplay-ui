@@ -142,7 +142,10 @@ def spec_chips(x):
 
 FIELDS = ["slug", "name", "category", "mediaType", "address", "sizeText", "widthM", "heightM",
           "resolutionPx", "operationHours", "exposureShort", "tags", "areaName", "areaSlug",
-          "imageUrl", "images", "shortTermAvailable"]
+          "imageUrl", "images", "shortTermAvailable",
+          # 상세페이지 — 사진 외 영상·위치맥락·오디언스 파생에 쓰는 필드(지도 상세와 동일 원본)
+          # (매체사 company 는 비공개라 일부러 제외)
+          "videoUrl", "exposureLong", "locationDescription", "locationFeature"]
 
 _raw = json.load(open(SRC, encoding="utf-8"))
 items = []
@@ -164,6 +167,12 @@ except Exception:
 
 # 필터 단일 출처 — 지도(map.js)와 목록이 공유. 지역·유형·예산이 여기서 온다.
 FILTERS = json.load(open("data/filters.json", encoding="utf-8"))
+
+# 상권(areas) — 유동인구·시간대 원본. media-detail.js와 같은 data/areas.json 을 areaSlug 로 매칭.
+try:
+    AREAS = {e["slug"]: e for e in json.load(open("data/areas.json", encoding="utf-8"))}
+except Exception:
+    AREAS = {}
 
 
 def elev_unit_range(nid):
@@ -249,6 +258,9 @@ IC_LIST = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-wi
 IC_CHAT = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" '
            'stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.5 9.5 0 0 1-3.4-.6L3 21l1.7-5'
            'a8.2 8.2 0 0 1-.7-3.4 8.4 8.4 0 0 1 8.4-8.4 8.4 8.4 0 0 1 8.6 7.9z"/></svg>')
+IC_AREA = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" '
+           'stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/>'
+           '<circle cx="12" cy="10" r="2.5"/></svg>')
 IC_STAR = ('<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61'
            'L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>')
 # 관심매체 비교 = 지도 서비스 도크와 동일한 '나란한 두 패널' 픽토그램(map-services.js ICONS.compare)
@@ -261,7 +273,7 @@ CSS = """
  body{margin:0;background:#fff;font-family:var(--font-sans);color:#1c1c1c}
  /* 페이지 공통 골격 — 헤더·본문·도크가 모두 이 기준선을 쓴다.
     본문 폭 = min(--shell-max, 100%-40px) 안쪽에서 좌우 --dock-gutter 만큼 들여쓴 영역. */
- :root{--shell-max:1760px;--dock-gutter:226px;--dock-top:145px;--dock-w:210px}
+ :root{--shell-max:1760px;--dock-gutter:248px;--dock-top:145px;--dock-w:210px}
  /* 본문 폭 — 헤더·본문·푸터·도크가 모두 이 값을 공유해야 어긋나지 않는다 */
  :root{--shell-w:min(var(--shell-max),calc(100% - 40px))}
  /* 헤더 — 지도(.map-global-header)와 동일: 높이 54px, 14px/650, #344054, SUIT */
@@ -281,13 +293,13 @@ CSS = """
  .hd-in{display:flex;align-items:center;gap:22px;min-height:54px;flex-wrap:wrap;box-sizing:border-box;
         width:min(var(--shell-max),calc(100% - 40px));margin:0 auto;padding-inline:var(--dock-gutter)}
  .hd-brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;flex:none}
- .hd-brand strong{font-size:16px;font-weight:800;color:#0f172a}
+ .hd-brand strong{font-size:18.5px;font-weight:760;letter-spacing:-0.01em;color:#0f172a}.hd-brand .brand-mark{width:30px;height:30px;background-size:auto 30px}
  .hd-nav{margin-left:auto;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
  .hd-act{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
- .hd a{font-size:14px;font-weight:650;color:#344054;text-decoration:none;white-space:nowrap;
+ .hd a{font-size:13px;font-weight:620;color:#344054;text-decoration:none;white-space:nowrap;
        transition:color .15s ease,transform .15s ease}
  .hd-nav a:hover,.hd-nav a:focus,.hd-act a:hover,.hd-act a:focus{color:#0b1b3f;transform:translateY(-2px)}
- .hd-nav a.on,.hd-act a.on{color:#0b3a91;font-weight:750}
+ .hd-nav a.on,.hd-act a.on{color:#344054;font-weight:620}
  /* 상세페이지 본문도 헤더와 같은 기준선 */
  .wrap{width:min(var(--shell-max),calc(100% - 40px));margin:0 auto;box-sizing:border-box;
        padding:22px var(--dock-gutter) 90px}
@@ -311,6 +323,60 @@ CSS = """
  .faq summary{font:700 15px/1.5 var(--font-sans);cursor:pointer}
  .faq p{margin:8px 0 0;font:14px/1.7 var(--font-sans);color:#333}
  .note{font:12px/1.6 var(--font-sans);color:#9a9a9a;margin-top:8px}
+ /* ── 상단 히어로: 좌측 영상/사진 + 우측 카드형 요약 ── */
+ /* 카드는 내용에 맞는 자연 높이 — 스크롤 금지, 전체가 한눈에. 폭은 제한해 세로 비율 유지.
+    우측 컬럼(340px)보다 카드(300px)를 좁혀 왼쪽 정렬 → 우측 플로팅 도크와 간격 확보. */
+ .dv-hero{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:22px;align-items:start;margin:6px 0 12px}
+ .dv-card{max-width:300px}
+ .dv-video,.dv-photo{width:100%;aspect-ratio:16/10;object-fit:cover;border-radius:16px;display:block}
+ .dv-video{background:#000}
+ .dv-photo{background:#eef1f6}
+ .dv-empty{display:grid;place-items:center;color:#9aa0aa;font:600 14px/1 var(--font-sans);aspect-ratio:16/10}
+ .dv-card{border:1px solid #e5e8ee;border-radius:16px;background:#fff;
+          box-shadow:0 6px 20px rgba(15,23,42,.06);padding:18px 20px}
+ .dv-card-label{font:800 11.5px/1 var(--font-sans);color:#8a93a3;letter-spacing:.02em;margin:0 0 8px}
+ .dv-prices{margin:0 0 8px}
+ .dv-price{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 10px;padding:7px 0;
+           border-bottom:1px solid #eef0f4}
+ .dv-price:last-child{border-bottom:0}
+ .dv-price span{font:600 13px/1.4 var(--font-sans);color:#475569}
+ .dv-price b{font:800 14px/1.3 var(--font-sans);color:#0f172a;margin-left:auto;white-space:nowrap}
+ .dv-specs{margin:2px 0 0;border-top:1px solid #f1f3f7;padding-top:6px}
+ .dv-spec{display:flex;justify-content:space-between;gap:12px;padding:4px 0;
+          font:12.5px/1.45 var(--font-sans)}
+ .dv-spec span{color:#8a93a3;font-weight:650;flex:none}
+ .dv-spec b{color:#1f2937;font-weight:650;text-align:right}
+ .dv-cta{display:block;text-align:center;margin:14px 0 0;padding:12px;border-radius:11px;
+         background:#0b2e6b;color:#fff;font:800 14px/1 var(--font-sans);text-decoration:none}
+ .dv-cta:hover{background:#0a2657}
+ .dv-card-note{margin:10px 0 0;font:11px/1.55 var(--font-sans);color:#9aa0aa}
+ @media(max-width:900px){.dv-hero{grid-template-columns:1fr}}
+ /* 오디언스 대시보드는 styles.css 의 .audience-* 레이아웃을 쓰고, 색만 지도 팔레트로 덮는다.
+    (인라인이 styles.css 뒤라 같은/높은 특이도로 이기게 둔다) — 막대 네이비 그라데이션·트랙 #e2e8f0·성별 핑크/파랑 */
+ .audience-progress-track{background:#e2e8f0}
+ .audience-progress-track i{background:linear-gradient(90deg,#0b3a91,#6d95ff)}
+ .audience-card-gender .audience-progress-track i{background:#e8608e}
+ .audience-card-gender .audience-progress.is-accent .audience-progress-track i{background:#3b74f2}
+ .audience-column i{background:linear-gradient(180deg,#6d95ff,#0b3a91)}
+ .aud-note{font:14px/1.7 var(--font-sans);color:#3a4150;margin:0 0 12px}
+ .aud-note b{color:#0b3a91}
+ /* 출처 — 작은 '출처' 라벨에 마우스 오버(또는 포커스)하면 메모 툴팁(공공데이터 링크)이 뜬다. 전 페이지 공통 */
+ .srcline{margin:8px 0 0}
+ .srcpop{position:relative;display:inline-block;font:11px/1.4 var(--font-sans);color:#9aa0aa;
+         cursor:help;border-bottom:1px dotted #c4c9d2}
+ .srcpop-body{position:absolute;left:0;bottom:calc(100% + 8px);z-index:40;width:max-content;max-width:360px;
+         padding:12px 14px;border-radius:10px;background:#f3f4f6;color:#6b7280;text-align:left;
+         border:1px solid #e3e6ec;font:11.5px/1.5 var(--font-sans);box-shadow:0 6px 18px rgba(15,23,42,.12);
+         opacity:0;visibility:hidden;transform:translateY(4px);
+         transition:opacity .15s ease,transform .15s ease,visibility .15s ease}
+ .srcpop:hover .srcpop-body,.srcpop:focus-visible .srcpop-body,.srcpop:focus-within .srcpop-body{
+         opacity:1;visibility:visible;transform:translateY(0)}
+ .srcpop-body b{display:block;margin-bottom:4px;color:#414855;font-weight:700}
+ .srcpop-body a{display:block;margin-top:5px;color:#5b6472;text-decoration:none}
+ .srcpop-body a:hover,.srcpop-body a:focus{color:#0b3a91;text-decoration:underline}
+ .srcpop-body::before{content:"";position:absolute;top:100%;left:0;right:0;height:9px}
+ .srcpop-body::after{content:"";position:absolute;top:100%;left:14px;
+         border:6px solid transparent;border-top-color:#f3f4f6}
  /* 카드 사진 — styles.css의 '#media-list .card-image{width:205%;object-position:left top}'는
     옛 media.html 전용 규칙인데 선택자가 더 세서 사진을 205%로 확대해 왼쪽 위만 보여준다.
     같은 강도로 덮어쓰고, 지정된 틀에 여백 없이 가운데 기준으로 자동 확대(cover)한다. */
@@ -391,7 +457,7 @@ CSS = """
 FAV = '\n<script src="assets/js/catalog-fav.js?v=fav-20260717a"></script>'
 
 HEADER = """<header class="hd"><div class="hd-in">
-  <a class="hd-brand" href="index.html" aria-label="광고플레이 홈"><span class="brand-mark">AD</span><strong>광고플레이</strong></a>
+  <a class="hd-brand" href="map.html" aria-label="광고플레이 홈"><span class="brand-mark">AD</span><strong>광고플레이</strong></a>
   <nav class="hd-nav" aria-label="주요 메뉴">
     <a href="map.html">옥외광고 지도</a>
     <a class="on" href="media-catalog.html">옥외광고 목록</a>
@@ -400,6 +466,7 @@ HEADER = """<header class="hd"><div class="hd-in">
   </nav>
   <div class="hd-act">
     <a href="about.html">회사소개</a>
+    <a href="admin.html">관리자</a>
     <a href="login.html">로그인</a>
     <a href="join.html">회원가입</a>
   </div>
@@ -408,7 +475,7 @@ HEADER = """<header class="hd"><div class="hd-in">
 FOOTER = """
 <footer class="site-foot"><div class="foot-inner">
   <nav class="foot-nav" aria-label="회사 정보 메뉴">
-    <a href="about.html">회사소개</a><a href="terms.html">이용약관</a><a href="privacy.html">개인정보처리방침</a><a href="media-policy.html">매체관리규정</a>
+    <a href="index.html">홈</a><a href="about.html">회사소개</a><a href="terms.html">이용약관</a><a href="privacy.html">개인정보처리방침</a><a href="media-policy.html">매체관리규정</a>
   </nav>
   <address class="foot-info">
     <span><b>회사명</b> 광고플레이 주식회사(Adplay Co., Ltd)</span>
@@ -429,6 +496,7 @@ def viewtog():
     return ('<div class="viewtog">'
             f'<a href="map.html"><span class="ic">{IC_MAP}</span>지도로 보기</a>'
             f'<a href="media-catalog.html"><span class="ic">{IC_LIST}</span>목록으로 보기</a>'
+            f'<a href="areas.html"><span class="ic">{IC_AREA}</span>지역으로 보기</a>'
             f'<a class="consult" href="estimate.html"><span class="ic">{IC_CHAT}</span>상담신청</a>'
             f'<a class="favlink" id="favBar" href="map.html" hidden><span class="ic">{IC_COMPARE}</span>'
             f'관심매체 비교<b id="favCount">0</b></a>'
@@ -448,33 +516,300 @@ def head(title, desc, canon, extra_ld=""):
 {HEADER}"""
 
 
+def audience_profile(x):
+    """지도 상세와 동일한 오디언스 추정(assets/js/common.js audienceProfile 1:1).
+    상권 아키타입(코엑스/서울역/광화문·도심/강남 기본)으로 성별·연령 분포를 파생한다.
+    → 지도가 바뀌면 common.js 값을 여기와 같이 맞춰야 동기화 유지."""
+    text = " ".join(str(v) for v in [x.get("name"), x.get("areaName"), x.get("areaSlug"),
+                                     x.get("address"), x.get("locationDescription")] if v)
+    src = "출처: 소상공인 상권정보 · 통계청 KOSIS (2026, 상권 기준)"
+
+    def p(arch, f, m, worker, note, age):
+        return {"arch": arch, "f": f, "m": m, "worker": worker, "note": note, "src": src, "age": age}
+
+    if re.search(r"삼성|코엑스|COEX|samseong|coex", text, re.I):
+        return p("coex", 48, 52, "높음", "업무·전시 방문과 쇼핑 체류가 섞인 3040 중심",
+                 [("10대", 5, 17, "학생·동반"), ("20대", 22, 73, "활동층"), ("30대", 28, 93, "구매 핵심"),
+                  ("40대", 24, 80, "직장인"), ("50대", 14, 47, "가족 소비"), ("60대+", 7, 23, "생활권")])
+    if re.search(r"서울역|KTX|seoul-station|transport", text, re.I):
+        return p("seoul-station", 45, 55, "보통", "출장·관광·통근이 겹쳐 전 연령 고른 분포",
+                 [("10대", 6, 20, "학생·동반"), ("20대", 20, 67, "활동층"), ("30대", 24, 80, "구매 핵심"),
+                  ("40대", 23, 77, "직장인"), ("50대", 16, 53, "가족 소비"), ("60대+", 11, 37, "생활권")])
+    if re.search(r"광화문|종로|시청|청계|gwanghwamun|jongno|jung", text, re.I):
+        return p("gwanghwamun", 47, 53, "매우 높음", "도심 오피스 직장인 3040·40대 이상 비중 높음",
+                 [("10대", 4, 13, "학생·동반"), ("20대", 18, 60, "활동층"), ("30대", 26, 87, "구매 핵심"),
+                  ("40대", 26, 87, "직장인"), ("50대", 16, 53, "가족 소비"), ("60대+", 10, 33, "생활권")])
+    return p("gangnam", 58, 42, "높음", "뷰티·패션 소비층, 2030 여성 비중 우세",
+             [("10대", 6, 20, "학생·동반"), ("20대", 28, 93, "활동층"), ("30대", 30, 100, "구매 핵심"),
+              ("40대", 20, 67, "직장인"), ("50대", 11, 37, "가족 소비"), ("60대+", 5, 17, "생활권")])
+
+
+def hero_media(x):
+    """상단 좌측 — 영상이 등록돼 있으면 영상, 없으면 대표 사진으로 대체."""
+    v = x.get("videoUrl")
+    if v:
+        poster = f' poster="{esc(x.get("imageUrl"))}"' if x.get("imageUrl") else ""
+        return (f'<video class="dv-video" controls preload="none" playsinline{poster}>'
+                f'<source src="{esc(v)}" type="video/mp4"></video>')
+    img = (([u for u in (x.get("images") or []) if u] or [x.get("imageUrl")]) or [None])[0]
+    if img:
+        return f'<img class="dv-photo" src="{esc(img)}" alt="{esc(x["name"])} 현장 사진" loading="lazy">'
+    return '<div class="dv-photo dv-empty">이미지 준비 중</div>'
+
+
+def pricing_card(x):
+    """상단 우측 — 영상 높이에 맞춘 카드형 요약. 광고비 구간 + 매체 규격·위치 정보 + 견적 문의."""
+    cat = CAT.get(x.get("category"), "매체")
+    tiers = [r for r in (x.get("pricing") or []) if r.get("monthlyPriceKRW")]
+    rows = ""
+    for r in tiers:
+        rt = (r.get("rawText") or "").strip()
+        if " - " in rt:
+            spec, price = rt.split(" - ", 1)
+            rows += f'<div class="dv-price"><span>{esc(spec)}</span><b>{esc(price)}</b></div>'
+        else:
+            label = r.get("label") or rt or "광고비"
+            rows += f'<div class="dv-price"><span>{esc(label)}</span><b>{won(r.get("monthlyPriceKRW"))}/월</b></div>'
+    if not rows:
+        rows = '<div class="dv-price"><span>광고비 상담 안내</span></div>'
+    size = x.get("sizeText") or (f"{x.get('widthM')}m × {x.get('heightM')}m" if x.get("widthM") else None)
+    res = x.get("resolutionPx")
+    size_res = " · ".join(v for v in (size, res) if v) or None  # 규격·해상도는 한 줄로
+    short = "협의 필요" if x.get("shortTermAvailable") is False else "가능 (협의)"
+    specs = [("매체 유형", x.get("mediaType") or cat), ("위치", x.get("address")),
+             ("규격·해상도", size_res),
+             ("운영 시간", x.get("operationHours")), ("단기 집행", short)]
+    spec_rows = "".join(f'<div class="dv-spec"><span>{esc(a)}</span><b>{esc(b)}</b></div>'
+                        for a, b in specs if b)
+    return (
+        '<aside class="dv-card">'
+        '<div class="dv-card-label">광고비</div>'
+        f'<div class="dv-prices">{rows}</div>'
+        f'<div class="dv-specs">{spec_rows}</div>'
+        '<a class="dv-cta" href="estimate.html">이 매체 견적 문의</a>'
+        '<p class="dv-card-note">표기된 광고비는 VAT 별도 기준의 참고가입니다. '
+        '최종 비용 및 구좌 가능 여부는 상담 시점에 확인이 필요합니다.</p>'
+        '</aside>')
+
+
+def location_html(x):
+    rows = []
+    seen = set()  # 같은 문장이 두 필드에 중복 저장된 매체가 있어 텍스트 기준으로 한 번만 노출
+    # 매체사(company)는 비공개 — 지도도 노출하지 않으므로 여기서도 넣지 않는다.
+    for label, key in (("입지 설명", "locationDescription"), ("노출 포인트", "exposureLong"),
+                       ("입지 특성", "locationFeature")):
+        v = (x.get(key) or "").strip()
+        if not v or v in seen:
+            continue
+        seen.add(v)
+        rows.append(f"<tr><th>{label}</th><td>{esc(v)}</td></tr>")
+    if not rows:
+        return ""
+    return f'<h2>위치·입지 특성</h2><table class="t">{"".join(rows)}</table>'
+
+
+# 유동인구 파생 — media-detail.js deriveAudienceInsights 와 동일한 상수·규칙
+_DAY_DIST = [("월", 16), ("화", 16), ("수", 17), ("목", 17), ("금", 16), ("토", 11), ("일", 7)]
+_TIME_FALLBACK = [("05~09", 14), ("09~12", 18), ("12~14", 16), ("14~18", 26), ("18~23", 22), ("23~05", 4)]
+_WOBBLE = [0, 0.02, 0.04, 0.06, 0.07, 0.05, 0.03, 0.06, 0.05, 0.06, 0.03, 0.02]
+
+
+def _fmt_num(v):
+    try:
+        return f"{int(v):,}"
+    except (TypeError, ValueError):
+        return "확인 필요"
+
+
+def _fmt_compact(v):
+    try:
+        return f"{round(float(v) / 1000)}K"
+    except (TypeError, ValueError):
+        return "0"
+
+
+def _man(v):
+    """만명 단위 — 지도(단위 만명)와 통일. 소수 1자리, 불필요한 0 제거."""
+    try:
+        return f"{(float(v) or 0) / 10000:.1f}".rstrip("0").rstrip(".")
+    except (TypeError, ValueError):
+        return "0"
+
+
+def _fmt_pct(v):
+    n = float(v)
+    return f"{int(n) if n == int(n) else round(n, 1)}%"
+
+
+def _month_label(m):
+    parts = str(m or "").split(".")
+    return f"{int(parts[1])}월" if len(parts) > 1 else str(m or "")
+
+
+def _derive_insights(x):
+    """media-detail.js deriveAudienceInsights 이식 — areaSlug 로 상권을 찾아 유동인구·시간대 파생."""
+    area = AREAS.get(x.get("areaSlug")) or {}
+    base500 = int(area.get("dailyFootTraffic") or 0) or 76000
+    base300 = round(base500 * 0.4)
+    p = audience_profile(x)
+    bh = [r for r in (area.get("busHourlyUsers") or []) if float(r.get("users") or 0) > 0]
+    if bh:
+        total = sum(float(r.get("users") or 0) for r in bh) or 1
+        time_pct = [(r["label"], round(float(r.get("users") or 0) / total * 100)) for r in bh]
+    else:
+        time_pct = _TIME_FALLBACK
+    monthly = [(f"2026.{i + 1:02d}", round(base500 * (0.95 + w))) for i, w in enumerate(_WOBBLE)]
+    return {"avg500": base500, "avg300": base300, "weekday": 72, "weekend": 28,
+            "gender": [("여성", p["f"]), ("남성", p["m"])],
+            "age": [(lbl, pct) for lbl, pct, _b, _n in p["age"]],
+            "day": _DAY_DIST, "time": time_pct, "monthly": monthly,
+            "note": p["note"], "worker": p["worker"], "has_bus": bool(bh)}
+
+
+def _count_rows(rows, base):
+    return [(lbl, pct, round(base * pct / 100)) for lbl, pct in rows]
+
+
+def _metric_card(label, scope, value):
+    return (f'<div class="audience-metric"><span>{esc(label)} <b>({esc(scope)})</b></span>'
+            f'<strong>{_man(value)}만명</strong></div>')
+
+
+def _progress_rows(rows, gender_accent):
+    mx = max([c for _l, _p, c in rows] + [1])
+    out = ""
+    for i, (label, pct, count) in enumerate(rows):
+        w = max(3, count / mx * 100)
+        acc = " is-accent" if gender_accent and i == 1 else ""
+        out += (f'<div class="audience-progress{acc}"><span>{esc(label)}</span>'
+                f'<div class="audience-progress-track"><i style="width:{w:.0f}%"></i></div>'
+                f'<strong>{_man(count)}만명 <em>{_fmt_pct(pct)}</em></strong></div>')
+    return f'<div class="audience-progress-list">{out}</div>'
+
+
+def _column_chart(rows):
+    mx = max([c for _l, _p, c in rows] + [1])
+    out = ""
+    for label, _pct, count in rows:
+        h = max(8, count / mx * 100)
+        out += (f'<div class="audience-column"><strong>{_man(count)}만</strong>'
+                f'<i style="height:{h:.0f}%"></i><span>{esc(label)}</span></div>')
+    return f'<div class="audience-columns">{out}</div>'
+
+
+def _line_chart(monthly):
+    pts = [(_month_label(m), v) for m, v in monthly]
+    if not pts:
+        return ""
+    vals = [v for _l, v in pts]
+    mn, mx = min(vals), max(vals)
+    W, H, padX, padTop, padBot = 640, 220, 38, 34, 42
+    pw, ph = W - padX * 2, H - padTop - padBot
+    n = max(len(pts) - 1, 1)
+    coords = []
+    for i, (lbl, v) in enumerate(pts):
+        xx = padX + pw * i / n
+        ratio = 0.5 if mx == mn else (v - mn) / (mx - mn)
+        yy = padTop + ph - ph * ratio
+        coords.append((lbl, v, xx, yy))
+    line = " ".join(f"{xx:.1f},{yy:.1f}" for _l, _v, xx, yy in coords)
+    dots = ""
+    for lbl, v, xx, yy in coords:
+        dots += (f'<g><circle cx="{xx:.1f}" cy="{yy:.1f}" r="5" fill="#0b3a91"></circle>'
+                 f'<text x="{xx:.1f}" y="{yy - 12:.1f}" text-anchor="middle">{_man(v)}만</text>'
+                 f'<text class="axis-label" x="{xx:.1f}" y="{H - 12}" text-anchor="middle">{esc(lbl)}</text></g>')
+    return (f'<div class="audience-line-wrap"><svg class="audience-line-chart" viewBox="0 0 {W} {H}" '
+            f'role="img" aria-label="월별 일평균 유동인구 추이">'
+            f'<defs><linearGradient id="dvLine" x1="0" y1="0" x2="1" y2="0">'
+            f'<stop offset="0" stop-color="#0b3a91"></stop><stop offset="1" stop-color="#4f7df3"></stop>'
+            f'</linearGradient></defs>'
+            f'<polyline points="{line}" fill="none" stroke="url(#dvLine)" stroke-width="4" '
+            f'stroke-linecap="round" stroke-linejoin="round"></polyline>{dots}</svg></div>')
+
+
+def source_chip(traffic=False):
+    """전 페이지 공통 출처 표기 — 작은 '출처' 라벨 + 호버 메모 툴팁(공공데이터 링크).
+    문구·링크는 지도(common.js AdPlay.sourceChip)와 1:1로 동일하게 유지한다."""
+    S = [
+        ("일평균 유동인구 · 소상공인 상권정보 빅데이터 (2026)", "https://bigdata.sbiz.or.kr/"),
+        ("인구·성별·연령 · 통계청 KOSIS (2025)", "https://kosis.kr/"),
+        ("버스 승하차 · 서울 열린데이터광장 (2026)", "https://data.seoul.go.kr/"),
+        ("지하철 승하차 · 국가철도공단 철도통계 (2025)", "https://www.kric.go.kr/"),
+    ]
+    if traffic:
+        S.append(("도로 교통량 · 서울 TOPIS (2025)", "https://topis.seoul.go.kr/"))
+    rows = "".join(f'<a href="{esc(h)}" target="_blank" rel="noopener noreferrer">{esc(l)}</a>' for l, h in S)
+    return (f'<span class="srcpop" tabindex="0" role="note" aria-label="데이터 출처">출처'
+            f'<span class="srcpop-body"><b>데이터 출처</b>{rows}</span></span>')
+
+
+def audience_html(x):
+    """유동인구·타깃 오디언스 대시보드 — media-detail.js audienceDashboardVisual 와 동일 구조.
+    styles.css 의 .audience-* 스타일을 그대로 써서 지도 상세와 같은 화면이 된다."""
+    d = _derive_insights(x)
+    a5 = d["avg500"]
+    metrics = (_metric_card("일평균 유동인구", "300m", d["avg300"])
+               + _metric_card("일평균 유동인구", "500m", a5)
+               + _metric_card("주중 일평균", "500m", round(a5 * d["weekday"] / 100))
+               + _metric_card("주말 일평균", "500m", round(a5 * d["weekend"] / 100)))
+    dash = (
+        '<div class="audience-dashboard">'
+        f'<div class="audience-metrics">{metrics}</div>'
+        f'<div class="audience-card audience-card-gender"><h3>성별 비율 기준 500m</h3>'
+        f'{_progress_rows(_count_rows(d["gender"], a5), True)}</div>'
+        f'<div class="audience-card"><h3>연령대별 분포 기준 500m</h3>'
+        f'{_progress_rows(_count_rows(d["age"], a5), False)}</div>'
+        f'<div class="audience-card"><h3>요일별 일평균 기준 500m</h3>'
+        f'{_progress_rows(_count_rows(d["day"], a5), False)}</div>'
+        f'<div class="audience-card audience-card-time"><h3>시간대별 유동인구 기준 500m</h3>'
+        f'{_column_chart(_count_rows(d["time"], a5))}</div>'
+        f'<div class="audience-card audience-card-trend"><h3>월별 일평균 유동인구 추이 기준 500m</h3>'
+        f'{_line_chart(d["monthly"])}</div>'
+        '</div>')
+    return (f'<h2>유동인구·타깃 오디언스</h2>'
+            f'<p class="aud-note">{esc(d["note"])} · 직장인 밀집도 <b>{esc(d["worker"])}</b></p>'
+            f'{dash}'
+            f'<p class="srcline">{source_chip()}</p>')
+
+
 def detail(x):
     name = x["name"]; slug = x["slug"]; cat = CAT.get(x.get("category"), "매체")
     minp = x.get("minPrice")
 
-    price_rows = ""
-    for r in (x.get("pricing") or []):
-        price_rows += (f"<tr><td>{esc(r.get('label') or r.get('rawText') or '-')}</td>"
-                       f"<td>{won(r.get('monthlyPriceKRW'))}/월</td><td>{esc(r.get('rawText') or '')}</td></tr>")
-    if not price_rows:
-        price_rows = "<tr><td colspan='3'>상담 시 안내</td></tr>"
+    # 광고비 — 적힌 구간 그대로. '부터'라는 하한 표기는 쓰지 않는다(단기집행 시 더 낮아질 수 있음).
+    pricing = [r for r in (x.get("pricing") or []) if r.get("monthlyPriceKRW")]
+    prices = [r["monthlyPriceKRW"] for r in pricing]
+    if prices:
+        pmin, pmax = min(prices), max(prices)
+        price_lead = f"월 {won(pmin)}" if pmin == pmax else f"월 {won(pmin)}~{won(pmax)}"
+    else:
+        price_lead = "월 광고비 상담"
 
-    spec = [("매체 유형", x.get("mediaType") or cat), ("위치", x.get("address")),
-            ("규격", x.get("sizeText") or (f"{x.get('widthM')}m × {x.get('heightM')}m" if x.get("widthM") else "상담")),
-            ("해상도", x.get("resolutionPx") or "상담 시 안내"),
-            ("운영시간", x.get("operationHours") or "상담 시 안내")]
-    spec_rows = "".join(f"<tr><th>{esc(a)}</th><td>{esc(b)}</td></tr>" for a, b in spec if b)
-
-    faqs = [(f"{name} 광고 비용은 얼마인가요?",
-             f"월 {won(minp)}부터이며(VAT 별도), 기간·소재에 따라 달라집니다. 정확한 비용은 상담 시 확정됩니다."),
-            (f"{name}은 어디에 있나요?", f"{x.get('address') or '서울'}에 위치한 {cat} 매체입니다."),
-            ("단기 집행도 가능한가요?", "네, 매체에 따라 1일 단위부터 집행할 수 있습니다.")]
+    ap = audience_profile(x)
+    spec_txt = x.get("sizeText") or (f"{x.get('widthM')}m × {x.get('heightM')}m" if x.get("widthM") else None)
+    if pricing:
+        tier_txt = ", ".join((r.get("rawText") or f"{r.get('label')} 월 {won(r['monthlyPriceKRW'])}").strip()
+                             for r in pricing)
+        price_ans = (f"{tier_txt} 기준입니다(VAT 별도). 단기 집행 시 더 낮은 금액부터 협의 가능하며, "
+                     f"최종 비용·구좌 가능 여부는 상담 시 확인이 필요합니다.")
+    else:
+        price_ans = "광고비는 상담 시 안내드리며, 단기 집행 시 더 낮은 금액부터 협의 가능합니다(VAT 별도)."
+    faqs = [(f"{name} 광고 비용은 얼마인가요?", price_ans),
+            (f"{name}은 어디에 있나요?", f"{x.get('address') or '서울'}에 위치한 {cat} 매체입니다.")]
+    if spec_txt or x.get("operationHours"):
+        faqs.append((f"{name}의 규격과 운영시간은 어떻게 되나요?",
+                     f"규격은 {spec_txt or '상담 시 안내'}이며, 운영시간은 {x.get('operationHours') or '상담 시 안내'}입니다."))
+    faqs.append((f"{name}은 어떤 타깃에 적합한가요?",
+                 f"{ap['note']}. 성별 비중은 여성 {ap['f']}% · 남성 {ap['m']}%, "
+                 f"직장인 밀집도는 '{ap['worker']}' 수준입니다(소상공인 상권정보·통계청 KOSIS 기준)."))
+    faqs.append(("단기 집행도 가능한가요?", "네, 매체에 따라 1일 단위부터 집행할 수 있습니다."))
     faq_html = "".join(f"<details{' open' if i == 0 else ''}><summary>{esc(q)}</summary><p>{esc(a)}</p></details>"
                        for i, (q, a) in enumerate(faqs))
 
     ld = [
         {"@context": "https://schema.org", "@type": "Product", "name": f"{name} 옥외광고", "category": "옥외광고 매체",
          "description": f"{x.get('exposureShort') or name} — {cat} 옥외광고 매체",
+         **({"image": f"{BASE}/{x['imageUrl']}"} if x.get("imageUrl") else {}),
          "brand": {"@type": "Organization", "name": "광고플레이"},
          "offers": {"@type": "Offer", "priceCurrency": "KRW", "price": int(minp) if minp else 0,
                     "availability": "https://schema.org/InStock",
@@ -493,7 +828,7 @@ def detail(x):
             {"@type": "ListItem", "position": 3, "name": name, "item": f"{BASE}/media-{slug}.html"}]},
     ]
     ld_html = "\n".join(f'<script type="application/ld+json">{json.dumps(o, ensure_ascii=False)}</script>' for o in ld)
-    meta_desc = f"{name}({cat}) 옥외광고 매체 — 위치 {x.get('address') or '서울'}, 월 {won(minp)}부터. 규격·광고비·집행 안내."
+    meta_desc = f"{name}({cat}) 옥외광고 매체 — 위치 {x.get('address') or '서울'}, {price_lead}(VAT 별도). 규격·광고비·집행 안내."
 
     return head(f"{name} 옥외광고 매체 – 위치·광고비 | 광고플레이", meta_desc,
                 f"{BASE}/media-{slug}.html", ld_html) + f"""
@@ -501,12 +836,13 @@ def detail(x):
 {viewtog()}
 <p class="bc"><a href="index.html">홈</a> › <a href="media-catalog.html">옥외광고 매체</a> › {esc(name)}</p>
 <h1>{esc(name)} 옥외광고 매체</h1>
-<p class="lead">{esc(x.get('exposureShort') or name)} · <b>{esc(cat)}</b> · 월 <b>{won(minp)}</b>부터(VAT 별도)</p>
-<h2>매체 규격·위치</h2>
-<table class="t">{spec_rows}</table>
-<h2><span class="c">광고비</span> (VAT 별도)</h2>
-<table class="t"><tr><th style="width:auto">소재</th><th style="width:auto">월 광고비</th><th style="width:auto">비고</th></tr>{price_rows}</table>
-<p class="note">표기 광고비는 참고가이며, 최종 비용·구좌 가능 여부는 상담 시 확인이 필요합니다.</p>
+<p class="lead">{esc(x.get('exposureShort') or name)} · <b>{esc(cat)}</b> · {esc(price_lead)}(VAT 별도)</p>
+<div class="dv-hero">
+  <div class="dv-media">{hero_media(x)}</div>
+  {pricing_card(x)}
+</div>
+{location_html(x)}
+{audience_html(x)}
 <h2>자주 묻는 질문</h2>
 <div class="faq">{faq_html}</div>
 </main>""" + FOOTER + FAV + """</body></html>"""

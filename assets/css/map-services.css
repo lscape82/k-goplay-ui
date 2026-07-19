@@ -14,7 +14,7 @@
   justify-content: center;
   border-radius: 999px;
   color: #fff;                 /* 숫자는 전 단계 흰색 통일 */
-  font-size: 10px;             /* 크기도 tier 상관없이 동일 — 더 작게(보조 역할 강화) */
+  font-size: 9px;              /* 관심매체 배지 숫자만큼 작게(보조 역할) — tier 상관없이 동일 */
   font-weight: 700;
   line-height: 1;
   font-family: "SUIT Variable", "SUIT", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
@@ -134,7 +134,7 @@
 /* hover — 파란 외곽선 대신 목록 카드처럼 살짝 들리는 움직임만.
    외곽선은 지도 위에서 파란 테두리 덩어리를 만들었다. 테두리·그림자는 그대로 두고 transform 만. */
 .gps-svc:hover { transform: translateY(-2px); }
-.gps-svc .top { display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 620; color: #475467; } /* 헤더 메뉴와 통일(13/620/#475467) */
+.gps-svc .top { display: flex; align-items: center; gap: 9px; font-size: 13px; font-weight: 620; color: #344054; } /* 헤더 메뉴와 통일(13/620/#344054) */
 .gps-svc .ic { width: 22px; height: 22px; flex: none; display: grid; place-items: center; border-radius: 6px; background: var(--gps-accent-wash); font-size: 14px; }
 .gps-svc .bn { margin-left: auto; font-size: 10px; font-weight: 800; color: #fff; background: var(--gps-accent); border-radius: 999px; padding: 1px 7px; }
 .gps-svc .sub { display: none; } /* 상담 카드와 겹치지 않도록 도크 컴팩트화 (라벨만 노출) */
@@ -404,15 +404,31 @@
 .map-detail-actions button:hover strong { color: #0b3a91; }
 
 /* 하단 연락처(전화·온라인 상담·카톡) 텍스트를 좌측 서비스 버튼 라벨(.gps-svc .top)과 동일하게 통일 — 700 / ink-soft. 실시간 라이브 상담(.primary)은 제외 */
-.map-contact-card a:not(.primary) { font-size: 13px; font-weight: 620; color: #475467; } /* 헤더 메뉴와 통일(13/620/#475467) */
+.map-contact-card a:not(.primary) { font-size: 13px; font-weight: 620; color: #344054; } /* 헤더 메뉴와 통일(13/620/#344054) */
 /* 연락처 항목 간격을 서비스 도크·지도 컨트롤과 통일 — 5px */
 .map-contact-card { gap: 5px; }
 
-/* 큐레이션 팝업 버튼(실시간 상담·소개서 다운로드)을 상세 '매체 소개서'와 동일한 톤·강조로 — 흰 배경 → 호버 시 연한 블루 */
-.map-curation-live,
-.map-curation-download { border-color: #e2e8f0; background: #fff; color: #0f172a; font-size: 12px; transition: background .15s ease, color .15s ease; }
-.map-curation-live:hover,
-.map-curation-download:hover { border-color: #e2e8f0; background: #eef4ff; color: #0b3a91; }
+/* 큐레이션 팝업 하단 — 좌: 채널톡형 '라이브 톡 상담하기' 알약 / 우: 미디어 위 '소개서 다운로드' 오버레이(라이브 페이지 방식) */
+.map-curation-quick-actions { display: block; padding: 10px 15px 14px; }
+.map-curation-live {
+  display: grid; place-items: center; width: 100%; box-sizing: border-box;
+  min-height: 38px;
+  border: 1px solid #dbe5f4; border-radius: 8px; background: transparent;
+  color: #111827; font-size: 12px; font-weight: 650;
+  transition: border-color .15s ease, background .15s ease, font-weight .15s ease;
+}
+.map-curation-live:hover { border-color: #cbd5e6; background: #f7f9fc; color: #111827; font-weight: 700; }
+/* 소개서 다운로드 — 우측 미디어 우하단 오버레이 */
+.map-curation-media .map-curation-download {
+  position: absolute; right: 10px; bottom: 10px; z-index: 3;
+  display: inline-flex; align-items: center; gap: 5px; width: auto; min-height: 0;
+  padding: 4px 9px; border: 0; border-radius: 7px;
+  background: rgba(15, 23, 42, .34); color: #fff; font-size: 10px; font-weight: 600;
+  backdrop-filter: blur(3px); -webkit-backdrop-filter: blur(3px);
+  transition: background .15s ease;
+}
+.map-curation-media .map-curation-download svg { width: 11px; height: 11px; }
+.map-curation-media .map-curation-download:hover { background: rgba(15, 23, 42, .5); color: #fff; font-weight: 600; }
 
 /* 큐레이션 왼쪽 컬럼(헤더·리스트·실시간 상담/소개서 다운로드 영역) 배경을 흰색으로 통일 — 리스트 기본이 흰색이 되면서 틴트 배경만 떠 보이던 문제 해소 */
 .map-curation-copy { background: #fff; }
@@ -579,7 +595,7 @@
 .map-global-nav button,
 .map-global-nav .map-header-filter,
 .map-filter-entry,
-.map-global-actions a:not(.join) { color: #475467; font-size: 13px; font-weight: 620; } /* 카테고리(12/580)보다 한 단계 위 — 주 내비게이션이라 13px·620 */
+.map-global-actions a:not(.join) { color: #344054; font-size: 13px; font-weight: 620; } /* 주 내비게이션 13px·620, 중간톤 #344054(연함 보완) */
 .map-global-nav a,
 .map-global-nav button:not(.map-filter-entry),
 .map-global-actions a:not(.join) { min-height: 34px; padding: 0; border: 0; background: transparent; transition: color .15s ease, transform .15s ease; }
@@ -592,7 +608,7 @@
 .map-filter-entry:hover::after, .map-filter-entry:focus::after { border-color: #0b1b3f; }
 
 /* 활성(추천 큐레이션 패널 열림) 강조 제거 — 다른 항목과 동일한 색·굵기. 진해지는 건 호버 때만 */
-.map-global-nav button.is-active:not(.map-filter-entry) { color: #475467; font-weight: 620; }
+.map-global-nav button.is-active:not(.map-filter-entry) { color: #344054; font-weight: 620; }
 .map-global-nav a:hover, .map-global-nav a:focus,
 .map-global-nav button:not(.map-filter-entry):hover, .map-global-nav button:not(.map-filter-entry):focus,
 .map-global-actions a:not(.join):hover, .map-global-actions a:not(.join):focus { background: transparent; color: #0b1b3f; }
@@ -656,7 +672,7 @@
    (우리는 7개 전부 테두리 박스여서 지도 위에서 특히 번잡했음. 요소 '개수'가 아니라 '상자 수'가 문제)
    버튼 좌우 패딩(17px)은 그대로라 항목 간 간격은 유지되고, 호버 때만 연회색 칩이 나타난다. */
 .map-category-pill:not(.is-active) { border-color: transparent; background: transparent; color: #475467; }
-.map-category-pill:not(.is-active):hover { border-color: transparent; background: #e8f0fd; color: #475467; }
+.map-category-pill:not(.is-active):hover { border-color: #e7eef8; background: transparent; color: #475467; }
 
 /* 카테고리 칩 글자 12px — 헤더 메뉴(13/700)보다 한 단계 낮춰 위계 분리. */
 .map-category-pill { font-size: 12px; }
@@ -686,7 +702,7 @@
 .map-category-pill { border-radius: 6px; }
 .map-category-search { border-radius: 9px; }
 .map-category-search button { border-radius: 0 9px 9px 0; }
-.map-global-actions .join { border-radius: 9px; }
+.map-global-actions .join { border-radius: 6px; } /* 카테고리 칩과 동일 */
 
 /* 코너 2단 위계 — 지도 위에 '떠 있는 상자' = 9px, 그 '안쪽 요소' = 6px.
    9px: 지도 컨트롤 상자·도크 카드·연락처 카드·카테고리 칩·검색칸·회원가입
@@ -770,6 +786,17 @@ body:has(.map-workspace-page) { --map-rail-gutter: 16px; }
 .media-map-pin-image {
   box-shadow: 0 0 0 1px rgba(15, 23, 42, 0.13), 0 2px 6px rgba(15, 23, 42, 0.28);
 }
+/* 핀 사진 위에 흰색 반투명 덮개 — 채도는 유지한 채 뿌옇게(연하게). 선택 핀은 덮개 제거해 원래 색으로. */
+.media-map-pin-image::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: rgba(255, 255, 255, 0.22);
+  pointer-events: none;
+  z-index: 2;
+}
+.media-map-pin.is-active .media-map-pin-image::after { display: none; }
 .media-map-pin::after {
   border-right-color: rgba(15, 23, 42, 0.13);
   border-bottom-color: rgba(15, 23, 42, 0.13);
@@ -855,9 +882,10 @@ body:has(.map-workspace-page) { --map-rail-gutter: 16px; }
      기준은 '목록 폭'(--gp-list-w)만 쓴다. 상세 폭까지 더하면 좁은 화면에서 팝업이 27px로 찌부러짐.
      상세가 열려 있으면 팝업이 그 위를 덮고, 팝업을 닫으면 상세가 다시 드러난다(상태 유실 없음).
      그래서 큐레이션은 z-index 를 사이드바(5)보다 위로 올린다(원래 3이라 상세 뒤에 깔림). */
-  .map-workspace-page .map-curation-panel,
   .map-workspace-page .map-cost-filter-panel,
   .map-workspace-page .map-region-panel { left: calc(var(--gp-list-w) + 18px); }
+  /* 큐레이션 팝업만 인셋 없이 목록 우측 edge(=카테고리 칩 좌측)에 맞춰 텍스트 열 정렬 */
+  .map-workspace-page .map-curation-panel { left: var(--gp-list-w); }
   .map-workspace-page .map-curation-panel { z-index: 6; width: min(660px, calc(100% - var(--gp-list-w) - 36px)); }
   .map-workspace-page .map-cost-filter-panel { width: min(350px, calc(100% - var(--gp-list-w) - 36px)); }
   .map-workspace-page .map-region-panel { width: min(420px, calc(100% - var(--gp-list-w) - 36px)); }
@@ -897,9 +925,11 @@ body:has(.map-workspace-page) { --map-rail-gutter: 16px; }
    위계: 로그인(텍스트) < 회원가입(그레이 아웃라인) < 실시간 라이브 상담(네이비 채움) */
 .map-global-actions .join {
   background: #fff;
-  border: 1px solid #cbd2dd;
+  border: 1px solid #dde6f4;   /* 카테고리 칩과 동일한 연한 외곽선 */
   color: #0f172a;
   box-shadow: none;
+  min-height: 32px;            /* 카테고리 칩과 동일 높이 */
+  padding: 0 12px;             /* 카테고리 칩과 동일 좌우 여백 */
 }
 .map-global-actions .join:hover { border-color: #0b3a91; color: #0b3a91; background: #fff; }
 
@@ -956,9 +986,9 @@ body:has(.map-workspace-page) { --map-rail-gutter: 16px; }
    2026-07-17 에 네이비로 되돌려 화면으로 확인해봤으나, 연하늘색 쪽이 낫다는 판단으로 재복귀.
    → 이 값이 화면 검증을 거친 결론이다. 다시 네이비로 올리자는 제안은 이미 한 번 기각됐다. */
 .map-category-pill.is-active {
-  background: #e8f0fd;   /* 선택된 칩 — 지도 위 연한 블루 계열의 연한 하늘색 배경(hover 와 동일, 클릭 시 유지) */
-  border-color: transparent;
-  color: #475467;        /* 텍스트는 파란색으로 안 바꾼다 — 기본 회색 유지 */
+  background: transparent;   /* 배경 fill 제거 */
+  border-color: #dde6f4;     /* 선택 표시 = 아주 연한 외곽선(연블루) — 지도 위에서 fill 없이 깔끔 */
+  color: #475467;            /* 텍스트는 파란색으로 안 바꾼다 — 기본 회색 유지 */
   box-shadow: none;
 }
 

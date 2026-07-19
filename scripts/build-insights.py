@@ -112,7 +112,7 @@ def esc(s): return html.escape(str(s), quote=True)
 CSS = """
     body{margin:0;background:#fff}
     /* 페이지 공통 골격 — 헤더·본문·도크가 모두 이 기준선을 쓴다(옥외광고 매체 페이지와 동일) */
-    :root{--shell-max:1760px;--dock-gutter:226px;--dock-top:145px;--dock-w:210px}
+    :root{--shell-max:1760px;--dock-gutter:248px;--dock-top:145px;--dock-w:210px}
     /* 본문 폭 — 헤더·본문·푸터·도크가 모두 이 값을 공유해야 어긋나지 않는다 */
     :root{--shell-w:min(var(--shell-max),calc(100% - 40px))}
     /* 헤더 — 지도 페이지(.map-global-header)와 동일: 높이 54px, 14px/650, #344054, SUIT */
@@ -122,12 +122,12 @@ CSS = """
     .hd-in{display:flex;align-items:center;gap:22px;min-height:54px;flex-wrap:wrap;box-sizing:border-box;
            width:min(var(--shell-max),calc(100% - 40px));margin:0 auto;padding-inline:var(--dock-gutter)}
     .hd-brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;flex:none}
-    .hd-brand strong{font-size:16px;font-weight:800;color:#0f172a}
+    .hd-brand strong{font-size:18.5px;font-weight:760;letter-spacing:-0.01em;color:#0f172a}.hd-brand .brand-mark{width:30px;height:30px;background-size:auto 30px}
     .hd-nav{margin-left:auto;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
     .hd-act{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-    .hd a{font-size:14px;font-weight:650;color:#344054;text-decoration:none;white-space:nowrap;transition:color .15s ease,transform .15s ease}
+    .hd a{font-size:13px;font-weight:620;color:#344054;text-decoration:none;white-space:nowrap;transition:color .15s ease,transform .15s ease}
     .hd-nav a:hover,.hd-nav a:focus,.hd-act a:hover,.hd-act a:focus{color:#0b1b3f;transform:translateY(-2px)}
-    .hd-nav a.on,.hd-act a.on{color:#0b3a91;font-weight:750}
+    .hd-nav a.on,.hd-act a.on{color:#344054;font-weight:620}
     /* 본문도 옥외광고 매체 페이지와 같은 폭·기준선을 쓴다 */
     .ins-wrap{width:min(var(--shell-max),calc(100% - 40px));margin:0 auto;box-sizing:border-box;
               padding:22px var(--dock-gutter) 90px;font-family:var(--font-sans);color:#1c1c1c}
@@ -238,7 +238,7 @@ CSS = """
 FOOTER = """
     <footer class="site-foot"><div class="foot-inner">
       <nav class="foot-nav" aria-label="회사 정보 메뉴">
-        <a href="about.html">회사소개</a><a href="terms.html">이용약관</a><a href="privacy.html">개인정보처리방침</a><a href="media-policy.html">매체관리규정</a>
+        <a href="index.html">홈</a><a href="about.html">회사소개</a><a href="terms.html">이용약관</a><a href="privacy.html">개인정보처리방침</a><a href="media-policy.html">매체관리규정</a>
       </nav>
       <address class="foot-info">
         <span><b>회사명</b> 광고플레이 주식회사(Adplay Co., Ltd)</span>
@@ -263,6 +263,9 @@ IC_STAR = ('<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.27L18.18
 IC_CHAT = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" '
            'stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.5 9.5 0 0 1-3.4-.6L3 21l1.7-5'
            'a8.2 8.2 0 0 1-.7-3.4 8.4 8.4 0 0 1 8.4-8.4 8.4 8.4 0 0 1 8.6 7.9z"/></svg>')
+IC_AREA = ('<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" '
+           'stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/>'
+           '<circle cx="12" cy="10" r="2.5"/></svg>')
 
 def viewtog(active=""):
     """우측 플로팅 메뉴판 — 지도 도크와 동일한 형태. active: 'map' | 'list' | ''
@@ -271,13 +274,14 @@ def viewtog(active=""):
     return (f'<div class="viewtog">'
             f'<a{on("map")} href="map.html"><span class="ic">{IC_MAP}</span>지도로 보기</a>'
             f'<a{on("list")} href="media-catalog.html"><span class="ic">{IC_LIST}</span>목록으로 보기</a>'
+            f'<a href="areas.html"><span class="ic">{IC_AREA}</span>지역으로 보기</a>'
             f'<a class="consult" href="estimate.html"><span class="ic">{IC_CHAT}</span>상담신청</a>'
             f'</div>')
 
 def header():
     """전 페이지 공통 헤더 — 키워드형 라벨(앵커 텍스트)로 통일"""
     return """<header class="hd"><div class="hd-in">
-      <a class="hd-brand" href="index.html" aria-label="광고플레이 홈"><span class="brand-mark">AD</span><strong>광고플레이</strong></a>
+      <a class="hd-brand" href="map.html" aria-label="광고플레이 홈"><span class="brand-mark">AD</span><strong>광고플레이</strong></a>
       <nav class="hd-nav" aria-label="주요 메뉴">
         <a href="map.html">옥외광고 지도</a>
         <a href="media-catalog.html">옥외광고 목록</a>
@@ -286,6 +290,7 @@ def header():
       </nav>
       <div class="hd-act">
         <a href="about.html">회사소개</a>
+        <a href="admin.html">관리자</a>
         <a href="login.html">로그인</a>
         <a href="join.html">회원가입</a>
       </div>

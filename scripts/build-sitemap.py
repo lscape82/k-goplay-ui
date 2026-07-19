@@ -20,13 +20,13 @@ FIXED = [
     ("insights.html", "0.8", "weekly"),       # 광고 인사이트
     ("elevator.html", "0.9", "weekly"),       # 엘리베이터 광고 허브 — 매체 10,247곳으로 최대 자산
     ("media.html", "0.7", "weekly"),
-    ("areas.html", "0.6", "monthly"),
+    ("areas.html", "0.8", "weekly"),        # 지역별 옥외광고 허브(정적)
     ("estimate.html", "0.6", "monthly"),
 ]
 
 # 관리자/도구/데모 등 색인 제외
 EXCLUDE = {
-    "media-management.html", "geocode.html", "login.html", "join.html",
+    "media-management.html", "geocode.html", "login.html", "join.html", "admin.html",
     "guides.html", "guide-detail.html", "media-detail.html", "area-detail.html",
     "bus-shelter-map-260622.html", "seo-demo-a.html", "seo-demo-b.html",
 }
@@ -54,6 +54,13 @@ def main():
 
     # 엘리베이터 상품 상세 (elevator-*.html) — 허브는 위 FIXED 에 있음
     for f in sorted(glob.glob("elevator-*.html")):
+        if f in seen or f in EXCLUDE:
+            continue
+        seen.add(f)
+        blocks.append(url_block(f"{BASE}/{f}", "0.8", "monthly"))
+
+    # 지역별 옥외광고 상세 (area-<slug>.html) — 정적 지역 랜딩. area-detail.html(옛 JS)은 EXCLUDE.
+    for f in sorted(glob.glob("area-*.html")):
         if f in seen or f in EXCLUDE:
             continue
         seen.add(f)

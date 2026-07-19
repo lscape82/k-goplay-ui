@@ -17,8 +17,14 @@
   var emptyEl = document.querySelector("#catalogEmpty");
   var activeTab = "all";
 
-  // 원래 순서(추천순) 기억
+  // 원래 순서 기억 — 같은 카테고리 안에서의 수작업 큐레이션 순서 보존용(2차 정렬 키)
   cards.forEach(function (c, i) { c.dataset.order = i; });
+
+  // 카드 기본(추천) 정렬 = 지도(map.js categoryTabs) 카테고리 탭 순서와 동일.
+  // package(패키지)는 지도에서 전광판과 한 탭으로 묶이므로 large_billboard 바로 뒤에 둔다.
+  // ⚠ 지도 categoryTabs 순서를 바꾸면 여기 CATEGORY_ORDER도 함께 수정(자동 싱크 아님 — 수동 복제).
+  var CATEGORY_ORDER = ["large_billboard", "package", "subway", "transport_hub", "bus", "vehicle", "shopping_mall_did", "daily_touchpoint", "other"];
+  function catRank(cat) { var i = CATEGORY_ORDER.indexOf(cat); return i === -1 ? 999 : i; }
 
   // 예산 구간은 지도(map.js)와 동일 — filters.json 정의를 그대로 옮긴 만원 단위 버킷.
   // 이 값을 바꿀 땐 data/filters.json / map.js 도 함께(단일 출처 원칙).
@@ -66,7 +72,12 @@
     } else if (mode === "area") {
       sorted.sort(function (a, b) { return (a.dataset.region || "힣").localeCompare(b.dataset.region || "힣", "ko"); });
     } else {
-      sorted.sort(function (a, b) { return a.dataset.order - b.dataset.order; });
+      // 추천순 = 카테고리 순서(지도 탭과 동일)로 그룹핑, 같은 카테고리 안에선 원래 큐레이션 순서 유지
+      sorted.sort(function (a, b) {
+        var ra = catRank(a.dataset.cat), rb = catRank(b.dataset.cat);
+        if (ra !== rb) return ra - rb;
+        return a.dataset.order - b.dataset.order;
+      });
     }
 
     cards.forEach(function (c) { c.hidden = true; });

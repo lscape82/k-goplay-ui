@@ -1,5 +1,14 @@
 @import url("https://cdn.jsdelivr.net/gh/sunn-us/SUIT/fonts/variable/woff2/SUIT-Variable.css");
 
+/* 전역 스크롤바 — 모든 페이지에서 가로·세로 스크롤바를 얇고 연하게(지도 톤: 연한 슬레이트).
+   모던 브라우저(Chromium 121+/Firefox)는 표준 scrollbar-width/color 를 쓴다. 모든 요소(*)에 적용해야
+   페이지뿐 아니라 내부 스크롤 영역도 얇아진다. (자체 커스텀·숨김 스크롤바를 쓰는 지도 패널 등은 더 구체적인 규칙이 이겨 유지)
+   ::-webkit-scrollbar 는 표준 속성과 섞으면 모던 크로미움에서 무시되므로, 구형 webkit 전용 폴백으로만 둔다. */
+* { scrollbar-width: thin; scrollbar-color: rgba(100, 116, 139, 0.25) transparent; }
+::-webkit-scrollbar { width: 3px; height: 3px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: rgba(100, 116, 139, 0.22); border-radius: 999px; }
+
 :root {
   --bg: #f4f7fb;
   --paper: #ffffff;
@@ -140,6 +149,85 @@ textarea {
 .nav-links a.is-active {
   background: #eef4ff;
   color: var(--navy);
+}
+
+/* 공통 헤더(.hd) — JS 렌더 페이지(홈·구 페이지)와 정적 앱 페이지가 같은 모양을 쓴다.
+   정렬은 표준 컨테이너 기준(홈 콘텐츠에 맞춤). 앱 페이지(지도·목록·사례·인사이트 등)는
+   인라인 .hd 에서 --dock-gutter 로 .hd-in 폭·여백을 덮어써 각자 콘텐츠에 정렬한다. */
+.hd {
+  position: sticky;
+  top: 0;
+  z-index: 30;
+  border-bottom: 1px solid #e9edf3;
+  background: #fff;
+  font-family: var(--font-sans);
+}
+.hd-in {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  min-height: 54px;
+  flex-wrap: wrap;
+  box-sizing: border-box;
+  width: min(var(--container-max), calc(100% - var(--page-x)));
+  margin: 0 auto;
+}
+.hd-brand {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  flex: none;
+}
+.hd-brand strong {
+  font-size: 18.5px;
+  font-weight: 760;
+  letter-spacing: -0.01em;
+  color: #0f172a;
+}
+.hd-brand .brand-mark {
+  width: 30px;
+  height: 30px;
+  background-size: auto 30px;
+}
+.hd-nav {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 22px;
+  flex-wrap: wrap;
+}
+.hd-act {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  flex-wrap: wrap;
+}
+.hd a {
+  font-size: 13px;
+  font-weight: 620;
+  color: #475467;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+.hd-nav a:hover,
+.hd-nav a:focus,
+.hd-act a:hover,
+.hd-act a:focus {
+  color: #0b1b3f;
+  transform: translateY(-2px);
+}
+.hd-nav a.on,
+.hd-act a.on {
+  color: #0b3a91;
+  font-weight: 750;
+}
+@media (max-width: 900px) {
+  .hd-in { gap: 12px; min-height: 50px; }
+  .hd-nav { gap: 14px; }
+  .hd-act { gap: 12px; }
+  .hd a { font-size: 13px; }
 }
 
 .hero {
@@ -1296,6 +1384,25 @@ body:has(#media-detail) {
   margin: 0;
 }
 
+.derived-src {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  margin: 10px 0 0;
+  color: #94a3b8;
+  font-size: 11.5px;
+}
+
+.derived-badge {
+  display: inline-flex;
+  padding: 2px 7px;
+  border-radius: 5px;
+  background: #fbf1dc;
+  color: #8a5606;
+  font-size: 10px;
+  font-weight: 800;
+}
+
 .insight-panel {
   display: grid;
   gap: 14px;
@@ -2062,6 +2169,59 @@ body:has(#media-detail) {
 
 .related-document {
   padding-top: 34px;
+}
+
+.faq-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 6px;
+}
+
+.faq-item {
+  border: 1px solid #e2e8f0;
+  border-radius: 10px;
+  background: #fff;
+  overflow: hidden;
+}
+
+.faq-item summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 15px 18px;
+  color: #0f172a;
+  font-size: 15px;
+  font-weight: 700;
+  list-style: none;
+  cursor: pointer;
+}
+
+.faq-item summary::-webkit-details-marker {
+  display: none;
+}
+
+.faq-item summary::after {
+  content: "▸";
+  color: #94a3b8;
+  font-size: 13px;
+  transition: transform 160ms ease;
+}
+
+.faq-item[open] summary::after {
+  transform: rotate(90deg);
+}
+
+.faq-item[open] summary {
+  border-bottom: 1px solid #eef2f7;
+}
+
+.faq-item p {
+  margin: 0;
+  padding: 14px 18px 16px;
+  color: #475569;
+  font-size: 14px;
+  line-height: 1.7;
 }
 
 .related-head {
@@ -4272,13 +4432,13 @@ body:has(.map-workspace-page) {
 }
 
 .map-global-brand .brand-mark {
-  width: 30px;
+  width: 98px;
   height: 30px;
   background-size: auto 30px;
 }
 
 .map-global-brand strong {
-  display: block;
+  display: none;   /* 전체 로고 이미지를 쓰므로 별도 '광고플레이' 텍스트는 감춘다 */
   font-weight: inherit;
   font-variation-settings: inherit;
   transform: translateY(0.5px);
@@ -5575,7 +5735,7 @@ body:has(.map-workspace-page) {
   align-items: baseline;
   gap: 4px;
   overflow: hidden;
-  color: #64748b;
+  color: #475467;
   font-size: 11.5px;
   font-weight: 620;
   text-overflow: ellipsis;
@@ -5890,7 +6050,7 @@ body:has(.map-workspace-page) {
   padding: 0;
   border: 0;
   border-radius: 999px;
-  background: rgba(11, 58, 145, 0.72);
+  background: radial-gradient(circle at 50% 34%, rgba(42, 84, 162, 0.74), rgba(11, 58, 145, 0.74) 72%);
   color: #fff;
   font: inherit;
   line-height: 1.05;
@@ -7585,7 +7745,7 @@ body:has(.map-workspace-page) {
 .map-traffic-segments-head p {
   margin: 4px 0 0;
   color: #64748b;
-  font-size: 15px;
+  font-size: 12px;
   font-weight: 480;
   line-height: 1.35;
   word-break: keep-all;
@@ -7790,6 +7950,73 @@ body:has(.map-workspace-page) {
   color: #8a5606;
   font-size: 10px;
   font-weight: 800;
+}
+
+/* 출처 툴팁 — 작은 '출처' 라벨에 마우스 오버(또는 포커스) 시 메모가 뜬다. 상세·지도 공통 방식.
+   (정적 상세페이지는 build-media-pages.py 가 같은 마크업/스타일을 인라인으로도 넣는다) */
+.srcpop {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted #c4c9d2;
+  color: #9aa0aa;
+  font-size: 11px;
+  line-height: 1.4;
+  cursor: help;
+}
+.srcpop-body {
+  position: absolute;
+  left: 0;
+  bottom: calc(100% + 8px);
+  z-index: 40;
+  width: max-content;
+  max-width: 340px;
+  padding: 10px 12px;
+  border: 1px solid #e3e6ec;
+  border-radius: 10px;
+  background: #f3f4f6;
+  box-shadow: 0 6px 18px rgba(15, 23, 42, .12);
+  color: #6b7280;
+  font-size: 11.5px;
+  line-height: 1.65;
+  text-align: left;
+  white-space: normal;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(4px);
+  transition: opacity .15s ease, transform .15s ease, visibility .15s ease;
+}
+.srcpop:hover .srcpop-body,
+.srcpop:focus-visible .srcpop-body,
+.srcpop:focus-within .srcpop-body {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+.srcpop-body b { display: block; margin-bottom: 4px; color: #414855; font-weight: 700; }
+.srcpop-body a {
+  display: block;
+  margin-top: 5px;
+  color: #5b6472;
+  text-decoration: none;
+}
+.srcpop-body a:hover,
+.srcpop-body a:focus { color: #0b3a91; text-decoration: underline; }
+/* 라벨과 메모 사이 8px 틈을 덮는 투명 브릿지 — 마우스가 메모 안 링크로 이동해도 호버 유지 */
+.srcpop-body::before {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  height: 9px;
+}
+.srcpop-body::after {
+  content: "";
+  position: absolute;
+  top: 100%;
+  left: 14px;
+  border: 6px solid transparent;
+  border-top-color: #f3f4f6;
 }
 
 .map-traffic-src {
@@ -8738,4 +8965,23 @@ body:has(#geocodeForm) .button[type="submit"] {
   .geocode-layout {
     grid-template-columns: minmax(0, 1fr);
   }
+}
+
+/* ─────────────────────────────────────────────────────────────
+   앱형 상단 고정 레이아웃 (지도식) — body.appview 로 켠다.
+   헤더 + 제목/설명/필터(.app-topband)는 화면에 고정하고, 그 아래(.app-scroll)만 내부 스크롤.
+   페이지 스크롤을 없애(overflow:hidden) 카드가 고정바 밑으로 파고들어 '잘려' 보이거나,
+   카드 hover 그림자가 헤더까지 번지는 문제를 없앤다(.app-scroll의 overflow 가 자식 그림자를 경계에서 잘라줌).
+   데스크톱 전용 — 모바일(≤1079px)은 기존 페이지 스크롤 그대로 둔다.
+   ⚠ media-catalog.html / insights.html 은 빌드 생성물 → 구조 변경 시 build-media-pages.py / build-insights.py 도 함께.
+   ───────────────────────────────────────────────────────────── */
+@media (min-width: 1080px) {
+  body.appview { display: flex; flex-direction: column; height: 100vh; height: 100dvh; overflow: hidden; }
+  body.appview > .hd { flex: none; z-index: 30; }
+  body.appview > main { flex: 1 1 auto; min-height: 0; display: flex; flex-direction: column; overflow: hidden; }
+  body.appview .app-topband { flex: none; position: relative; z-index: 20; background: #fff; }
+  /* 상단 블록 안의 sticky 지정 해제 — 이제 flex 로 고정되므로 sticky 불필요 */
+  body.appview .app-topband .catalog-sticky,
+  body.appview .app-topband .ins-sticky { position: static; top: auto; }
+  body.appview .app-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; }
 }

@@ -532,8 +532,6 @@ document.addEventListener("DOMContentLoaded", async () => {
     // "전광판 광고"·"옥외광고" 키워드는 이미 title·h1·description·og·schema 에 있고,
     // media-catalog.html 표기(대형 전광판/지하철/버스·쉘터/쇼핑몰 DID)와도 오히려 일치한다.
     { value: "large_billboard", label: "전광판·빌보드", categories: ["large_billboard", "package"] },
-    // 엘리베이터 = 회사 최대 자산(1만+ 지점)이라 앞쪽에 배치
-    { value: "daily_touchpoint", label: "엘리베이터", categories: ["daily_touchpoint"], alwaysShow: true },
     // 교통·이동 묶음(지하철·공항·버스·차량) — 인접 배치로 스캔·키워드 군집
     { value: "subway", label: "지하철", categories: ["subway"] },
     { value: "transport_hub", label: "공항·터미널·기차", categories: ["transport_hub"] },
@@ -541,6 +539,8 @@ document.addEventListener("DOMContentLoaded", async () => {
     // 차량 래핑(버스 래핑·택시 등) — 매체는 추후 등록. 지금은 0건이라 alwaysShow 로 버튼만 유지.
     { value: "vehicle", label: "차량 래핑", categories: ["vehicle"], alwaysShow: true },
     { value: "shopping_mall_did", label: "쇼핑·문화시설", categories: ["shopping_mall_did"] },
+    // 엘리베이터 = 회사 최대 자산(1만+ 지점). 기타 바로 왼쪽에 배치.
+    { value: "daily_touchpoint", label: "엘리베이터", categories: ["daily_touchpoint"], alwaysShow: true },
     // 기타 — 리조트·카페·학교·마트 등 애매한 매체용. 매체는 추후 등록, 지금은 버튼만.
     { value: "other", label: "기타", categories: ["other"], alwaysShow: true },
     // (아래) 예전에 제거한 탭 2개 — 실측으로 다른 탭과 완전히 중복이었다(어떤 매체도 접근 불가가 되지 않음):
@@ -2335,7 +2335,6 @@ document.addEventListener("DOMContentLoaded", async () => {
         <article><span>버스 승하차</span><strong>${AdPlay.esc(stats.bus)}</strong><em>주변 정류장 월평균${isReal.bus ? "" : " · 추정"}</em></article>
         <article><span>도로 교통량</span><strong>${AdPlay.esc(stats.traffic)}</strong><em>주요 간선도로 · 추정</em></article>
       </div>
-      ${trafficSourceNote(isReal)}
       <div class="map-traffic-chart">
         <div class="map-traffic-chart-head">
           <div>
@@ -2408,42 +2407,13 @@ document.addEventListener("DOMContentLoaded", async () => {
         <div class="map-traffic-segment-list">
           ${audienceRows.map((row) => `<div class="map-traffic-segment"><span>${AdPlay.esc(row.label)}</span><i style="--bar:${row.value}"></i><strong>${AdPlay.esc(row.note)}</strong></div>`).join("")}
         </div>
-        ${profile && profile.source ? `<p class="map-audience-src"><span class="map-est-badge">추정</span>${AdPlay.esc(profile.source)}</p>` : ""}
+        ${profile ? `<p class="map-audience-src">${AdPlay.sourceChip({ traffic: true })}</p>` : ""}
       </div>`;
   }
 
-  // 실측치를 쓰는 지표에만 출처를 붙인다 — 추정값에 출처를 달면 근거가 있는 숫자처럼 읽힌다.
-  // 유동인구·교통량은 아직 areas.json(dailyFootTraffic/trafficVolumeDaily)과 연결되지 않아 항상 추정이다.
-  function trafficSourceNote(isReal) {
-    const sources = [
-      isReal.subway && { label: "지하철 승하차 · 철도통계 (2025 월평균)", href: "https://www.kric.go.kr/" },
-      isReal.bus && { label: "버스 승하차 · 서울 열린데이터광장", href: "https://data.seoul.go.kr/" },
-    ].filter(Boolean);
-    if (!sources.length) return "";
-    return `
-      <p class="map-traffic-src">
-        <span class="map-traffic-src-label">출처</span>
-        ${sources.map((source) => `<a href="${AdPlay.esc(source.href)}" target="_blank" rel="noopener noreferrer">${AdPlay.esc(source.label)}</a>`).join("")}
-      </p>`;
-  }
-
+  // 성별·연령 프로필의 단일 소스는 common.js(AdPlay.audienceProfile). 지도·목록 페이지가 공유해 자동 동기화됩니다.
   function audienceProfile(item) {
-    const text = [item.name, item.areaName, item.areaSlug, item.address, item.mapLocation && item.mapLocation.sourceAddress].filter(Boolean).join(" ");
-    const source = "출처: 소상공인 상권정보 · 통계청 KOSIS (2026, 상권 기준)";
-    if (/삼성|코엑스|COEX|samseong|coex/i.test(text)) {
-      return { gender: { female: 48, male: 52 }, worker: "높음", note: "업무·전시 방문과 쇼핑 체류가 섞인 3040 중심", source,
-        age: [["10대", 5, 17, "학생·동반"], ["20대", 22, 73, "활동층"], ["30대", 28, 93, "구매 핵심"], ["40대", 24, 80, "직장인"], ["50대", 14, 47, "가족 소비"], ["60대+", 7, 23, "생활권"]] };
-    }
-    if (/서울역|KTX|seoul-station|transport/i.test(text)) {
-      return { gender: { female: 45, male: 55 }, worker: "보통", note: "출장·관광·통근이 겹쳐 전 연령 고른 분포", source,
-        age: [["10대", 6, 20, "학생·동반"], ["20대", 20, 67, "활동층"], ["30대", 24, 80, "구매 핵심"], ["40대", 23, 77, "직장인"], ["50대", 16, 53, "가족 소비"], ["60대+", 11, 37, "생활권"]] };
-    }
-    if (/광화문|종로|시청|청계|gwanghwamun|jongno|jung/i.test(text)) {
-      return { gender: { female: 47, male: 53 }, worker: "매우 높음", note: "도심 오피스 직장인 3040·40대 이상 비중 높음", source,
-        age: [["10대", 4, 13, "학생·동반"], ["20대", 18, 60, "활동층"], ["30대", 26, 87, "구매 핵심"], ["40대", 26, 87, "직장인"], ["50대", 16, 53, "가족 소비"], ["60대+", 10, 33, "생활권"]] };
-    }
-    return { gender: { female: 58, male: 42 }, worker: "높음", note: "뷰티·패션 소비층, 2030 여성 비중 우세", source,
-      age: [["10대", 6, 20, "학생·동반"], ["20대", 28, 93, "활동층"], ["30대", 30, 100, "구매 핵심"], ["40대", 20, 67, "직장인"], ["50대", 11, 37, "가족 소비"], ["60대+", 5, 17, "생활권"]] };
+    return AdPlay.audienceProfile(item);
   }
 
   function nearbyDistrict(item) {
