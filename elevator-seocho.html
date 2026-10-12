@@ -14,8 +14,10 @@
     header .sub { margin-top: 3px; font-size: 12.5px; color: #64748b; }
     #stage { position: relative; flex: 1; min-height: 0; display: flex; }
     #map { flex: 1; width: 100%; min-height: 0; }
-    .legend { position: absolute; z-index: 10; left: 14px; top: 78px; background: #fff; border: 1px solid #e5e9f0; border-radius: 10px; padding: 10px 13px; box-shadow: 0 2px 10px rgba(15,23,42,.12); font-size: 13px; }
-    .legend b { display: block; font-size: 12px; color: #64748b; margin-bottom: 6px; font-weight: 700; }
+
+    /* 범례 */
+    .legend { position: absolute; z-index: 10; left: 14px; top: 14px; background: #fff; border: 1px solid #e5e9f0; border-radius: 10px; padding: 10px 13px; box-shadow: 0 2px 10px rgba(15,23,42,.12); font-size: 13px; }
+    .legend b { display: block; font-size: 12px; color: #64748b; margin-bottom: 2px; font-weight: 700; }
     .legend .hint { display: block; font-size: 10.5px; color: #94a3b8; font-weight: 600; margin-bottom: 4px; }
     .legend .row { display: flex; align-items: center; gap: 7px; margin: 2px 0; font-weight: 700; width: 100%; background: none; border: 0; padding: 5px 7px; border-radius: 7px; cursor: pointer; font: inherit; color: inherit; text-align: left; }
     .legend .row:hover { background: #f3f6fb; }
@@ -24,12 +26,15 @@
     .legend .row[aria-pressed="false"] .dot { background: #c3c9d4 !important; }
     .legend .row[aria-pressed="false"] .chk { color: #cbd2dd; }
     .legend .dot { width: 13px; height: 13px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.15); flex: none; }
-    .dot.focus { background: #e53935; } .dot.townboard { background: #7c3aed; }
     .legend .tot { margin-top: 7px; padding-top: 7px; border-top: 1px solid #eef1f7; color: #0b3a91; font-weight: 800; }
+
     /* 핀 */
     .evpin { width: 20px; height: 20px; border-radius: 50% 50% 50% 0; border: 2px solid #fff; transform: rotate(-45deg); box-shadow: 0 2px 6px rgba(15,23,42,.35); cursor: pointer; }
     .evpin.focus { background: #e53935; } .evpin.townboard { background: #7c3aed; }
+    .evpin.sel { box-shadow: 0 0 0 3px #ffd60a, 0 2px 7px rgba(15,23,42,.5); }
     .evpin i { position: absolute; top: 50%; left: 50%; width: 6px; height: 6px; border-radius: 50%; background: #fff; transform: translate(-50%,-50%) rotate(45deg); }
+
+    /* 팝업 */
     .iw { font-family: inherit; padding: 11px 13px; min-width: 210px; max-width: 280px; }
     .iw h3 { margin: 0 0 2px; font-size: 14px; font-weight: 800; }
     .iw .brand { display: inline-block; font-size: 11px; font-weight: 800; padding: 1px 7px; border-radius: 999px; color: #fff; }
@@ -37,7 +42,36 @@
     .iw p { margin: 6px 0 0; font-size: 12.5px; color: #475569; line-height: 1.5; }
     .iw .cost { margin-top: 7px; font-size: 13px; font-weight: 800; color: #0b3a91; }
     .iw .vat { font-size: 11px; font-weight: 600; color: #94a3b8; }
-    #err { display:none; position:absolute; z-index:20; inset:78px 14px auto 14px; background:#fff4f4; border:1px solid #f3c6c6; color:#a3322c; padding:12px 14px; border-radius:10px; font-size:13px; }
+    .iw .iwsel { margin-top: 9px; width: 100%; padding: 8px; border: 1px solid #0b3a91; background: #0b3a91; color: #fff; border-radius: 8px; font: inherit; font-weight: 800; font-size: 12.5px; cursor: pointer; }
+    .iw .iwsel.on { background: #fff; color: #0b3a91; }
+
+    /* 목록/다운로드 패널 */
+    .listtoggle { position: absolute; z-index: 14; top: 14px; right: 14px; background: #0b3a91; color: #fff; border: 0; border-radius: 9px; padding: 9px 13px; font: inherit; font-weight: 800; font-size: 13px; cursor: pointer; box-shadow: 0 2px 10px rgba(11,58,145,.3); }
+    .panel { position: absolute; z-index: 16; top: 0; right: 0; height: 100%; width: 340px; max-width: 88vw; background: #fff; border-left: 1px solid #e5e9f0; box-shadow: -4px 0 18px rgba(15,23,42,.14); display: flex; flex-direction: column; transform: translateX(100%); transition: transform .25s ease; }
+    .panel.open { transform: none; }
+    .panel h2 { margin: 0; padding: 13px 15px; font-size: 15px; font-weight: 800; border-bottom: 1px solid #eef1f7; display: flex; align-items: center; gap: 8px; }
+    .panel h2 .cnt { font-size: 12px; color: #0b3a91; font-weight: 800; }
+    .panel .pclose { margin-left: auto; border: 0; background: none; font-size: 22px; cursor: pointer; color: #94a3b8; line-height: 1; padding: 0 2px; }
+    .panel .ptools { padding: 10px 14px; border-bottom: 1px solid #eef1f7; display: flex; flex-direction: column; gap: 8px; }
+    .panel .psearch { width: 100%; padding: 8px 10px; border: 1px solid #dbe1ea; border-radius: 8px; font: inherit; }
+    .panel .prow2 { display: flex; gap: 7px; align-items: center; font-size: 12px; color: #64748b; }
+    .panel .prow2 button { font: inherit; font-size: 12px; border: 1px solid #dbe1ea; background: #fff; border-radius: 7px; padding: 5px 9px; cursor: pointer; }
+    .panel .prow2 button:hover { background: #f3f6fb; }
+    .panel .plist { flex: 1; overflow: auto; padding: 6px 8px; }
+    .panel .pitem { display: flex; align-items: flex-start; gap: 9px; padding: 8px; border-radius: 8px; cursor: pointer; }
+    .panel .pitem:hover { background: #f5f8fc; }
+    .panel .pitem input { margin-top: 3px; flex: none; width: 16px; height: 16px; }
+    .panel .pitem .nm { font-size: 13px; font-weight: 700; line-height: 1.35; }
+    .panel .pitem .meta { font-size: 11px; color: #8a94a6; margin-top: 1px; }
+    .panel .pitem .tag { display: inline-block; font-size: 10px; font-weight: 800; color: #fff; border-radius: 999px; padding: 0 6px; margin-right: 5px; vertical-align: 1px; }
+    .tag.focus { background: #e53935; } .tag.townboard { background: #7c3aed; }
+    .panel .pempty { padding: 24px 14px; text-align: center; color: #94a3b8; font-size: 13px; }
+    .panel .pfoot { padding: 11px 14px; border-top: 1px solid #eef1f7; }
+    .panel .dlbtn { width: 100%; padding: 12px; border: 0; border-radius: 9px; background: #0b3a91; color: #fff; font: inherit; font-weight: 800; font-size: 14px; cursor: pointer; }
+    .panel .dlbtn:disabled { background: #c3c9d4; cursor: default; }
+    .panel .dlhint { margin: 7px 0 0; font-size: 11px; color: #94a3b8; text-align: center; }
+
+    #err { display: none; position: absolute; z-index: 20; inset: 60px 14px auto 14px; background: #fff4f4; border: 1px solid #f3c6c6; color: #a3322c; padding: 12px 14px; border-radius: 10px; font-size: 13px; }
   </style>
 </head>
 <body>
@@ -48,6 +82,7 @@
     </header>
     <div id="stage">
       <div id="map"></div>
+
       <div class="legend" id="legend" hidden>
         <b>매체 구분</b>
         <span class="hint">클릭하면 켜기 / 끄기</span>
@@ -55,19 +90,41 @@
         <button type="button" class="row" id="btnTb" data-p="townboard" aria-pressed="true"><span class="dot townboard"></span>타운보드 <span id="lt"></span><span class="chk">●</span></button>
         <div class="tot" id="ltot"></div>
       </div>
+
+      <button type="button" class="listtoggle" id="listtoggle">📋 단지 선택 · 다운로드</button>
+
+      <aside class="panel" id="panel" aria-hidden="true">
+        <h2>단지 선택 <span class="cnt" id="selcount">0곳 선택</span><button type="button" class="pclose" id="pclose" aria-label="닫기">×</button></h2>
+        <div class="ptools">
+          <input type="search" class="psearch" id="psearch" placeholder="단지명 검색">
+          <div class="prow2">
+            <button type="button" id="selall">보이는 단지 전체선택</button>
+            <button type="button" id="selnone">전체해제</button>
+          </div>
+        </div>
+        <div class="plist" id="plist"></div>
+        <div class="pfoot">
+          <button type="button" class="dlbtn" id="dlbtn" disabled>선택한 단지 다운로드</button>
+          <p class="dlhint">엑셀(Excel)에서 바로 열리는 CSV 파일로 저장됩니다</p>
+        </div>
+      </aside>
+
       <div id="err">지도를 불러오지 못했습니다. (네이버 지도 인증 도메인 확인 필요)</div>
     </div>
   </div>
+
   <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1ouo31myef"></script>
   <script>
     (async function () {
       var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
       var won = function (n) { return n ? Number(n).toLocaleString("ko-KR") + "원" : "상담"; };
       var PLABEL = { focus: "포커스", townboard: "타운보드" };
+
       var data;
       try { data = await (await fetch("data/seocho-elevator.json?v=1")).json(); }
       catch (e) { document.getElementById("sub").textContent = "데이터 로드 실패"; return; }
       var sites = data.sites || [];
+
       document.getElementById("sub").textContent =
         "총 " + data.count + "곳 · 포커스 " + data.focus + " · 타운보드 " + data.townboard + " · 엘리베이터 내부 매체(25인치 TV)";
       document.getElementById("lf").textContent = data.focus + "곳";
@@ -80,35 +137,111 @@
       var map = new naver.maps.Map("map", { zoom: 14, minZoom: 11, mapTypeControl: false, zoomControl: true, zoomControlOptions: { position: naver.maps.Position.RIGHT_CENTER } });
       var bounds = new naver.maps.LatLngBounds();
       var iw = new naver.maps.InfoWindow({ borderWidth: 0, backgroundColor: "transparent", disableAnchor: false, pixelOffset: new naver.maps.Point(0, -6) });
-      var groups = { focus: [], townboard: [] };
+      var PIN_ANCHOR = new naver.maps.Point(10, 20);
 
-      sites.forEach(function (s) {
+      var groups = { focus: [], townboard: [] };   // 켜기/끄기용
+      var recs = [];                                // {idx, site, marker, cb, el, hover}
+      var selected = new Set();
+      var openIdx = null;
+      var plist = document.getElementById("plist");
+
+      function pinHtml(s, sel) {
+        var hover = s.name + " · " + PLABEL[s.product] + (s.monitors ? " · 모니터 " + s.monitors + "대" : "");
+        return '<div class="evpin ' + s.product + (sel ? " sel" : "") + '" title="' + esc(hover) + '"><i></i></div>';
+      }
+      function iwHtml(r) {
+        var s = r.site, on = selected.has(r.idx);
+        var facts = [];
+        if (s.gubun) facts.push(s.gubun);
+        if (s.pyeong) facts.push("평형 " + s.pyeong);
+        if (s.households) facts.push(Number(s.households).toLocaleString("ko-KR") + "세대");
+        var period = s.product === "focus" ? "4주" : "월";
+        var calc = (s.monitors && s.unit) ? ("모니터 " + s.monitors + "대 × " + Number(s.unit).toLocaleString("ko-KR") + "원") : "";
+        return '<div class="iw"><h3>' + esc(s.name) + '</h3>' +
+          '<span class="brand ' + s.product + '">' + PLABEL[s.product] + '</span>' +
+          '<p>' + esc(s.addr) + (facts.length ? "<br>" + esc(facts.join(" · ")) : "") + '</p>' +
+          (calc ? '<p>' + esc(calc) + '</p>' : '') +
+          '<div class="cost">' + period + ' ' + won(s.cost) + ' <span class="vat">VAT 별도</span></div>' +
+          '<button type="button" class="iwsel' + (on ? " on" : "") + '" onclick="window.__toggleSel(' + r.idx + ')">' + (on ? "✓ 선택됨 (해제)" : "+ 이 단지 선택") + '</button></div>';
+      }
+
+      sites.forEach(function (s, idx) {
         var ll = new naver.maps.LatLng(s.lat, s.lng);
         bounds.extend(ll);
-        var hover = s.name + " · " + PLABEL[s.product] + (s.monitors ? " · 모니터 " + s.monitors + "대" : "");
         var m = new naver.maps.Marker({
-          map: map, position: ll, title: hover,
-          icon: { content: '<div class="evpin ' + s.product + '" title="' + esc(hover) + '"><i></i></div>', anchor: new naver.maps.Point(10, 20) },
+          map: map, position: ll,
+          title: s.name + " · " + PLABEL[s.product] + (s.monitors ? " · 모니터 " + s.monitors + "대" : ""),
+          icon: { content: pinHtml(s, false), anchor: PIN_ANCHOR },
           zIndex: s.product === "townboard" ? 60 : 50
         });
         (groups[s.product] || (groups[s.product] = [])).push(m);
+
+        var item = document.createElement("label");
+        item.className = "pitem";
+        item.dataset.idx = idx;
+        item.dataset.name = s.name;
+        item.dataset.product = s.product;
+        item.innerHTML = '<input type="checkbox">' +
+          '<span><span class="nm"><span class="tag ' + s.product + '">' + PLABEL[s.product].slice(0, 2) + '</span>' + esc(s.name) + '</span>' +
+          '<span class="meta">' + esc(s.addr) + (s.monitors ? " · 모니터 " + s.monitors + "대" : "") + '</span></span>';
+        var cb = item.querySelector("input");
+        cb.addEventListener("change", function () { setSel(idx, cb.checked, "list"); });
+        plist.appendChild(item);
+
+        var r = { idx: idx, site: s, marker: m, cb: cb, el: item };
+        recs.push(r);
+
         naver.maps.Event.addListener(m, "click", function () {
-          var facts = [];
-          if (s.gubun) facts.push(s.gubun);
-          if (s.pyeong) facts.push("평형 " + s.pyeong);
-          if (s.households) facts.push(s.households.toLocaleString("ko-KR") + "세대");
-          var period = s.product === "focus" ? "4주" : "월";
-          var calc = (s.monitors && s.unit) ? ("모니터 " + s.monitors + "대 × " + Number(s.unit).toLocaleString("ko-KR") + "원") : "";
-          var html = '<div class="iw"><h3>' + esc(s.name) + '</h3>' +
-            '<span class="brand ' + s.product + '">' + PLABEL[s.product] + '</span>' +
-            '<p>' + esc(s.addr) + (facts.length ? "<br>" + esc(facts.join(" · ")) : "") + '</p>' +
-            (calc ? '<p>' + esc(calc) + '</p>' : '') +
-            '<div class="cost">' + period + ' ' + won(s.cost) + ' <span class="vat">VAT 별도</span></div></div>';
-          iw.setContent(html); iw.open(map, m);
+          openIdx = idx;
+          iw.setContent(iwHtml(r));
+          iw.open(map, m);
         });
       });
+      naver.maps.Event.addListener(iw, "close", function () { openIdx = null; });
+
       if (sites.length) map.fitBounds(bounds, { top: 60, right: 60, bottom: 60, left: 60 });
 
+      // ----- 선택 토글 -----
+      function setSel(idx, on, origin) {
+        var r = recs[idx];
+        if (!r) return;
+        if (on) selected.add(idx); else selected.delete(idx);
+        r.cb.checked = on;
+        r.marker.setIcon({ content: pinHtml(r.site, on), anchor: PIN_ANCHOR });
+        if (openIdx === idx && iw.getMap()) iw.setContent(iwHtml(r));
+        updateCount();
+      }
+      window.__toggleSel = function (idx) { setSel(idx, !selected.has(idx)); };
+
+      function updateCount() {
+        var n = selected.size;
+        document.getElementById("selcount").textContent = n + "곳 선택";
+        var b = document.getElementById("dlbtn");
+        b.disabled = n === 0;
+        b.textContent = n === 0 ? "선택한 단지 다운로드" : ("선택한 " + n + "곳 다운로드");
+      }
+
+      // ----- 검색 -----
+      document.getElementById("psearch").addEventListener("input", function () {
+        var q = this.value.trim().toLowerCase();
+        recs.forEach(function (r) {
+          r.el.style.display = (!q || r.site.name.toLowerCase().indexOf(q) >= 0) ? "" : "none";
+        });
+      });
+      // ----- 전체선택/해제 -----
+      document.getElementById("selall").addEventListener("click", function () {
+        recs.forEach(function (r) { if (r.el.style.display !== "none") setSel(r.idx, true); });
+      });
+      document.getElementById("selnone").addEventListener("click", function () {
+        Array.from(selected).forEach(function (idx) { setSel(idx, false); });
+      });
+
+      // ----- 패널 열고 닫기 -----
+      var panel = document.getElementById("panel");
+      document.getElementById("listtoggle").addEventListener("click", function () { panel.classList.add("open"); panel.setAttribute("aria-hidden", "false"); });
+      document.getElementById("pclose").addEventListener("click", function () { panel.classList.remove("open"); panel.setAttribute("aria-hidden", "true"); });
+
+      // ----- 범례 켜기/끄기 -----
       function wireToggle(id, product) {
         var btn = document.getElementById(id);
         if (!btn) return;
@@ -121,6 +254,28 @@
       }
       wireToggle("btnFocus", "focus");
       wireToggle("btnTb", "townboard");
+
+      // ----- 다운로드 (CSV, 엑셀 호환) -----
+      function csvCell(v) { v = String(v == null ? "" : v); return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+      document.getElementById("dlbtn").addEventListener("click", function () {
+        var rows = recs.filter(function (r) { return selected.has(r.idx); });
+        if (!rows.length) return;
+        var head = ["단지명", "매체", "구분", "주소", "평형", "세대수", "모니터수", "기간", "금액(원·VAT별도)"];
+        var lines = [head.map(csvCell).join(",")];
+        rows.forEach(function (r) {
+          var s = r.site, period = s.product === "focus" ? "4주" : "월";
+          lines.push([s.name, PLABEL[s.product], s.gubun || "", s.addr || "", s.pyeong || "", s.households || "", s.monitors || "", period, s.cost || ""].map(csvCell).join(","));
+        });
+        var csv = "﻿" + lines.join("\r\n");
+        var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "서초구_엘리베이터_선택단지_" + rows.length + "곳.csv";
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+      });
+
+      updateCount();
     })();
   </script>
 </body>
