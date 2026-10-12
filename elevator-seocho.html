@@ -35,7 +35,7 @@
     .evpin i { position: absolute; top: 50%; left: 50%; width: 6px; height: 6px; border-radius: 50%; background: #fff; transform: translate(-50%,-50%) rotate(45deg); }
 
     /* 팝업 */
-    .iw { font-family: inherit; padding: 11px 13px; min-width: 210px; max-width: 280px; }
+    .iw { font-family: inherit; padding: 13px 15px; min-width: 210px; max-width: 280px; background: #fff; border: 1px solid #e5e9f0; border-radius: 12px; box-shadow: 0 8px 26px rgba(15,23,42,.25); }
     .iw h3 { margin: 0 0 2px; font-size: 14px; font-weight: 800; }
     .iw .brand { display: inline-block; font-size: 11px; font-weight: 800; padding: 1px 7px; border-radius: 999px; color: #fff; }
     .iw .brand.focus { background: #e53935; } .iw .brand.townboard { background: #7c3aed; }
@@ -90,11 +90,11 @@
         <button type="button" class="row" id="btnFocus" data-p="focus" aria-pressed="true"><span class="dot focus"></span>포커스 <span id="lf"></span><span class="chk">●</span></button>
         <button type="button" class="row" id="btnTb" data-p="townboard" aria-pressed="true"><span class="dot townboard"></span>타운보드 <span id="lt"></span><span class="chk">●</span></button>
         <div class="tot" id="ltot"></div>
-        <button type="button" class="listtoggle" id="listtoggle">📋 단지 선택 · 다운로드</button>
+        <button type="button" class="listtoggle" id="listtoggle">📋 선택한 단지 리스트 다운로드</button>
       </div>
 
       <aside class="panel" id="panel" aria-hidden="true">
-        <h2>단지 선택 <span class="cnt" id="selcount">0곳 선택</span><button type="button" class="pclose" id="pclose" aria-label="닫기">×</button></h2>
+        <h2>선택한 단지 리스트 <span class="cnt" id="selcount">0곳 선택</span><button type="button" class="pclose" id="pclose" aria-label="닫기">×</button></h2>
         <div class="ptools">
           <input type="search" class="psearch" id="psearch" placeholder="단지명 검색">
           <div class="prow2">
