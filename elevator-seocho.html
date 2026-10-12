@@ -25,16 +25,20 @@
     .legend .hint { display: block; font-size: 10.5px; color: #94a3b8; font-weight: 600; margin-bottom: 4px; }
     .legend .row { display: flex; align-items: center; gap: 7px; margin: 2px 0; font-weight: 700; width: 100%; background: none; border: 0; padding: 5px 7px; border-radius: 7px; cursor: pointer; font: inherit; color: inherit; text-align: left; }
     .legend .row:hover { background: #f3f6fb; }
-    .legend .row .chk { margin-left: auto; font-size: 11px; color: #22a06b; font-weight: 800; }
-    .legend .row[aria-pressed="false"] { opacity: .45; }
+    .legend .row .chk { margin-left: auto; width: 32px; height: 18px; border-radius: 999px; background: #22a06b; position: relative; flex: none; transition: background .15s; }
+    .legend .row .chk::after { content: ""; position: absolute; top: 2px; left: 16px; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.25); transition: left .15s; }
+    .legend .row[aria-pressed="false"] { opacity: .6; }
     .legend .row[aria-pressed="false"] .dot { background: #c3c9d4 !important; }
-    .legend .row[aria-pressed="false"] .chk { color: #cbd2dd; }
-    .legend .dot { width: 13px; height: 13px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.15); flex: none; }
+    .legend .row[aria-pressed="false"] .chk { background: #cbd2dd; }
+    .legend .row[aria-pressed="false"] .chk::after { left: 2px; }
+    .legend .dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.18); flex: none; }
+    .legend .dot.focus { background: #e53935; }
+    .legend .dot.townboard { background: #1f74e6; }
     .legend .tot { margin-top: 7px; padding-top: 7px; border-top: 1px solid #eef1f7; color: #0b3a91; font-weight: 800; }
 
     /* 핀 */
     .evpin { width: 20px; height: 20px; border-radius: 50% 50% 50% 0; border: 2px solid #fff; transform: rotate(-45deg); box-shadow: 0 2px 6px rgba(15,23,42,.35); cursor: pointer; }
-    .evpin.focus { background: #e53935; } .evpin.townboard { background: #7c3aed; }
+    .evpin.focus { background: #e53935; } .evpin.townboard { background: #1f74e6; }
     .evpin.sel { box-shadow: 0 0 0 3px #ffd60a, 0 2px 7px rgba(15,23,42,.5); }
     .evpin i { position: absolute; top: 50%; left: 50%; width: 6px; height: 6px; border-radius: 50%; background: #fff; transform: translate(-50%,-50%) rotate(45deg); }
 
@@ -42,7 +46,7 @@
     .iw { font-family: inherit; padding: 13px 15px; min-width: 210px; max-width: 280px; background: #fff; border: 1px solid #e5e9f0; border-radius: 12px; box-shadow: 0 8px 26px rgba(15,23,42,.25); }
     .iw h3 { margin: 0 0 2px; font-size: 14px; font-weight: 800; }
     .iw .brand { display: inline-block; font-size: 11px; font-weight: 800; padding: 1px 7px; border-radius: 999px; color: #fff; }
-    .iw .brand.focus { background: #e53935; } .iw .brand.townboard { background: #7c3aed; }
+    .iw .brand.focus { background: #e53935; } .iw .brand.townboard { background: #1f74e6; }
     .iw p { margin: 6px 0 0; font-size: 12.5px; color: #475569; line-height: 1.5; }
     .iw .cost { margin-top: 7px; font-size: 13px; font-weight: 800; color: #0b3a91; }
     .iw .vat { font-size: 11px; font-weight: 600; color: #94a3b8; }
@@ -71,7 +75,7 @@
     .panel .pitem .nm { font-size: 13px; font-weight: 700; line-height: 1.35; }
     .panel .pitem .meta { font-size: 11px; color: #8a94a6; margin-top: 1px; }
     .panel .pitem .tag { display: inline-block; font-size: 10px; font-weight: 800; color: #fff; border-radius: 999px; padding: 0 6px; margin-right: 5px; vertical-align: 1px; }
-    .tag.focus { background: #e53935; } .tag.townboard { background: #7c3aed; }
+    .tag.focus { background: #e53935; } .tag.townboard { background: #1f74e6; }
     .panel .pempty { padding: 24px 14px; text-align: center; color: #94a3b8; font-size: 13px; }
     .panel .pfoot { padding: 11px 14px; border-top: 1px solid #eef1f7; }
     .panel .dlbtn { width: 100%; padding: 12px; border: 0; border-radius: 9px; background: #0b3a91; color: #fff; font: inherit; font-weight: 800; font-size: 14px; cursor: pointer; }
@@ -94,8 +98,8 @@
       <div class="legend" id="legend" hidden>
         <b>매체 구분</b>
         <span class="hint">클릭하면 켜기 / 끄기</span>
-        <button type="button" class="row" id="btnFocus" data-p="focus" aria-pressed="true"><span class="dot focus"></span>포커스 <span id="lf"></span><span class="chk">●</span></button>
-        <button type="button" class="row" id="btnTb" data-p="townboard" aria-pressed="true"><span class="dot townboard"></span>타운보드 <span id="lt"></span><span class="chk">●</span></button>
+        <button type="button" class="row" id="btnFocus" data-p="focus" aria-pressed="true"><span class="dot focus"></span>포커스 <span id="lf"></span><span class="chk"></span></button>
+        <button type="button" class="row" id="btnTb" data-p="townboard" aria-pressed="true"><span class="dot townboard"></span>타운보드 <span id="lt"></span><span class="chk"></span></button>
         <div class="tot" id="ltot"></div>
         <button type="button" class="listtoggle" id="listtoggle">📋 선택한 단지 리스트 다운로드</button>
       </div>
