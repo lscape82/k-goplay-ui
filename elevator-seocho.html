@@ -16,8 +16,14 @@
     #map { flex: 1; width: 100%; min-height: 0; }
     .legend { position: absolute; z-index: 10; left: 14px; top: 78px; background: #fff; border: 1px solid #e5e9f0; border-radius: 10px; padding: 10px 13px; box-shadow: 0 2px 10px rgba(15,23,42,.12); font-size: 13px; }
     .legend b { display: block; font-size: 12px; color: #64748b; margin-bottom: 6px; font-weight: 700; }
-    .legend .row { display: flex; align-items: center; gap: 7px; margin: 4px 0; font-weight: 700; }
-    .legend .dot { width: 13px; height: 13px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.15); }
+    .legend .hint { display: block; font-size: 10.5px; color: #94a3b8; font-weight: 600; margin-bottom: 4px; }
+    .legend .row { display: flex; align-items: center; gap: 7px; margin: 2px 0; font-weight: 700; width: 100%; background: none; border: 0; padding: 5px 7px; border-radius: 7px; cursor: pointer; font: inherit; color: inherit; text-align: left; }
+    .legend .row:hover { background: #f3f6fb; }
+    .legend .row .chk { margin-left: auto; font-size: 11px; color: #22a06b; font-weight: 800; }
+    .legend .row[aria-pressed="false"] { opacity: .45; }
+    .legend .row[aria-pressed="false"] .dot { background: #c3c9d4 !important; }
+    .legend .row[aria-pressed="false"] .chk { color: #cbd2dd; }
+    .legend .dot { width: 13px; height: 13px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.15); flex: none; }
     .dot.focus { background: #e53935; } .dot.townboard { background: #7c3aed; }
     .legend .tot { margin-top: 7px; padding-top: 7px; border-top: 1px solid #eef1f7; color: #0b3a91; font-weight: 800; }
     /* 핀 */
@@ -44,8 +50,9 @@
       <div id="map"></div>
       <div class="legend" id="legend" hidden>
         <b>매체 구분</b>
-        <div class="row"><span class="dot focus"></span>포커스 <span id="lf"></span></div>
-        <div class="row"><span class="dot townboard"></span>타운보드 <span id="lt"></span></div>
+        <span class="hint">클릭하면 켜기 / 끄기</span>
+        <button type="button" class="row" id="btnFocus" data-p="focus" aria-pressed="true"><span class="dot focus"></span>포커스 <span id="lf"></span><span class="chk">●</span></button>
+        <button type="button" class="row" id="btnTb" data-p="townboard" aria-pressed="true"><span class="dot townboard"></span>타운보드 <span id="lt"></span><span class="chk">●</span></button>
         <div class="tot" id="ltot"></div>
       </div>
       <div id="err">지도를 불러오지 못했습니다. (네이버 지도 인증 도메인 확인 필요)</div>
@@ -73,6 +80,7 @@
       var map = new naver.maps.Map("map", { zoom: 14, minZoom: 11, mapTypeControl: false, zoomControl: true, zoomControlOptions: { position: naver.maps.Position.RIGHT_CENTER } });
       var bounds = new naver.maps.LatLngBounds();
       var iw = new naver.maps.InfoWindow({ borderWidth: 0, backgroundColor: "transparent", disableAnchor: false, pixelOffset: new naver.maps.Point(0, -6) });
+      var groups = { focus: [], townboard: [] };
 
       sites.forEach(function (s) {
         var ll = new naver.maps.LatLng(s.lat, s.lng);
@@ -83,6 +91,7 @@
           icon: { content: '<div class="evpin ' + s.product + '" title="' + esc(hover) + '"><i></i></div>', anchor: new naver.maps.Point(10, 20) },
           zIndex: s.product === "townboard" ? 60 : 50
         });
+        (groups[s.product] || (groups[s.product] = [])).push(m);
         naver.maps.Event.addListener(m, "click", function () {
           var facts = [];
           if (s.gubun) facts.push(s.gubun);
@@ -99,6 +108,19 @@
         });
       });
       if (sites.length) map.fitBounds(bounds, { top: 60, right: 60, bottom: 60, left: 60 });
+
+      function wireToggle(id, product) {
+        var btn = document.getElementById(id);
+        if (!btn) return;
+        btn.addEventListener("click", function () {
+          var on = btn.getAttribute("aria-pressed") !== "true";
+          btn.setAttribute("aria-pressed", on ? "true" : "false");
+          (groups[product] || []).forEach(function (m) { m.setMap(on ? map : null); });
+          if (!on) iw.close();
+        });
+      }
+      wireToggle("btnFocus", "focus");
+      wireToggle("btnTb", "townboard");
     })();
   </script>
 </body>
