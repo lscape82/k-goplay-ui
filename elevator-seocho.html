@@ -48,7 +48,7 @@
     /* 목록/다운로드 패널 */
     .listtoggle { display: block; width: 100%; margin-top: 9px; background: #0b3a91; color: #fff; border: 0; border-radius: 9px; padding: 11px 13px; font: inherit; font-weight: 800; font-size: 13px; cursor: pointer; box-shadow: 0 2px 10px rgba(11,58,145,.3); text-align: center; }
     .listtoggle:hover { background: #0a337f; }
-    .panel { position: absolute; z-index: 16; top: 0; right: 0; height: 100%; width: 340px; max-width: 88vw; background: #fff; border-left: 1px solid #e5e9f0; box-shadow: -4px 0 18px rgba(15,23,42,.14); display: flex; flex-direction: column; transform: translateX(100%); transition: transform .25s ease; }
+    .panel { position: absolute; z-index: 16; top: 0; left: 0; height: 100%; width: 340px; max-width: 88vw; background: #fff; border-right: 1px solid #e5e9f0; box-shadow: 4px 0 18px rgba(15,23,42,.16); display: flex; flex-direction: column; transform: translateX(-100%); transition: transform .25s ease; }
     .panel.open { transform: none; }
     .panel h2 { margin: 0; padding: 13px 15px; font-size: 15px; font-weight: 800; border-bottom: 1px solid #eef1f7; display: flex; align-items: center; gap: 8px; }
     .panel h2 .cnt { font-size: 12px; color: #0b3a91; font-weight: 800; }
@@ -61,6 +61,8 @@
     .panel .plist { flex: 1; overflow: auto; padding: 6px 8px; }
     .panel .pitem { display: flex; align-items: flex-start; gap: 9px; padding: 8px; border-radius: 8px; cursor: pointer; }
     .panel .pitem:hover { background: #f5f8fc; }
+    .panel .pitem.flash { animation: flashbg 1.4s ease; }
+    @keyframes flashbg { 0% { background: #fff3bf; } 70% { background: #fff3bf; } 100% { background: transparent; } }
     .panel .pitem input { margin-top: 3px; flex: none; width: 16px; height: 16px; }
     .panel .pitem .nm { font-size: 13px; font-weight: 700; line-height: 1.35; }
     .panel .pitem .meta { font-size: 11px; color: #8a94a6; margin-top: 1px; }
@@ -211,7 +213,24 @@
         if (openIdx === idx && iw.getMap()) iw.setContent(iwHtml(r));
         updateCount();
       }
-      window.__toggleSel = function (idx) { setSel(idx, !selected.has(idx)); };
+      // 지도 팝업의 '이 단지 선택' → 선택 반영 + 카드 닫고 + 좌측 리스트 열어 해당 단지 강조
+      window.__toggleSel = function (idx) {
+        var on = !selected.has(idx);
+        setSel(idx, on);
+        iw.close();
+        if (on) {
+          openPanel();
+          var r = recs[idx];
+          if (r) {
+            document.getElementById("psearch").value = "";
+            recs.forEach(function (x) { x.el.style.display = ""; });
+            r.el.scrollIntoView({ block: "center" });
+            r.el.classList.remove("flash");
+            void r.el.offsetWidth;
+            r.el.classList.add("flash");
+          }
+        }
+      };
 
       function updateCount() {
         var n = selected.size;
@@ -238,8 +257,10 @@
 
       // ----- 패널 열고 닫기 -----
       var panel = document.getElementById("panel");
-      document.getElementById("listtoggle").addEventListener("click", function () { panel.classList.add("open"); panel.setAttribute("aria-hidden", "false"); });
-      document.getElementById("pclose").addEventListener("click", function () { panel.classList.remove("open"); panel.setAttribute("aria-hidden", "true"); });
+      function openPanel() { panel.classList.add("open"); panel.setAttribute("aria-hidden", "false"); }
+      function closePanel() { panel.classList.remove("open"); panel.setAttribute("aria-hidden", "true"); }
+      document.getElementById("listtoggle").addEventListener("click", openPanel);
+      document.getElementById("pclose").addEventListener("click", closePanel);
 
       // ----- 범례 켜기/끄기 -----
       function wireToggle(id, product) {
