@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="utf-8">
@@ -19,7 +19,7 @@
     <style>
     body{margin:0;background:#fff}
     /* 페이지 공통 골격 — 헤더·본문·도크가 모두 이 기준선을 쓴다(옥외광고 매체 페이지와 동일) */
-    :root{--shell-max:1760px;--dock-gutter:248px;--dock-top:145px;--dock-w:210px}
+    :root{--shell-max:1760px;--dock-gutter:248px;--dock-top:135px;--dock-w:210px}
     /* 본문 폭 — 헤더·본문·푸터·도크가 모두 이 값을 공유해야 어긋나지 않는다 */
     :root{--shell-w:min(var(--shell-max),calc(100% - 40px))}
     /* 헤더 — 지도 페이지(.map-global-header)와 동일: 높이 54px, 14px/650, #344054, SUIT */
@@ -29,12 +29,12 @@
     .hd-in{display:flex;align-items:center;gap:22px;min-height:54px;flex-wrap:wrap;box-sizing:border-box;
            width:min(var(--shell-max),calc(100% - 40px));margin:0 auto;padding-inline:var(--dock-gutter)}
     .hd-brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;flex:none}
-    .hd-brand strong{font-size:18.5px;font-weight:760;letter-spacing:-0.01em;color:#0f172a}.hd-brand .brand-mark{width:30px;height:30px;background-size:auto 30px}
+    .hd-brand strong{font-size:25px;font-weight:500;font-variation-settings:"wght" 500;letter-spacing:0;color:#2540ea}.hd-brand .brand-mark{display:none}
     .hd-nav{margin-left:auto;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
     .hd-act{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-    .hd a{font-size:13px;font-weight:620;color:#344054;text-decoration:none;white-space:nowrap;transition:color .15s ease,transform .15s ease}
-    .hd-nav a:hover,.hd-nav a:focus,.hd-act a:hover,.hd-act a:focus{color:#0b1b3f;transform:translateY(-2px)}
-    .hd-nav a.on,.hd-act a.on{color:#344054;font-weight:620}
+    .hd a{font-size:12px;font-weight:600;color:#2540ea;text-decoration:none;white-space:nowrap;transition:color .15s ease,transform .15s ease}
+    .hd-nav a:hover,.hd-nav a:focus,.hd-act a:hover,.hd-act a:focus{color:#16249e}
+    .hd-nav a.on,.hd-act a.on{color:#2540ea;font-weight:700}
     /* 본문도 옥외광고 매체 페이지와 같은 폭·기준선을 쓴다 */
     .ins-wrap{width:min(var(--shell-max),calc(100% - 40px));margin:0 auto;box-sizing:border-box;
               padding:22px var(--dock-gutter) 90px;font-family:var(--font-sans);color:#1c1c1c}
@@ -56,9 +56,9 @@
     .viewtog a:hover{border-color:#3b74f2}
     .viewtog a[hidden]{display:none}  /* display:flex가 hidden 속성을 덮어써서 명시 필요 */
     .viewtog .ic{width:22px;height:22px;flex:none;display:grid;place-items:center;border-radius:6px;
-                 background:#eaf0ff;color:#0b3a91}
+                 background:#eaf0ff;color:#2540ea}
     .viewtog .ic svg{width:14px;height:14px;flex:none}
-    .viewtog .consult .ic{background:#0b3a91;color:#fff}
+    .viewtog .consult .ic{background:#2540ea;color:#fff}
     .ins-bc{font:13px/1.6 var(--font-sans);color:#8a8a8a;margin:0 0 8px}
     .ins-bc a{color:#8a8a8a;text-decoration:none}
     .ins-wrap h1{font:850 26px/1.3 var(--font-sans);margin:6px 0 8px}
@@ -73,21 +73,21 @@
     .ins-sticky h1{margin-top:0}
     .ins-wrap:has(> .ins-sticky){padding-top:0}
     .ins-tags{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 26px}
-    .ins-tags span{background:#eef4ff;color:#0b3a91;font:600 13px/1 var(--font-sans);padding:7px 11px;border-radius:20px}
+    .ins-tags span{background:#eef4ff;color:#2540ea;font:600 13px/1 var(--font-sans);padding:7px 11px;border-radius:20px}
     .ins-wrap h2{font:760 17px/1.4 var(--font-sans);margin:30px 0 12px;padding-top:6px}
     table.ins{border-collapse:collapse;width:100%;font:14px/1.6 var(--font-sans);margin:0 0 6px}
     table.ins th,table.ins td{border:1px solid #e8e8e8;padding:10px 12px;text-align:left;vertical-align:top}
     table.ins th{background:#f8fafc;font-weight:700;white-space:nowrap;color:#333}
     .ins-src{font:12px/1.6 var(--font-sans);color:#9a9a9a;margin:8px 0 0}
     .ins-why{margin:0}
-    .ins-why b{display:block;color:#0b3a91;font:700 15px/1.5 var(--font-sans);margin-top:12px}
+    .ins-why b{display:block;color:#2540ea;font:700 15px/1.5 var(--font-sans);margin-top:12px}
     .ins-why p{margin:2px 0 0;font:15px/1.75 var(--font-sans);color:#2a2a2a}
     .faq details{border-bottom:1px solid #eee;padding:13px 2px}
     .faq summary{font:700 16px/1.5 var(--font-sans);cursor:pointer;color:#181818}
     .faq p{margin:9px 0 0;font:15px/1.75 var(--font-sans);color:#333}
     .ins-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
     .ins-cta a{display:inline-block;font:700 15px/1 var(--font-sans);padding:15px 24px;border-radius:11px;text-decoration:none}
-    .ins-cta .p{background:#0b3a91;color:#fff}
+    .ins-cta .p{background:#2540ea;color:#fff}
     .ins-cta .s{background:#f2f2f2;color:#222}
     /* 인사이트 목록 — 매체 목록(사진 그리드)과 목적이 달라 보이도록 '읽는 문서' 형태로 간다.
        사진 대신 핵심 수치를 앞세운 편집형 인덱스: 얇은 구분선, 큰 번호, 여백 위주. */
@@ -101,7 +101,7 @@
                  padding:26px 10px;text-decoration:none;color:inherit;transition:background .15s ease}
     .ins-index a:hover{background:#f8fafc}
     .ins-index .num{align-self:start;font:800 19px/1.3 var(--font-sans);color:#ccd2de}
-    .ins-index .kicker{display:inline-block;font:700 11.5px/1 var(--font-sans);color:#0b3a91;
+    .ins-index .kicker{display:inline-block;font:700 11.5px/1 var(--font-sans);color:#2540ea;
                        background:#eef4ff;border-radius:999px;padding:6px 10px;margin:0 0 10px}
     .ins-index h3{font:750 20px/1.4 var(--font-sans);margin:0 0 5px;padding:0;color:#111827}
     .ins-index .sub{font:14px/1.6 var(--font-sans);color:#6b7280;margin:0 0 14px}
@@ -109,7 +109,7 @@
     .ins-index .stats div{min-width:0}
     .ins-index .stats dt{font:600 12px/1.4 var(--font-sans);color:#98a0ad;margin:0 0 2px}
     .ins-index .stats dd{font:800 17px/1.35 var(--font-sans);color:#172033;margin:0}
-    .ins-index .go{font:800 13px/1 var(--font-sans);color:#0b3a91;white-space:nowrap;display:inline-flex;align-items:center}
+    .ins-index .go{font:800 13px/1 var(--font-sans);color:#2540ea;white-space:nowrap;display:inline-flex;align-items:center}
     .ins-index .go::after{content:"";width:6px;height:6px;margin-left:7px;border-top:2px solid currentColor;
                           border-right:2px solid currentColor;transform:rotate(45deg)}
     /* 네이버 블로그 연동 — 자체 문서(위)와 블로그(아래) 두 채널을 한 페이지에서 안내 */
@@ -120,7 +120,7 @@
                 background:#03c75a;color:#fff;font:900 11px/1 var(--font-sans);margin:0 0 9px}
     .ins-blog h3{font:750 17px/1.4 var(--font-sans);margin:0 0 5px;color:#111827}
     .ins-blog p{font:14px/1.6 var(--font-sans);color:#6b7280;margin:0}
-    .blog-go{margin-left:auto;flex:none;font:700 14px/1 var(--font-sans);color:#fff;background:#0b3a91;
+    .blog-go{margin-left:auto;flex:none;font:700 14px/1 var(--font-sans);color:#fff;background:#2540ea;
              border-radius:10px;padding:14px 18px;text-decoration:none;white-space:nowrap}
     .blog-go:hover{background:#0d4099}
     @media(max-width:640px){
@@ -142,7 +142,7 @@
   </head>
   <body>
     <header class="hd"><div class="hd-in">
-      <a class="hd-brand" href="map.html" aria-label="광고플레이 홈"><span class="brand-mark">AD</span><strong>광고플레이</strong></a>
+      <a class="hd-brand" href="map.html" aria-label="광고플레이 홈"><span class="brand-mark">AD</span><strong>k-goplay.com</strong></a>
       <nav class="hd-nav" aria-label="주요 메뉴">
         <a href="map.html">옥외광고 지도</a>
         <a href="media-catalog.html">옥외광고 목록</a>

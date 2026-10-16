@@ -1,0 +1,160 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[샘플] 매체 상세 — 트렌디 리디자인</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/variable/pretendardvariable-dynamic-subset.css">
+<style>
+  :root{
+    --blue:#2540ea; --blue-deep:#16249e; --blue-wash:#eef1fe;
+    --ink:#16181d; --ink-soft:#3d4351; --muted:#7a8496; --line:#e8ebf1;
+    --bg:#fff; --bg-soft:#f6f7fb;
+    --font:"Pretendard Variable",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.5;word-break:keep-all;overflow-wrap:break-word}
+  a{text-decoration:none;color:inherit}
+  .wrap{width:min(1120px,calc(100% - 48px));margin:0 auto}
+  .bc{font-size:13px;color:#8a8a8a;margin:0}
+  .bc a{color:#8a8a8a}
+
+  .hd{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.86);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line)}
+  .hd-in{display:flex;align-items:center;gap:24px;height:66px}
+  .brand{font-size:25px;font-weight:500;color:var(--blue)}
+  .nav{margin-left:auto;display:flex;gap:22px;align-items:center}
+  .nav a{font-size:13px;font-weight:600;color:var(--blue)}
+  .nav a:hover{color:var(--blue-deep)}
+
+  /* ── 상단: 제목 + 서브 ── */
+  .top{padding:26px 0 20px}
+  .top .bc{margin-bottom:14px}
+  .top h1{font-size:32px;font-weight:800;letter-spacing:-0.02em}
+  .top .sub{margin-top:10px;font-size:15px;color:var(--ink-soft)}
+  .top .sub b{color:var(--ink);font-weight:750}
+
+  /* ── 히어로: 미디어 + 정보카드 ── */
+  .lead{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:28px;align-items:start}
+  .media{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#000}
+  .media .fig{position:relative;aspect-ratio:16/10;background:#111 center/cover}
+  .media .fig .play{position:absolute;left:16px;bottom:16px;width:44px;height:44px;border-radius:999px;background:rgba(255,255,255,.92);display:grid;place-items:center;color:var(--blue);font-size:15px}
+  .thumbs{display:flex;gap:8px;padding:10px;background:#fff;border-top:1px solid var(--line)}
+  .thumbs img{width:64px;height:44px;object-fit:cover;border-radius:6px;cursor:pointer;opacity:.65}
+  .thumbs img.on{opacity:1;outline:2px solid var(--blue)}
+
+  .info{position:sticky;top:86px;border:1px solid var(--line);border-radius:8px;padding:20px;background:#fff}
+  .info .cap{font-size:12.5px;font-weight:700;color:var(--muted)}
+  .info .price{margin-top:8px;border-bottom:1px solid var(--line);padding-bottom:14px}
+  .info .price .pr{display:flex;justify-content:space-between;align-items:baseline;padding:6px 0}
+  .info .price .pr span{font-size:13px;color:var(--ink-soft)}
+  .info .price .pr b{font-size:16px;font-weight:800;color:var(--blue);letter-spacing:-0.01em}
+  .info .spec{padding:14px 0 4px;display:grid;gap:9px}
+  .info .spec div{display:flex;justify-content:space-between;gap:12px;font-size:13px}
+  .info .spec .k{color:var(--muted);flex:none}
+  .info .spec .v{text-align:right;font-weight:600}
+  .info .cta{margin-top:14px;display:block;text-align:center;background:var(--blue);color:#fff;font-size:15px;font-weight:700;padding:14px;border-radius:8px}
+  .info .note{margin-top:10px;font-size:11.5px;line-height:1.6;color:var(--muted)}
+
+  /* ── 섹션 ── */
+  .sec{padding:44px 0 0}
+  .sec h2{font-size:20px;font-weight:800;letter-spacing:-0.01em;margin-bottom:14px}
+  .kv-table{border-top:1px solid var(--line)}
+  .kv-table .row{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:14px 4px;border-bottom:1px solid var(--line)}
+  .kv-table .row dt{font-size:13px;color:var(--muted);font-weight:600}
+  .kv-table .row dd{font-size:14px;line-height:1.7;color:var(--ink-soft)}
+
+  .aud-lead{font-size:14px;color:var(--ink-soft);margin-bottom:16px}
+  .aud-lead b{color:var(--blue);font-weight:750}
+  .metrics{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .metric{border:1px solid var(--line);border-radius:8px;padding:18px}
+  .metric span{font-size:12.5px;color:var(--muted)}
+  .metric b{display:block;margin-top:6px;font-size:26px;font-weight:800;letter-spacing:-0.02em}
+
+  .gallery{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;padding-bottom:90px}
+  .gallery img{width:100%;aspect-ratio:4/3;object-fit:cover;border-radius:8px}
+
+  .note-top{margin:0 auto 18px;width:min(1120px,calc(100% - 48px));font-size:12px;color:var(--muted)}
+  @media(max-width:900px){
+    .lead{grid-template-columns:1fr}.info{position:static}
+    .metrics{grid-template-columns:repeat(2,1fr)}.gallery{grid-template-columns:repeat(2,1fr)}
+    .top h1{font-size:26px}.nav{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="note-top">※ [샘플] 매체 상세 — 현재 운영 페이지(media-m-*.html)는 그대로이며, 이 파일은 시안입니다.</div>
+
+<header class="hd"><div class="wrap hd-in">
+  <a class="brand" href="map.html">k-goplay.com</a>
+  <nav class="nav">
+    <a href="map.html">옥외광고 지도</a><a href="#">옥외광고 목록</a><a href="#">광고집행사례</a>
+    <a href="#">광고 인사이트</a><a href="#">회사소개</a><a href="#">Log In</a>
+  </nav>
+</div></header>
+
+<section class="top"><div class="wrap">
+  <p class="bc"><a href="map.html">지도</a> › <a href="#">옥외광고 매체</a> › 청계광장 전광판</p>
+  <h1>청계광장 전광판</h1>
+  <p class="sub">서울의 관광특구 청계광장 · <b>대형 전광판</b> · 월 1,200만원~1,500만원 <span style="color:var(--muted)">(VAT 별도)</span></p>
+</div></section>
+
+<section><div class="wrap"><div class="lead">
+  <div class="media">
+    <div class="fig" style="background-image:url('assets/images/media/cheonggye-plaza/1.jpg')"><span class="play">▶</span></div>
+    <div class="thumbs">
+      <img class="on" src="assets/images/media/cheonggye-plaza/1.jpg" alt="">
+      <img src="assets/images/map-samples/cheonggye-wide.jpg" alt="">
+      <img src="assets/images/map-samples/cheonggye-close.jpg" alt="">
+      <img src="assets/images/map-samples/gwanghwamun-wide.jpg" alt="">
+    </div>
+  </div>
+
+  <aside class="info">
+    <div class="cap">광고비</div>
+    <div class="price">
+      <div class="pr"><span>1일 20초 100회</span><b>1,200만원/월</b></div>
+      <div class="pr"><span>1일 30초 100회</span><b>1,500만원/월</b></div>
+    </div>
+    <div class="spec">
+      <div><span class="k">매체 유형</span><span class="v">대형 전광판</span></div>
+      <div><span class="k">위치</span><span class="v">서울 종로구 종로 10-7</span></div>
+      <div><span class="k">규격·해상도</span><span class="v">12×18.5m · 1200×1860</span></div>
+      <div><span class="k">운영 시간</span><span class="v">06:00 - 24:00</span></div>
+      <div><span class="k">단기 집행</span><span class="v">협의 필요</span></div>
+    </div>
+    <a class="cta" href="#">이 매체 견적 문의</a>
+    <p class="note">표기된 광고비는 VAT 별도 기준의 참고가입니다. 최종 비용·구좌 가능 여부는 상담 시점에 확인이 필요합니다.</p>
+  </aside>
+</div></div></section>
+
+<section class="sec"><div class="wrap">
+  <h2>위치·입지 특성</h2>
+  <dl class="kv-table">
+    <div class="row"><dt>입지 설명</dt><dd>서울의 관광특구 청계광장. 대규모 서울 페스티벌·국가 행사·축제·이벤트, 지자체 홍보 행사가 다양하게 열리는 초대형 세로형 LED 전광판으로, 분할 표출 방식으로 광고 노출도·주목도를 높입니다.</dd></div>
+    <div class="row"><dt>노출 포인트</dt><dd>종로구 축제·이벤트 관광특구 일대에 위치해, 횡단보도 대기·차량 정체 구간에서 정면 시야가 오래 머뭅니다. 브랜드 런칭·시즌 캠페인의 인지 확산에 강점이 있습니다.</dd></div>
+  </dl>
+</div></section>
+
+<section class="sec"><div class="wrap">
+  <h2>유동인구·타깃 오디언스</h2>
+  <p class="aud-lead">도심 오피스 직장인 3040·40대 이상 비중 높음 · 직장인 밀집도 <b>매우 높음</b></p>
+  <div class="metrics">
+    <div class="metric"><span>일평균 유동인구 (300m)</span><b>10만명</b></div>
+    <div class="metric"><span>일평균 유동인구 (500m)</span><b>25.1만명</b></div>
+    <div class="metric"><span>주중 일평균 (500m)</span><b>18.1만명</b></div>
+    <div class="metric"><span>주말 일평균 (500m)</span><b>7만명</b></div>
+  </div>
+</div></section>
+
+<section class="sec"><div class="wrap">
+  <h2>갤러리</h2>
+  <div class="gallery">
+    <img src="assets/images/media/cheonggye-plaza/1.jpg" alt="청계광장 전광판 현장 1">
+    <img src="assets/images/map-samples/cheonggye-wide.jpg" alt="청계광장 전광판 현장 2">
+    <img src="assets/images/map-samples/cheonggye-close.jpg" alt="청계광장 전광판 현장 3">
+    <img src="assets/images/map-samples/gwanghwamun-wide.jpg" alt="청계광장 전광판 현장 4">
+  </div>
+</div></section>
+
+</body>
+</html>

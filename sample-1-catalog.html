@@ -1,0 +1,270 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[샘플] 옥외광고 목록 — 트렌디 리디자인</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/variable/pretendardvariable-dynamic-subset.css">
+<style>
+  :root{
+    --blue:#2540ea; --blue-deep:#16249e; --blue-wash:#eef1fe;
+    --ink:#16181d; --ink-soft:#3d4351; --muted:#7a8496; --line:#e8ebf1;
+    --bg:#ffffff; --bg-soft:#f6f7fb; --wrapw:1200px;
+    --font:"Pretendard Variable",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe UI",sans-serif;
+    --mono:ui-monospace,"SF Mono",Menlo,monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.5;word-break:keep-all;overflow-wrap:break-word}
+  a{text-decoration:none;color:inherit}
+  .wrap{width:min(var(--wrapw),calc(100% - 48px));margin:0 auto}
+
+  /* ── 헤더 ── */
+  .hd{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.86);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line)}
+  .hd-in{display:flex;align-items:center;gap:24px;height:66px}
+  .brand{font-size:25px;font-weight:500;color:var(--blue);letter-spacing:0}
+  .nav{margin-left:auto;display:flex;gap:22px;align-items:center}
+  .nav a{font-size:13px;font-weight:600;color:var(--blue)}
+  .nav a:hover{color:var(--blue-deep)}
+
+  /* ── 히어로(확정) ── */
+  .hero{padding:66px 0 34px}
+  .hero .wrap{display:grid;grid-template-columns:1.15fr .85fr;gap:48px;align-items:center}
+  .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--blue);background:var(--blue-wash);padding:7px 14px;border-radius:999px;margin-bottom:20px}
+  .eyebrow .dot{width:7px;height:7px;border-radius:999px;background:var(--blue)}
+  h1{font-size:52px;line-height:1.12;font-weight:800;letter-spacing:-0.02em}
+  h1 em{font-style:normal;color:var(--blue)}
+  .hero p.lead{margin-top:20px;font-size:17px;line-height:1.7;color:var(--ink-soft);max-width:38ch}
+  .hero-stats{margin-top:28px;display:flex;gap:32px}
+  .hero-stats .s b{display:block;font-size:28px;font-weight:800;letter-spacing:-0.01em}
+  .hero-stats .s span{font-size:13px;color:var(--muted)}
+  /* 가장자리 배포 수준으로(덜 둥글게) */
+  .hero-art{aspect-ratio:4/3;border-radius:14px;background:#eef2f7;position:relative;overflow:hidden;box-shadow:0 30px 60px -20px rgba(22,24,29,.28)}
+  .slide{position:absolute;inset:0;opacity:0;transition:opacity .9s ease}
+  .slide.on{opacity:1}
+  .slide img{width:100%;height:100%;object-fit:cover}
+  /* 매체명 라벨: 픽토그램 없이 반투명 */
+  .slide .slabel{position:absolute;left:18px;bottom:18px;background:rgba(15,18,34,.5);-webkit-backdrop-filter:blur(6px);backdrop-filter:blur(6px);color:#fff;font-size:13px;font-weight:700;padding:9px 15px;border-radius:10px}
+  .hero-art .dots{position:absolute;right:16px;bottom:18px;display:flex;gap:6px;z-index:3}
+  .hero-art .dots i{width:7px;height:7px;border-radius:999px;background:rgba(255,255,255,.5);transition:.2s}
+  .hero-art .dots i.on{background:#fff;width:20px}
+
+  /* ── 뷰 도크: 우측 fixed 세로(스크롤 따라옴) — 배포 스타일 ── */
+  .viewtog{position:fixed;top:120px;z-index:35;display:flex;flex-direction:column;gap:5px;width:180px;
+           left:calc(50% + var(--wrapw)/2 + 24px)}
+  .viewtog a{display:flex;align-items:center;gap:9px;padding:9px 11px;border:1px solid #e2e7f0;border-radius:11px;background:#fff;font-size:13px;font-weight:700;color:#2b3242;transition:border-color .15s ease}
+  .viewtog a:hover{border-color:#3b74f2}
+  .viewtog a.on{border-color:var(--blue);background:#f5f8ff}
+  .viewtog .ic{width:22px;height:22px;flex:none;display:grid;place-items:center;border-radius:6px;background:#eaf0ff;color:var(--blue)}
+  .viewtog .ic svg{width:14px;height:14px}
+  .viewtog .consult .ic,.viewtog .favlink .ic{background:var(--blue);color:#fff}
+  .viewtog b{margin-left:auto;font-size:10px;font-weight:800;color:#fff;background:var(--blue);border-radius:999px;padding:3px 7px}
+
+  /* ── 툴바(배포 스펙 그대로) ── */
+  .toolbar{position:sticky;top:66px;z-index:30;background:rgba(255,255,255,.92);backdrop-filter:blur(10px);padding:12px 0;margin-top:14px;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .toolbar .wrap{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+  .cat-tabs{display:inline-flex;gap:2px;padding:2px;border:1px solid rgba(208,213,221,.7);border-radius:8px;background:rgba(255,255,255,.6);flex-shrink:0}
+  .cat-tab{display:inline-flex;align-items:center;gap:5px;min-height:28px;padding:0 11px;border:0;border-radius:6px;background:transparent;color:#475467;font-size:13px;font-weight:850;cursor:pointer;font-family:var(--font)}
+  .cat-tab em{font-style:normal;font-family:var(--mono);font-size:11px;font-weight:700;color:#98a2b3}
+  .cat-tab.on{background:var(--blue);color:#fff}
+  .cat-tab.on em{color:rgba(255,255,255,.7)}
+  .fsel{flex:0 0 138px;min-height:36px;padding:7px 10px;font-size:13px;border:1px solid rgba(208,213,221,.9);border-radius:7px;background:rgba(255,255,255,.88);color:var(--ink);cursor:pointer;font-family:var(--font)}
+  .fsearch{flex:1 1 260px;display:flex;align-items:center;min-height:36px;padding:7px 12px;font-size:13px;border:1px solid rgba(208,213,221,.9);border-radius:7px;background:rgba(255,255,255,.88)}
+  .fsearch input{border:0;outline:0;font:inherit;font-size:13px;flex:1;background:transparent;color:var(--ink)}
+  .fsearch input::placeholder{color:#98a2b3}
+  .fsort{flex:0 0 120px;min-height:36px;padding:7px 10px;font-size:13px;border:1px solid rgba(208,213,221,.9);border-radius:7px;background:rgba(255,255,255,.88);color:var(--ink);cursor:pointer;font-family:var(--font)}
+
+  /* ── 카드(이미지5 형식 · 가장자리 배포 수준 8px) ── */
+  .grid-sec{padding:26px 0 90px}
+  .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .card{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;transition:.2s;display:flex;flex-direction:column}
+  .card:hover{transform:translateY(-3px);box-shadow:0 20px 40px -24px rgba(22,24,29,.24);border-color:#dfe4f0}
+  .card .thumb{display:block;aspect-ratio:1.8/1;overflow:hidden;background:#eef2f7}
+  .card .thumb img{width:100%;height:100%;object-fit:cover;display:block}
+  .card .cbody{padding:15px 16px 16px;display:flex;flex-direction:column;flex:1}
+  .ttl-row{display:flex;align-items:flex-start;justify-content:space-between;gap:10px}
+  .ttl-row h3{font-size:17px;font-weight:750;letter-spacing:-0.01em;line-height:1.3}
+  .fav{border:0;background:transparent;display:inline-flex;align-items:center;gap:4px;color:#b6bccb;font-size:12.5px;font-weight:700;cursor:pointer;flex:none;padding:2px;white-space:nowrap}
+  .fav svg{width:16px;height:16px;fill:currentColor}
+  .fav.on{color:var(--blue)}
+  .mc-meta{margin-top:8px;font-size:12.5px;color:var(--muted)}
+  .mc-price{margin-top:11px;display:flex;align-items:baseline;gap:6px;flex-wrap:wrap}
+  .mc-price b{font-size:20px;font-weight:800;color:var(--blue);letter-spacing:-0.01em}
+  .mc-price span{font-size:12.5px;color:var(--muted)}
+  .mc-chips{margin-top:12px;display:flex;gap:6px;flex-wrap:wrap}
+  .chip{font-size:11.5px;font-weight:600;color:var(--ink-soft);background:var(--bg-soft);padding:5px 10px;border-radius:7px}
+  .cfoot{margin-top:auto;padding-top:13px;border-top:1px solid var(--line);display:flex;justify-content:flex-end}
+  .cfoot .go{color:var(--blue);font-weight:700;font-size:13px}
+
+  .note{margin:0 auto 20px;width:min(var(--wrapw),calc(100% - 48px));font-size:12px;color:var(--muted)}
+
+  /* 뷰 도크가 들어갈 우측 공간이 부족하면 하단 가로바로 */
+  @media(max-width:1600px){
+    .viewtog{position:sticky;top:auto;left:auto;width:auto;flex-direction:row;flex-wrap:wrap;gap:8px;margin:14px auto 0;justify-content:flex-start}
+    .viewtog a{flex:0 0 auto}
+  }
+  @media(max-width:960px){
+    .hero .wrap{grid-template-columns:1fr}.hero-art{order:-1}
+    h1{font-size:40px}.grid{grid-template-columns:repeat(2,1fr)}
+  }
+  @media(max-width:620px){.grid{grid-template-columns:1fr}.nav{display:none}}
+</style>
+</head>
+<body>
+<div class="note">※ [샘플] 옥외광고 목록 트렌디 리디자인 — 현재 운영 페이지(media-catalog.html)는 그대로이며, 이 파일은 시안입니다. (매체 데이터: 지도 페이지 실데이터 동기화)</div>
+
+<header class="hd"><div class="wrap hd-in">
+  <a class="brand" href="map.html">k-goplay.com</a>
+  <nav class="nav">
+    <a href="map.html">옥외광고 지도</a>
+    <a href="#">옥외광고 목록</a>
+    <a href="#">광고집행사례</a>
+    <a href="#">광고 인사이트</a>
+    <a href="#">회사소개</a>
+    <a href="#">Log In</a>
+  </nav>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <div>
+    <span class="eyebrow"><span class="dot"></span>전국 447개 매체 · 실데이터 기준</span>
+    <h1>원하는 상권의<br><em>옥외광고</em>를<br>한눈에 비교하세요</h1>
+    <p class="lead">대형 전광판·지하철·버스·쇼핑몰 DID까지, 유형·지역·예산으로 골라 위치와 월 광고비를 바로 비교하고 상담하세요.</p>
+    <div class="hero-stats">
+      <div class="s"><b>447</b><span>등록 매체</span></div>
+      <div class="s"><b>28</b><span>추천 패키지</span></div>
+      <div class="s"><b>17</b><span>매체 유형</span></div>
+    </div>
+  </div>
+  <div class="hero-art" id="heroRoll">
+    <div class="slide on"><img src="assets/images/media/gangnam-jump-milano/1.jpg" alt=""><span class="slabel">강남역 점프밀라노</span></div>
+    <div class="slide"><img src="assets/images/media/cheonggye-plaza/1.jpg" alt=""><span class="slabel">청계광장 전광판</span></div>
+    <div class="slide"><img src="assets/images/media/gyeongbokgung-jeokseon/1.jpg" alt=""><span class="slabel">경복궁 적선빌딩</span></div>
+    <div class="slide"><img src="assets/images/media/jamsil-utopia/1.jpg" alt=""><span class="slabel">잠실 유토피아 전광판</span></div>
+    <div class="dots" id="heroDots"></div>
+  </div>
+</div></section>
+
+<!-- 뷰 도크(우측 고정, 스크롤 따라옴) -->
+<div class="wrap"><nav class="viewtog" aria-label="보기 방식">
+  <a href="map.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M9 3 3 5.5v15L9 18l6 3 6-2.5v-15L15 6 9 3z"/><path d="M9 3v15M15 6v15"/></svg></span>지도로 보기</a>
+  <a class="on" href="#"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 6h16M4 12h16M4 18h16"/></svg></span>목록으로 보기</a>
+  <a href="#"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>지역으로 보기</a>
+  <a class="consult" href="#"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.5 9.5 0 0 1-3.4-.6L3 21l1.7-5a8.2 8.2 0 0 1-.7-3.4 8.4 8.4 0 0 1 8.4-8.4 8.4 8.4 0 0 1 8.6 7.9z"/></svg></span>상담신청</a>
+  <a class="favlink" href="#"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3.5" y="5" width="7" height="14" rx="1.5"/><rect x="13.5" y="5" width="7" height="14" rx="1.5"/></svg></span>관심매체 비교<b>9</b></a>
+</nav></div>
+
+<!-- 툴바(배포 스펙) -->
+<div class="toolbar"><div class="wrap">
+  <div class="cat-tabs">
+    <button class="cat-tab on">전체 <em>447</em></button>
+    <button class="cat-tab">패키지 <em>28</em></button>
+  </div>
+  <select class="fsel"><option>전체 유형</option></select>
+  <select class="fsel"><option>전체 지역</option></select>
+  <select class="fsel"><option>전체 예산</option></select>
+  <div class="fsearch"><input placeholder="매체명·지역·유형 검색 (예: 스크린도어, 코엑스, 강남역)"></div>
+  <select class="fsort"><option>추천순</option></select>
+</div></div>
+
+<section class="grid-sec"><div class="wrap"><div class="grid">
+
+  <article class="card">
+    <a class="thumb" href="media-m-98.html"><img src="assets/images/media/cheonggye-plaza/1.jpg" alt="청계광장 전광판" loading="lazy"></a>
+    <div class="cbody">
+      <div class="ttl-row"><h3>청계광장 전광판</h3>
+        <button class="fav on" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><span>관심</span></button>
+      </div>
+      <p class="mc-meta">서울 종로구 · 일 유동인구 25.1만명</p>
+      <p class="mc-price"><b>1,200만원</b><span>/월 · 1개월 미만 협의</span></p>
+      <div class="mc-chips"><span class="chip">12×18.5m</span><span class="chip">세로형</span></div>
+      <div class="cfoot"><span class="go">상세보기 ›</span></div>
+    </div>
+  </article>
+
+  <article class="card">
+    <a class="thumb" href="media-m-231.html"><img src="assets/images/media/gyeongbokgung-jeokseon/1.jpg" alt="경복궁 적선빌딩" loading="lazy"></a>
+    <div class="cbody">
+      <div class="ttl-row"><h3>경복궁 적선빌딩</h3>
+        <button class="fav on" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><span>관심</span></button>
+      </div>
+      <p class="mc-meta">서울 종로구 · 국내 최대 관광명소로서 외국관광객</p>
+      <p class="mc-price"><b>700만원</b><span>/월 · 1개월 미만 협의</span></p>
+      <div class="mc-chips"><span class="chip">19×10m</span><span class="chip">가로형</span></div>
+      <div class="cfoot"><span class="go">상세보기 ›</span></div>
+    </div>
+  </article>
+
+  <article class="card">
+    <a class="thumb" href="media-m-303.html"><img src="assets/images/media/gangnam-jump-milano/1.jpg" alt="강남역 점프밀라노" loading="lazy"></a>
+    <div class="cbody">
+      <div class="ttl-row"><h3>강남역 점프밀라노</h3>
+        <button class="fav on" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><span>관심</span></button>
+      </div>
+      <p class="mc-meta">서울 강남구 · 일 유동인구 35.8만명</p>
+      <p class="mc-price"><b>1,500만원</b><span>/월 · 1개월 미만 협의</span></p>
+      <div class="mc-chips"><span class="chip">11.2×20m</span><span class="chip">세로형</span></div>
+      <div class="cfoot"><span class="go">상세보기 ›</span></div>
+    </div>
+  </article>
+
+  <article class="card">
+    <a class="thumb" href="media-m-89.html"><img src="assets/images/media/jamsil-utopia/1.jpg" alt="잠실 유토피아 전광판" loading="lazy"></a>
+    <div class="cbody">
+      <div class="ttl-row"><h3>잠실 유토피아 전광판</h3>
+        <button class="fav on" aria-pressed="true"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><span>관심</span></button>
+      </div>
+      <p class="mc-meta">서울 송파구 · 일 유동인구 34.7만명</p>
+      <p class="mc-price"><b>1,000만원</b><span>/월 · 1개월 미만 협의</span></p>
+      <div class="mc-chips"><span class="chip">14.5×15.5m</span><span class="chip">세로형</span></div>
+      <div class="cfoot"><span class="go">상세보기 ›</span></div>
+    </div>
+  </article>
+
+  <article class="card">
+    <a class="thumb" href="media-m-215.html"><img src="assets/images/media/myeongdong-euljiro/1.jpg" alt="명동 을지한국빌딩" loading="lazy"></a>
+    <div class="cbody">
+      <div class="ttl-row"><h3>명동 을지한국빌딩</h3>
+        <button class="fav" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><span>관심</span></button>
+      </div>
+      <p class="mc-meta">서울 중구 · 일 유동인구 25.4만명</p>
+      <p class="mc-price"><b>1,200만원</b><span>/월 · 1개월 미만 협의</span></p>
+      <div class="mc-chips"><span class="chip">20.3×11m</span><span class="chip">가로형</span></div>
+      <div class="cfoot"><span class="go">상세보기 ›</span></div>
+    </div>
+  </article>
+
+  <article class="card">
+    <a class="thumb" href="media-m-293.html"><img src="assets/images/map-samples/gwanghwamun-close.jpg" alt="청계광장 청계한국 빌딩" loading="lazy"></a>
+    <div class="cbody">
+      <div class="ttl-row"><h3>청계광장 청계한국 빌딩</h3>
+        <button class="fav" aria-pressed="false"><svg viewBox="0 0 24 24"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><span>관심</span></button>
+      </div>
+      <p class="mc-meta">서울 종로구 · 일 유동인구 25.1만명</p>
+      <p class="mc-price"><b>1,200만원</b><span>/월 · 1개월 미만 협의</span></p>
+      <div class="mc-chips"><span class="chip">13×17.3m</span><span class="chip">세로형</span></div>
+      <div class="cfoot"><span class="go">상세보기 ›</span></div>
+    </div>
+  </article>
+
+</div></div></section>
+
+<script>
+  document.querySelectorAll('.fav').forEach(function(b){
+    b.addEventListener('click',function(){
+      var on=this.classList.toggle('on');this.setAttribute('aria-pressed',on?'true':'false');
+    });
+  });
+  (function(){
+    var slides=document.querySelectorAll('#heroRoll .slide'),dots=document.getElementById('heroDots');
+    if(!slides.length) return;
+    slides.forEach(function(_,i){var d=document.createElement('i');if(i===0)d.className='on';dots.appendChild(d);});
+    var dotEls=dots.querySelectorAll('i'),idx=0;
+    setInterval(function(){
+      slides[idx].classList.remove('on');dotEls[idx].classList.remove('on');
+      idx=(idx+1)%slides.length;
+      slides[idx].classList.add('on');dotEls[idx].classList.add('on');
+    },3000);
+  })();
+</script>
+</body>
+</html>

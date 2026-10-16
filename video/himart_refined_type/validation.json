@@ -1,0 +1,13 @@
+{
+  "file": "lotte_himart_seongseo_grand_open_20s.mp4",
+  "duration_seconds": 20,
+  "width": 1080,
+  "height": 1920,
+  "fps": 30,
+  "decoded_frames": 600,
+  "codec": "H.264",
+  "pixel_format": "yuv420p",
+  "audio_streams": 0,
+  "full_decode": "passed",
+  "size_bytes": 3383722
+}

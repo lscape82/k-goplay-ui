@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>GS25 편의점 TV · 서울 중구 매체 지도 (광고주용)</title>
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    :root{--brand:#00a862;--brand-dark:#007a46;--ink:#111827;--muted:#6b7280;--line:#e5e7eb;--bg:#f4f6f8;--seoul:#2563eb}
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;font-family:"SUIT Variable","Noto Sans KR","Malgun Gothic",sans-serif;color:var(--ink);background:var(--bg)}
+    .app{display:flex;flex-direction:column;height:100%}
+    header{background:#fff;border-bottom:1px solid var(--line);padding:12px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+    .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:17px}
+    .logo .dot{width:26px;height:26px;border-radius:7px;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:12px;font-weight:800}
+    .sub{color:var(--muted);font-size:13px;font-weight:600}
+    .badge{margin-left:auto;background:#eef4ff;color:#1d4ed8;border:1px solid #c7dbff;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:700}
+    .main{flex:1;display:flex;min-height:0}
+    .side{width:330px;max-width:44%;background:#fff;border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+    .side .head{padding:14px 16px 8px}
+    .side h1{font-size:15px;margin:0 0 3px}
+    .side .cnt{color:var(--muted);font-size:12.5px}
+    .list{overflow:auto;flex:1;padding:6px 10px 16px}
+    .item{border:1px solid var(--line);border-radius:11px;padding:11px 12px;margin:7px 6px;cursor:pointer;transition:.12s;background:#fff}
+    .item:hover{border-color:var(--seoul);box-shadow:0 3px 10px rgba(37,99,235,.09)}
+    .item.active{border-color:var(--seoul);background:#f2f6ff}
+    .item .top{display:flex;align-items:center;gap:8px;margin-bottom:4px}
+    .item .nm{font-weight:700;font-size:14px}
+    .num{width:20px;height:20px;border-radius:50%;background:var(--seoul);color:#fff;font-size:11px;font-weight:700;display:grid;place-items:center;flex:none}
+    .item .ad{color:var(--muted);font-size:12px;line-height:1.45}
+    .map-wrap{flex:1;position:relative;min-width:0}
+    #map{position:absolute;inset:0}
+    .pinM{cursor:pointer;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
+    .iw{font-family:inherit;padding:10px 12px;min-width:180px}
+    .iw b{font-size:13.5px}
+    .iw p{margin:6px 0 0;font-size:12px;color:#4b5563;line-height:1.45}
+    .note{padding:8px 16px;background:#fffbeb;border-top:1px solid #fde68a;color:#92400e;font-size:11.5px}
+    @media(max-width:720px){.main{flex-direction:column}.side{width:100%;max-width:none;height:44%;border-right:none;border-bottom:1px solid var(--line)}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="logo"><span class="dot">GS</span> GS25 편의점 TV</div>
+      <span class="sub">서울특별시 중구 매체 위치 · 광고주용</span>
+      <span class="badge">서울 중구 · 총 7개 매장</span>
+    </header>
+    <div class="main">
+      <aside class="side">
+        <div class="head">
+          <h1>서울 중구 편의점 매체</h1>
+          <div class="cnt" id="cnt"></div>
+        </div>
+        <div class="list" id="list"></div>
+        <div class="note">※ 광고플레이 고객용 카탈로그와 분리된 광고주 전용 샘플 페이지입니다. 좌표는 주소 기반 자동 변환 결과입니다.</div>
+      </aside>
+      <div class="map-wrap"><div id="map"></div></div>
+    </div>
+  </div>
+
+  <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1ouo31myef"></script>
+  <script>
+    const STORES = [{"name": "동대후문점", "addr": "서애로1길 35, 1층", "lat": 37.5610296, "lng": 127.0000407}, {"name": "신당삼성점", "addr": "청구로1길23, 2동 B 101호", "lat": 37.5589235, "lng": 127.0179846}, {"name": "뉴신당센터점", "addr": "퇴계로88길48, 1층", "lat": 37.5636794, "lng": 127.0201311}, {"name": "중구청산점", "addr": "다산로32길 15, 1층 101호", "lat": 37.5611041, "lng": 127.0154741}, {"name": "서울스퀘어점", "addr": "한강대로416, 지하1층", "lat": 37.5555057, "lng": 126.9737678}, {"name": "을지트윈점", "addr": "을지로4가261-4번지", "lat": 37.5663567, "lng": 126.9969365}, {"name": "북창점", "addr": "남대문로1길26", "lat": 37.5622021, "lng": 126.977548}];
+    let map, markers = [], infoWindows = [], activeIdx = -1;
+
+    function pinSvg(n){
+      return '<svg width="28" height="36" viewBox="0 0 28 36" class="pinM" xmlns="http://www.w3.org/2000/svg">'
+        + '<path d="M14 0C6.3 0 0 6.3 0 14c0 9.9 14 22 14 22s14-12.1 14-22C28 6.3 21.7 0 14 0z" fill="#2563eb"/>'
+        + '<circle cx="14" cy="14" r="9" fill="#fff"/>'
+        + '<text x="14" y="18" font-size="12" font-weight="700" text-anchor="middle" fill="#2563eb" font-family="sans-serif">'+n+'</text></svg>';
+    }
+
+    function init(){
+      map = new naver.maps.Map('map', { center:new naver.maps.LatLng(37.56,127.0), zoom:14, mapDataControl:false });
+      STORES.forEach((s,i)=>{
+        const m = new naver.maps.Marker({
+          position:new naver.maps.LatLng(s.lat,s.lng), map,
+          icon:{ content:pinSvg(i+1), anchor:new naver.maps.Point(14,36) }, title:s.name
+        });
+        const iw = new naver.maps.InfoWindow({
+          content:'<div class="iw"><b>'+(i+1)+'. '+s.name+'</b><p>'+s.addr+'</p></div>',
+          borderWidth:0, disableAnchor:true, backgroundColor:'#fff', pixelOffset:new naver.maps.Point(0,-8)
+        });
+        naver.maps.Event.addListener(m,'click',()=>focus(i));
+        markers.push(m); infoWindows.push(iw);
+      });
+      render(); fitAll();
+    }
+    function fitAll(){ const b=new naver.maps.LatLngBounds(); STORES.forEach(s=>b.extend(new naver.maps.LatLng(s.lat,s.lng))); map.fitBounds(b,{top:60,right:60,bottom:60,left:60}); }
+    function focus(i){
+      activeIdx=i; infoWindows.forEach(w=>w.close()); infoWindows[i].open(map,markers[i]);
+      map.panTo(new naver.maps.LatLng(STORES[i].lat,STORES[i].lng)); render();
+      const el=document.querySelector('[data-i="'+i+'"]'); if(el) el.scrollIntoView({block:'nearest',behavior:'smooth'});
+    }
+    function render(){
+      document.getElementById('cnt').textContent = STORES.length+'개 매장';
+      document.getElementById('list').innerHTML = STORES.map((s,i)=>
+        '<div class="item '+(i===activeIdx?'active':'')+'" data-i="'+i+'">'
+        +'<div class="top"><span class="num">'+(i+1)+'</span><span class="nm">'+s.name+'</span></div>'
+        +'<div class="ad">'+s.addr+'</div></div>').join('');
+      document.querySelectorAll('.item').forEach(el=>el.addEventListener('click',()=>focus(Number(el.dataset.i))));
+    }
+    if (window.naver && naver.maps) init(); else window.addEventListener('load', init);
+  </script>
+</body>
+</html>

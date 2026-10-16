@@ -1,4 +1,4 @@
-/* =====================================================================
+﻿/* =====================================================================
    광고플레이 개선 적용 — 주요 서비스 도크 + 정보접근성 (additive, 미배포)
    경쟁사 분석(TKAD·HOO·ADVoost·adtype) 근거로 도출한 서비스 메뉴.
    기존 스타일을 덮어쓰지 않도록 gps- 네임스페이스 사용.
@@ -31,7 +31,7 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
   font-size: 9px;              /* 관심매체 배지 숫자만큼 작게(보조 역할) — tier 상관없이 동일 */
   font-weight: 700;
   line-height: 1;
-  font-family: "SUIT Variable", "SUIT", "Noto Sans KR", "Apple SD Gothic Neo", sans-serif;
+  font-family: "Pretendard Variable", "Pretendard", "Apple SD Gothic Neo", "Noto Sans KR", sans-serif;
   text-shadow: 0 1px 2px rgba(15, 23, 42, .35);  /* 연한 원 위에서도 흰 숫자가 읽히게 */
   cursor: pointer;
   border: none;
@@ -62,7 +62,7 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
 }
 .map-cluster--xxl {
   width: 62px; height: 62px;
-  background: radial-gradient(circle at 50% 34%, #2a54a2, #0b3a91 72%);
+  background: radial-gradient(circle at 50% 34%, #2a54a2, #2540ea 72%);
   box-shadow: 0 0 0 6px rgba(11, 58, 145, .30), 0 3px 10px rgba(15, 23, 42, .34);
 }
 
@@ -113,7 +113,7 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
   --gps-shadow: 0 1px 2px rgba(15,20,32,.05), 0 10px 30px rgba(15,20,32,.10);
 }
 
-/* 실시간 라이브상담 CTA는 사이트 기존 네이비(#0b3a91, 회원가입·옥외광고전체와 동일)를 유지 */
+/* 실시간 라이브상담 CTA는 사이트 기존 네이비(#2540ea, 회원가입·옥외광고전체와 동일)를 유지 */
 /* 상담 카드 배경을 더 또렷하게 → 전화·온라인상담 가독성 향상 */
 .map-contact-card { background: rgba(255, 255, 255, 0.97); }
 
@@ -328,7 +328,7 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
 .map-fav-compare--rows tbody td.map-fav-region { position: sticky; left: 0; z-index: 1; width: 46px; padding: 8px 6px 8px 0; border-top: 1px solid #eef2f7; background: #fff; color: #334155; font-size: 11.5px; font-weight: 800; white-space: nowrap; text-align: left; vertical-align: middle; }
 /* 매체 열은 비고 오른쪽(left:46px)으로 고정 */
 /* 구분(순번) — 최좌측 고정 열 */
-.map-fav-compare--rows thead th.map-fav-no-h { position: sticky; left: 0; z-index: 2; width: 36px; padding: 0 6px 8px 0; background: #fff; text-align: center; color: #94a3b8; font-size: 11px; font-weight: 700; }
+.map-fav-compare--rows thead th.map-fav-no-h { position: sticky; left: 0; z-index: 2; width: 36px; padding: 0 6px 8px; background: #fff; text-align: center; color: #94a3b8; font-size: 11px; font-weight: 700; }
 .map-fav-compare--rows tbody td.map-fav-no-cell { position: sticky; left: 0; z-index: 1; width: 36px; padding: 8px 6px; border-top: 1px solid #eef2f7; background: #fff; text-align: center; color: #94a3b8; font-size: 11px; font-weight: 500; vertical-align: middle; }
 /* 매체 열 — 구분 오른쪽(left:36px) 고정. 헤더는 중앙, 셀 내용은 좌측 */
 .map-fav-compare--rows thead th.map-fav-compare-corner { position: sticky; left: 36px; z-index: 2; width: auto; padding: 0 12px 8px 0; background: #fff; text-align: center; }
@@ -351,7 +351,7 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
 .map-fav-sheet { width: min(880px, 96vw); }
 .map-fav-foot .map-fav-total-row { margin-right: auto; }
 .map-fav-download { display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 48px; padding: 0 16px; border: 1px solid #cbd5e1; border-radius: 12px; background: #fff; color: #0f172a; font-size: 13.5px; font-weight: 700; cursor: pointer; transition: background .15s ease, color .15s ease; }
-.map-fav-download:hover { background: #eef4ff; border-color: #b7c8e7; color: #0b3a91; }
+.map-fav-download:hover { background: #eef4ff; border-color: #b7c8e7; color: #2540ea; }
 .map-fav-download svg { width: 16px; height: 16px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
 /* 상세 제원 '계약정보' 라벨 아래 줄 — 비용(VAT별도) 부기(작게·연하게) */
 .map-detail-specs .map-detail-fact-sub { display: inline-block; margin-top: 1px; font-size: 11px; font-weight: 500; color: #94a3b8; }
@@ -374,18 +374,25 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
 .map-fav-compare--rows tbody .map-fav-remove { position: static; }
 /* 상담 대상 체크박스 — 매우 연한 회색. native accent-color 는 체크가 흰색이라 배경을 연하게 하면
    체크가 안 보인다 → appearance:none 커스텀으로 '연회색 박스 + 회색 체크'를 직접 그린다. */
-.map-fav-incl {
+.map-fav-incl, .map-fav-incl-all {
   appearance: none; -webkit-appearance: none;
   width: 16px; height: 16px; margin: 0; cursor: pointer; vertical-align: middle;
   position: relative; border: 1.5px solid #d0d5dd; border-radius: 4px; background: #fff;
 }
-.map-fav-incl:checked { background: #eceef1; border-color: #cbd2dd; }
-.map-fav-incl:checked::after {
+.map-fav-incl:checked, .map-fav-incl-all:checked { background: #eceef1; border-color: #cbd2dd; }
+.map-fav-incl:checked::after, .map-fav-incl-all:checked::after {
   content: ""; position: absolute; left: 4.5px; top: 1px;
   width: 4px; height: 8px; border: solid #98a2b3; border-width: 0 1.6px 1.6px 0;
   transform: rotate(45deg);
 }
-.map-fav-incl:focus-visible { outline: 2px solid #b7c8e7; outline-offset: 1px; }
+/* 전체선택: 일부만 체크된 상태 = 가로 대시 */
+.map-fav-incl-all:indeterminate { background: #eceef1; border-color: #cbd2dd; }
+.map-fav-incl-all:indeterminate::after {
+  content: ""; position: absolute; left: 3px; top: 6.2px; width: 8px; height: 1.6px; background: #98a2b3; border-radius: 1px;
+}
+.map-fav-incl:focus-visible, .map-fav-incl-all:focus-visible { outline: 2px solid #b7c8e7; outline-offset: 1px; }
+/* '상담' 헤더 — 전체선택 체크박스 위 + '상담' 라벨 아래 세로 배치 */
+.map-fav-no-h-label { display: block; margin-top: 3px; }
 /* 체크 해제한 행 — 완전 삭제가 아니라 '제외'. 체크박스 칸만 또렷이 남기고 나머지는 흐리게. */
 .map-fav-compare--rows tbody tr.is-excluded > *:not(.map-fav-no-cell) { opacity: .4; }
 /* 규격(화면 크기) 한 줄 */
@@ -400,9 +407,9 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
 .map-detail-title-row h2 { font-size: 20px; font-weight: 800; }
 /* 관심 버튼 — 각지게(6px) + 얇고 연한 외곽선 + 더 작게. 지도 목록·상세 공통. */
 .map-card-fav, .map-detail-fav {
-  border: 1px solid #eef1f6; border-radius: 6px; height: 20px; padding: 0 6px 0 5px; gap: 2px; font-weight: 700;
+  border: none; background: transparent; height: 20px; padding: 0 2px; gap: 2px; font-weight: 500;
 }
-.map-card-fav span, .map-detail-fav span { font-size: 11px; font-weight: 700; }
+.map-card-fav span, .map-detail-fav span { font-size: 11px; font-weight: 500; }
 .map-card-fav svg, .map-detail-fav svg { width: 12px; height: 12px; }
 /* 상세페이지 제목 태그(대형 전광판·도산대로 프리미엄) 제거 — 유형은 상세 제원에, "프리미엄"은 마케팅성 */
 .map-detail-view .map-list-tags { display: none; }
@@ -415,7 +422,7 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
 .map-detail-actions a:hover,
 .map-detail-actions button:hover { background: #eef4ff; }
 .map-detail-actions a:hover strong,
-.map-detail-actions button:hover strong { color: #0b3a91; }
+.map-detail-actions button:hover strong { color: #2540ea; }
 
 /* 하단 연락처(전화·온라인 상담·카톡) 텍스트를 좌측 서비스 버튼 라벨(.gps-svc .top)과 동일하게 통일 — 700 / ink-soft. 실시간 라이브 상담(.primary)은 제외 */
 .map-contact-card a:not(.primary) { font-size: 13px; font-weight: 620; color: #344054; } /* 헤더 메뉴와 통일(13/620/#344054) */
@@ -454,7 +461,7 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
 /* 큐레이션 리스트 항목 — 기본은 흰색. 호버: 배경 틴트(#f8fafc)만. 클릭(선택): 배경 틴트 + 파란 왼쪽 띠. (선택 규칙을 뒤에 둬 선택 항목은 호버해도 띠 유지) */
 .map-curation-list button { background: #fff; }
 .map-curation-list button:hover { background: #f8fafc; box-shadow: none; }
-.map-curation-list button.is-active { background: #f8fafc; box-shadow: inset 3px 0 0 #0b3a91; }
+.map-curation-list button.is-active { background: #f8fafc; box-shadow: inset 3px 0 0 #2540ea; }
 
 /* 매체 노출 포인트(3안) — 블루 캡션을 박스 안에 넣어 강조 + 브랜드는 박스 밖 별도 소제목(여유 여백) */
 .map-detail-selling .map-detail-audience-box { margin-top: 2px; padding: 11px 15px; background: #eef4ff; border-radius: 10px; }
@@ -535,7 +542,7 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
 /* ── 엘리베이터 광고(집계형): 네트워크 카드 + 지역 커버리지 + 지도 집계 버블 ── */
 .map-elev-seg { display: flex; gap: 4px; padding: 4px; margin: 2px 0 12px; background: var(--gps-bg); border: 1px solid var(--gps-line); border-radius: 12px; }
 .map-elev-seg button { flex: 1; padding: 9px 10px; border: 0; border-radius: 9px; background: transparent; color: var(--gps-muted); font-size: 13px; font-weight: 700; cursor: pointer; transition: background .15s, color .15s; }
-.map-elev-seg button.is-active { background: #eef4ff; color: #0b3a91; box-shadow: inset 0 0 0 1px #b9caea; }
+.map-elev-seg button.is-active { background: #eef4ff; color: #2540ea; box-shadow: inset 0 0 0 1px #b9caea; }
 
 .map-elev-hero { padding: 14px 16px; margin-bottom: 14px; background: var(--gps-accent-wash); border-radius: 12px; }
 .map-elev-hero-stats { display: flex; gap: 18px; flex-wrap: wrap; }
@@ -583,7 +590,7 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
 
 /* 엘리베이터 상품 카드 — 관심 별 토글(전광판 카드 재사용 + 별 아이콘) */
 .map-elev-fav span { color: #b4bdca; font-size: 12px; line-height: 1; transition: color .14s ease; }
-.map-elev-fav.is-on { border-color: #b9caea; background: #f3f7ff; color: #0b3a91; }
+.map-elev-fav.is-on { border-color: #b9caea; background: #f3f7ff; color: #2540ea; }
 .map-elev-fav.is-on span { color: #f5b301; }
 
 /* 엘리베이터 상세 — 실측 위치 안내줄 */
@@ -596,7 +603,7 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
 .map-elev-pin.is-office { background: #0f9d76; }
 
 /* 엘리베이터 사이트 핀 — 버스 정류장 핀 형태 재사용, 색만 유형별로(아파트=블루, 오피스=그린) */
-.bus-stop-pin.is-elev-apt { background: #0b3a91; }
+.bus-stop-pin.is-elev-apt { background: #2540ea; }
 .bus-stop-pin.is-elev-office { background: #0f9d76; }
 
 /* ===== 지도 헤더 전체 텍스트 통일 — 배경 없이 깔끔(호버·활성=색만 진해짐).
@@ -609,7 +616,7 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
 .map-global-nav button,
 .map-global-nav .map-header-filter,
 .map-filter-entry,
-.map-global-actions a:not(.join) { color: #344054; font-size: 13px; font-weight: 620; } /* 주 내비게이션 13px·620, 중간톤 #344054(연함 보완) */
+.map-global-actions a:not(.join) { color: #16203a; font-size: 13px; font-weight: 650; } /* 리디자인: 진한 잉크 + 굵게로 대비 강화 */
 .map-global-nav a,
 .map-global-nav button:not(.map-filter-entry),
 .map-global-actions a:not(.join) { min-height: 34px; padding: 0; border: 0; background: transparent; transition: color .15s ease, transform .15s ease; }
@@ -621,8 +628,9 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
 .map-filter-entry::after { width: 5px; height: 5px; margin-left: 6px; border-right: 1.5px solid #9aa4b2; border-bottom: 1.5px solid #9aa4b2; transform: translateY(-1px) rotate(45deg); transition: border-color .15s ease; }
 .map-filter-entry:hover::after, .map-filter-entry:focus::after { border-color: #0b1b3f; }
 
-/* 활성(추천 큐레이션 패널 열림) 강조 제거 — 다른 항목과 동일한 색·굵기. 진해지는 건 호버 때만 */
-.map-global-nav button.is-active:not(.map-filter-entry) { color: #344054; font-weight: 620; }
+/* 리디자인: 활성 메뉴 = 네이비 + 하단 밑줄로 '현재 위치' 명확히 */
+.map-global-nav button.is-active:not(.map-filter-entry) { position: relative; color: #2540ea; font-weight: 700; }
+.map-global-nav button.is-active:not(.map-filter-entry)::after { content: ""; position: absolute; left: 0; right: 0; bottom: -7px; height: 2.5px; background: #2540ea; border-radius: 2px; }
 .map-global-nav a:hover, .map-global-nav a:focus,
 .map-global-nav button:not(.map-filter-entry):hover, .map-global-nav button:not(.map-filter-entry):focus,
 .map-global-actions a:not(.join):hover, .map-global-actions a:not(.join):focus { background: transparent; color: #0b1b3f; }
@@ -631,7 +639,7 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
 .map-global-nav .map-header-filter:hover, .map-global-nav .map-header-filter:focus,
 .map-filter-entry:hover, .map-filter-entry:focus { background: transparent; border-color: transparent; color: #0b1b3f; }
 .map-global-nav .map-header-filter[aria-expanded="true"], .map-global-nav .map-header-filter.has-filter,
-.map-filter-entry[aria-expanded="true"], .map-filter-entry.has-filter { background: transparent; border-color: transparent; color: #0b3a91; }
+.map-filter-entry[aria-expanded="true"], .map-filter-entry.has-filter { background: transparent; border-color: transparent; color: #2540ea; }
 
 /* 유튜브·블로그 마크 — 기본 무채색, 마우스(손) 올리면 원래 컬러 */
 .map-nav-media-link .map-nav-icon { filter: grayscale(1); opacity: .5; transition: filter .15s ease, opacity .15s ease, transform .15s ease; }
@@ -686,7 +694,7 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
    (우리는 7개 전부 테두리 박스여서 지도 위에서 특히 번잡했음. 요소 '개수'가 아니라 '상자 수'가 문제)
    버튼 좌우 패딩(17px)은 그대로라 항목 간 간격은 유지되고, 호버 때만 연회색 칩이 나타난다. */
 .map-category-pill:not(.is-active) { border-color: transparent; background: transparent; color: #475467; }
-.map-category-pill:not(.is-active):hover { border-color: #e7eef8; background: transparent; color: #475467; }
+.map-category-pill:not(.is-active):hover { border-color: transparent; background: transparent; color: #16181d; }
 
 /* 카테고리 칩 글자 12px — 헤더 메뉴(13/700)보다 한 단계 낮춰 위계 분리. */
 .map-category-pill { font-size: 12px; }
@@ -750,7 +758,7 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
 .map-elev-complex > button { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; background: transparent; cursor: pointer; z-index: 1; }
 .map-elev-complex-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
 .map-elev-complex-head h3 { margin: 0; font-size: 16px; font-weight: 700; color: #111827; line-height: 1.3; }
-.map-elev-op-tag { position: relative; z-index: 2; flex: none; font-size: 10.5px; font-weight: 800; color: #0b3a91; background: #eaf0ff; padding: 3px 8px; border-radius: 999px; white-space: nowrap; }
+.map-elev-op-tag { position: relative; z-index: 2; flex: none; font-size: 10.5px; font-weight: 800; color: #2540ea; background: #eaf0ff; padding: 3px 8px; border-radius: 999px; white-space: nowrap; }
 .map-elev-op-tag.is-office { color: #0a6b50; background: #e2f5ee; }
 .map-elev-complex-addr { margin: 4px 0 0; font-size: 10.5px; font-weight: 560; color: #64748b; line-height: 1.5; }
 .map-elev-complex-facts { display: flex; flex-wrap: wrap; gap: 5px 8px; margin: 8px 0; }
@@ -772,8 +780,8 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
    2) 카테고리 줄 높이 64→58 (부모 그리드 행이 고정이라 행+패딩 함께 조정)
    3) 칩 간격 10→14로 넓혀 여백 확보 */
 .map-global-header { border-bottom: 0; }
-.map-workspace-page { grid-template-rows: 58px minmax(0, 1fr); }
-.map-category-strip { padding: 10px 0; }
+.map-workspace-page { grid-template-rows: 46px minmax(0, 1fr); }  /* 헤더 키운 만큼 카테고리 행 축소 → 맵 시작 위치(전체 여백) 그대로 */
+.map-category-strip { padding: 2px 0; align-items: center; }
 .map-category-list { gap: 14px; }
 
 /* 좌측 목록 카드 사진 — 2장 나란히(기존 유지). 높이만 소폭 확대: 기존 1.24/1(폭186→150px) → 1.06/1(≈175px).
@@ -818,16 +826,16 @@ body:has(.map-workspace-page) { --map-rail-gutter: 16px; }
 }
 /* 선택 핀은 기존 네이비 강조 유지 + 그림자만 살짝 */
 .media-map-pin.is-active .media-map-pin-image {
-  box-shadow: 0 0 0 3px #0b3a91, 0 3px 9px rgba(11, 58, 145, 0.38);
+  box-shadow: 0 0 0 3px #2540ea, 0 3px 9px rgba(11, 58, 145, 0.38);
 }
 .media-map-pin.is-active::after {
-  border-right-color: #0b3a91;
-  border-bottom-color: #0b3a91;
+  border-right-color: #2540ea;
+  border-bottom-color: #2540ea;
 }
 
 /* 도크 배지(관심매체 비교 개수) 색을 '실시간 라이브 상담' CTA와 동일한 네이비로 통일
-   — 기존 밝은 파랑(#3b74f2)이 혼자 튀어 사이트 기본 네이비(#0b3a91)와 어긋났음 */
-.gps-svc .bn { background: #0b3a91; }
+   — 기존 밝은 파랑(#3b74f2)이 혼자 튀어 사이트 기본 네이비(#2540ea)와 어긋났음 */
+.gps-svc .bn { background: #2540ea; }
 
 /* ================= 오버레이 패널 모델 (데스크톱) =================
    지도가 항상 전체 폭을 차지하고, 목록·상세 패널이 그 '위에 떠서' 동시에 보인다.
@@ -915,7 +923,7 @@ body:has(.map-workspace-page) { --map-rail-gutter: 16px; }
   transition: background .15s ease;
 }
 .gp-rail-toggle:hover { background: #f8fafc; }
-.gp-rail-toggle:hover .ic { border-right-color: #0b3a91; border-left-color: #0b3a91; }
+.gp-rail-toggle:hover .ic { border-right-color: #2540ea; border-left-color: #2540ea; }
 /* 펼쳐진 상태: ◀ (접기) */
 .gp-rail-toggle .ic {
   width: 0; height: 0; border-style: solid;
@@ -937,14 +945,15 @@ body:has(.map-workspace-page) { --map-rail-gutter: 16px; }
    읽히지 않게 한다. 호버 때만 네이비로 살아나 액션임을 알린다.
    위계: 로그인(텍스트) < 회원가입(그레이 아웃라인) < 실시간 라이브 상담(네이비 채움) */
 .map-global-actions .join {
-  background: #fff;
-  border: 1px solid #dde6f4;   /* 카테고리 칩과 동일한 연한 외곽선 */
-  color: #0f172a;
-  box-shadow: none;
-  min-height: 32px;            /* 카테고리 칩과 동일 높이 */
-  padding: 0 12px;             /* 카테고리 칩과 동일 좌우 여백 */
+  background: #2540ea;          /* 리디자인: 1차 액션 = 네이비 채움 CTA */
+  border: 1px solid transparent;
+  color: #fff;
+  font-weight: 700;
+  box-shadow: 0 4px 12px -3px rgba(11, 58, 145, .5);
+  min-height: 32px;
+  padding: 0 15px;
 }
-.map-global-actions .join:hover { border-color: #0b3a91; color: #0b3a91; background: #fff; }
+.map-global-actions .join:hover { border-color: transparent; color: #fff; background: #0a2f78; }
 
 /* 헤더를 동작 성격으로 갈랐다 — 좌측 nav = 이 화면에서 패널이 열리는 것(추천·지역·예산),
    우측 actions = 다른 페이지로 가는 것. 생김새가 같은데 결과가 달라 예측이 안 되던 문제.
@@ -1000,8 +1009,8 @@ body:has(.map-workspace-page) { --map-rail-gutter: 16px; }
    → 이 값이 화면 검증을 거친 결론이다. 다시 네이비로 올리자는 제안은 이미 한 번 기각됐다. */
 .map-category-pill.is-active {
   background: transparent;   /* 배경 fill 제거 */
-  border-color: #dde6f4;     /* 선택 표시 = 아주 연한 외곽선(연블루) — 지도 위에서 fill 없이 깔끔 */
-  color: #475467;            /* 텍스트는 파란색으로 안 바꾼다 — 기본 회색 유지 */
+  border-color: #dde6f4;     /* 선택 표시 = 아주 연한 외곽선(연블루) */
+  color: #475467;
   box-shadow: none;
 }
 
@@ -1034,7 +1043,7 @@ body:has(.map-workspace-page) { --map-rail-gutter: 16px; }
    base 의 두 div 는 각자 absolute 상자였다. 여기서 껍데기를 벗겨 정적 흐름에 넣고,
    래퍼가 유일한 상자가 된다. 안쪽 선택자는 그대로라 라이브 JS 훅은 안 깨진다. */
 .map-view-controls {
-  position: absolute; top: 16px; right: 16px; z-index: 4;
+  position: absolute; bottom: 16px; left: calc(var(--map-left-rail) + 16px); z-index: 4;
   display: flex; align-items: stretch; width: 210px; padding: 3px;
   border: 1px solid rgba(226, 232, 240, .92); border-radius: 9px;
   background: rgba(255, 255, 255, .92); box-shadow: 0 2px 8px rgba(15, 23, 42, .12);
@@ -1064,23 +1073,23 @@ body:has(.map-workspace-page) { --map-rail-gutter: 16px; }
 .map-elev-prod { padding: 7px 11px; border: 1px solid var(--gps-line); border-radius: 999px; background: #fff; color: var(--gps-ink-soft); font-size: 12px; font-weight: 700; cursor: pointer; transition: border-color .14s, background .14s, color .14s; }
 .map-elev-prod b { font-weight: 800; color: var(--gps-muted); margin-left: 2px; }
 .map-elev-prod:hover { border-color: var(--gps-accent-soft); }
-.map-elev-prod.is-active { background: #0b3a91; border-color: #0b3a91; color: #fff; }
+.map-elev-prod.is-active { background: #2540ea; border-color: #2540ea; color: #fff; }
 .map-elev-prod.is-active b { color: #fff; opacity: .85; }
 
 /* 3 — 상품 요약 줄(버튼 아래 고정) */
 .map-elev-sum { padding: 11px 13px; margin-bottom: 10px; background: var(--gps-accent-wash); border-radius: 10px; }
 .map-elev-sum-head { display: flex; align-items: center; justify-content: space-between; gap: 8px; }
-.map-elev-sum-head strong { font-size: 14px; font-weight: 800; color: #0b3a91; }
-.map-elev-sum-link { border: 0; background: transparent; padding: 0; font-size: 11.5px; font-weight: 800; color: #0b3a91; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
+.map-elev-sum-head strong { font-size: 14px; font-weight: 800; color: #2540ea; }
+.map-elev-sum-link { border: 0; background: transparent; padding: 0; font-size: 11.5px; font-weight: 800; color: #2540ea; cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
 .map-elev-sum-scale { margin: 4px 0 0; font-size: 12.5px; font-weight: 700; color: var(--gps-ink-soft); }
-.map-elev-sum-price { margin: 2px 0 0; font-size: 12px; font-weight: 700; color: #0b3a91; }
+.map-elev-sum-price { margin: 2px 0 0; font-size: 12px; font-weight: 700; color: #2540ea; }
 .map-elev-sum-warn { margin: 4px 0 0; font-size: 11.5px; font-weight: 800; color: #9a5b00; background: #fff4e2; padding: 5px 8px; border-radius: 6px; }
 
 /* 3차 — 타운보드 전용 토글(요약 줄 내부) */
 .map-elev-tier { display: flex; gap: 6px; margin-top: 8px; }
 .map-elev-tier-btn { flex: 1; padding: 6px 8px; border: 1px solid #c9d8f7; border-radius: 7px; background: #fff; color: var(--gps-ink-soft); font-size: 11.5px; font-weight: 700; cursor: pointer; }
 .map-elev-tier-btn b { font-weight: 800; color: var(--gps-muted); margin-left: 3px; }
-.map-elev-tier-btn.is-active { background: #0b3a91; border-color: #0b3a91; color: #fff; }
+.map-elev-tier-btn.is-active { background: #2540ea; border-color: #2540ea; color: #fff; }
 .map-elev-tier-btn.is-active b { color: #fff; opacity: .85; }
 
 /* 4 — 카드 계산식 */
@@ -1092,7 +1101,7 @@ p.map-elev-broadcast { margin: 3px 0 0; font-size: 11px; font-weight: 600; color
 /* 상세 — 지역 등급별 단가표 */
 .map-elev-price-table { width: 100%; border-collapse: collapse; margin-top: 6px; }
 .map-elev-price-table th, .map-elev-price-table td { padding: 7px 6px; border-bottom: 1px solid var(--gps-line-soft); font-size: 12px; text-align: left; }
-.map-elev-price-table th { width: 76px; font-weight: 800; color: #0b3a91; }
+.map-elev-price-table th { width: 76px; font-weight: 800; color: #2540ea; }
 .map-elev-price-table td:first-of-type { width: 68px; font-weight: 700; color: var(--gps-ink-soft); }
 .map-elev-price-table td:last-child { color: var(--gps-muted); font-weight: 600; }
 
@@ -1105,7 +1114,7 @@ p.map-elev-broadcast { margin: 3px 0 0; font-size: 11px; font-weight: 600; color
 .map-elev-formula { color: #172033; }
 .map-elev-complex-foot { margin-top: 7px; }
 .map-elev-complex-cta { color: var(--gps-muted); }              /* "VAT 별도" 등 주석은 회색 */
-.map-elev-complex-cta.is-action { color: #0b3a91; font-weight: 800; }  /* "패키지 →" 등 액션만 파랑 */
+.map-elev-complex-cta.is-action { color: #2540ea; font-weight: 800; }  /* "패키지 →" 등 액션만 파랑 */
 
 /* 카드 재설계 — 브랜드 회색 배지 · 설치위치 · 계산식+비용 한 줄 · 상세보기 링크(파랑) */
 .map-elev-vendor { position: relative; z-index: 2; flex: none; font-size: 10.5px; font-weight: 700; color: #64748b; background: #eef1f5; padding: 2px 7px; border-radius: 5px; white-space: nowrap; }
@@ -1114,8 +1123,104 @@ p.map-elev-broadcast { margin: 3px 0 0; font-size: 11px; font-weight: 600; color
 .map-elev-calc b { font-weight: 800; color: #172033; }
 .map-elev-calc small { font-size: 10px; font-weight: 560; color: #94a3b8; }
 .map-elev-calc.is-package { color: #64748b; }
-.map-elev-detail-link { position: relative; z-index: 2; font-size: 12px; font-weight: 800; color: #0b3a91; text-decoration: none; }
+.map-elev-detail-link { position: relative; z-index: 2; font-size: 12px; font-weight: 800; color: #2540ea; text-decoration: none; }
 .map-elev-detail-link:hover { text-decoration: underline; text-underline-offset: 2px; }
 /* 좌측 상단 패키지 안내 버튼 */
-.map-elev-pkg-link { display: flex; align-items: center; justify-content: space-between; margin: 0 0 10px; padding: 10px 12px; border: 1px solid #b9caea; border-radius: 10px; background: #f5f9ff; color: #0b3a91; font-size: 13px; font-weight: 700; text-decoration: none; }
+.map-elev-pkg-link { display: flex; align-items: center; justify-content: space-between; margin: 0 0 10px; padding: 10px 12px; border: 1px solid #b9caea; border-radius: 10px; background: #f5f9ff; color: #2540ea; font-size: 13px; font-weight: 700; text-decoration: none; }
 .map-elev-pkg-link:hover { background: #eef4ff; }
+
+/* (다크 밴드 헤더 실험 제거 — 흰 헤더가 더 시원함.) */
+/* 헤더 "층" 정의 — 고고스타트처럼 그림자 없이 얇은 라인만(깔끔·플랫) */
+.map-global-header { border-bottom: 1px solid #e9edf3; box-shadow: none; min-height: 55px; display: flex; align-items: center; padding: 0 24px; }
+.map-global-brand { flex: none; margin: 0; }
+.map-global-pages { margin-left: auto; margin-right: 16px; }  /* 페이지메뉴 우측(로그인 옆, 항목 간격과 동일 16px) */
+.map-global-header > .map-global-actions { padding-left: 0; }
+.map-global-actions { flex: none; }
+/* 헤더 메뉴 = 첨부 이미지의 로열 블루 텍스트, 활성은 더 진한 블루 볼드 */
+.map-global-nav a, .map-global-nav button, .map-global-nav .map-header-filter, .map-filter-entry, .map-global-pages a, .map-global-actions a:not(.join) { color: #2540ea; }
+/* 굵기 통일 — 참고보다 두꺼워서 얇게(500) */
+.map-global-nav button, .map-global-nav .map-filter-entry, .map-global-pages a, .map-global-actions a:not(.join), .map-global-actions a.map-login span { font-weight: 600; }
+/* 크기 통일(14px) — 박스 13 / 페이지메뉴 16 등 섞여 있던 것 하나로 */
+.map-global-nav button, .map-global-nav button.map-filter-entry, .map-global-nav button.map-header-filter, .map-global-pages a, .map-header-search, .map-header-search span, .map-login span { font-size: 12px; }
+.map-global-nav a:hover, .map-global-nav a:focus, .map-global-nav button:hover, .map-global-nav button:focus, .map-global-pages a:hover, .map-global-pages a:focus, .map-global-actions a:not(.join):hover, .map-global-actions a:not(.join):focus { color: #16249e; }
+.map-global-nav button.is-active:not(.map-filter-entry) { color: #2540ea; font-weight: 600; }
+.map-global-nav button.is-active:not(.map-filter-entry)::after { display: none; }
+.map-filter-entry::after { display: none; }  /* 참고 이미지엔 드롭다운 화살표 없음 → 제거 */
+/* 좌측 도구 3개(추천 큐레이션·지역검색·예산·기간 검색) = 블루 아웃라인 박스로 그룹핑 */
+.map-global-nav { border: 1px solid #e5e8ee; border-radius: 3px; padding: 2px 3px; width: fit-content; flex: none; gap: 2px; }
+/* 지도 좌측 목록 카드: 유동 1,000명당 효율 보조줄 */
+.map-card-st { margin: 5px 0 0; }
+.map-card-st span { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 4px; background: #eef1fe; color: #2540ea; font-size: 11px; font-weight: 800; letter-spacing: .01em; }
+/* 도구 글씨색 = 카테고리와 동일, 더 연하게(#6b7684) */
+.map-category-strip .map-global-nav button, .map-category-strip .map-global-nav button.is-active { color: #6b7684; }
+/* 추천큐레이션 활성 시 지역검색처럼 파란색 (위 회색 규칙 덮어쓰기) */
+.map-category-strip .map-global-nav button.is-active:not(.map-filter-entry) { color: #2540ea; font-weight: 700; }
+.map-category-strip .map-global-nav button { padding: 2px 4px; min-height: 0; height: auto; line-height: 1.2; }
+.map-global-mid .map-global-nav button { padding-top: 4px; padding-bottom: 4px; min-height: 0; height: auto; line-height: 1.2; }
+/* 가운데 그룹: 도구 박스 + 페이지 이동 메뉴 — 왼쪽부터 흐르고, 계정(Search·Log In)만 맨 오른쪽 */
+.map-global-mid { display: flex; align-items: center; gap: 18px; min-width: 0; justify-self: center; }
+.map-global-pages { display: flex; align-items: center; gap: 16px; min-width: 0; }
+/* 계정 그룹(Search·Log In) — 절대 줄어들거나 밀려 겹치지 않게 */
+.map-global-actions { flex: none; gap: 14px; }
+.map-global-actions .map-header-search { white-space: nowrap; }
+/* styles.css 의 `.map-global-actions span { width:1px }`(스크린리더 숨김)이 Search·Log In 글자를 짜부라뜨려 겹침 유발 → 내 span 은 정상 표시로 복구 */
+.map-global-actions .map-header-search span, .map-global-actions .map-login span {
+  position: static; width: auto; height: auto; margin: 0; padding: 0;
+  overflow: visible; clip: auto; clip-path: none; white-space: nowrap;
+  background: transparent;   /* 스크린리더 규칙의 회색 배경(217,222,232) 제거 */
+}
+
+/* 좌측 로고 = "K-goplay" 텍스트 (심볼 마크 숨김), 블루 */
+.map-global-brand .brand-mark { display: none; }
+.map-global-brand strong { display: inline-block; font-size: 25px; font-weight: 500; letter-spacing: 0; color: #2540ea; font-variation-settings: "wght" 500; }
+
+/* 우측 상단 검색 = 참고 이미지처럼 돋보기 + "Search" (뮤트 그레이) */
+.map-global-actions .map-header-search {
+  display: inline-flex; align-items: center; gap: 6px; background: transparent; border: none; cursor: pointer;
+  color: #2540ea; font-size: 13px; font-weight: 600; padding: 0; font-family: inherit;
+}
+.map-global-actions .map-header-search:hover { color: #16249e; }
+.map-global-actions .map-header-search svg { flex: none; display: block; }
+
+/* 로그인 = 참고 이미지처럼 사람 아이콘 + 텍스트만 (회원가입 제거) */
+.map-global-actions a.map-login { display: inline-flex; align-items: center; gap: 7px; color: #2540ea; font-weight: 600; }
+.map-global-actions a.map-login .map-login-ico { flex: none; display: block; }
+
+/* ── 카테고리 줄: 헤더 박스와 같은 x(430px)에서 시작해 열 맞춤 + 선택만 은은한 채움, 검색은 헤더로 이동 ── */
+.map-category-strip { display: flex; align-items: center; justify-content: flex-start; gap: 16px; padding-left: 16px; }  /* 검색창 왼쪽 = 카드 사진 왼쪽(16) */
+.map-category-strip .map-category-list { justify-content: flex-start; gap: 10px; padding: 0; }  /* 좌측 정렬(박스 뒤로 흐름) */
+.map-category-strip .map-global-nav { margin-left: 11px; }  /* 도구박스 왼쪽 = 지도 시작(430): 검색우측403 + gap16 + 11 */
+.map-category-strip .map-category-pill { font-size: 12px; font-weight: 600; padding: 0 8px; color: #6b7684; }
+.map-category-pill.is-active { background: transparent; border-color: transparent; }
+/* 선택된 카테고리는 파랑 대신 진한 검정+굵게 (다중선택 시 파랑 범벅 방지) */
+.map-category-strip .map-category-pill.is-active { color: #2540ea; font-weight: 700; }
+/* ── 검색창: 카테고리 줄 맨 왼쪽에 상시 노출 (돋보기는 칸 우측 끝) ── */
+.map-category-strip .map-category-search {
+  display: flex; align-items: center; flex: none; order: -1; margin: 0;
+  width: 387px; height: 32px; min-height: 32px; background: #fff;
+  border: 1px solid #dbe0ea; border-radius: 6px; box-shadow: none; padding: 0 8px 0 12px;
+}
+.map-category-strip .map-category-search input { flex: 1; min-width: 0; border: none; background: transparent; outline: none; font-size: 13px; padding: 0; color: #333a46; height: auto; }
+.map-category-strip .map-category-search input::placeholder { color: #aeb4bf; }
+.map-category-strip .map-category-search .map-search-go { flex: none; width: auto; min-width: 0; height: auto; background: transparent; border: none; border-radius: 0; cursor: pointer; color: #2540ea; display: inline-flex; align-items: center; padding: 0; margin-left: 6px; }
+
+/* '라이브 톡 상담하기' 버튼 배경 = 헤더 글자색(#2540ea) */
+.map-contact-card a.primary { background: #2540ea; }
+.map-contact-card a.primary:hover { background: #1c33c4; }
+
+/* 예산 선정 지점 강조 — 주황 핀(다른 색), 살짝 크게 + 링 */
+.bus-stop-pin.is-pick { background: #e53935 !important; box-shadow: 0 0 0 2px #fff, 0 0 0 5px rgba(229,57,53,.35), 0 6px 14px rgba(229,57,53,.35); transform: translateY(-1px) rotate(-45deg) scale(1.25); z-index: 3; }
+.bus-stop-pin.is-pick .bus-stop-pin-core { display: block; background: #fff; }
+/* 리스트 카드에도 선정 표시(작게) */
+.map-elev-complex.is-pick .map-elev-vendor { background: #fdeaea; color: #b3261e; }
+
+/* 붉은 선정 핀 단지명 라벨 */
+.elev-pin-wrap { display: inline-flex; flex-direction: column; align-items: center; width: 150px; pointer-events: none; }
+.elev-pin-wrap .bus-stop-pin { pointer-events: auto; }
+.map-elev-pinlabel { margin-top: 7px; max-width: 148px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; background: #e53935; color: #fff; font-size: 10px; font-weight: 800; line-height: 1.4; padding: 1px 6px; border-radius: 4px; box-shadow: 0 1px 3px rgba(15,23,42,.4); }
+
+/* 표시 핀 상품별 색 — 포커스=빨강, 타운보드=보라 */
+.bus-stop-pin.is-pick.is-pick-tb { background: #7c3aed !important; box-shadow: 0 0 0 2px #fff, 0 0 0 5px rgba(124,58,237,.35), 0 6px 14px rgba(124,58,237,.4); }
+.bus-stop-pin.is-pick.is-pick-foc { background: #e53935 !important; }
+/* 핀 툴팁 커서(hover 안내) */
+.bus-stop-pin.is-pick { cursor: pointer; }

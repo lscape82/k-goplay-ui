@@ -219,6 +219,14 @@
       "label": "쇼핑·문화시설"
     },
     {
+      "value": "convenience",
+      "label": "편의점"
+    },
+    {
+      "value": "highway",
+      "label": "고속도로"
+    },
+    {
       "value": "other",
       "label": "기타"
     }

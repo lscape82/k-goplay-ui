@@ -1,4 +1,4 @@
-document.addEventListener("DOMContentLoaded", async () => {
+﻿document.addEventListener("DOMContentLoaded", async () => {
   const root = document.querySelector("#media-map");
   if (!root) return;
 
@@ -57,6 +57,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   const favTotalEl = document.querySelector("#mapFavTotal");
   const favCta = document.querySelector("#mapFavCta");
   const favDownload = document.querySelector("#mapFavDownload");
+  const favShare = document.querySelector("#mapFavShare");
   const favPdf = document.querySelector("#mapFavPdf");
   const favReco = document.querySelector("#mapFavReco");
   const favClose = document.querySelector("#mapFavClose");
@@ -66,6 +67,14 @@ document.addEventListener("DOMContentLoaded", async () => {
   let favorites = (() => {
     try { return JSON.parse(localStorage.getItem(FAVORITES_KEY) || "[]"); } catch (error) { return []; }
   })();
+
+  // 공유 지도링크(?cart=slug,slug,…)로 들어오면 그 매체를 관심매체에 합쳐 비교 패널로 바로 보여준다.
+  const SHARED_CART = (new URLSearchParams(window.location.search).get("cart") || "")
+    .split(",").map((s) => s.trim()).filter(Boolean);
+  if (SHARED_CART.length) {
+    SHARED_CART.forEach((slug) => { if (!favorites.includes(slug)) favorites.push(slug); });
+    try { localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites)); } catch (error) { /* ignore */ }
+  }
 
   function saveFavorites() {
     try { localStorage.setItem(FAVORITES_KEY, JSON.stringify(favorites)); } catch (error) { /* ignore */ }
@@ -304,7 +313,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <table>
           <thead>
             <tr>
-              <th class="map-fav-no-h">상담</th>
+              <th class="map-fav-no-h"><input type="checkbox" class="map-fav-incl-all" aria-label="전체 선택/해제" title="전체 선택/해제"><span class="map-fav-no-h-label">선택</span></th>
               <th class="map-fav-compare-corner">매체</th>
               ${compareRows.map((row) => `<th class="${row.className || ""}">${AdPlay.esc(row.label)}</th>`).join("")}
               <th class="map-fav-remove-col" aria-label="삭제"></th>
@@ -322,12 +331,22 @@ document.addEventListener("DOMContentLoaded", async () => {
         </table>
       </div>`;
     recalcFavConsult();
+    syncFavAllCheckbox();
     if (favReco) {
       const reco = favRecommendation(items);
       favReco.innerHTML = reco ? `<strong>추<br>천</strong><span class="map-fav-reco-body">${AdPlay.esc(reco)}</span>` : "";
       favReco.hidden = !reco;
     }
     fitFavTitles();
+  }
+  // 헤더 '전체선택' 체크박스 상태 = 모두 체크(true) / 일부만(indeterminate) / 모두 해제(false)
+  function syncFavAllCheckbox() {
+    const all = document.querySelector(".map-fav-incl-all");
+    if (!all) return;
+    const boxes = [].slice.call(document.querySelectorAll("[data-fav-incl]"));
+    const checked = boxes.filter((b) => b.checked).length;
+    all.checked = boxes.length > 0 && checked === boxes.length;
+    all.indeterminate = checked > 0 && checked < boxes.length;
   }
   // 상담 대상(체크된 매체)만으로 월 합계·상담 링크·CTA 라벨을 갱신. 체크박스 토글 시 표 전체를 다시 그리지 않고
   // 이것만 호출해 가로 스크롤 위치를 지킨다. renderFavPanel 초기 렌더에서도 재사용.
@@ -473,6 +492,26 @@ document.addEventListener("DOMContentLoaded", async () => {
       downloadFavCsvFallback(items);
     }
   }
+  // 담은 매체만 열리는 공유 지도링크를 만들어 클립보드에 복사한다.
+  // 광고주/동료가 링크를 열면 그 매체들이 관심매체에 담긴 채 비교 패널이 바로 뜬다.
+  function copyFavMapLink() {
+    const slugs = favorites.filter((id) => typeof id === "string" && id.indexOf("bus:") !== 0 && !favExcluded.has(id));
+    if (!slugs.length) { window.alert("공유할 매체가 없습니다.\n(관심매체 담기 후 상담 대상으로 체크해 주세요.)"); return; }
+    const url = `${window.location.origin}${window.location.pathname}?cart=${encodeURIComponent(slugs.join(","))}`;
+    const done = () => {
+      if (favShare) {
+        const prev = favShare.innerHTML;
+        favShare.innerHTML = "✓ 링크 복사됨";
+        setTimeout(() => { favShare.innerHTML = prev; }, 1800);
+      }
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(url).then(done).catch(() => window.prompt("아래 링크를 복사하세요:", url));
+    } else {
+      window.prompt("아래 링크를 복사하세요:", url);
+    }
+  }
+
   function openFavPanel() {
     if (!favPanel) return;
     renderFavPanel();
@@ -536,13 +575,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     { value: "subway", label: "지하철", categories: ["subway"] },
     { value: "transport_hub", label: "공항·터미널·기차", categories: ["transport_hub"] },
     { value: "bus", label: "버스 정류장", categories: ["bus"] },
-    // 차량 래핑(버스 래핑·택시 등) — 매체는 추후 등록. 지금은 0건이라 alwaysShow 로 버튼만 유지.
-    { value: "vehicle", label: "차량 래핑", categories: ["vehicle"], alwaysShow: true },
     { value: "shopping_mall_did", label: "쇼핑·문화시설", categories: ["shopping_mall_did"] },
     // 엘리베이터 = 회사 최대 자산(1만+ 지점). 기타 바로 왼쪽에 배치.
     { value: "daily_touchpoint", label: "엘리베이터", categories: ["daily_touchpoint"], alwaysShow: true },
+    // 편의점(GS25 세로형 사이니지)은 별도 상단 카테고리에서 제거하고 엘리베이터 좌측 세그먼트
+    // 3번째 탭(아파트·오피스·편의점)으로 흡수했다. '생활밀착형 접점' 우산 아래로 통합.
+    // 매체 데이터는 여전히 category === "convenience" 인 일반 매체이며 일반 렌더 경로로 그린다.
+    // 고속도로 — 한국옥외광고센터 기금조성 광고물(고속도로변 대형 플렉스) 145개
+    { value: "highway", label: "고속도로", categories: ["highway"] },
     // 기타 — 리조트·카페·학교·마트 등 애매한 매체용. 매체는 추후 등록, 지금은 버튼만.
-    { value: "other", label: "기타", categories: ["other"], alwaysShow: true },
+    { value: "other", label: "기타 생활권", categories: ["other"], alwaysShow: true },
     // (아래) 예전에 제거한 탭 2개 — 실측으로 다른 탭과 완전히 중복이었다(어떤 매체도 접근 불가가 되지 않음):
     //  · "이동매체 광고"(transport_hub+bus) = 공항·터미널·기차(27) + 버스(18) 를 그대로 합친 것.
     //    게다가 버스 정류장 탭은 실제 정류장 데이터로 2,176개를 보여주는데 여기 버스는 18개뿐이라 숫자도 어긋났다.
@@ -667,6 +709,16 @@ document.addEventListener("DOMContentLoaded", async () => {
   const onlyCategory = new URLSearchParams(window.location.search).get("only") || "";
   if (onlyCategory) document.documentElement.classList.add("map-only-mode");
   let activeCategory = onlyCategory || new URLSearchParams(window.location.search).get("category") || "all";
+  // 카테고리 다중 온오프: selectedCats 가 진짜 선택 집합. activeCategory 는 특수 모드용 파생값.
+  // 배타 모드(전체·버스·엘리베이터)는 한 번에 하나만. 나머지 일반 카테고리는 여러 개 토글 가능.
+  const EXCLUSIVE_CATS = new Set(["all", "bus", "daily_touchpoint"]);
+  let selectedCats = new Set([activeCategory]);
+  function primaryCategoryMode() {
+    if (selectedCats.has("bus")) return "bus";
+    if (selectedCats.has("daily_touchpoint")) return "daily_touchpoint";
+    if (selectedCats.has("all")) return "all";
+    return "__multi__";
+  }
   let selectedMediaSlug = new URLSearchParams(window.location.search).get("media") || "";
   let detailOpen = Boolean(selectedMediaSlug);
   // 상세를 열면 기본은 '상세만' 표시(목록 숨김) — 지도 보이는 영역을 최대로.
@@ -686,7 +738,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   // 엘리베이터 광고 — 상품(네트워크) 단위 리스트 카드 + 실제 지오코딩 핀
   const elevatorNetworks = (elevatorData && elevatorData.networks) || [];
   const elevatorSites = elevatorSitesData || {};
-  let elevatorType = "apartment"; // apartment | office (좌측 리스트 세그먼트)
+  let elevatorType = "apartment"; // apartment | office | convenience (좌측 리스트 세그먼트 3탭)
   let selectedNetworkId = "";
   let selectedComplexId = ""; // 단지별 카드/핀 선택(포커스)
   let townboardTier = "all"; // 타운보드 3차 토글: all | tv(25인치) | board(50·55인치)
@@ -713,6 +765,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     officebiz: "elevator-officebiz.html",
     primeliving: "elevator-prime-living.html",
     asa: "elevator-prime-office.html",
+    convenience: "gs25-ad-map.html",
   };
   // 첫/기본 화면: 서울 전역 1000m 스케일(줌13). 중심은 용산구청.
   const DEFAULT_VIEW = { latitude: 37.5324, longitude: 126.9908, zoom: 13 };
@@ -746,6 +799,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     ...item,
     mapLocation: locations[item.slug] || null,
   })).filter(hasLatLng);
+
+  const ELEVATOR_SEGMENTS = [
+    { type: "apartment", label: "아파트" },
+    { type: "office", label: "오피스" },
+    { type: "convenience", label: "편의점" },
+  ];
 
   renderCategoryTabs();
   renderCuration();
@@ -821,6 +880,12 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
   if (favClose) favClose.addEventListener("click", closeFavPanel);
   if (favDownload) favDownload.addEventListener("click", downloadFavExcel);
+  if (favShare) favShare.addEventListener("click", copyFavMapLink);
+  // 공유 지도링크(?cart=)로 들어온 경우 데이터 로드 후 비교 패널을 자동으로 연다.
+  // (window 'load'는 지도 타일까지 기다려 느리므로, 데이터 로드에 충분한 독립 타이머로 연다.)
+  if (SHARED_CART.length) {
+    setTimeout(() => { try { openFavPanel(); } catch (error) { /* ignore */ } }, 1600);
+  }
   if (favPdf) favPdf.addEventListener("click", openFavOnePager);
   if (favPanel) favPanel.addEventListener("click", (event) => {
     if (event.target === favPanel) closeFavPanel();
@@ -841,6 +906,21 @@ document.addEventListener("DOMContentLoaded", async () => {
   });
   // 상담 대상 체크박스 — 해제 시 그 행을 흐리게(is-excluded) + 합계·상담에서 제외. 다시 체크하면 복귀.
   document.addEventListener("change", (event) => {
+    // 전체선택 토글 — 모든 행 체크박스·제외상태를 한 번에 켜고/끈다
+    const all = event.target.closest(".map-fav-incl-all");
+    if (all) {
+      const checkAll = all.checked;
+      [].slice.call(document.querySelectorAll("[data-fav-incl]")).forEach((cb) => {
+        cb.checked = checkAll;
+        const fid = cb.dataset.favIncl;
+        if (checkAll) favExcluded.delete(fid); else favExcluded.add(fid);
+        const r = cb.closest("tr");
+        if (r) r.classList.toggle("is-excluded", !checkAll);
+      });
+      all.indeterminate = false;
+      recalcFavConsult();
+      return;
+    }
     const incl = event.target.closest("[data-fav-incl]");
     if (!incl) return;
     const id = incl.dataset.favIncl;
@@ -848,6 +928,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const row = incl.closest("tr");
     if (row) row.classList.toggle("is-excluded", !incl.checked);
     recalcFavConsult();
+    syncFavAllCheckbox();
   });
   updateFavoritesUI();
   if (costFilterToggle && costFilterPanel) {
@@ -934,14 +1015,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     categoryBar.innerHTML = categoryTabs
       .filter((tab) => tab.value === "all" || tab.alwaysShow || (tab.categories || [tab.value]).some((category) => available.has(category)))
       .map(({ value, label }) => `
-        <button type="button" class="map-category-pill${activeCategory === value ? " is-active" : ""}" data-map-category="${AdPlay.esc(value)}" aria-pressed="${activeCategory === value ? "true" : "false"}">
+        <button type="button" class="map-category-pill${selectedCats.has(value) ? " is-active" : ""}" data-map-category="${AdPlay.esc(value)}" aria-pressed="${selectedCats.has(value) ? "true" : "false"}">
           ${AdPlay.esc(label)}
         </button>
       `).join("");
 
     categoryBar.querySelectorAll("[data-map-category]").forEach((button) => {
       button.addEventListener("click", () => {
-        activeCategory = button.dataset.mapCategory;
+        const value = button.dataset.mapCategory;
+        if (EXCLUSIVE_CATS.has(value)) {
+          // 전체·버스·엘리베이터: 지도 전체를 전용 방식으로 그려서 배타 선택(다른 건 모두 해제)
+          selectedCats = new Set([value]);
+        } else {
+          // 일반 카테고리: 토글. 배타 모드가 켜져 있었으면 먼저 해제.
+          EXCLUSIVE_CATS.forEach((cat) => selectedCats.delete(cat));
+          if (selectedCats.has(value)) selectedCats.delete(value);
+          else selectedCats.add(value);
+          if (selectedCats.size === 0) selectedCats = new Set(["all"]); // 전부 끄면 전체로
+        }
+        activeCategory = primaryCategoryMode();
         selectedMediaSlug = "";
         selectedNetworkId = "";
         selectedComplexId = "";
@@ -984,15 +1076,23 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function render(options = {}) {
+    // 엘리베이터 우산 카테고리(아파트·오피스·편의점 3탭) 전체를 전용 renderElevator 경로로 그린다.
+    // 편의점도 일반 매체이지만 엘리베이터와 동일한 구역 클러스터 지도 + 엘리베이터형 리스트로 노출한다.
     if (activeCategory === "daily_touchpoint" && elevatorNetworks.length) {
       renderElevator(options);
       return;
     }
     const query = (searchInput && searchInput.value ? searchInput.value : "").trim().toLowerCase();
-    const activeTab = categoryTabs.find((tab) => tab.value === activeCategory) || categoryTabs[0];
-    const activeCategories = activeTab.categories || [activeTab.value];
+    // 선택된 카테고리들(배타 모드 제외)의 실제 category 값 합집합 — 다중선택 지원
+    const activeCategories = [...selectedCats].flatMap((value) => {
+      const tab = categoryTabs.find((entry) => entry.value === value);
+      return tab ? (tab.categories || [tab.value]) : [];
+    });
+    // 편의점(1천+)은 점 매체가 많아 '옥외광고 전체'를 뒤덮는다.
+    // 버스정류장 레이어처럼 편의점 탭에서만 보이게 하고 '전체'에서는 제외한다.
+    const ownTabOnly = ["convenience"];
     const filtered = mediaWithLocations
-      .filter((item) => activeCategory === "all" || activeCategories.includes(item.category))
+      .filter((item) => selectedCats.has("all") ? !ownTabOnly.includes(item.category) : activeCategories.includes(item.category))
       .filter(matchesCostPeriod);
     const searched = filtered.filter((item) => {
       if (!query) return true;
@@ -1047,6 +1147,25 @@ document.addEventListener("DOMContentLoaded", async () => {
     syncPanelMode();
   }
 
+  // 결과 지역 범위 계산 — 넓게 퍼진 검색(이상치 포함)에서도 밀집 지역에 지도를 맞추기 위해
+  // 12건 이상이면 위도·경도 각각 상·하위 5%(백분위) 좌표를 잘라내고 그 박스로 fitBounds 한다.
+  function boundsForItems(items) {
+    const bounds = new naver.maps.LatLngBounds();
+    const pts = items
+      .map((item) => item.mapLocation)
+      .filter((loc) => loc && Number.isFinite(loc.latitude) && Number.isFinite(loc.longitude));
+    if (pts.length < 12) {
+      pts.forEach((loc) => bounds.extend(new naver.maps.LatLng(loc.latitude, loc.longitude)));
+      return bounds;
+    }
+    const lats = pts.map((loc) => loc.latitude).sort((a, b) => a - b);
+    const lngs = pts.map((loc) => loc.longitude).sort((a, b) => a - b);
+    const at = (arr, p) => arr[Math.min(arr.length - 1, Math.max(0, Math.round(p * (arr.length - 1))))];
+    bounds.extend(new naver.maps.LatLng(at(lats, 0.05), at(lngs, 0.05)));
+    bounds.extend(new naver.maps.LatLng(at(lats, 0.95), at(lngs, 0.95)));
+    return bounds;
+  }
+
   function renderStage(items, preserveView = false) {
     if (!window.naver || !window.naver.maps) {
       stage.innerHTML = `
@@ -1084,10 +1203,8 @@ document.addEventListener("DOMContentLoaded", async () => {
         return;
       }
 
-      const bounds = new naver.maps.LatLngBounds();
       items.forEach((item) => {
         const latlng = new naver.maps.LatLng(item.mapLocation.latitude, item.mapLocation.longitude);
-        bounds.extend(latlng);
         const marker = new naver.maps.Marker({
           position: latlng,
           title: item.name,
@@ -1111,7 +1228,10 @@ document.addEventListener("DOMContentLoaded", async () => {
           naverMap.setCenter(new naver.maps.LatLng(item.mapLocation.latitude, item.mapLocation.longitude));
           naverMap.setZoom(15);
         } else {
-          naverMap.fitBounds(bounds, { top: 76, right: 76, bottom: 76, left: 76 });
+          // 검색 결과가 넓게 퍼지면(예: '강남' 104건에 서울 밖 이상치 몇 건) 전체 fitBounds 가
+          // 전국 축소로 벌어진다. 12건 이상이면 상·하위 5% 좌표를 잘라 '밀집 지역'에만 맞춘다.
+          const fitBounds = boundsForItems(items);
+          naverMap.fitBounds(fitBounds, { top: 76, right: 76, bottom: 76, left: 76 });
         }
       }
 
@@ -1192,13 +1312,50 @@ document.addEventListener("DOMContentLoaded", async () => {
     return elevatorNetworks.filter((net) => net.type === elevatorType);
   }
 
+  // 편의점(GS25) 매체를 엘리베이터 사이트 형태로 변환 — 동일한 구역 클러스터 지도 + 엘리베이터형
+  // 리스트 카드로 노출하기 위함. 좌표는 media_locations(latitude/lng)를, 구/군/시(district)와
+  // 시/도(sido)는 areaName("서울 강남구" = <시도 축약> <구/군/시>)에서 파생한다.
+  let convenienceSitesCache = null;
+  function convenienceSites() {
+    if (convenienceSitesCache) return convenienceSitesCache;
+    convenienceSitesCache = mediaWithLocations
+      .filter((item) => item.category === "convenience" && item.mapLocation
+        && Number.isFinite(item.mapLocation.latitude) && Number.isFinite(item.mapLocation.longitude))
+      .map((item) => {
+        const area = String(item.areaName || "").trim().split(/\s+/).filter(Boolean);
+        const sido = area[0] || sidoShort(item.address) || "";
+        const district = area.length > 1 ? area[area.length - 1] : (area[0] || sido || "기타");
+        return {
+          id: item.slug,
+          name: item.name,
+          lat: item.mapLocation.latitude,
+          lng: item.mapLocation.longitude,
+          address: item.address || (item.mapLocation && item.mapLocation.sourceAddress) || "",
+          district,
+          sido,
+          gubun: "편의점",
+          vendor: "GS25",
+          brand: "GS25",
+          placement: "매장 내 세로형 사이니지",
+          type: "convenience",
+          networkId: "convenience",
+          saleUnit: "site",
+          monitors: 1,
+        };
+      });
+    return convenienceSitesCache;
+  }
+
   function renderElevator(options = {}) {
     renderCategoryTabs();
     if (busStopLegend) { busStopLegend.hidden = true; busStopLegend.classList.remove("is-visible"); }
     detailOpen = false;
     if (summaryRoot) {
       const sites = elevatorSitesForType();
-      summaryRoot.innerHTML = `<span class="sr-only">${elevatorType === "apartment" ? "아파트" : "오피스"} 엘리베이터 광고, 지오코딩된 단지 ${sites.length.toLocaleString("ko-KR")}곳</span>`;
+      const label = elevatorType === "apartment" ? "아파트 엘리베이터 광고, 지오코딩된 단지"
+        : elevatorType === "office" ? "오피스 엘리베이터 광고, 지오코딩된 단지"
+        : "편의점(GS25) 세로형 사이니지, 지오코딩된 매장";
+      summaryRoot.innerHTML = `<span class="sr-only">${label} ${sites.length.toLocaleString("ko-KR")}곳</span>`;
     }
     updateCostFilterLabels();
     renderElevatorList(elevatorComplexesForView()); // 리스트는 지도와 독립적으로 항상 렌더
@@ -1224,6 +1381,7 @@ document.addEventListener("DOMContentLoaded", async () => {
   function isTownboardTv(site) { return /^25/.test(site.monitorSize || ""); }
 
   function elevatorSitesForType() {
+    if (elevatorType === "convenience") return convenienceSites();
     const out = [];
     elevatorNetworksByType()
       .filter((net) => !selectedNetworkId || net.id === selectedNetworkId)
@@ -1309,7 +1467,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const detailPage = ELEV_DETAIL_PAGE[site.networkId] || "elevator.html";
     const detailLabel = isPackage ? "패키지 보기" : "상세보기";
     return `
-      <article class="map-elev-complex${isSel ? " is-active" : ""}">
+      <article class="map-elev-complex${isSel ? " is-active" : ""}${site.pick ? " is-pick" : ""}">
         <button type="button" data-elev-complex="${AdPlay.esc(site.id)}" aria-label="${AdPlay.esc(site.name)} 지도에서 보기" aria-current="${isSel ? "true" : "false"}"></button>
         <div class="map-elev-complex-head">
           <h3><span class="map-elev-gubun">${AdPlay.esc(gubun)}</span>${AdPlay.esc(String(site.name).replace(/_[LS]$/, ""))}</h3>
@@ -1330,25 +1488,19 @@ document.addEventListener("DOMContentLoaded", async () => {
       </article>`;
   }
 
-  function renderElevatorList(complexes) {
-    const total = elevatorSitesForType().length;
-    const isApt = elevatorType === "apartment";
-    const pkgPage = isApt ? "elevator-apartment.html" : "elevator-office.html";
-    const pkgLabel = isApt ? "아파트 패키지 상품 보기" : "오피스 패키지 상품 보기";
-    listRoot.innerHTML = `
+  // 아파트·오피스·편의점 3탭 세그먼트 — 엘리베이터 리스트와 편의점 리스트가 공유한다.
+  function elevatorSegmentControl() {
+    return `
       <div class="map-elev-seg" role="tablist" aria-label="엘리베이터 광고 장소">
-        <button type="button" role="tab" data-elev-type="apartment" aria-selected="${isApt}" class="${isApt ? "is-active" : ""}">아파트</button>
-        <button type="button" role="tab" data-elev-type="office" aria-selected="${!isApt}" class="${!isApt ? "is-active" : ""}">오피스</button>
-      </div>
-      <a class="map-elev-pkg-link" href="${AdPlay.esc(pkgPage)}">${AdPlay.esc(pkgLabel)} <span aria-hidden="true">→</span></a>
-      <p class="map-elev-cards-cap">이 화면 <b>${complexes.length.toLocaleString("ko-KR")}</b>곳 <span>· 지도 이동 시 갱신</span></p>
-      <div class="map-elev-complex-list">${
-        complexes.length
-          ? complexes.map(elevatorComplexCard).join("")
-          : `<div class="empty">이 지역에 표시할 매체가 없습니다. 지도를 이동하거나 축소해 보세요.</div>`
-      }</div>`;
+        ${ELEVATOR_SEGMENTS.map(({ type, label }) => {
+          const on = elevatorType === type;
+          return `<button type="button" role="tab" data-elev-type="${type}" aria-selected="${on}" class="${on ? "is-active" : ""}">${label}</button>`;
+        }).join("")}
+      </div>`;
+  }
 
-    listRoot.querySelectorAll("[data-elev-type]").forEach((button) => {
+  function bindElevatorSegment(container) {
+    container.querySelectorAll("[data-elev-type]").forEach((button) => {
       button.addEventListener("click", () => {
         if (elevatorType === button.dataset.elevType) return;
         elevatorType = button.dataset.elevType;
@@ -1358,6 +1510,25 @@ document.addEventListener("DOMContentLoaded", async () => {
         render({ preserveView: true });
       });
     });
+  }
+
+  function renderElevatorList(complexes) {
+    const total = elevatorSitesForType().length;
+    const isApt = elevatorType === "apartment";
+    const isConv = elevatorType === "convenience";
+    const pkgPage = isConv ? "gs25-ad-map.html" : isApt ? "elevator-apartment.html" : "elevator-office.html";
+    const pkgLabel = isConv ? "편의점 GS25 상품 보기" : isApt ? "아파트 패키지 상품 보기" : "오피스 패키지 상품 보기";
+    listRoot.innerHTML = `
+      ${elevatorSegmentControl()}
+      <a class="map-elev-pkg-link" href="${AdPlay.esc(pkgPage)}">${AdPlay.esc(pkgLabel)} <span aria-hidden="true">→</span></a>
+      <p class="map-elev-cards-cap">이 화면 <b>${complexes.length.toLocaleString("ko-KR")}</b>곳 <span>· 지도 이동 시 갱신</span></p>
+      <div class="map-elev-complex-list">${
+        complexes.length
+          ? complexes.map(elevatorComplexCard).join("")
+          : `<div class="empty">이 지역에 표시할 매체가 없습니다. 지도를 이동하거나 축소해 보세요.</div>`
+      }</div>`;
+
+    bindElevatorSegment(listRoot);
     listRoot.querySelectorAll("[data-elev-complex]").forEach((button) => {
       button.addEventListener("click", () => focusComplex(button.dataset.elevComplex));
     });
@@ -1425,13 +1596,28 @@ document.addEventListener("DOMContentLoaded", async () => {
       </button>`;
   }
 
+  // 표시(pick) 지점이 많으면 라벨은 겹치므로, 30곳 이하일 때만 단지명 라벨 노출
+  const ELEV_LABEL_MAX = 30;
+  let elevatorPickCache = null;
+  function elevatorPickCount() {
+    if (elevatorPickCache === null) {
+      elevatorPickCache = Object.values(elevatorSites).reduce((n, arr) => n + arr.filter((s) => s.pick).length, 0);
+    }
+    return elevatorPickCache;
+  }
+  function elevatorShowPickLabel() { return elevatorPickCount() <= ELEV_LABEL_MAX; }
+
   function elevatorPinContent(site) {
     const office = site.type === "office";
     const active = selectedComplexId === site.id ? " is-active" : "";
-    return `
-      <span class="bus-stop-pin ${office ? "is-elev-office" : "is-elev-apt"}${active}" role="img" aria-label="${AdPlay.esc(site.vendor || "")} · ${AdPlay.esc(site.name)}">
-        <span class="bus-stop-pin-core"></span>
-      </span>`;
+    const pick = site.pick ? (" is-pick" + (site.networkId === "townboard" ? " is-pick-tb" : (site.networkId === "fmk" ? " is-pick-foc" : ""))) : ""; // 상품별 색: 포커스=빨강, 타운보드=보라
+    const nm = String(site.name).replace(/_[LS]$/, "");
+    // 마우스 오버 시 단지명(+매체사·모니터) 툴팁
+    const hover = `${nm}${site.vendor ? " · " + site.vendor : ""}${site.monitors ? " · 모니터 " + site.monitors + "대" : ""}`;
+    const pin = `<span class="bus-stop-pin ${office ? "is-elev-office" : "is-elev-apt"}${pick}${active}" role="img" title="${AdPlay.esc(hover)}" aria-label="${AdPlay.esc(hover)}"><span class="bus-stop-pin-core"></span></span>`;
+    if (!site.pick || !elevatorShowPickLabel()) return pin;
+    // 표시 지점이 적을 때만 단지명 라벨
+    return `<span class="elev-pin-wrap">${pin}<span class="map-elev-pinlabel">${AdPlay.esc(nm)}</span></span>`;
   }
 
   // 버스 정류장 광고와 동일 노출: 낮은 줌=구역 클러스터, 높은 줌=개별 핀, 지도 이동마다 재동기화 + 리스트 갱신
@@ -1475,11 +1661,10 @@ document.addEventListener("DOMContentLoaded", async () => {
             map: naverMap,
             position: new naver.maps.LatLng(site.lat, site.lng),
             title: `${site.vendor || ""} · ${site.name}`,
-            icon: {
-              content: elevatorPinContent(site),
-              size: new naver.maps.Size(26, 26),
-              anchor: new naver.maps.Point(13, 15),
-            },
+            icon: (site.pick && elevatorShowPickLabel())
+              ? { content: elevatorPinContent(site), size: new naver.maps.Size(150, 44), anchor: new naver.maps.Point(75, 15) }
+              : { content: elevatorPinContent(site), size: new naver.maps.Size(26, 26), anchor: new naver.maps.Point(13, 15) },
+            zIndex: site.pick ? 100 : undefined,
           });
           naver.maps.Event.addListener(marker, "click", () => focusComplex(site.id));
           elevatorMarkers.push(marker);
@@ -1497,9 +1682,16 @@ document.addEventListener("DOMContentLoaded", async () => {
         naverMarkers.forEach((marker) => marker.setMap(null));
         naverMarkers = [];
         clearBusStopLayer();
-        // 첫 진입 화면은 '옥외광고 전체'와 동일하게 용산구청 중심 기본 뷰로 고정
+        // 첫 진입: URL에 clat/clng 있으면 그 지점으로(예: 킨텍스), 없으면 기본 뷰
         if (!preserveView) {
-          applyDefaultView();
+          const sp = new URLSearchParams(location.search);
+          const clat = parseFloat(sp.get("clat")), clng = parseFloat(sp.get("clng")), cz = parseInt(sp.get("czoom"), 10);
+          if (Number.isFinite(clat) && Number.isFinite(clng)) {
+            naverMap.setCenter(new naver.maps.LatLng(clat, clng));
+            naverMap.setZoom(Number.isFinite(cz) ? cz : 15);
+          } else {
+            applyDefaultView();
+          }
         }
         syncElevatorLayer();
         return;
@@ -1875,7 +2067,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           <div class="map-nearby-brands">${nearby.brands.map((brand) => `<span>${AdPlay.esc(brand)}</span>`).join("")}</div>` : ""}
         </section>
         <a class="map-detail-live-card" href="estimate.html?intent=live-talk&media=${encodeURIComponent(item.slug)}">
-          <strong>실시간 라이브 상담</strong>
+          <strong>라이브 톡 상담하기</strong>
           <span>할인, 패키지, 예산 맞춤 집행은 1533-1975 또는 라이브 상담 신청</span>
         </a>
         <section class="map-detail-section" id="detailGallery">
@@ -2038,6 +2230,9 @@ document.addEventListener("DOMContentLoaded", async () => {
     if (!item) return;
     selectedMediaSlug = slug;
     detailOpen = true;
+    // 레일을 접어둔 상태에서 핀/매체를 클릭하면, 접힘이 상세를 화면 밖으로 밀어 정보가 안 보인다.
+    // 매체 선택은 '상세를 보겠다'는 의도이므로 접힘을 해제해 사이드바가 다시 나오게 한다.
+    if (workspacePage) workspacePage.classList.remove("is-rail-collapsed");
     // 매체를 고른 시점에 큐레이션(탐색 도구)의 역할은 끝난다. 열어두면 상세 위를 덮어
     // 매번 사용자가 직접 닫아야 하므로 자동으로 닫는다.
     setCurationPanel(false);
@@ -2122,9 +2317,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     return min ? `월 ${AdPlay.formatKRW(min)}` : "월 비용 상담 필요";
   }
 
+  // 엑셀 단가표 기준 단기요율(1/3/7/15일) 보유 여부
+  function itemHasShortTerm(item) {
+    const list = (item && item.pricing) || [];
+    return list.some((p) => p && p.shortTermKRW && Object.keys(p.shortTermKRW).length);
+  }
+
   function mapCardDecisionSummary(item) {
     const terms = [mapCardPriceLabel(item)];
-    terms.push(item.shortTermAvailable === false ? "월 단위 집행" : "1개월 미만 협의");
+    // 가격 뒤 같은 자리·같은 스타일로: 단기요율 보유 매체는 '1개월 미만 가능', 그 외는 '1개월 미만 협의'
+    terms.push(itemHasShortTerm(item) ? "1개월 미만 가능" : "1개월 미만 협의");
     return terms.filter(Boolean).join(" · ");
   }
 
@@ -2136,6 +2338,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     return `일 유동인구 ${man}만명`;
   }
 
+  // 단기 집행 가능 여부(엑셀 단가표 기준 단기요율 보유 시). 가능 기간은 매체별로 상이 → 카드에는 가능 여부만 표시.
+  function mapCardShortTerm(item) {
+    if (!itemHasShortTerm(item)) return "";
+    return `<p class="map-card-st"><span>단기 집행 가능</span></p>`;
+  }
+
   function detailAudience(item) {
     const area = areaBySlug.get(item.areaSlug);
     const list = (area && area.primaryTargets) || [];
@@ -2143,15 +2351,22 @@ document.addEventListener("DOMContentLoaded", async () => {
   }
 
   function cardExposurePoint(item) {
-    if (item.exposureShort) return item.exposureShort; // 매체별 실데이터 우선(있으면), 없으면 아래 상권 키워드 폴백
-    const text = [item.name, item.areaName, item.areaSlug, item.address, item.mapLocation && item.mapLocation.sourceAddress]
-      .filter(Boolean)
-      .join(" ");
-    if (/광화문|종로|시청|청계|gwanghwamun|jongno/i.test(text)) return "광장·보행 동선에서 반복 노출";
-    if (/서울역|KTX|seoul-station|transport/i.test(text)) return "철도·지하철 환승 동선 집중 노출";
-    if (/삼성|코엑스|COEX|samseong|coex/i.test(text)) return "업무·전시 방문객과 차량 동시 노출";
-    if (/신사|강남|도산|가로수|sinsa|gangnam/i.test(text)) return "횡단보도·차량정체 구간 정면 노출";
-    return "주요 보행·차량 동선에서 반복 노출";
+    // 가치 앵커: 노출 맥락 앞에 '일 유동인구 N만명'을 붙여, 높은 가격이 '투자'로 읽히게 한다.
+    const reach = cardReachLabel(item);
+    let point;
+    if (item.exposureShort) {
+      point = item.exposureShort; // 매체별 실데이터 우선(있으면), 없으면 아래 상권 키워드 폴백
+    } else {
+      const text = [item.name, item.areaName, item.areaSlug, item.address, item.mapLocation && item.mapLocation.sourceAddress]
+        .filter(Boolean)
+        .join(" ");
+      if (/광화문|종로|시청|청계|gwanghwamun|jongno/i.test(text)) point = "광장·보행 동선에서 반복 노출";
+      else if (/서울역|KTX|seoul-station|transport/i.test(text)) point = "철도·지하철 환승 동선 집중 노출";
+      else if (/삼성|코엑스|COEX|samseong|coex/i.test(text)) point = "업무·전시 방문객과 차량 동시 노출";
+      else if (/신사|강남|도산|가로수|sinsa|gangnam/i.test(text)) point = "횡단보도·차량정체 구간 정면 노출";
+      else point = "주요 보행·차량 동선에서 반복 노출";
+    }
+    return reach ? `${reach} · ${point}` : point;
   }
 
   function contractSummary(item) {
@@ -2349,7 +2564,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         <svg viewBox="0 0 366 164" role="img" aria-label="월별 유동인구 추이 그래프">
           <defs>
             <linearGradient id="trafficLine" x1="0" x2="1">
-              <stop offset="0%" stop-color="#0b3a91"></stop>
+              <stop offset="0%" stop-color="#2540ea"></stop>
               <stop offset="100%" stop-color="#4f7df3"></stop>
             </linearGradient>
             <linearGradient id="trafficArea" x1="0" x2="0" y1="0" y2="1">

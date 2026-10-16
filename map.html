@@ -1,7 +1,10 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="utf-8">
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>전광판 광고 지도검색 – 전국 옥외광고(DOOH) 매체 | 광고플레이</title>
     <meta name="description" content="전광판 광고·디지털 옥외광고(DOOH) 매체를 지도에서 검색하세요. 강남·코엑스 등 전국 상권의 전광판 위치·규격·광고비를 비교하고 바로 견적을 문의할 수 있습니다.">
@@ -14,8 +17,8 @@
     <meta property="og:url" content="https://lscape82.github.io/k-goplay-ui/map.html">
     <meta property="og:image" content="https://lscape82.github.io/k-goplay-ui/assets/images/k-goplay-logo-new.png">
     <meta name="twitter:card" content="summary">
-    <link rel="stylesheet" href="assets/css/styles.css?v=fullpage-20260718e-d722">
-    <link rel="stylesheet" href="assets/css/map-services.css?v=float-nav-3-d722">
+    <link rel="stylesheet" href="assets/css/styles.css?v=fullpage-20260718e-d810">
+    <link rel="stylesheet" href="assets/css/map-services.css?v=elevcolor-1791797107">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -66,25 +69,27 @@
   <body>
     <a class="skip-link" href="#main">본문 바로가기</a>
     <header class="map-global-header">
-      <a class="map-global-brand" href="map.html" aria-label="광고플레이 홈(지도)">
+      <a class="map-global-brand" href="map.html" aria-label="K-goplay 홈(지도)">
         <span class="brand-mark">AD</span>
-        <strong>광고플레이</strong>
+        <strong>k-goplay.com</strong>
       </a>
-      <!-- 좌: 누르면 이 화면에서 패널이 열리는 것만 (추천·지역·예산) -->
-      <nav class="map-global-nav" aria-label="지도 검색 도구">
-        <button type="button" class="is-active" id="mapCurationToggle" aria-expanded="true" aria-controls="mapCurationPanel">추천 큐레이션</button>
-        <button type="button" class="map-filter-entry map-header-filter" id="mapRegionToggle" aria-expanded="false" aria-controls="mapRegionPanel">지역검색</button>
-        <button type="button" class="map-filter-entry map-header-filter" id="mapCostFilterToggle" aria-expanded="false" aria-controls="mapCostFilterPanel">예산·기간 검색</button>
-      </nav>
-      <!-- 우: 누르면 다른 페이지로 가는 것만. 순서 = 찾기 → 판단 근거 → 신뢰 → 계정 -->
-      <div class="map-global-actions">
+      <!-- 페이지 이동 메뉴 (우측, 지도페이지에선 관리자 제외) -->
+      <nav class="map-global-pages" aria-label="페이지 이동">
         <a class="map-actions-media" href="media-catalog.html">옥외광고 목록</a>
         <a class="map-nav-media-link is-guide" href="cases.html">광고집행사례</a>
         <a class="map-nav-media-link is-guide" href="insights.html">광고 인사이트</a>
         <a href="about.html">회사소개</a>
-        <a href="admin.html">관리자</a>
-        <a href="login.html">로그인</a>
-        <a class="join" href="join.html">회원가입</a>
+      </nav>
+      <!-- 우: 계정 (로그인) -->
+      <div class="map-global-actions">
+        <a class="map-login" href="login.html">
+          <svg class="map-login-ico" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+            <circle cx="12" cy="12" r="11" fill="none" stroke="#2540ea" stroke-width="1.4"></circle>
+            <circle cx="12" cy="9.6" r="3" fill="#2540ea"></circle>
+            <path d="M6.2 18.4c0-3 2.8-4.6 5.8-4.6s5.8 1.6 5.8 4.6z" fill="#2540ea"></path>
+          </svg>
+          <span>Log In</span>
+        </a>
       </div>
     </header>
     <main id="main">
@@ -94,8 +99,15 @@
           <form class="map-global-search map-category-search" role="search">
             <label for="mapGlobalSearch" class="sr-only">매체 검색</label>
             <input id="mapGlobalSearch" type="search" placeholder="지역, 매체명 검색">
-            <button type="submit" aria-label="검색">⌕</button>
+            <button type="submit" class="map-search-go" aria-label="검색">
+              <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"></circle><line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line></svg>
+            </button>
           </form>
+          <nav class="map-global-nav" aria-label="지도 검색 도구">
+            <button type="button" class="is-active" id="mapCurationToggle" aria-expanded="true" aria-controls="mapCurationPanel">추천큐레이션</button>
+            <button type="button" class="map-filter-entry map-header-filter" id="mapRegionToggle" aria-expanded="false" aria-controls="mapRegionPanel">지역검색</button>
+            <button type="button" class="map-filter-entry map-header-filter" id="mapCostFilterToggle" aria-expanded="false" aria-controls="mapCostFilterPanel">예산검색</button>
+          </nav>
           <div class="map-category-list" id="mapCategoryBar" aria-label="매체 유형"></div>
         </div>
         <div class="map-workspace">
@@ -258,6 +270,7 @@
                   <div class="map-fav-total-row"><span>예상 월 합계</span><strong id="mapFavTotal">-</strong></div>
                   <button type="button" class="map-fav-download" id="mapFavDownload"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>다운로드(Excel)</button>
                   <button type="button" class="map-fav-download" id="mapFavPdf"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>제안서(PDF)</button>
+                  <button type="button" class="map-fav-download" id="mapFavShare"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M16 6l-4-4-4 4M12 2v13"/></svg>지도링크 복사</button>
                   <a class="map-fav-cta" id="mapFavCta" href="estimate.html"><span>선택 매체로 상담신청</span></a>
                 </div>
               </div>
@@ -269,7 +282,7 @@
     <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1ouo31myef&submodules=geocoder,panorama"></script>
     <script src="assets/js/marker-clustering.js?v=real-data-20260705c"></script>
     <script src="assets/js/common.js?v=shared-audience-20260718c"></script>
-    <script src="assets/js/map.js?v=defaultview-1-sync20260718c-o1"></script>
+    <script src="assets/js/map.js?v=cart-share-261015b"></script>
     <script src="assets/js/map-services.js?v=icons-20260717d"></script>
     <script src="assets/js/map-rail-toggle.js?v=rail-20260717b"></script>
     <script src="assets/js/map-category-scroll.js?v=catscroll-20260713e"></script>  </body>

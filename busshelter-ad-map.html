@@ -1,0 +1,153 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>가로변 버스쉘터 위치 확인 지도 (광고주용)</title>
+  <meta name="robots" content="noindex, nofollow">
+  <style>
+    :root{--brand:#1a56db;--brand-dark:#1440a8;--ink:#111827;--muted:#6b7280;--line:#e5e7eb;--bg:#f4f6f8;
+      --sa:#e11d48;--a:#2563eb;--l:#6b7280}
+    *{box-sizing:border-box}
+    html,body{margin:0;height:100%;font-family:"SUIT Variable","Noto Sans KR","Malgun Gothic",sans-serif;color:var(--ink);background:var(--bg)}
+    .app{display:flex;flex-direction:column;height:100%}
+    header{background:#fff;border-bottom:1px solid var(--line);padding:12px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+    .logo{display:flex;align-items:center;gap:9px;font-weight:800;font-size:17px}
+    .logo .dot{width:28px;height:28px;border-radius:7px;background:var(--brand);color:#fff;display:grid;place-items:center;font-size:11px;font-weight:800}
+    .sub{color:var(--muted);font-size:13px;font-weight:600}
+    .badge{margin-left:auto;background:#eef4ff;color:var(--brand-dark);border:1px solid #c7dbff;border-radius:999px;padding:5px 12px;font-size:12px;font-weight:700}
+    .main{flex:1;display:flex;min-height:0}
+    .side{width:360px;max-width:46%;background:#fff;border-right:1px solid var(--line);display:flex;flex-direction:column;min-height:0}
+    .side .head{padding:14px 16px 8px}
+    .side h1{font-size:15px;margin:0 0 3px}
+    .side .cnt{color:var(--muted);font-size:12.5px}
+    .filters{display:flex;gap:6px;padding:6px 14px 10px;flex-wrap:wrap}
+    .chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:5px 11px;font-size:12px;font-weight:600;cursor:pointer;color:#374151}
+    .chip.on{background:var(--ink);color:#fff;border-color:var(--ink)}
+    .chip .n{opacity:.65;margin-left:3px;font-weight:700}
+    .list{overflow:auto;flex:1;padding:2px 10px 16px}
+    .item{border:1px solid var(--line);border-radius:11px;padding:11px 12px;margin:7px 6px;cursor:pointer;transition:.12s;background:#fff}
+    .item:hover{border-color:var(--brand);box-shadow:0 3px 10px rgba(26,86,219,.09)}
+    .item.active{border-color:var(--brand);background:#f2f6ff}
+    .item .top{display:flex;align-items:center;gap:7px;margin-bottom:5px;flex-wrap:wrap}
+    .item .nm{font-weight:700;font-size:14px}
+    .gb{font-size:10.5px;font-weight:800;padding:2px 7px;border-radius:6px;color:#fff}
+    .gb.SA{background:var(--sa)} .gb.A{background:var(--a)} .gb.L{background:var(--l)}
+    .item .loc{color:var(--muted);font-size:12px;margin-bottom:6px}
+    .kv{display:grid;grid-template-columns:auto 1fr;gap:2px 8px;font-size:11.5px;color:#374151}
+    .kv b{color:#6b7280;font-weight:600}
+    .st{margin-top:6px;font-size:11px;font-weight:700;color:#b45309;background:#fffbeb;border:1px solid #fde68a;border-radius:6px;padding:3px 7px;display:inline-block}
+    .map-wrap{flex:1;position:relative;min-width:0}
+    #map{position:absolute;inset:0}
+    .legend{position:absolute;left:12px;bottom:12px;background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px 12px;font-size:12px;box-shadow:0 4px 14px rgba(0,0,0,.08);z-index:5}
+    .legend .row{display:flex;align-items:center;gap:7px;margin:3px 0}
+    .legend .pin{width:12px;height:12px;border-radius:50%}
+    .pin.SA{background:var(--sa)} .pin.A{background:var(--a)} .pin.L{background:var(--l)}
+    .pinM{cursor:pointer;filter:drop-shadow(0 2px 3px rgba(0,0,0,.3))}
+    .iw{font-family:inherit;padding:11px 13px;min-width:210px;max-width:270px}
+    .iw h3{margin:0 0 6px;font-size:14px;display:flex;align-items:center;gap:6px}
+    .iw .kv2{display:grid;grid-template-columns:auto 1fr;gap:3px 8px;font-size:12px;color:#374151}
+    .iw .kv2 b{color:#6b7280;font-weight:600}
+    .note{padding:8px 16px;background:#fffbeb;border-top:1px solid #fde68a;color:#92400e;font-size:11.5px}
+    @media(max-width:720px){.main{flex-direction:column}.side{width:100%;max-width:none;height:46%;border-right:none;border-bottom:1px solid var(--line)}}
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header>
+      <div class="logo"><span class="dot">AD</span> 가로변 버스쉘터</div>
+      <span class="sub">매체 위치 확인 · 광고주용 (2026년 9월 현황)</span>
+      <span class="badge">총 51개소</span>
+    </header>
+    <div class="main">
+      <aside class="side">
+        <div class="head">
+          <h1>버스쉘터 매체 리스트</h1>
+          <div class="cnt" id="cnt"></div>
+        </div>
+        <div class="filters" id="filters"></div>
+        <div class="list" id="list"></div>
+        <div class="note">※ 광고주 위치 확인용 자료입니다. 핀 위치는 주소·정류소명 기반 자동 변환 결과로 실제 쉘터와 수 m 오차가 있을 수 있습니다.</div>
+      </aside>
+      <div class="map-wrap">
+        <div id="map"></div>
+        <div class="legend">
+          <div class="row"><span class="pin SA"></span> SA급 (프리미엄)</div>
+          <div class="row"><span class="pin A"></span> A급</div>
+          <div class="row"><span class="pin L"></span> L급</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1ouo31myef"></script>
+  <script>
+    const STOPS = [{"id": "03-122_1", "name": "한강대교북단", "gu": "용산구", "dong": "한강로3가", "grade": "SA", "gg": "SA", "type": "B-2", "faces": "1, 2면 / 3, 4면", "price": 1600000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-09-01 ~ 2026-10-31] [#] [예약]", "lat": 37.5278, "lng": 126.9602}, {"id": "03-220_1", "name": "신용산초등학교", "gu": "용산구", "dong": "이촌동", "grade": "A", "gg": "A", "type": "A-2", "faces": "1, 2면 / 3, 4면", "price": 1000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "", "lat": 37.521417, "lng": 126.9732}, {"id": "03-223_1", "name": "이촌동현대아파트", "gu": "용산구", "dong": "이촌동", "grade": "A", "gg": "A", "type": "B-3", "faces": "1, 2면", "price": 1000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "", "lat": 37.521417, "lng": 126.9732}, {"id": "03-259_1", "name": "용산철도고등학교", "gu": "용산구", "dong": "한강로3가", "grade": "L", "gg": "L", "type": "A", "faces": "1, 2면 / 3, 4면", "price": 300000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-06-01 ~ 2026-11-30] [#] [진행중]", "lat": 37.5278, "lng": 126.9602}, {"id": "03-261_1", "name": "용산세무서", "gu": "용산구", "dong": "한강로3가", "grade": "A", "gg": "A", "type": "B-3", "faces": "1면", "price": 500000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "", "lat": 37.5278, "lng": 126.9602}, {"id": "03-262_1", "name": "용산세무서 ", "gu": "용산구", "dong": "용산동5가", "grade": "A", "gg": "A", "type": "B-3", "faces": "1, 2면", "price": 1000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-09-21 ~ 2026-10-20] [#] [승인요청]", "lat": 37.5257, "lng": 126.9747}, {"id": "03-263_1", "name": "이촌역", "gu": "용산구", "dong": "용산동5가", "grade": "A", "gg": "A", "type": "B-2", "faces": "1, 2면 / 3, 4면", "price": 1000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-09-21 ~ 2026-10-20] [#] [승인요청]", "lat": 37.5257, "lng": 126.9747}, {"id": "03-264_1", "name": "이촌역", "gu": "용산구", "dong": "용산동5가", "grade": "SA", "gg": "SA", "type": "B", "faces": "1, 3면", "price": 1600000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "", "lat": 37.5257, "lng": 126.9747}, {"id": "03-265_1", "name": "국립중앙박물관용산가족공원", "gu": "용산구", "dong": "용산동6가", "grade": "A", "gg": "A", "type": "기설형", "faces": "1, 2면", "price": 500000, "inner": "1160*1700", "outer": "1180*1710", "light": "비조명", "status": "", "lat": 37.5169, "lng": 126.984}, {"id": "03-266_1", "name": "국립중앙박물관용산가족공원", "gu": "용산구", "dong": "용산동6가", "grade": "SA", "gg": "SA", "type": "기설형", "faces": "1, 2면", "price": 800000, "inner": "1160*1700", "outer": "1180*1710", "light": "비조명", "status": "[2026-10-01 ~ 2026-10-31] [#30312] [예약]", "lat": 37.5169, "lng": 126.984}, {"id": "04-176_1", "name": "뚝도아리수정수센터수도박물관", "gu": "성동구", "dong": "성수동1가", "grade": "A", "gg": "A", "type": "B", "faces": "1, 2면 / 3, 4면", "price": 1000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "", "lat": 37.542108, "lng": 127.04965}, {"id": "04-177_1", "name": "서울숲", "gu": "성동구", "dong": "성수동1가", "grade": "SA", "gg": "SA", "type": "B-3", "faces": "1, 2면", "price": 1600000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-09-03 ~ 2026-11-02] [#] [예약]", "lat": 37.542108, "lng": 127.04965}, {"id": "04-178_1", "name": "서울숲", "gu": "성동구", "dong": "성수동1가", "grade": "SA+", "gg": "SA", "type": "A", "faces": "1, 2면 / 3, 4면", "price": 4000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-09-16 ~ 2026-11-15] [#] [승인요청]", "lat": 37.542108, "lng": 127.04965}, {"id": "04-223_1", "name": "뚝섬서울숲", "gu": "성동구", "dong": "성수동1가", "grade": "SA", "gg": "SA", "type": "B", "faces": "1, 2면 / 3, 4면", "price": 1600000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "", "lat": 37.5450818, "lng": 127.0360815}, {"id": "04-266_1", "name": "뚝섬서울숲남문", "gu": "성동구", "dong": "성수동1가", "grade": "A", "gg": "A", "type": "A", "faces": "1, 2면 / 3, 4면", "price": 1000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-04-22 ~ 2026-10-21] [#] [진행중]", "lat": 37.542108, "lng": 127.04965}, {"id": "14-248_1", "name": "기업은행서교동지점(최규하대통령가옥)", "gu": "마포구", "dong": "서교동", "grade": "SA", "gg": "SA", "type": "B-3", "faces": "1, 2면", "price": 1600000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "", "lat": 37.555147, "lng": 126.914663}, {"id": "14-251_1", "name": "망원시장.망원동월드컵시장입구", "gu": "마포구", "dong": "성산동", "grade": "SA", "gg": "SA", "type": "B-2", "faces": "1, 2면 / 3, 4면", "price": 1600000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-09-01 ~ 2026-09-30] [#] [승인요청]", "lat": 37.563408, "lng": 126.90785}, {"id": "14-252_1", "name": "마포구청역입구", "gu": "마포구", "dong": "성산동", "grade": "A", "gg": "A", "type": "B-2", "faces": "1, 2면 / 3, 4면", "price": 1000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-09-01 ~ 2026-09-30] [#] [승인요청]", "lat": 37.563408, "lng": 126.90785}, {"id": "14-253_1", "name": "마포구청역입구", "gu": "마포구", "dong": "망원동", "grade": "A", "gg": "A", "type": "B-2", "faces": "1, 2면 / 3, 4면", "price": 1000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-09-01 ~ 2026-09-30] [#] [승인요청]", "lat": 37.555622, "lng": 126.905597}, {"id": "19-129_1", "name": "국회의사당", "gu": "영등포구", "dong": "여의도동", "grade": "A", "gg": "A", "type": "B-3", "faces": "1, 2면", "price": 1000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "", "lat": 37.528317, "lng": 126.929425}, {"id": "19-130_1", "name": "KBS", "gu": "영등포구", "dong": "여의도동", "grade": "A", "gg": "A", "type": "B-3", "faces": "1, 2면", "price": 1000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-08-19 ~ 2026-09-18] [#] [승인완료]", "lat": 37.525707, "lng": 126.9187376}, {"id": "19-132_1", "name": "국회의사당역.국민은행", "gu": "영등포구", "dong": "여의도동", "grade": "SA+", "gg": "SA", "type": "A", "faces": "1, 2면 / 3, 4면", "price": 4000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "", "lat": 37.528317, "lng": 126.929425}, {"id": "19-133_1", "name": "국회의사당역", "gu": "영등포구", "dong": "여의도동", "grade": "SA-V", "gg": "SA", "type": "A", "faces": "1, 2면 / 3, 4면", "price": 2000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-08-23 ~ 2026-10-22] [#29608] [예약]", "lat": 37.528317, "lng": 126.929425}, {"id": "19-136_1", "name": "여의도순복음교회", "gu": "영등포구", "dong": "여의도동", "grade": "SA-V", "gg": "SA", "type": "B-3", "faces": "1, 2면", "price": 2000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "", "lat": 37.5307303, "lng": 126.9247867}, {"id": "19-137_1", "name": "여의도순복음교회(new)", "gu": "영등포구", "dong": "여의도동", "grade": "SA", "gg": "SA", "type": "A-2", "faces": "1, 2면 / 3, 4면", "price": 1600000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "", "lat": 37.528317, "lng": 126.929425}, {"id": "19-138_1", "name": "여의도공원", "gu": "영등포구", "dong": "여의도동", "grade": "SA-V", "gg": "SA", "type": "B-3", "faces": "1, 2면", "price": 2000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "", "lat": 37.5300951, "lng": 126.9266829}, {"id": "19-139_1", "name": "여의나루역", "gu": "영등포구", "dong": "여의도동", "grade": "SA-V", "gg": "SA", "type": "A-2", "faces": "1, 2면 / 3, 4면", "price": 2000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-04-22 ~ 2026-10-21] [#] [진행중]", "lat": 37.5273056, "lng": 126.9134707}, {"id": "19-140_1", "name": "여의나루역", "gu": "영등포구", "dong": "여의도동", "grade": "SA-V", "gg": "SA", "type": "A", "faces": "1, 2면 / 3, 4면", "price": 2000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "", "lat": 37.5273056, "lng": 126.9134707}, {"id": "19-142_1", "name": "여의도중학교", "gu": "영등포구", "dong": "여의도동", "grade": "A", "gg": "A", "type": "B-3", "faces": "1, 2면", "price": 1000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "", "lat": 37.528317, "lng": 126.929425}, {"id": "19-143_1", "name": "63빌딩.가톨릭대학교여의도성모병원", "gu": "영등포구", "dong": "여의도동", "grade": "SA-V", "gg": "SA", "type": "A", "faces": "1, 2면 / 3, 4면", "price": 2000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2025-10-22 ~ 2026-12-31] [#] [진행중]", "lat": 37.528317, "lng": 126.929425}, {"id": "19-144_1", "name": "63빌딩.가톨릭대학교여의도성모병원", "gu": "영등포구", "dong": "여의도동", "grade": "SA-V", "gg": "SA", "type": "B", "faces": "1, 2면 / 3, 4면", "price": 2000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2025-10-22 ~ 2026-12-31] [#] [진행중]", "lat": 37.528317, "lng": 126.929425}, {"id": "19-147_1", "name": "여의동주민센터", "gu": "영등포구", "dong": "여의도동", "grade": "SA", "gg": "SA", "type": "B", "faces": "1, 2면 / 3, 4면", "price": 1600000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-09-21 ~ 2026-10-20] [#] [승인요청]", "lat": 37.528317, "lng": 126.929425}, {"id": "19-151_1", "name": "샛강역.앙카라공원", "gu": "영등포구", "dong": "여의도동", "grade": "SA", "gg": "SA", "type": "A", "faces": "1, 2면 / 3, 4면", "price": 1600000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "", "lat": 37.528317, "lng": 126.929425}, {"id": "19-154_1", "name": "샛강역4번출구.여의도자이", "gu": "영등포구", "dong": "여의도동", "grade": "SA+", "gg": "SA", "type": "B", "faces": "1, 2면 / 3, 4면", "price": 4000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "", "lat": 37.528317, "lng": 126.929425}, {"id": "19-155_1", "name": "여의도역", "gu": "영등포구", "dong": "여의도동", "grade": "SA+", "gg": "SA", "type": "A", "faces": "1, 2면 / 3, 4면", "price": 4000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-08-10 ~ 2026-09-09] [#] [진행중]", "lat": 37.528317, "lng": 126.929425}, {"id": "19-157_1", "name": "한국거래소", "gu": "영등포구", "dong": "여의도동", "grade": "SA+", "gg": "SA", "type": "기설형", "faces": "1, 2면", "price": 2000000, "inner": "1170*1710", "outer": "1210*1745", "light": "비조명", "status": "", "lat": 37.528317, "lng": 126.929425}, {"id": "19-158_1", "name": "한국거래소(new)", "gu": "영등포구", "dong": "여의도동", "grade": "SA", "gg": "SA", "type": "A-2", "faces": "1, 2면 / 3, 4면", "price": 1600000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-09-01 ~ 2026-11-30] [#] [예약]", "lat": 37.528317, "lng": 126.929425}, {"id": "19-159_1", "name": "삼부아파트", "gu": "영등포구", "dong": "여의도동", "grade": "SA", "gg": "SA", "type": "B-2", "faces": "1, 2면 / 3, 4면", "price": 1600000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "", "lat": 37.528317, "lng": 126.929425}, {"id": "19-161_1", "name": "전경련회관", "gu": "영등포구", "dong": "여의도동", "grade": "SA", "gg": "SA", "type": "A-1", "faces": "1, 2면 / 3, 4면", "price": 1600000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-09-01 ~ 2026-11-30] [#] [예약]", "lat": 37.5217237, "lng": 126.9190648}, {"id": "19-280_1", "name": "국회의사당", "gu": "영등포구", "dong": "여의도동", "grade": "SA", "gg": "SA", "type": "A-2", "faces": "1, 2면 / 3, 4면", "price": 1600000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "", "lat": 37.528317, "lng": 126.929425}, {"id": "19-281_1", "name": "산업은행본점", "gu": "영등포구", "dong": "여의도동", "grade": "A", "gg": "A", "type": "B-2", "faces": "1, 2면 / 3, 4면", "price": 1000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-09-21 ~ 2026-10-20] [#] [승인요청]", "lat": 37.528317, "lng": 126.929425}, {"id": "19-282_1", "name": "현대백화점", "gu": "영등포구", "dong": "여의도동", "grade": "SA+", "gg": "SA", "type": "A", "faces": "1, 2면 / 3, 4면", "price": 4000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-08-30 ~ 2026-09-29] [#] [승인요청]", "lat": 37.525501, "lng": 126.9273667}, {"id": "19-284_1", "name": "LG트윈타워", "gu": "영등포구", "dong": "여의도동", "grade": "SA+", "gg": "SA", "type": "A-1", "faces": "1, 2면 / 3, 4면", "price": 4000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-09-01 ~ 2026-09-30] [#] [승인완료]", "lat": 37.5270438, "lng": 126.9286236}, {"id": "19-290_1", "name": "여의도지하차도입구", "gu": "영등포구", "dong": "여의도동", "grade": "SA+", "gg": "SA", "type": "B-2", "faces": "1, 2면 / 3, 4면", "price": 4000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-10-06 ~ 2026-12-31] [#29528] [예약]", "lat": 37.528317, "lng": 126.929425}, {"id": "22-381_1", "name": "반포대교남단.한강시민공원입구", "gu": "서초구", "dong": "반포동", "grade": "A", "gg": "A", "type": "A-1", "faces": "1, 2면 / 3, 4면", "price": 1000000, "inner": "960x1920", "outer": "1010x1980", "light": "조명", "status": "[2026-04-22 ~ 2026-10-21] [#] [진행중]", "lat": 37.5069552, "lng": 126.996132}, {"id": "23-125_1", "name": "제일은행.호림아트센터앞", "gu": "강남구", "dong": "논현동", "grade": "SA+", "gg": "SA", "type": "A-2", "faces": "1, 2면 / 3, 4면", "price": 4000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-04-22 ~ 2026-10-21] [#26671] [진행중]", "lat": 37.511571, "lng": 127.028461}, {"id": "23-126_1", "name": "영동119.안전센터", "gu": "강남구", "dong": "논현동", "grade": "SA-V", "gg": "SA", "type": "B-3", "faces": "2면", "price": 1000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-04-01 ~ 2026-09-30] [#] [진행중]", "lat": 37.511571, "lng": 127.028461}, {"id": "23-152_1", "name": "도산공원.호림아트센터앞", "gu": "강남구", "dong": "신사동", "grade": "SA", "gg": "SA", "type": "B-3", "faces": "1, 2면", "price": 1600000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-10-15 ~ 2026-11-14] [#] [승인요청]", "lat": 37.52401, "lng": 127.022781}, {"id": "23-161_1", "name": "씨네시티.앞", "gu": "강남구", "dong": "신사동", "grade": "SA+", "gg": "SA", "type": "A-2", "faces": "1, 2면 / 4면", "price": 4000000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-04-22 ~ 2026-10-21] [#26463] [진행중]", "lat": 37.52401, "lng": 127.022781}, {"id": "23-162_1", "name": "도산공원", "gu": "강남구", "dong": "신사동", "grade": "SA", "gg": "SA", "type": "기설형", "faces": "1, 2면", "price": 1600000, "inner": "1170*1710", "outer": "1210*1745", "light": "조명", "status": "[2026-04-22 ~ 2026-10-21] [#26671] [진행중]", "lat": 37.52401, "lng": 127.022781}, {"id": "23-163_1", "name": "신구중학교", "gu": "강남구", "dong": "신사동", "grade": "SA", "gg": "SA", "type": "B-3", "faces": "1, 2면", "price": 1600000, "inner": "960*1830", "outer": "1010*1880", "light": "조명", "status": "[2026-07-10 ~ 2026-09-09] [#] [진행중]", "lat": 37.52401, "lng": 127.022781}];
+    const GUS = [{"gu": "영등포구", "n": 25}, {"gu": "용산구", "n": 10}, {"gu": "강남구", "n": 6}, {"gu": "성동구", "n": 5}, {"gu": "마포구", "n": 4}, {"gu": "서초구", "n": 1}];
+    const GCOLOR = { SA:'#e11d48', A:'#2563eb', L:'#6b7280' };
+    let map, markers = [], iws = [], filter = 'all', activeIdx = -1;
+
+    function won(n){ return n ? (n).toLocaleString('ko-KR') + '원' : '-'; }
+    function pinSvg(c){
+      return '<svg width="26" height="34" viewBox="0 0 26 34" class="pinM" xmlns="http://www.w3.org/2000/svg">'
+        +'<path d="M13 0C5.8 0 0 5.8 0 13c0 9.2 13 21 13 21s13-11.8 13-21C26 5.8 20.2 0 13 0z" fill="'+c+'"/>'
+        +'<circle cx="13" cy="13" r="5" fill="#fff"/></svg>';
+    }
+    function iwHtml(s){
+      return '<div class="iw"><h3><span class="gb '+s.gg+'">'+s.grade+'</span>'+s.name+'</h3>'
+        +'<div class="kv2">'
+        +'<b>위치</b><span>'+s.gu+' '+s.dong+'</span>'
+        +'<b>타입</b><span>'+s.type+'</span>'
+        +'<b>광고면</b><span>'+(s.faces||'-')+'</span>'
+        +'<b>규격</b><span>내경 '+(s.inner||'-')+' / 외경 '+(s.outer||'-')+'</span>'
+        +'<b>조명</b><span>'+(s.light||'-')+'</span>'
+        +'<b>월 광고료</b><span>'+won(s.price)+'</span>'
+        +(s.status?'<b>계약</b><span>'+s.status+'</span>':'')
+        +'</div></div>';
+    }
+    function init(){
+      map = new naver.maps.Map('map', { center:new naver.maps.LatLng(37.53,126.99), zoom:12, mapDataControl:false });
+      STOPS.forEach((s,i)=>{
+        const m = new naver.maps.Marker({ position:new naver.maps.LatLng(s.lat,s.lng), map,
+          icon:{ content:pinSvg(GCOLOR[s.gg]||'#6b7280'), anchor:new naver.maps.Point(13,34) }, title:s.name });
+        const iw = new naver.maps.InfoWindow({ content:iwHtml(s), borderWidth:0, disableAnchor:true, backgroundColor:'#fff', pixelOffset:new naver.maps.Point(0,-6) });
+        naver.maps.Event.addListener(m,'click',()=>focus(i));
+        markers.push(m); iws.push(iw);
+      });
+      buildFilters(); render(); fitAll();
+    }
+    function fitAll(){ const b=new naver.maps.LatLngBounds(); let any=false;
+      STOPS.forEach((s,i)=>{ if(vis(i)){ b.extend(new naver.maps.LatLng(s.lat,s.lng)); any=true; }});
+      if(any) map.fitBounds(b,{top:70,right:70,bottom:70,left:70}); }
+    function vis(i){ return filter==='all' || STOPS[i].gu===filter; }
+    function focus(i){ activeIdx=i; iws.forEach(w=>w.close()); iws[i].open(map,markers[i]);
+      map.panTo(new naver.maps.LatLng(STOPS[i].lat,STOPS[i].lng)); render();
+      const el=document.querySelector('[data-i="'+i+'"]'); if(el) el.scrollIntoView({block:'nearest',behavior:'smooth'}); }
+    function buildFilters(){
+      const f=document.getElementById('filters');
+      f.innerHTML = '<button class="chip on" data-f="all">전체<span class="n">'+STOPS.length+'</span></button>'
+        + GUS.map(g=>'<button class="chip" data-f="'+g.gu+'">'+g.gu+'<span class="n">'+g.n+'</span></button>').join('');
+      f.querySelectorAll('.chip').forEach(c=>c.addEventListener('click',()=>{
+        f.querySelectorAll('.chip').forEach(x=>x.classList.remove('on')); c.classList.add('on');
+        filter=c.dataset.f; activeIdx=-1; iws.forEach(w=>w.close()); render(); fitAll();
+      }));
+    }
+    function render(){
+      const items=STOPS.map((s,i)=>({s,i})).filter(o=>vis(o.i));
+      document.getElementById('cnt').textContent = items.length+'개소 표시 중';
+      document.getElementById('list').innerHTML = items.map(({s,i})=>
+        '<div class="item '+(i===activeIdx?'active':'')+'" data-i="'+i+'">'
+        +'<div class="top"><span class="gb '+s.gg+'">'+s.grade+'</span><span class="nm">'+s.name+'</span></div>'
+        +'<div class="loc">'+s.gu+' '+s.dong+' · '+s.type+'</div>'
+        +'<div class="kv"><b>광고면</b><span>'+(s.faces||'-')+'</span>'
+        +'<b>규격</b><span>'+(s.inner||'-')+' / '+(s.outer||'-')+'</span>'
+        +'<b>월 광고료</b><span>'+won(s.price)+'</span></div>'
+        +(s.status?'<div class="st">'+s.status+'</div>':'')
+        +'</div>').join('');
+      document.querySelectorAll('.item').forEach(el=>el.addEventListener('click',()=>focus(Number(el.dataset.i))));
+      markers.forEach((m,i)=>m.setMap(vis(i)?map:null));
+    }
+    if (window.naver && naver.maps) init(); else window.addEventListener('load', init);
+  </script>
+</body>
+</html>

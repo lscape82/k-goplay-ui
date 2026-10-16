@@ -69,6 +69,9 @@
       sorted.sort(function (a, b) { return (Number(a.dataset.price) || Infinity) - (Number(b.dataset.price) || Infinity); });
     } else if (mode === "price-desc") {
       sorted.sort(function (a, b) { return (Number(b.dataset.price) || -1) - (Number(a.dataset.price) || -1); });
+    } else if (mode === "eff-asc") {
+      // 효율순: 유동 1,000명당 비용 낮은 순(데이터 없는 카드는 뒤로)
+      sorted.sort(function (a, b) { return (Number(a.dataset.eff) || Infinity) - (Number(b.dataset.eff) || Infinity); });
     } else if (mode === "area") {
       sorted.sort(function (a, b) { return (a.dataset.region || "힣").localeCompare(b.dataset.region || "힣", "ko"); });
     } else {

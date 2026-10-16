@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ko">
   <head>
     <meta charset="utf-8">
@@ -19,18 +19,18 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "홈", "item": "https://lscape82.github.io/k-goplay-ui/"}, {"@type": "ListItem", "position": 2, "name": "지역별 옥외광고", "item": "https://lscape82.github.io/k-goplay-ui/areas.html"}, {"@type": "ListItem", "position": 3, "name": "성수 옥외광고", "item": "https://lscape82.github.io/k-goplay-ui/area-seongsu.html"}]}</script>
     <style>
     body{margin:0;background:#fff}
-    :root{--shell-max:1760px;--dock-gutter:248px;--dock-top:145px;--dock-w:210px}
+    :root{--shell-max:1760px;--dock-gutter:248px;--dock-top:135px;--dock-w:210px}
     :root{--shell-w:min(var(--shell-max),calc(100% - 40px))}
     .hd{position:sticky;top:0;z-index:30;border-bottom:1px solid #e9edf3;background:#fff;font-family:var(--font-sans)}
     .hd-in{display:flex;align-items:center;gap:22px;min-height:54px;flex-wrap:wrap;box-sizing:border-box;
            width:min(var(--shell-max),calc(100% - 40px));margin:0 auto;padding-inline:var(--dock-gutter)}
     .hd-brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;flex:none}
-    .hd-brand strong{font-size:18.5px;font-weight:760;letter-spacing:-0.01em;color:#0f172a}.hd-brand .brand-mark{width:30px;height:30px;background-size:auto 30px}
+    .hd-brand strong{font-size:25px;font-weight:500;font-variation-settings:"wght" 500;letter-spacing:0;color:#2540ea}.hd-brand .brand-mark{display:none}
     .hd-nav{margin-left:auto;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
     .hd-act{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
-    .hd a{font-size:13px;font-weight:620;color:#475467;text-decoration:none;white-space:nowrap;transition:color .15s ease,transform .15s ease}
-    .hd-nav a:hover,.hd-nav a:focus,.hd-act a:hover,.hd-act a:focus{color:#0b1b3f;transform:translateY(-2px)}
-    .hd-nav a.on,.hd-act a.on{color:#0b3a91;font-weight:750}
+    .hd a{font-size:12px;font-weight:600;color:#2540ea;text-decoration:none;white-space:nowrap;transition:color .15s ease,transform .15s ease}
+    .hd-nav a:hover,.hd-nav a:focus,.hd-act a:hover,.hd-act a:focus{color:#16249e}
+    .hd-nav a.on,.hd-act a.on{color:#2540ea;font-weight:750}
     .ins-wrap{width:min(var(--shell-max),calc(100% - 40px));margin:0 auto;box-sizing:border-box;
               padding:22px var(--dock-gutter) 90px;font-family:var(--font-sans);color:#1c1c1c}
     @media(max-width:1079px){
@@ -46,11 +46,11 @@
                background:rgba(255,255,255,.97);text-decoration:none;font:700 13px/1.3 var(--font-sans);color:#2b3242;
                box-shadow:none;transition:border-color .15s ease}
     .viewtog a:hover{border-color:#3b74f2}
-    .viewtog a.on{border-color:#0b3a91;color:#0b3a91;background:#f4f8ff}
-    .viewtog a.on .ic{background:#0b3a91;color:#fff}
-    .viewtog .ic{width:22px;height:22px;flex:none;display:grid;place-items:center;border-radius:6px;background:#eaf0ff;color:#0b3a91}
+    .viewtog a.on{border-color:#2540ea;color:#2540ea;background:#f4f8ff}
+    .viewtog a.on .ic{background:#2540ea;color:#fff}
+    .viewtog .ic{width:22px;height:22px;flex:none;display:grid;place-items:center;border-radius:6px;background:#eaf0ff;color:#2540ea}
     .viewtog .ic svg{width:14px;height:14px;flex:none}
-    .viewtog .consult .ic{background:#0b3a91;color:#fff}
+    .viewtog .consult .ic{background:#2540ea;color:#fff}
     .ins-bc{font:13px/1.6 var(--font-sans);color:#8a8a8a;margin:0 0 8px}
     .ins-bc a{color:#8a8a8a;text-decoration:none}
     .ins-wrap h1{font:850 26px/1.3 var(--font-sans);margin:6px 0 8px}
@@ -61,7 +61,7 @@
     .ins-sticky h1{margin-top:0}
     .ins-wrap:has(> .ins-sticky){padding-top:0}
     .ins-tags{display:flex;flex-wrap:wrap;gap:6px;margin:0 0 26px}
-    .ins-tags span{background:#eef4ff;color:#0b3a91;font:600 13px/1 var(--font-sans);padding:7px 11px;border-radius:20px}
+    .ins-tags span{background:#eef4ff;color:#2540ea;font:600 13px/1 var(--font-sans);padding:7px 11px;border-radius:20px}
     .ins-wrap h2{font:760 17px/1.4 var(--font-sans);margin:30px 0 12px;padding-top:6px}
     table.ins{border-collapse:collapse;width:100%;font:14px/1.6 var(--font-sans);margin:0 0 6px}
     table.ins th,table.ins td{border:1px solid #e8e8e8;padding:10px 12px;text-align:left;vertical-align:top}
@@ -72,7 +72,7 @@
     .faq p{margin:9px 0 0;font:15px/1.75 var(--font-sans);color:#333}
     .ins-cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
     .ins-cta a{display:inline-block;font:700 15px/1 var(--font-sans);padding:15px 24px;border-radius:11px;text-decoration:none}
-    .ins-cta .p{background:#0b3a91;color:#fff}
+    .ins-cta .p{background:#2540ea;color:#fff}
     .ins-cta .s{background:#f2f2f2;color:#222}
     /* 지역 매체 목록 — 정적 링크 리스트(봇 크롤 + 내부링크). 사진 없이 '읽는' 인덱스. */
     .area-media{list-style:none;margin:12px 0 0;padding:0;border-top:1px solid #ececf1}
@@ -82,7 +82,7 @@
     .area-media a:hover{background:#f8fafc}
     .area-media .nm{font:750 16px/1.4 var(--font-sans);color:#111827;margin:0 0 4px}
     .area-media .mt{font:13px/1.5 var(--font-sans);color:#6b7280}
-    .area-media .mt b{color:#0b3a91;font-weight:700}
+    .area-media .mt b{color:#2540ea;font-weight:700}
     .area-media .pr{font:800 15px/1.3 var(--font-sans);color:#172033;white-space:nowrap;text-align:right}
     /* 지역 인덱스(허브) — 인사이트 허브와 동일 편집형 인덱스 */
     .ins-sec{margin-top:38px}
@@ -95,19 +95,19 @@
                  padding:24px 10px;text-decoration:none;color:inherit;transition:background .15s ease}
     .ins-index a:hover{background:#f8fafc}
     .ins-index .num{align-self:start;font:800 19px/1.3 var(--font-sans);color:#ccd2de}
-    .ins-index .kicker{display:inline-block;font:700 11.5px/1 var(--font-sans);color:#0b3a91;
+    .ins-index .kicker{display:inline-block;font:700 11.5px/1 var(--font-sans);color:#2540ea;
                        background:#eef4ff;border-radius:999px;padding:6px 10px;margin:0 0 10px}
     .ins-index h3{font:750 20px/1.4 var(--font-sans);margin:0 0 5px;padding:0;color:#111827}
     .ins-index .sub{font:14px/1.6 var(--font-sans);color:#6b7280;margin:0 0 14px}
     .ins-index .stats{display:flex;flex-wrap:wrap;gap:12px 30px;margin:0;padding:0}
     .ins-index .stats dt{font:600 12px/1.4 var(--font-sans);color:#98a0ad;margin:0 0 2px}
     .ins-index .stats dd{font:800 17px/1.35 var(--font-sans);color:#172033;margin:0}
-    .ins-index .go{font:800 13px/1 var(--font-sans);color:#0b3a91;white-space:nowrap;display:inline-flex;align-items:center}
+    .ins-index .go{font:800 13px/1 var(--font-sans);color:#2540ea;white-space:nowrap;display:inline-flex;align-items:center}
     .ins-index .go::after{content:"";width:6px;height:6px;margin-left:7px;border-top:2px solid currentColor;
                           border-right:2px solid currentColor;transform:rotate(45deg)}
     /* 다른 지역 보기 — 상권 페이지 하단 상호링크(크롤 경로) */
     .area-siblings{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0 0}
-    .area-siblings a{font:650 13.5px/1 var(--font-sans);color:#0b3a91;background:#eef4ff;border-radius:999px;
+    .area-siblings a{font:650 13.5px/1 var(--font-sans);color:#2540ea;background:#eef4ff;border-radius:999px;
                      padding:9px 14px;text-decoration:none}
     .area-siblings a:hover{background:#e0eaff}
     @media(max-width:640px){
@@ -127,7 +127,7 @@
   </head>
   <body>
     <header class="hd"><div class="hd-in">
-      <a class="hd-brand" href="map.html" aria-label="광고플레이 홈"><span class="brand-mark">AD</span><strong>광고플레이</strong></a>
+      <a class="hd-brand" href="map.html" aria-label="광고플레이 홈"><span class="brand-mark">AD</span><strong>k-goplay.com</strong></a>
       <nav class="hd-nav" aria-label="주요 메뉴">
         <a href="map.html">옥외광고 지도</a>
         <a class="on" href="media-catalog.html">옥외광고 목록</a>

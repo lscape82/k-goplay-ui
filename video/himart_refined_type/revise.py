@@ -1,0 +1,15 @@
+from pathlib import Path
+p=Path(__file__).with_name('render.py');s=p.read_text(encoding='utf-8')
+s=s.replace("line('입주 · 혼수 · 이사',833,132)","line('입주·혼수·이사',833,128)")
+s=s.replace("line('삼성  엘지',792,65)","line('삼성 · 엘지',792,100)")
+s=s.replace("line('기대하셔도 좋습니다',1018,65,at=.18)","line('기대하셔도 좋습니다',1018,86,at=.18)")
+s=s.replace("line('가전 구입혜택은',792,65),\n  line('오픈 행사점이 가장 좋습니다',978,82,at=.18)","line('가전 구입혜택은',749,65),\n  line('오픈 행사점이',914,121,at=.14),\n  line('가장 좋습니다',1070,139,at=.28)")
+s=s.replace('[[233,193,109],[255,247,203],[255,232,164],[228,185,100],[245,206,128],[255,240,186],[225,181,94]]','[[255,219,109],[255,253,221],[255,235,155],[248,204,94],[255,221,117],[255,246,188],[246,204,98]]')
+s=s.replace('(255,248,227,0)','(255,255,255,0)')
+s=s.replace('    return im', '''    # Thin, sharp contour separates the glyphs from the bright red clouds.
+    edge=m.filter(ImageFilter.MaxFilter(3))
+    backing=Image.new('RGBA',im.size,(74,12,5,0))
+    backing.putalpha(edge.point(lambda a:round(a*.8)))
+    backing.alpha_composite(im)
+    return backing''',1)
+p.write_text(s,encoding='utf-8')

@@ -22,3 +22,12 @@ data/pdf_pages_text.json
 # 로컬 전용(공개 저장소 제외)
 .claude/
 scratch-backup/
+
+# 내부 작업 산출물 — 공개 저장소/배포 제외 (민감: 매체사·가격비교·백업)
+*.xlsx
+*.xls
+data/_shortterm_conflicts.txt
+data/*.bak-*
+data/*.bak
+*.bak-preSt
+data/_highway_tmp.json

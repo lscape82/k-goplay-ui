@@ -1,4 +1,4 @@
-<!doctype html>
+﻿<!doctype html>
 <html lang="ko"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>오피스 엘리베이터 광고 – 상품·패키지 비교(브랜드별) | 광고플레이</title>
@@ -13,18 +13,18 @@
 <script type="application/ld+json">{"@context": "https://schema.org", "@type": "BreadcrumbList", "itemListElement": [{"@type": "ListItem", "position": 1, "name": "홈", "item": "https://lscape82.github.io/k-goplay-ui/"}, {"@type": "ListItem", "position": 2, "name": "옥외광고 매체", "item": "https://lscape82.github.io/k-goplay-ui/media-catalog.html"}, {"@type": "ListItem", "position": 3, "name": "엘리베이터 광고", "item": "https://lscape82.github.io/k-goplay-ui/elevator.html"}, {"@type": "ListItem", "position": 4, "name": "오피스 상품·패키지", "item": "https://lscape82.github.io/k-goplay-ui/elevator-office.html"}]}</script>
 <style>
  body{margin:0;background:#fff;font-family:var(--font-sans);color:#1c1c1c}
- :root{--shell-max:1760px;--dock-gutter:226px;--dock-top:145px;--dock-w:210px}
+ :root{--shell-max:1760px;--dock-gutter:226px;--dock-top:135px;--dock-w:210px}
  :root{--shell-w:min(var(--shell-max),calc(100% - 40px))}
  .hd{position:sticky;top:0;z-index:30;border-bottom:1px solid #e9edf3;background:rgba(255,255,255,.98);font-family:var(--font-sans)}
  .hd-in{display:flex;align-items:center;gap:22px;min-height:54px;flex-wrap:wrap;box-sizing:border-box;
         width:var(--shell-w);margin:0 auto;padding-inline:var(--dock-gutter)}
  .hd-brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;flex:none}
- .hd-brand strong{font-size:18.5px;font-weight:760;letter-spacing:-0.01em;color:#0f172a}.hd-brand .brand-mark{width:30px;height:30px;background-size:auto 30px}
+ .hd-brand strong{font-size:25px;font-weight:500;font-variation-settings:"wght" 500;letter-spacing:0;color:#2540ea}.hd-brand .brand-mark{display:none}
  .hd-nav{margin-left:auto;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
  .hd-act{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
  .hd a{font-size:14px;font-weight:650;color:#344054;text-decoration:none;white-space:nowrap;transition:color .15s ease,transform .15s ease}
- .hd-nav a:hover,.hd-act a:hover{color:#0b1b3f;transform:translateY(-2px)}
- .hd-nav a.on{color:#0b3a91;font-weight:750}
+ .hd-nav a:hover,.hd-act a:hover{color:#16249e}
+ .hd-nav a.on{color:#2540ea;font-weight:750}
  .wrap{width:var(--shell-w);margin:0 auto;box-sizing:border-box;padding:22px var(--dock-gutter) 90px}
  .bc{font:13px/1.6 var(--font-sans);color:#8a8a8a;margin:0 0 8px}
  .bc a{color:#8a8a8a;text-decoration:none}
@@ -41,11 +41,11 @@
  .brand-sec{border:1px solid #e8eaf0;border-radius:14px;padding:18px 20px;margin:16px 0}
  .brand-head{display:flex;align-items:baseline;gap:12px;margin:0 0 4px}
  .brand-head h2{font:800 19px/1.4 var(--font-sans);margin:0;color:#111827}
- .brand-go{margin-left:auto;font:800 13px/1 var(--font-sans);color:#0b3a91;text-decoration:none;white-space:nowrap}
+ .brand-go{margin-left:auto;font:800 13px/1 var(--font-sans);color:#2540ea;text-decoration:none;white-space:nowrap}
  .brand-go:hover{text-decoration:underline}
  .brand-edge{font:14px/1.6 var(--font-sans);color:#4a5568;margin:0 0 12px}
  .brand-price{font:14.5px/1.6 var(--font-sans);color:#172033;margin:10px 0 8px}
- .brand-price b{color:#0b3a91}
+ .brand-price b{color:#2540ea}
  table.t{border-collapse:collapse;width:100%;font:14px/1.6 var(--font-sans);margin:0 0 6px}
  table.t th,table.t td{border:1px solid #e8e8e8;padding:9px 12px;text-align:left}
  table.t th{background:#f8fafc;font-weight:700;color:#333;white-space:nowrap}
@@ -53,7 +53,7 @@
  /* 계산식 — 이 상품의 논리 그 자체 */
  .calc{border:1px solid #e2e7f0;border-radius:12px;padding:16px 18px;background:#fbfcfe;margin:0 0 8px;max-width:520px}
  .calc p{margin:0;font:15px/1.7 var(--font-sans);color:#2b3242}
- .calc .eq{font:800 22px/1.4 var(--font-sans);color:#0b3a91;margin-top:6px}
+ .calc .eq{font:800 22px/1.4 var(--font-sans);color:#2540ea;margin-top:6px}
  .pkg-note{font:12.5px/1.6 var(--font-sans);color:#8a8a8a;margin:8px 0 0}
  .note{font:12.5px/1.7 var(--font-sans);color:#9a9a9a;margin-top:10px}
  .warn{border:1px solid #f0d8a8;background:#fdf8ee;border-radius:12px;padding:12px 15px;margin:0 0 8px}
@@ -65,14 +65,14 @@
  .prod{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:12px;margin:12px 0 0}
  .prod a{border:1px solid #e8eaf0;border-radius:12px;padding:15px 17px;text-decoration:none;color:inherit;display:block;transition:border-color .15s ease}
  .prod a:hover{border-color:#3b74f2}
- .prod .kk{display:inline-block;font:700 11.5px/1 var(--font-sans);color:#0b3a91;background:#eef4ff;border-radius:999px;padding:6px 10px;margin:0 0 9px}
+ .prod .kk{display:inline-block;font:700 11.5px/1 var(--font-sans);color:#2540ea;background:#eef4ff;border-radius:999px;padding:6px 10px;margin:0 0 9px}
  .prod h3{font:750 18px/1.4 var(--font-sans);margin:0 0 5px;color:#111827}
  .prod p{font:13.5px/1.6 var(--font-sans);color:#6b7280;margin:0 0 10px}
  .prod .fig{font:800 15px/1.4 var(--font-sans);color:#172033}
- .prod .go{font:800 12.5px/1 var(--font-sans);color:#0b3a91;margin-top:9px;display:block}
+ .prod .go{font:800 12.5px/1 var(--font-sans);color:#2540ea;margin-top:9px;display:block}
  .cta{display:flex;gap:10px;flex-wrap:wrap;margin-top:26px}
  .cta a{font:700 15px/1 var(--font-sans);padding:15px 24px;border-radius:11px;text-decoration:none}
- .cta .p{background:#0b3a91;color:#fff}
+ .cta .p{background:#2540ea;color:#fff}
  .cta .s{background:#f2f2f2;color:#222}
  .site-foot{border-top:1px solid #e9e9ee;background:#fafafb;margin-top:56px}
  .foot-inner{width:var(--shell-w);margin:0 auto;box-sizing:border-box;padding:26px var(--dock-gutter) 34px}
@@ -90,11 +90,11 @@
             box-shadow:none;transition:border-color .15s ease}
  .viewtog a:hover{border-color:#3b74f2}
  .viewtog a[hidden]{display:none}
- .viewtog .ic{width:22px;height:22px;flex:none;display:grid;place-items:center;border-radius:6px;background:#eaf0ff;color:#0b3a91}
+ .viewtog .ic{width:22px;height:22px;flex:none;display:grid;place-items:center;border-radius:6px;background:#eaf0ff;color:#2540ea}
  .viewtog .ic svg{width:14px;height:14px;flex:none}
- .viewtog .consult .ic,.viewtog .favlink .ic{background:#0b3a91;color:#fff}
+ .viewtog .consult .ic,.viewtog .favlink .ic{background:#2540ea;color:#fff}
  .viewtog .favlink svg{fill:none;stroke:currentColor}
- .viewtog b{margin-left:auto;font:800 10px/1 var(--font-sans);color:#fff;background:#0b3a91;border-radius:999px;padding:3px 7px}
+ .viewtog b{margin-left:auto;font:800 10px/1 var(--font-sans);color:#fff;background:#2540ea;border-radius:999px;padding:3px 7px}
  @media(max-width:1079px){.hd-in,.wrap,.foot-inner{padding-inline:0}
    .viewtog{right:10px;left:10px;top:auto;bottom:10px;width:auto;flex-direction:row;flex-wrap:wrap;justify-content:center}
    .viewtog a{flex:1 1 auto;justify-content:center;padding:9px 10px;font-size:12.5px}
@@ -102,7 +102,7 @@
  @media(max-width:900px){.hd-in{gap:12px;min-height:50px}.hd a{font-size:13px}}
 </style></head><body>
 <header class="hd"><div class="hd-in">
-  <a class="hd-brand" href="map.html" aria-label="광고플레이 홈"><span class="brand-mark">AD</span><strong>광고플레이</strong></a>
+  <a class="hd-brand" href="map.html" aria-label="광고플레이 홈"><span class="brand-mark">AD</span><strong>k-goplay.com</strong></a>
   <nav class="hd-nav" aria-label="주요 메뉴">
     <a href="map.html">옥외광고 지도</a>
     <a class="on" href="media-catalog.html">옥외광고 목록</a>

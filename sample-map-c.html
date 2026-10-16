@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[샘플C] 지도 카테고리 정리 + SEO 키워드</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/variable/pretendardvariable-dynamic-subset.css">
+<style>
+  :root{
+    --blue:#2540ea; --blue-deep:#16249e; --blue-wash:#eef1fe;
+    --ink:#16181d; --ink-soft:#3d4351; --muted:#7a8496; --line:#e9edf3;
+    --bg:#fff; --bg-soft:#f6f7fb;
+    --font:"Pretendard Variable",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.5;word-break:keep-all}
+  a{text-decoration:none;color:inherit}
+  .note{padding:9px 16px;font-size:12px;color:var(--muted);background:#fbfbfd;border-bottom:1px solid var(--line)}
+  .note b{color:var(--ink)}
+
+  /* 헤더 */
+  .hd{display:flex;align-items:center;gap:20px;height:55px;padding:0 20px;border-bottom:1px solid var(--line);background:#fff}
+  .brand{font-size:25px;font-weight:500;color:var(--blue);font-variation-settings:"wght" 500}
+  .nav{margin-left:auto;display:flex;align-items:center;gap:22px}
+  .nav a{font-size:13px;font-weight:600;color:var(--blue)}
+  .nav .login{display:inline-flex;align-items:center;gap:6px}
+
+  /* 카테고리 줄: 검색 + 도구 + [매체 유형 ▾] 하나 */
+  .strip{display:flex;align-items:center;gap:14px;height:46px;padding:0 20px;border-bottom:1px solid var(--line);background:#fff}
+  .search{display:flex;align-items:center;gap:8px;height:32px;width:300px;padding:0 8px 0 12px;border:1px solid #dbe0ea;border-radius:8px}
+  .search input{flex:1;border:0;outline:0;font:inherit;font-size:13px;background:transparent}
+  .search input::placeholder{color:#aeb4bf}
+  .search .go{color:var(--blue);display:grid;place-items:center}
+  .tools{display:inline-flex;border:1px solid #aab8ef}
+  .tools button{border:0;background:transparent;padding:6px 10px;font-size:12px;font-weight:600;color:#6b7684;cursor:pointer;font-family:var(--font)}
+  .tools button.on{color:#16181d;font-weight:700}
+  .typebtn{position:relative}
+  .typebtn>button{display:inline-flex;align-items:center;gap:8px;height:32px;padding:0 14px;border:1px solid #dbe0ea;border-radius:8px;background:#fff;font-size:13px;font-weight:700;color:#16181d;cursor:pointer;font-family:var(--font)}
+  .typebtn>button .cnt{color:var(--muted);font-weight:600}
+  .typebtn .menu{position:absolute;left:0;top:38px;z-index:5;width:220px;background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 14px 34px -12px rgba(22,24,29,.22);padding:6px}
+  .typebtn .menu a{display:flex;justify-content:space-between;padding:9px 11px;border-radius:7px;font-size:13px;font-weight:600;color:var(--ink-soft)}
+  .typebtn .menu a.on{background:var(--blue-wash);color:var(--blue-deep);font-weight:700}
+  .typebtn .menu a:hover{background:#f4f5f8}
+  .typebtn .menu a .c{color:#aeb4bf;font-weight:600;font-size:12px}
+
+  /* 본문 */
+  .work{display:grid;grid-template-columns:380px 1fr;height:calc(100vh - 55px - 46px - 34px - 44px)}
+  .side{border-right:1px solid var(--line);overflow:auto;padding:14px 16px}
+  .card{border:1px solid var(--line);border-radius:8px;overflow:hidden;margin-bottom:14px}
+  .card .ph{aspect-ratio:1.9/1;background:#eef2f7 center/cover}
+  .card .cb{padding:12px 14px 14px}
+  .card h3{font-size:16px;font-weight:750;letter-spacing:-0.01em}
+  .card .meta{margin-top:4px;font-size:12.5px;color:var(--muted)}
+  .card .price{margin-top:9px;font-size:13px;color:var(--muted)}
+  .card .price b{font-size:14px;font-weight:800;color:var(--blue)}
+  .card .foot{margin-top:11px;padding-top:10px;border-top:1px solid var(--line);text-align:right;font-size:11px;font-weight:600;color:#aeb4bf}
+  .map{position:relative;background:linear-gradient(135deg,#e8eef3,#dde6ee)}
+  .map .lbl{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);color:#9aa6b4;font-size:14px;font-weight:600}
+
+  /* ── 크롤러용 유형 키워드 블록 (정적) ── */
+  .seobar{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:11px 20px;border-top:1px solid var(--line);background:#fafbfc;font-size:12px}
+  .seobar .lb{color:var(--muted);font-weight:700}
+  .seobar a{color:#5b6472;font-weight:600}
+  .seobar a:hover{color:var(--blue)}
+  .seobar .sep{color:#d5d9e0}
+</style>
+</head>
+<body>
+<div class="note">※ [샘플 C] 지도 카테고리를 <b>「매체 유형 ▾」 드롭다운 하나</b>로 정리 + 하단에 <b>크롤러용 유형 키워드(정적)</b> 배치. 라이브 지도는 그대로이며 비교용 목업입니다.</div>
+
+<header class="hd">
+  <a class="brand" href="#">k-goplay.com</a>
+  <nav class="nav">
+    <a href="#">옥외광고 목록</a><a href="#">광고집행사례</a><a href="#">광고 인사이트</a><a href="#">회사소개</a>
+    <a class="login" href="#"><svg viewBox="0 0 24 24" width="20" height="20"><circle cx="12" cy="12" r="11" fill="none" stroke="#2540ea" stroke-width="1.4"/><circle cx="12" cy="9.6" r="3" fill="#2540ea"/><path d="M6.2 18.4c0-3 2.8-4.6 5.8-4.6s5.8 1.6 5.8 4.6z" fill="#2540ea"/></svg>Log In</a>
+  </nav>
+</header>
+
+<div class="strip">
+  <div class="search"><input placeholder="지역, 매체명 검색"><span class="go"><svg viewBox="0 0 24 24" width="16" height="16"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"/><line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg></span></div>
+  <div class="tools"><button class="on">추천큐레이션</button><button>지역검색</button><button>예산검색</button></div>
+  <div class="typebtn">
+    <button>매체 유형 <span class="cnt">· 전체</span> ▾</button>
+    <div class="menu">
+      <a class="on">옥외광고 전체 <span class="c">447</span></a>
+      <a>전광판·빌보드 <span class="c">128</span></a>
+      <a>지하철 <span class="c">64</span></a>
+      <a>공항·터미널·기차 <span class="c">27</span></a>
+      <a>버스 정류장 <span class="c">2,176</span></a>
+      <a>쇼핑·문화시설 <span class="c">65</span></a>
+      <a>엘리베이터 <span class="c">10,000+</span></a>
+      <a>기타 생활권 <span class="c">—</span></a>
+    </div>
+  </div>
+</div>
+
+<div class="work">
+  <div class="side">
+    <div class="card"><div class="ph" style="background-image:url('assets/images/media/cheonggye-plaza/1.jpg')"></div><div class="cb"><h3>청계광장 전광판</h3><div class="meta">서울 종로구 · 일 유동인구 25.1만명</div><div class="price"><b>1,200만원</b> /월 · 1개월 미만 협의</div><div class="foot">상세보기 ›</div></div></div>
+    <div class="card"><div class="ph" style="background-image:url('assets/images/media/gyeongbokgung-jeokseon/1.jpg')"></div><div class="cb"><h3>경복궁 적선빌딩</h3><div class="meta">서울 종로구 · 국내 최대 관광명소</div><div class="price"><b>700만원</b> /월 · 1개월 미만 협의</div><div class="foot">상세보기 ›</div></div></div>
+    <div class="card"><div class="ph" style="background-image:url('assets/images/media/gangnam-jump-milano/1.jpg')"></div><div class="cb"><h3>강남역 점프밀라노</h3><div class="meta">서울 강남구 · 일 유동인구 35.8만명</div><div class="price"><b>1,500만원</b> /월 · 1개월 미만 협의</div><div class="foot">상세보기 ›</div></div></div>
+  </div>
+  <div class="map"><div class="lbl">지도 영역 (미리보기)</div></div>
+</div>
+
+<nav class="seobar" aria-label="매체 유형별 옥외광고">
+  <span class="lb">유형별 옥외광고</span>
+  <a href="#">전광판 광고</a><span class="sep">·</span>
+  <a href="#">지하철 광고</a><span class="sep">·</span>
+  <a href="#">버스 정류장 광고</a><span class="sep">·</span>
+  <a href="#">공항·터미널·기차 광고</a><span class="sep">·</span>
+  <a href="#">쇼핑몰·문화시설 광고</a><span class="sep">·</span>
+  <a href="#">엘리베이터 광고</a><span class="sep">·</span>
+  <a href="#">생활권 옥외광고</a>
+</nav>
+
+</body>
+</html>

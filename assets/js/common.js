@@ -7,6 +7,8 @@
     bus: "버스 광고",
     transport_hub: "도시 철도·버스·터미널",
     daily_touchpoint: "생활밀착형 광고",
+    convenience: "편의점",
+    highway: "고속도로 광고",
     package: "패키지",
     other: "기타",
   };

@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>전광판 광고 지도검색 – 전국 옥외광고(DOOH) 매체 | 광고플레이</title>
+    <meta name="description" content="전광판 광고·디지털 옥외광고(DOOH) 매체를 지도에서 검색하고 위치·규격·광고비를 비교하세요.">
+    <link rel="stylesheet" href="assets/css/styles.css">
+    <link rel="stylesheet" href="assets/css/map-services.css">
+    <style>
+      /* ===== 데모 전용 ===== */
+      body{margin:0}
+      .demobar{position:sticky;top:0;z-index:50;background:#111;color:#fff;padding:10px 16px;font:14px/1.5 system-ui,sans-serif;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+      .demobar b{color:#ff5aa8}
+      .demobar a{color:#9ecbff;text-decoration:none;font-weight:700}
+      .demohint{background:#fff4fa;border-bottom:1px solid #ffd0e6;color:#8a1b57;padding:8px 16px;font:13px/1.5 system-ui,sans-serif}
+      .wrap{max-width:1040px;margin:0 auto;padding:8px 18px 80px}
+      /* 새로 추가되는 요소 = 분홍 */
+      .seo{position:relative;outline:2px dashed #e0388a;outline-offset:7px;border-radius:10px;margin:34px 0}
+      .seo>.lbl{position:absolute;top:-13px;left:12px;background:#e0388a;color:#fff;font:700 12px/1.4 system-ui,sans-serif;padding:2px 9px;border-radius:20px;white-space:nowrap}
+      /* 기존 그대로 = 회색 */
+      .same{position:relative;outline:2px dashed #9aa0a6;outline-offset:7px;border-radius:10px;margin:34px 0}
+      .same>.lbl{position:absolute;top:-13px;left:12px;background:#5f6368;color:#fff;font:700 12px/1.4 system-ui,sans-serif;padding:2px 9px;border-radius:20px}
+      h1.k{font:800 27px/1.3 system-ui,sans-serif;margin:8px 0 6px;color:#161616}
+      .lead{font:15px/1.7 system-ui,sans-serif;color:#333;margin:0}
+      .lead b{color:#111}
+      .mapmock{display:grid;grid-template-columns:300px 1fr;gap:0;border:1px solid #e3e3e3;border-radius:12px;overflow:hidden;height:320px}
+      .mapmock .side{background:#fff;border-right:1px solid #eee;padding:14px;font:13px/1.6 system-ui,sans-serif;color:#444}
+      .mapmock .side b{display:block;color:#111;margin-bottom:8px}
+      .mapmock .row{padding:8px 0;border-bottom:1px solid #f0f0f0}
+      .mapmock .canvas{background:linear-gradient(135deg,#eef2f6,#e3e9f0);display:flex;align-items:center;justify-content:center;color:#8a94a0;font:600 14px/1.5 system-ui,sans-serif}
+      table.k{border-collapse:collapse;width:100%;font:14px/1.5 system-ui,sans-serif;margin:6px 0}
+      table.k th,table.k td{border:1px solid #e6e6e6;padding:9px 11px;text-align:left}
+      table.k th{background:#faf7f9;font-weight:700;white-space:nowrap}
+      h2.k{font:800 20px/1.4 system-ui,sans-serif;margin:6px 0 10px;color:#181818}
+      .txtlist{font:14px/1.8 system-ui,sans-serif;color:#333;margin:0;padding-left:18px}
+      .txtlist a{color:#c0246f;text-decoration:none;font-weight:600}
+      .faq details{border-bottom:1px solid #eee;padding:12px 2px}
+      .faq summary{font:700 15px/1.5 system-ui,sans-serif;cursor:pointer}
+      .faq p{font:14px/1.7 system-ui,sans-serif;color:#333;margin:8px 0 0}
+    </style>
+  </head>
+  <body>
+    <div class="demobar">
+      <span><b>B안 데모</b> · 지도 페이지 <b>화면 자체에</b> SEO/GEO 요소를 직접 추가한 모습</span>
+      <a href="seo-demo-a.html">→ A안 데모 보기</a>
+      <a href="map.html">→ 실제 지도(변경 없음)</a>
+    </div>
+    <div class="demohint"><b style="color:#c0246f">분홍 점선 = 새로 추가</b> / <b style="color:#5f6368">회색 점선 = 기존과 동일</b>. 지도는 그대로 두고 그 위·아래에 보이는 텍스트 블록이 들어갑니다.</div>
+
+    <!-- 실제 지도 헤더 (그대로) -->
+    <header class="map-global-header">
+      <a class="map-global-brand" href="#" aria-label="광고플레이 지도 홈"><span class="brand-mark">AD</span><strong>광고플레이</strong></a>
+      <nav class="map-global-nav" aria-label="지도 메뉴">
+        <button type="button" class="is-active">추천 큐레이션</button>
+        <a class="map-nav-media-link is-blog" href="#">광고 인사이트</a>
+        <button type="button" class="map-filter-entry map-header-filter">지역검색</button>
+        <button type="button" class="map-filter-entry map-header-filter">예산·기간 검색</button>
+      </nav>
+      <div class="map-global-actions"><a href="#">주요매체</a><a href="#">회사소개</a><a href="#">로그인</a></div>
+    </header>
+
+    <main class="wrap">
+      <div class="seo"><span class="lbl">➕ 새로 추가: 보이는 H1 + 키워드 소개문 (지도 위)</span>
+        <h1 class="k">전광판 광고 · 디지털 옥외광고(DOOH) 매체 지도</h1>
+        <p class="lead"><b>서울·전국 상권의 전광판 광고 매체를 지도에서 바로 찾고 비교하세요.</b> 강남·잠실·명동·청계광장 등 대형 전광판의 위치·규격·광고비를 확인하고 예산·기간별로 견적을 문의할 수 있습니다.</p>
+      </div>
+
+      <div class="same"><span class="lbl">그대로: 기존 지도 검색 영역 (UI 변경 없음)</span>
+        <div class="mapmock">
+          <div class="side">
+            <b>지도 표시 지역에 12개의 전광판 광고가 있습니다.</b>
+            <div class="row">잠실 유토피아 전광판 · 월 1,000만원~</div>
+            <div class="row">청계광장 전광판 · 월 1,200만원~</div>
+            <div class="row">명동 을지한국빌딩 · 상담</div>
+            <div class="row">경복궁 적선빌딩 · 상담</div>
+          </div>
+          <div class="canvas">🗺️ 지도 영역 (기존과 100% 동일)</div>
+        </div>
+      </div>
+
+      <div class="seo"><span class="lbl">➕ 새로 추가: 표 구조 요약 (지도 아래)</span>
+        <h2 class="k">전광판 광고 한눈에 보기</h2>
+        <table class="k">
+          <tr><th>주요 상권</th><td>강남 · 잠실 · 명동 · 청계광장 · 경복궁 · 신촌(이대)</td></tr>
+          <tr><th>광고비(참고)</th><td>월 1,000만 원부터 (1일 20초 100회, VAT 별도)</td></tr>
+          <tr><th>최소 기간</th><td>1일 단위부터 가능</td></tr>
+        </table>
+      </div>
+
+      <div class="seo"><span class="lbl">➕ 새로 추가: 크롤 가능한 텍스트 매체 목록 + 키워드 링크</span>
+        <h2 class="k">지도에 표시된 주요 전광판 광고 매체</h2>
+        <ul class="txtlist">
+          <li><a href="#">잠실 유토피아 전광판 광고</a> — 서울 송파구 올림픽로 336, 14.5×15.5m, 월 1,000만 원~</li>
+          <li><a href="#">청계광장 전광판 광고</a> — 서울 종로구 종로 10-7, 12.0×18.5m, 월 1,200만 원~</li>
+          <li><a href="#">명동 을지한국빌딩 전광판 광고</a> — 서울 중구 을지로 50, 20.3×11.0m</li>
+          <li><a href="#">경복궁 적선빌딩 전광판 광고</a> — 서울 종로구 사직로 130, 19.0×10.0m</li>
+        </ul>
+      </div>
+
+      <div class="seo"><span class="lbl">➕ 새로 추가: FAQ (질문형 H2 + FAQPage 스키마)</span>
+        <h2 class="k">전광판 광고 자주 묻는 질문</h2>
+        <div class="faq">
+          <details open><summary>전광판 광고 비용은 얼마인가요?</summary>
+            <p>서울 대형 전광판 기준 월 1,000만 원부터이며, 위치·노출 횟수·소재 길이에 따라 달라집니다. (VAT 별도, 상담 시 확정)</p></details>
+          <details><summary>지도에서 특정 지역 전광판만 볼 수 있나요?</summary>
+            <p>네, 지역·예산 필터로 강남·명동·잠실 등 상권별 전광판 광고 매체만 모아 비교할 수 있습니다.</p></details>
+        </div>
+      </div>
+    </main>
+  </body>
+</html>

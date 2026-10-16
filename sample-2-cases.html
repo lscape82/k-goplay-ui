@@ -1,0 +1,169 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[샘플] 광고집행사례 — 트렌디 리디자인</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/variable/pretendardvariable-dynamic-subset.css">
+<style>
+  :root{
+    --blue:#2540ea; --blue-deep:#16249e; --blue-wash:#eef1fe;
+    --ink:#16181d; --ink-soft:#3d4351; --muted:#7a8496; --line:#e8ebf1;
+    --bg:#fff; --bg-soft:#f6f7fb;
+    --font:"Pretendard Variable",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe UI",sans-serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.5;word-break:keep-all;overflow-wrap:break-word}
+  a{text-decoration:none;color:inherit}
+  .wrap{width:min(1200px,calc(100% - 48px));margin:0 auto}
+  .bc{font-size:13px;color:#8a8a8a;margin:0}
+  .bc a{color:#8a8a8a}
+
+  /* 헤더(공통) */
+  .hd{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.86);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line)}
+  .hd-in{display:flex;align-items:center;gap:24px;height:66px}
+  .brand{font-size:25px;font-weight:500;color:var(--blue)}
+  .nav{margin-left:auto;display:flex;gap:22px;align-items:center}
+  .nav a{font-size:13px;font-weight:600;color:var(--blue)}
+  .nav a:hover{color:var(--blue-deep)}
+
+  /* ── 히어로: 헤드라인 + 피처드 케이스(가로 대형) ── */
+  .hero{padding:40px 0 14px}
+  .hero .eyebrow{display:inline-flex;align-items:center;gap:7px;font-size:13px;font-weight:700;color:var(--blue);background:var(--blue-wash);padding:7px 14px;border-radius:999px;margin-bottom:18px}
+  .hero .eyebrow .dot{width:7px;height:7px;border-radius:999px;background:var(--blue)}
+  .hero h1{font-size:44px;line-height:1.16;font-weight:800;letter-spacing:-0.02em}
+  .hero h1 em{font-style:normal;color:var(--blue)}
+  .hero .sub{margin-top:16px;font-size:16px;line-height:1.7;color:var(--ink-soft);max-width:56ch}
+
+  .feature{margin-top:30px;display:grid;grid-template-columns:1.25fr .75fr;gap:0;border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff}
+  .feature .fig{position:relative;aspect-ratio:16/10;background:#eef2f7 center/cover}
+  .feature .fig .play{position:absolute;inset:0;margin:auto;width:62px;height:62px;border-radius:999px;background:rgba(255,255,255,.92);display:grid;place-items:center;color:var(--blue);font-size:20px}
+  .feature .fig .badge{position:absolute;left:16px;top:16px;font-size:12px;font-weight:700;color:#fff;background:var(--blue);padding:7px 13px;border-radius:8px}
+  .feature .body{padding:30px 32px;display:flex;flex-direction:column;justify-content:center}
+  .feature .k{font-size:12px;font-weight:700;color:var(--blue-deep);letter-spacing:.02em}
+  .feature .body h2{margin:12px 0 0;font-size:24px;line-height:1.34;font-weight:750;letter-spacing:-0.01em}
+  .feature .body p{margin:12px 0 0;font-size:14px;line-height:1.7;color:var(--ink-soft)}
+  .feature .mix{margin-top:16px;display:flex;gap:7px;flex-wrap:wrap}
+  .chip{font-size:12px;font-weight:600;color:var(--blue-deep);background:var(--blue-wash);padding:6px 12px;border-radius:8px}
+  .feature .go{margin-top:22px;align-self:flex-start;display:inline-flex;align-items:center;gap:6px;background:var(--blue);color:#fff;font-size:14px;font-weight:700;padding:12px 22px;border-radius:8px}
+
+  /* ── 함께한 브랜드 스트립 ── */
+  .brands{padding:44px 0 8px}
+  .brands .cap{text-align:center;font-size:13px;font-weight:700;color:var(--muted);letter-spacing:.04em;margin-bottom:22px}
+  .logos{display:flex;justify-content:center;flex-wrap:wrap;gap:0}
+  .logos .lg{padding:6px 34px;font-size:18px;font-weight:800;color:#aab0bd;border-left:1px solid var(--line)}
+  .logos .lg:first-child{border-left:0}
+  .logos .lg.serif{font-family:Georgia,serif;font-weight:600;letter-spacing:.12em;font-size:15px}
+
+  /* ── 사례 그리드 ── */
+  .sec{padding:56px 0 0}
+  .sec-h{display:flex;align-items:flex-end;justify-content:space-between;margin-bottom:22px}
+  .sec-h h2{font-size:24px;font-weight:800;letter-spacing:-0.01em}
+  .filters{display:flex;gap:8px;flex-wrap:wrap}
+  .pill{height:36px;padding:0 16px;border-radius:8px;border:1px solid var(--line);background:#fff;font-size:13px;font-weight:600;color:var(--ink-soft);cursor:pointer;display:inline-flex;align-items:center;gap:6px}
+  .pill .n{color:var(--muted);font-weight:700}
+  .pill.on{background:var(--blue);border-color:var(--blue);color:#fff}
+  .pill.on .n{color:rgba(255,255,255,.85)}
+  .cgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .ccard{border:1px solid var(--line);border-radius:8px;overflow:hidden;background:#fff;transition:.18s;cursor:pointer;display:flex;flex-direction:column}
+  .ccard:hover{transform:translateY(-3px);border-color:#dfe4f0}
+  .ccard .thumb{position:relative;aspect-ratio:16/10;background:#eef2f7 center/cover}
+  .ccard .thumb .play{position:absolute;inset:0;margin:auto;width:52px;height:52px;border-radius:999px;background:rgba(255,255,255,.92);display:grid;place-items:center;color:var(--blue);font-size:17px}
+  .ccard .thumb .cat{position:absolute;left:12px;top:12px;font-size:11.5px;font-weight:700;color:#fff;background:rgba(15,18,34,.55);-webkit-backdrop-filter:blur(5px);backdrop-filter:blur(5px);padding:6px 11px;border-radius:8px}
+  .ccard .cb{padding:16px 18px 18px;flex:1;display:flex;flex-direction:column}
+  .ccard h3{font-size:16px;font-weight:750;line-height:1.4;letter-spacing:-0.01em}
+  .ccard .rg{margin-top:7px;font-size:12.5px;color:var(--muted)}
+  .ccard .mix{margin-top:12px;display:flex;gap:6px;flex-wrap:wrap}
+  .ccard .mix .chip{font-size:11.5px;background:var(--bg-soft);color:var(--ink-soft)}
+
+  /* ── 프로세스 로우 ── */
+  .process{padding:60px 0 90px}
+  .process .cap{font-size:13px;font-weight:700;color:var(--blue);text-align:center;letter-spacing:.04em;margin-bottom:6px}
+  .process h2{font-size:26px;font-weight:800;text-align:center;letter-spacing:-0.01em;margin-bottom:30px}
+  .prow{display:grid;grid-template-columns:44px 200px 1fr;gap:24px;align-items:center;padding:22px 0;border-top:1px solid var(--line)}
+  .prow:last-child{border-bottom:1px solid var(--line)}
+  .prow .no{font-size:14px;font-weight:800;color:var(--blue)}
+  .prow h3{font-size:19px;font-weight:750;letter-spacing:-0.01em}
+  .prow p{font-size:14px;line-height:1.7;color:var(--ink-soft)}
+
+  .note{margin:0 auto 18px;width:min(1200px,calc(100% - 48px));font-size:12px;color:var(--muted)}
+  @media(max-width:960px){
+    .hero h1{font-size:34px}.feature{grid-template-columns:1fr}.cgrid{grid-template-columns:1fr}
+    .prow{grid-template-columns:1fr;gap:8px}.prow h3{margin-top:2px}.nav{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="note">※ [샘플 v2] 광고집행사례 — 현재 운영 페이지(cases.html)는 그대로이며, 이 파일은 시안입니다.</div>
+
+<header class="hd"><div class="wrap hd-in">
+  <a class="brand" href="map.html">k-goplay.com</a>
+  <nav class="nav">
+    <a href="map.html">옥외광고 지도</a><a href="#">옥외광고 목록</a><a href="#">광고집행사례</a>
+    <a href="#">광고 인사이트</a><a href="#">회사소개</a><a href="#">Log In</a>
+  </nav>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <p class="bc"><a href="map.html">지도</a> › 광고집행사례</p>
+  <div style="height:18px"></div>
+  <span class="eyebrow"><span class="dot"></span>실제 집행 캠페인</span>
+  <h1>브랜드의 목적을<br><em>결과</em>로 증명한 옥외광고</h1>
+  <p class="sub">매체 선정부터 소재 제작, 현장 집행까지. 광고플레이가 진행한 실제 캠페인을 영상과 데이터로 확인하세요.</p>
+
+  <article class="feature">
+    <a class="fig" href="#" style="background-image:url('assets/images/media/gangnam-jump-milano/1.jpg')">
+      <span class="badge">미용·에스테틱 의료기기</span><span class="play">▶</span>
+    </a>
+    <div class="body">
+      <div class="k">FEATURED CASE</div>
+      <h2>뷰티 의료기기 '쿨소닉' — 도심 랜드마크 전광판과 교통 미디어를 묶은 미디어믹스</h2>
+      <p>서울·대구·부산 핵심 상권의 랜드마크 전광판에 버스·지하철을 결합해, 브랜드 인지와 매장 방문 동선을 동시에 공략했습니다.</p>
+      <div class="mix"><span class="chip">랜드마크 전광판</span><span class="chip">버스</span><span class="chip">지하철</span></div>
+      <a class="go" href="#">집행 영상 보기 →</a>
+    </div>
+  </article>
+</div></section>
+
+<section class="brands"><div class="wrap">
+  <div class="cap">함께한 브랜드 &amp; 파트너</div>
+  <div class="logos">
+    <div class="lg">쿨소닉</div><div class="lg serif">ANTHOLOGY</div><div class="lg">LAND LOVE</div><div class="lg serif">OCEANNA</div><div class="lg">BEARINGS</div>
+  </div>
+</div></section>
+
+<section class="sec"><div class="wrap">
+  <div class="sec-h">
+    <h2>집행 사례</h2>
+    <div class="filters">
+      <button class="pill on">전체 <span class="n">2</span></button>
+      <button class="pill">미용·에스테틱 의료기기 <span class="n">1</span></button>
+      <button class="pill">환경·공익 캠페인 <span class="n">1</span></button>
+    </div>
+  </div>
+  <div class="cgrid">
+    <a class="ccard">
+      <div class="thumb" style="background-image:url('assets/images/media/gangnam-jump-milano/1.jpg')"><span class="cat">미용·에스테틱 의료기기</span><span class="play">▶</span></div>
+      <div class="cb"><h3>뷰티·미용 의료기기 브랜드 '쿨소닉' 미디어믹스</h3><div class="rg">서울·대구·부산 · 랜드마크 DOOH + 교통</div><div class="mix"><span class="chip">전광판</span><span class="chip">버스</span><span class="chip">지하철</span></div></div>
+    </a>
+    <a class="ccard">
+      <div class="thumb" style="background-image:url('assets/images/media/gyeongbokgung-jeokseon/1.jpg')"><span class="cat">환경·공익 캠페인</span><span class="play">▶</span></div>
+      <div class="cb"><h3>도심 대형 전광판으로 전한 환경·공익 캠페인</h3><div class="rg">서울 종로·중구 · 랜드마크 전광판 패키지</div><div class="mix"><span class="chip">청계광장</span><span class="chip">광화문</span></div></div>
+    </a>
+    <a class="ccard">
+      <div class="thumb" style="background-image:url('assets/images/media/cheonggye-plaza/1.jpg')"><span class="cat">브랜드 런칭</span><span class="play">▶</span></div>
+      <div class="cb"><h3>도심 랜드마크 전광판 브랜드 런칭 캠페인</h3><div class="rg">서울 종로구 · 청계광장 초대형 LED</div><div class="mix"><span class="chip">전광판</span><span class="chip">타임싱크</span></div></div>
+    </a>
+  </div>
+</div></section>
+
+<section class="process"><div class="wrap">
+  <div class="cap">HOW WE WORK</div>
+  <h2>집행은 이렇게 진행됩니다</h2>
+  <div class="prow"><div class="no">01</div><h3>매체 전략 설계</h3><p>브랜드 메시지 × 소비자 동선 × 예산 효율을 기준으로, 하나의 매체가 아닌 최적화된 미디어 믹스를 제안합니다.</p></div>
+  <div class="prow"><div class="no">02</div><h3>소재 제작·송출</h3><p>랜드마크 전광판 규격에 맞춘 소재 제작과 타임싱크 송출까지 원스톱으로 운영합니다.</p></div>
+  <div class="prow"><div class="no">03</div><h3>결과 리포트</h3><p>유동인구·노출 추정·현장 모니터링을 근거로 성과를 정리해 다음 집행 인사이트로 연결합니다.</p></div>
+</div></section>
+
+</body>
+</html>

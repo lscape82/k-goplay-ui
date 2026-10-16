@@ -1,0 +1,130 @@
+﻿<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>[샘플] 회사소개 — 트렌디 리디자인</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@latest/dist/web/variable/pretendardvariable-dynamic-subset.css">
+<style>
+  :root{
+    --blue:#2540ea; --blue-deep:#16249e; --blue-wash:#eef1fe;
+    --ink:#16181d; --ink-soft:#3d4351; --muted:#7a8496; --line:#e8ebf1;
+    --bg:#fff; --bg-soft:#f6f7fb;
+    --font:"Pretendard Variable",-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Segoe UI",sans-serif;
+    --serif:"Iowan Old Style",Georgia,"Times New Roman",serif;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:var(--font);color:var(--ink);background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.5;word-break:keep-all;overflow-wrap:break-word}
+  a{text-decoration:none;color:inherit}
+  .wrap{width:min(1120px,calc(100% - 48px));margin:0 auto}
+  .bc{font-size:13px;color:#8a8a8a;margin:0}
+  .bc a{color:#8a8a8a}
+
+  .hd{position:sticky;top:0;z-index:40;background:rgba(255,255,255,.86);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line)}
+  .hd-in{display:flex;align-items:center;gap:24px;height:66px}
+  .brand{font-size:25px;font-weight:500;color:var(--blue)}
+  .nav{margin-left:auto;display:flex;gap:22px;align-items:center}
+  .nav a{font-size:13px;font-weight:600;color:var(--blue)}
+  .nav a:hover{color:var(--blue-deep)}
+
+  /* ── 히어로: 에디토리얼 2단 ── */
+  .hero{padding:40px 0 20px}
+  .hero .bc{margin-bottom:26px}
+  .hero .in{display:grid;grid-template-columns:1.05fr .95fr;gap:48px;align-items:center}
+  .hero .eye{font-size:13px;font-weight:700;color:var(--blue);letter-spacing:.02em;margin-bottom:16px}
+  .hero h1{font-size:50px;line-height:1.14;font-weight:800;letter-spacing:-0.02em}
+  .hero h1 .s{font-family:var(--serif);font-style:italic;font-weight:500}
+  .hero p{margin-top:20px;font-size:16px;line-height:1.8;color:var(--ink-soft);max-width:46ch}
+  .hero .cta{margin-top:26px;display:inline-flex;background:var(--blue);color:#fff;font-size:14px;font-weight:700;padding:13px 24px;border-radius:8px}
+  .hero .art{aspect-ratio:4/5;border-radius:8px;background:#eef2f7 center/cover}
+
+  /* ── 실적/신뢰 밴드 ── */
+  .band{margin:22px 0 0;display:grid;grid-template-columns:repeat(4,1fr);border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .band .b{padding:22px 4px;border-left:1px solid var(--line);text-align:center}
+  .band .b:first-child{border-left:0}
+  .band .b strong{display:block;font-size:26px;font-weight:800;letter-spacing:-0.02em;color:var(--blue)}
+  .band .b span{font-size:12.5px;color:var(--muted)}
+
+  /* ── 회사 개요 ── */
+  .info{padding:64px 0 12px}
+  .info h2{font-size:24px;font-weight:800;letter-spacing:-0.01em;margin-bottom:20px}
+  .rows{border-top:2px solid var(--ink)}
+  .r{display:grid;grid-template-columns:170px 1fr;gap:20px;padding:16px 4px;border-bottom:1px solid var(--line)}
+  .r dt{font-size:13.5px;color:var(--muted);font-weight:600}
+  .r dd{font-size:14.5px;color:var(--ink);font-weight:600}
+  .r dd b{color:var(--blue)}
+
+  /* ── 우리가 하는 일 ── */
+  .work{padding:64px 0 90px}
+  .work .cap{font-size:13px;font-weight:700;color:var(--blue);letter-spacing:.04em;margin-bottom:6px}
+  .work h2{font-size:28px;font-weight:800;letter-spacing:-0.01em;margin-bottom:28px}
+  .wgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:16px}
+  .wcard{display:grid;grid-template-columns:48px 1fr;gap:18px;align-items:start;padding:24px;border:1px solid var(--line);border-radius:8px}
+  .wcard .ic{width:44px;height:44px;border-radius:8px;background:var(--blue-wash);display:grid;place-items:center;font-size:22px}
+  .wcard h3{font-size:17px;font-weight:750;letter-spacing:-0.01em;color:var(--blue)}
+  .wcard p{margin-top:7px;font-size:13.5px;line-height:1.7;color:var(--ink-soft)}
+
+  .note{margin:0 auto 18px;width:min(1120px,calc(100% - 48px));font-size:12px;color:var(--muted)}
+  @media(max-width:860px){
+    .hero .in{grid-template-columns:1fr;gap:24px}.hero .art{order:-1;aspect-ratio:16/10}
+    .hero h1{font-size:36px}.band{grid-template-columns:repeat(2,1fr)}.band .b:nth-child(3){border-left:0}
+    .wgrid{grid-template-columns:1fr}.r{grid-template-columns:1fr;gap:4px}.nav{display:none}
+  }
+</style>
+</head>
+<body>
+<div class="note">※ [샘플 v2] 회사소개 — 현재 운영 페이지(about.html)는 그대로이며, 이 파일은 시안입니다.</div>
+
+<header class="hd"><div class="wrap hd-in">
+  <a class="brand" href="map.html">k-goplay.com</a>
+  <nav class="nav">
+    <a href="map.html">옥외광고 지도</a><a href="#">옥외광고 목록</a><a href="#">광고집행사례</a>
+    <a href="#">광고 인사이트</a><a href="#">회사소개</a><a href="#">Log In</a>
+  </nav>
+</div></header>
+
+<section class="hero"><div class="wrap">
+  <p class="bc"><a href="map.html">지도</a> › 회사소개</p>
+  <div class="in">
+    <div>
+      <div class="eye">Experiential OOH &amp; DOOH Media Partner</div>
+      <h1>옥외광고를<br><span class="s">데이터로</span> 설계합니다</h1>
+      <p>광고플레이(ADplay)는 전국 대형 전광판·디지털 옥외광고(DOOH)·교통·생활밀착형 매체를 데이터 기반으로 기획·집행하는 옥외광고 대행사입니다. 매체 선정부터 결과보고까지 원스톱으로 진행합니다.</p>
+      <a class="cta" href="#">상담 신청 →</a>
+    </div>
+    <div class="art" style="background-image:url('assets/images/media/gyeongbokgung-jeokseon/1.jpg')"></div>
+  </div>
+  <div class="band">
+    <div class="b"><strong>447</strong><span>운영 매체</span></div>
+    <div class="b"><strong>전국</strong><span>서비스 지역</span></div>
+    <div class="b"><strong>2건</strong><span>보유 특허</span></div>
+    <div class="b"><strong>원스톱</strong><span>기획~결과보고</span></div>
+  </div>
+</div></section>
+
+<section class="info"><div class="wrap">
+  <h2>회사 개요</h2>
+  <dl class="rows">
+    <div class="r"><dt>회사명</dt><dd>광고플레이 주식회사 (Adplay Co., Ltd)</dd></div>
+    <div class="r"><dt>대표자</dt><dd>임정언</dd></div>
+    <div class="r"><dt>주소</dt><dd>세종특별자치시 한누리대로 350, 뱅크빌딩 6층 D45호(어진동)</dd></div>
+    <div class="r"><dt>사업자등록번호</dt><dd>148-81-03399</dd></div>
+    <div class="r"><dt>정부 지원</dt><dd>중소벤처기업부 · 한국데이터산업진흥원 지원 개발</dd></div>
+    <div class="r"><dt>연락처</dt><dd><b>Tel. 1533-1975</b> · info@k-goplay.com</dd></div>
+    <div class="r"><dt>웹사이트</dt><dd><b>www.k-goplay.com</b></dd></div>
+  </dl>
+</div></section>
+
+<section class="work"><div class="wrap">
+  <div class="cap">WHAT WE DO</div>
+  <h2>우리가 하는 일</h2>
+  <div class="wgrid">
+    <div class="wcard"><div class="ic">🧩</div><div><h3>최적 옥외 미디어 믹스</h3><p>브랜드 메시지 × 소비자 동선 × 예산 효율, 세 기준으로 하나의 매체가 아닌 최적화된 미디어 믹스 전략을 제안합니다.</p></div></div>
+    <div class="wcard"><div class="ic">📆</div><div><h3>유연한 기간·예산 운영</h3><p>1·3·7·15일 등 단기·스팟형 집행이 가능하며, 패키지·기간 할인과 맞춤 견적을 제공합니다.</p></div></div>
+    <div class="wcard"><div class="ic">🛠️</div><div><h3>기획부터 결과보고까지 원스톱</h3><p>매체 선정, 구좌 예약, 소재 디자인, 영상 송출, 현장 모니터링, 결과보고를 한 곳에서 진행합니다.</p></div></div>
+    <div class="wcard"><div class="ic">📈</div><div><h3>데이터 기반 매체 설계</h3><p>유동인구·교통량·상권 데이터를 근거로 예상 노출량과 ROI를 제시하는 Data-Driven DOOH 플랫폼을 운영합니다.</p></div></div>
+  </div>
+</div></section>
+
+</body>
+</html>
