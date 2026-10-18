@@ -17,8 +17,8 @@
     <meta property="og:url" content="https://lscape82.github.io/k-goplay-ui/map.html">
     <meta property="og:image" content="https://lscape82.github.io/k-goplay-ui/assets/images/k-goplay-logo-new.png">
     <meta name="twitter:card" content="summary">
-    <link rel="stylesheet" href="assets/css/styles.css?v=fullpage-20260718e-d810">
-    <link rel="stylesheet" href="assets/css/map-services.css?v=elevcolor-1791797107">
+    <link rel="stylesheet" href="assets/css/styles.css?v=aiplanner-20261018">
+    <link rel="stylesheet" href="assets/css/map-services.css?v=aiplanner-20261018">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -195,11 +195,11 @@
               <div class="map-curation-copy">
                 <div class="map-curation-title-row">
                   <div>
-                    <h2>NEW·추천 큐레이션</h2>
+                    <h2>NEW · 새소식 &amp; 프로모션</h2>
                   </div>
-                  <button type="button" class="map-curation-close" id="mapCurationClose" aria-label="추천 패널 닫기">×</button>
+                  <button type="button" class="map-curation-close" id="mapCurationClose" aria-label="소식 패널 닫기">×</button>
                 </div>
-                <div class="map-curation-list" id="mapCurationList" aria-label="추천 매체 및 집행 사례"></div>
+                <div class="map-curation-list" id="mapCurationList" aria-label="시즌·프로모션·신규매체·OOH 새소식"></div>
                 <div class="map-curation-quick-actions">
                   <a class="map-curation-live" id="mapCurationLive" href="estimate.html?intent=live-talk">라이브 톡 상담하기</a>
                 </div>
@@ -256,16 +256,20 @@
             </button>
             <button type="button" class="map-fav-bar" id="mapFavBar" data-fav-trigger aria-haspopup="dialog" aria-controls="mapFavPanel" hidden>
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
-              <span>관심매체(<strong id="mapFavCount" data-fav-count>0</strong>) 비교·상담</span>
+              <span>② 관심 매체 담기(<strong id="mapFavCount" data-fav-count>0</strong>)</span>
             </button>
-            <div class="map-fav-panel" id="mapFavPanel" role="dialog" aria-modal="true" aria-label="관심매체 비교·상담" hidden>
+            <div class="map-fav-panel" id="mapFavPanel" role="dialog" aria-modal="false" aria-label="관심매체 비교·상담" hidden>
               <div class="map-fav-sheet">
-                <div class="map-fav-head">
-                  <h2>관심매체 비교·상담 (<strong id="mapFavPanelCount">0</strong>)</h2>
-                  <button type="button" class="map-fav-close" id="mapFavClose" aria-label="관심매체 비교·상담 닫기">×</button>
+                <div class="map-fav-head" id="mapFavHead">
+                  <h2>② 관심 매체 담기 (<strong id="mapFavPanelCount">0</strong>)</h2>
+                  <div class="map-fav-head-ctrls">
+                    <button type="button" class="map-fav-min" id="mapFavMin" aria-label="패널 접기/펼치기" title="접기/펼치기"><span class="mi-ico" aria-hidden="true">▾</span><span class="mi-lbl">접기</span></button>
+                    <button type="button" class="map-fav-close" id="mapFavClose" aria-label="관심매체 비교·상담 닫기">×</button>
+                  </div>
                 </div>
                 <div class="map-fav-list" id="mapFavList"></div>
                 <p class="map-fav-reco" id="mapFavReco" hidden></p>
+                <div class="map-fav-mix" id="mapFavMix" hidden></div>
                 <div class="map-fav-foot">
                   <div class="map-fav-total-row"><span>예상 월 합계</span><strong id="mapFavTotal">-</strong></div>
                   <button type="button" class="map-fav-download" id="mapFavDownload"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>다운로드(Excel)</button>
@@ -273,6 +277,14 @@
                   <button type="button" class="map-fav-download" id="mapFavShare"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M16 6l-4-4-4 4M12 2v13"/></svg>지도링크 복사</button>
                   <a class="map-fav-cta" id="mapFavCta" href="estimate.html"><span>선택 매체로 상담신청</span></a>
                 </div>
+                <span class="map-fav-resize nw" data-resize="nw" aria-hidden="true"></span>
+                <span class="map-fav-resize n" data-resize="n" aria-hidden="true"></span>
+                <span class="map-fav-resize ne" data-resize="ne" aria-hidden="true"></span>
+                <span class="map-fav-resize e" data-resize="e" aria-hidden="true"></span>
+                <span class="map-fav-resize se" data-resize="se" aria-hidden="true"></span>
+                <span class="map-fav-resize s" data-resize="s" aria-hidden="true"></span>
+                <span class="map-fav-resize sw" data-resize="sw" aria-hidden="true"></span>
+                <span class="map-fav-resize w" data-resize="w" aria-hidden="true"></span>
               </div>
             </div>
           </section>
@@ -282,8 +294,8 @@
     <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1ouo31myef&submodules=geocoder,panorama"></script>
     <script src="assets/js/marker-clustering.js?v=real-data-20260705c"></script>
     <script src="assets/js/common.js?v=shared-audience-20260718c"></script>
-    <script src="assets/js/map.js?v=cart-share-261015b"></script>
-    <script src="assets/js/map-services.js?v=icons-20260717d"></script>
+    <script src="assets/js/map.js?v=aiplanner-20261018"></script>
+    <script src="assets/js/map-services.js?v=aiplanner-20261018"></script>
     <script src="assets/js/map-rail-toggle.js?v=rail-20260717b"></script>
     <script src="assets/js/map-category-scroll.js?v=catscroll-20260713e"></script>  </body>
 </html>

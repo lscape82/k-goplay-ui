@@ -6517,13 +6517,15 @@ body:has(.map-workspace-page) {
 
 .map-fav-panel {
   position: fixed;
-  inset: 0;
+  inset: auto;
+  top: 92px;
+  right: 20px;
   z-index: 60;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  background: rgba(15, 23, 42, 0.5);
+  display: block;
+  width: auto;
+  max-width: calc(100vw - 40px);
+  padding: 0;
+  background: transparent; /* 딤 제거 → 지도를 가리지 않는 이동형 패널(non-blocking) */
   transform: translateZ(0);
 }
 
@@ -6532,15 +6534,78 @@ body:has(.map-workspace-page) {
 }
 
 .map-fav-sheet {
+  position: relative;
   display: flex;
   flex-direction: column;
-  width: min(680px, 100%);
-  max-height: min(80vh, 720px);
+  width: min(640px, calc(100vw - 40px));
+  min-width: 360px;
+  max-width: calc(100vw - 40px);
+  max-height: calc(100dvh - 112px); /* top(92) + 하단 여백(20) 반영 → 첫 오픈 시 하단 안 잘림 */
+  min-height: 200px;
   overflow: hidden;
   border-radius: 16px;
   background: #fff;
-  box-shadow: 0 30px 80px rgba(15, 23, 42, 0.3);
+  border: 1px solid #d2dae4;
+  box-shadow: 0 18px 50px rgba(15, 23, 42, 0.26);
 }
+
+/* 크기 조절 손잡이 — 사방(4모서리 + 4변) */
+.map-fav-resize { position: absolute; z-index: 6; touch-action: none; }
+.map-fav-resize.nw, .map-fav-resize.ne, .map-fav-resize.sw, .map-fav-resize.se { width: 18px; height: 18px; z-index: 7; }
+.map-fav-resize.nw { top: 0; left: 0; cursor: nwse-resize; }
+.map-fav-resize.ne { top: 0; right: 0; cursor: nesw-resize; }
+.map-fav-resize.sw { bottom: 0; left: 0; cursor: nesw-resize; }
+.map-fav-resize.se { bottom: 0; right: 0; cursor: nwse-resize; }
+.map-fav-resize.n { top: 0; left: 18px; right: 18px; height: 6px; cursor: ns-resize; }
+.map-fav-resize.s { bottom: 0; left: 18px; right: 18px; height: 6px; cursor: ns-resize; }
+.map-fav-resize.w { left: 0; top: 18px; bottom: 18px; width: 6px; cursor: ew-resize; }
+.map-fav-resize.e { right: 0; top: 18px; bottom: 18px; width: 6px; cursor: ew-resize; }
+.map-fav-resize.nw::after, .map-fav-resize.se::after { content: ""; position: absolute; width: 9px; height: 9px; }
+.map-fav-resize.nw::after { left: 4px; top: 4px; border-left: 2px solid #9fb3d6; border-top: 2px solid #9fb3d6; border-top-left-radius: 3px; }
+.map-fav-resize.se::after { right: 4px; bottom: 4px; border-right: 2px solid #9fb3d6; border-bottom: 2px solid #9fb3d6; border-bottom-right-radius: 3px; }
+.map-fav-resize.nw:hover::after, .map-fav-resize.se:hover::after { border-color: #2540ea; }
+
+/* 지역 그룹 헤더 (광역시도 › 구) */
+.map-fav-compare tr.map-fav-group td {
+  position: sticky;
+  left: 0;
+  padding: 13px 10px 4px;
+  background: transparent;
+  color: #334155;
+  font-size: 12px;
+  font-weight: 800;
+  border-top: 1px solid #eef2f7;
+}
+.map-fav-compare tr.map-fav-group:first-child td { border-top: 0; padding-top: 6px; }
+.map-fav-compare tr.map-fav-group .map-fav-group-pin { color: #2540ea; font-size: 8px; margin-right: 7px; vertical-align: middle; }
+.map-fav-compare tr.map-fav-group em { margin-left: 7px; color: #94a3b8; font-weight: 600; font-style: normal; font-size: 11px; }
+
+/* 이동형 패널 — 헤더를 끌어서 이동, 접기 */
+.map-fav-head { cursor: grab; user-select: none; touch-action: none; }
+.map-fav-head.is-grabbing { cursor: grabbing; }
+.map-fav-head-ctrls { display: flex; align-items: center; gap: 8px; }
+.map-fav-min {
+  display: inline-flex; align-items: center; gap: 5px;
+  height: 30px; padding: 0 11px; border: 1px solid #d2dae4; border-radius: 999px;
+  background: #f1f5f9; color: #475569; font-size: 12.5px; font-weight: 700; cursor: pointer;
+}
+.map-fav-min:hover { border-color: #b7c8e7; color: #2540ea; }
+.map-fav-min .mi-ico { font-size: 11px; }
+.map-fav-sheet.is-min .map-fav-list,
+.map-fav-sheet.is-min .map-fav-reco,
+.map-fav-sheet.is-min .map-fav-mix,
+.map-fav-sheet.is-min .map-fav-foot { display: none; }
+
+/* 미디어믹스 — 유형별 예산 비중 */
+.map-fav-mix { padding: 10px 16px 0; }
+.map-fav-mix[hidden] { display: none; }
+.map-fav-mix-head { font-size: 11px; font-weight: 700; color: #64748b; margin-bottom: 6px; letter-spacing: .02em; }
+.map-fav-mix-bar { display: flex; height: 14px; border-radius: 5px; overflow: hidden; background: #eef2f8; }
+.map-fav-mix-bar span { height: 100%; }
+.map-fav-mix-leg { display: flex; flex-wrap: wrap; gap: 6px 12px; margin-top: 7px; }
+.map-fav-mix-item { display: inline-flex; align-items: center; gap: 5px; font-size: 11.5px; color: #44515f; }
+.map-fav-mix-item i { width: 9px; height: 9px; border-radius: 2px; flex: none; }
+.map-fav-mix-item b { font-weight: 700; }
 
 .map-fav-head {
   display: flex;
@@ -6793,8 +6858,8 @@ body:has(.map-workspace-page) {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 14px;
-  padding: 16px 20px;
+  gap: 10px;
+  padding: 12px 16px;
   border-top: 1px solid #eef2f7;
   background: #fbfdff;
 }
@@ -6806,13 +6871,13 @@ body:has(.map-workspace-page) {
 
 .map-fav-total-row span {
   color: #64748b;
-  font-size: 12px;
+  font-size: 11px;
   font-weight: 700;
 }
 
 .map-fav-total-row strong {
   color: #0f172a;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 950;
 }
 
@@ -6820,14 +6885,14 @@ body:has(.map-workspace-page) {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  min-height: 48px;
-  padding: 0 24px;
-  border-radius: 12px;
+  min-height: 38px;
+  padding: 0 16px;
+  border-radius: 10px;
   background: #2540ea;
   color: #fff;
-  font-size: 15px;
-  font-weight: 900;
-  box-shadow: 0 10px 24px rgba(11, 58, 145, 0.24);
+  font-size: 12.5px;
+  font-weight: 800;
+  box-shadow: 0 6px 16px rgba(11, 58, 145, 0.2);
 }
 
 .map-fav-cta[aria-disabled="true"] {
@@ -8615,15 +8680,27 @@ body:has(.map-workspace-page) {
   }
 
   .map-fav-panel {
+    inset: auto 0 0 0;
+    top: auto;
+    max-width: none;
+    display: flex;
     align-items: flex-end;
+    background: rgba(15, 23, 42, 0.45);
     padding: 0;
   }
 
   .map-fav-sheet {
     width: 100%;
+    min-width: 0;
+    max-width: none;
     max-height: 86dvh;
+    border: 0;
     border-radius: 18px 18px 0 0;
+    resize: none;
   }
+
+  .map-fav-head { cursor: default; }
+  .map-fav-resize { display: none; }
 
   .map-fav-card {
     grid-template-columns: 76px minmax(0, 1fr) auto;

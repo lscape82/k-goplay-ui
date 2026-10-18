@@ -60,6 +60,7 @@
   const favShare = document.querySelector("#mapFavShare");
   const favPdf = document.querySelector("#mapFavPdf");
   const favReco = document.querySelector("#mapFavReco");
+  const favMix = document.querySelector("#mapFavMix");
   const favClose = document.querySelector("#mapFavClose");
   const mobileLayoutQuery = window.matchMedia("(max-width: 700px)");
 
@@ -149,8 +150,8 @@
     if (map[item.category]) return map[item.category];
     return (AdPlay.categoryLabels[item.category] || item.mediaType || "-").replace(/\s*광고$/, "").replace(/^대형\s*/, "");
   }
-  function favoriteItems() {
-    return favorites.map((favId) => {
+  function itemsForSlugs(list) {
+    return (list || []).map((favId) => {
       if (typeof favId === "string" && favId.indexOf("bus:") === 0) {
         const stop = (busStops || []).find((s) => String(s.id) === favId.slice(4));
         if (!stop) return null;
@@ -198,6 +199,8 @@
         price: mapCardPriceLabel(item),
         priceMonthly: perMonthPrice(mapCardPriceLabel(item)),
         monthly: AdPlay.minMonthlyPrice(item) || 0,
+        shortTerm: shortTermMin(item), // {1,3,7,15}→원 or null — 플래너 단기 집행 금액
+        category: item.category || "", // 플래너 가중(업종 적합도)·매체유형 판정용
         size: sizeLabel(item),
         resolution: (item.mapLocation && item.mapLocation.resolution) || item.resolutionPx || "확인 필요",
         area: item.areaName || "-",
@@ -222,6 +225,7 @@
       };
     }).filter(Boolean);
   }
+  function favoriteItems() { return itemsForSlugs(favorites); }
   // 관심 도크/비교 패널용 — 엘리베이터 사이트(id: townboard-0 형식)를 매체 항목 형태로 변환
   function elevatorFavItem(favId) {
     const netId = favId.replace(/-\d+$/, "");
@@ -261,7 +265,7 @@
     };
   }
   function favStarButton(favId, name, variant) {
-    const on = isFavorite(favId);
+    const on = activeHas(favId);
     const label = "관심";
     return `<button type="button" class="${variant}${on ? " is-active" : ""}" data-fav-toggle="${AdPlay.esc(favId)}" aria-pressed="${on}" aria-label="${AdPlay.esc(name)} 관심매체 ${on ? "제거" : "담기"}"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg><span>${label}</span></button>`;
   }
@@ -275,10 +279,87 @@
     document.querySelectorAll("[data-fav-count]").forEach((el) => { el.textContent = String(count); });
     document.querySelectorAll(".gps-svc .bn[data-fav-count]").forEach((el) => { el.hidden = count === 0; });
     document.querySelectorAll("[data-fav-toggle]").forEach((button) => {
-      const on = isFavorite(button.dataset.favToggle);
+      const on = activeHas(button.dataset.favToggle);
       button.classList.toggle("is-active", on);
       button.setAttribute("aria-pressed", String(on));
     });
+  }
+  // 관심매체 비교표를 광역시도 › 구 단위로 묶어 순서대로 보여주기 위한 지역 파싱/정렬.
+  const FAV_SIDO_ABBR = { "서울특별시":"서울","서울":"서울","부산광역시":"부산","부산":"부산","대구광역시":"대구","대구":"대구","인천광역시":"인천","인천":"인천","광주광역시":"광주","광주":"광주","대전광역시":"대전","대전":"대전","울산광역시":"울산","울산":"울산","세종특별자치시":"세종","세종":"세종","경기도":"경기","경기":"경기","강원특별자치도":"강원","강원도":"강원","강원":"강원","충청북도":"충북","충북":"충북","충청남도":"충남","충남":"충남","전라북도":"전북","전북특별자치도":"전북","전북":"전북","전라남도":"전남","전남":"전남","경상북도":"경북","경북":"경북","경상남도":"경남","경남":"경남","제주특별자치도":"제주","제주":"제주" };
+  const FAV_SIDO_ORDER = ["서울","경기","인천","부산","대구","광주","대전","울산","세종","강원","충북","충남","전북","전남","경북","경남","제주"];
+  function favRegionLabel(fav) {
+    const addr = (fav.address || "").replace(/\s+/g, " ").trim();
+    if (!addr) return "기타";
+    const toks = addr.split(" ");
+    const sido = FAV_SIDO_ABBR[toks[0]] || toks[0] || "";
+    let district = "";
+    for (let i = 1; i < toks.length; i += 1) {
+      if (/(구|군)$/.test(toks[i])) { district = toks[i]; break; }
+      if (/시$/.test(toks[i]) && !district) district = toks[i];
+    }
+    return [sido, district].filter(Boolean).join(" ") || "기타";
+  }
+  function favRegionSortKey(label) {
+    const sido = (label || "").split(" ")[0];
+    const idx = FAV_SIDO_ORDER.indexOf(sido);
+    return String(idx < 0 ? 99 : idx).padStart(2, "0") + "_" + label;
+  }
+  // 관심매체 비교 표(썸네일·규격·유형·보장횟수·비용… 지역그룹)를 생성 — 관심매체(②)와 AI 플래너(①)가 공용으로 재사용.
+  // 체크/삭제 data 속성과 전체선택 클래스를 opts 로 분기해 두 메뉴가 서로 간섭하지 않게 한다.
+  function favCompareTableHtml(items, opts) {
+    opts = opts || {};
+    const allClass = opts.allClass || "map-fav-incl-all";
+    const inclAttr = opts.inclAttr || "data-fav-incl";
+    const rmAttr = opts.rmAttr || "data-fav-remove";
+    const excluded = opts.excluded || favExcluded;
+    const compareRows = [
+      { label: "유형", value: (fav) => fav.type },
+      { label: "1일 보장횟수", className: "is-playspec", html: true, value: (fav) => AdPlay.esc(fav.playSpec).replace(/\s*·\s*/g, "<br>") },
+      { label: "비용(원/월, 부가세 별도)", className: "is-price", value: (fav) => numCell(fav.monthly || null) },
+      { label: "운영시간", value: (fav) => fav.operationHours },
+      { label: "일평균 유동(명)", className: "is-numl", value: (fav) => numCell(fav.foot500Num) },
+      { label: "지하철 승하차(월평균, 명)", className: "is-numl", value: (fav) => numCell(fav.subwayNum) },
+      { label: "버스 승하차(월평균, 명)", className: "is-numl", value: (fav) => numCell(fav.busNum) },
+      { label: "주 방문층", className: "is-audience", value: (fav) => fav.audience },
+      { label: "비고", value: (fav) => fav.note },
+    ];
+    const thumb = (fav) => fav.image
+      ? `<img src="${AdPlay.esc(fav.image)}" alt="" loading="lazy">`
+      : `<span class="map-fav-busimg"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10M4 16h16M4 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2M20 16v2a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-2M6 8h12M7 12h.01M17 12h.01"/></svg></span>`;
+    const rowHtml = (fav) => `
+              <tr class="${excluded.has(fav.favId) ? "is-excluded" : ""}">
+                <td class="map-fav-no-cell"><input type="checkbox" class="map-fav-incl" ${inclAttr}="${AdPlay.esc(fav.favId)}"${excluded.has(fav.favId) ? "" : " checked"} aria-label="${AdPlay.esc(fav.name)} 상담 대상 포함"></td>
+                <th class="map-fav-rowhead"><span class="map-fav-media-cell">${thumb(fav)}<span class="map-fav-media-info"><b>${AdPlay.esc(fav.name)}</b><span class="map-fav-media-addr">${AdPlay.esc(fav.address)}</span><span class="map-fav-media-tags">${[fav.size, /\d\s*[x×]\s*\d/.test(fav.resolution) ? fav.resolution + "px" : fav.resolution].filter((v) => v && v !== "-" && v !== "확인 필요").map((v) => `<span>${AdPlay.esc(v)}</span>`).join("")}</span></span></span></th>
+                ${compareRows.map((row) => `<td class="${row.className || ""}">${row.html ? row.value(fav) : AdPlay.esc(row.value(fav))}</td>`).join("")}
+                <td class="map-fav-remove-cell"><button type="button" class="map-fav-remove" ${rmAttr}="${AdPlay.esc(fav.favId)}" aria-label="${AdPlay.esc(fav.name)} 제거">×</button></td>
+              </tr>`;
+    const tagged = items.map((fav) => ({ fav, region: favRegionLabel(fav) }));
+    tagged.sort((a, b) => favRegionSortKey(a.region).localeCompare(favRegionSortKey(b.region), "ko"));
+    const counts = {};
+    tagged.forEach((t) => { counts[t.region] = (counts[t.region] || 0) + 1; });
+    let out = "";
+    let last = null;
+    tagged.forEach((t) => {
+      if (t.region !== last) {
+        out += `<tr class="map-fav-group"><td colspan="12"><span class="map-fav-group-pin" aria-hidden="true">●</span>${AdPlay.esc(t.region)}<em>${counts[t.region]}개</em></td></tr>`;
+        last = t.region;
+      }
+      out += rowHtml(t.fav);
+    });
+    return `
+      <div class="map-fav-compare map-fav-compare--rows">
+        <table>
+          <thead>
+            <tr>
+              <th class="map-fav-no-h"><input type="checkbox" class="${allClass}" aria-label="전체 선택/해제" title="전체 선택/해제"><span class="map-fav-no-h-label">선택</span></th>
+              <th class="map-fav-compare-corner">매체</th>
+              ${compareRows.map((row) => `<th class="${row.className || ""}">${AdPlay.esc(row.label)}</th>`).join("")}
+              <th class="map-fav-remove-col" aria-label="삭제"></th>
+            </tr>
+          </thead>
+          <tbody>${out}</tbody>
+        </table>
+      </div>`;
   }
   function renderFavPanel() {
     const items = favoriteItems();
@@ -291,45 +372,7 @@
       if (favReco) favReco.hidden = true;
       return;
     }
-    const compareRows = [
-      { label: "유형", value: (fav) => fav.type },
-      { label: "1일 보장횟수", className: "is-playspec", html: true, value: (fav) => AdPlay.esc(fav.playSpec).replace(/\s*·\s*/g, "<br>") },
-      // 수치는 축약("1,200만원/월"·"7.9만명") 대신 원단위 숫자로 노출 — 엑셀로 받아 바로 계산·편집 가능.
-      // 단위는 값마다 반복하지 않고 열 제목에 한 번만 표기한다.
-      { label: "비용(원/월, 부가세 별도)", className: "is-price", value: (fav) => numCell(fav.monthly || null) },
-      { label: "운영시간", value: (fav) => fav.operationHours },
-      // 숫자 3열을 붙여 비교하기 쉽게 두고, 긴 텍스트인 '주 방문층'은 '비고' 왼쪽으로 모은다
-      { label: "일평균 유동(명)", className: "is-numl", value: (fav) => numCell(fav.foot500Num) },
-      { label: "지하철 승하차(월평균, 명)", className: "is-numl", value: (fav) => numCell(fav.subwayNum) },
-      { label: "버스 승하차(월평균, 명)", className: "is-numl", value: (fav) => numCell(fav.busNum) },
-      { label: "주 방문층", className: "is-audience", value: (fav) => fav.audience },
-      { label: "비고", value: (fav) => fav.note },
-    ];
-    const thumb = (fav) => fav.image
-      ? `<img src="${AdPlay.esc(fav.image)}" alt="" loading="lazy">`
-      : `<span class="map-fav-busimg"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 16V6a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v10M4 16h16M4 16v2a1 1 0 0 0 1 1h1a1 1 0 0 0 1-1v-2M20 16v2a1 1 0 0 1-1 1h-1a1 1 0 0 1-1-1v-2M6 8h12M7 12h.01M17 12h.01"/></svg></span>`;
-    favListEl.innerHTML = `
-      <div class="map-fav-compare map-fav-compare--rows">
-        <table>
-          <thead>
-            <tr>
-              <th class="map-fav-no-h"><input type="checkbox" class="map-fav-incl-all" aria-label="전체 선택/해제" title="전체 선택/해제"><span class="map-fav-no-h-label">선택</span></th>
-              <th class="map-fav-compare-corner">매체</th>
-              ${compareRows.map((row) => `<th class="${row.className || ""}">${AdPlay.esc(row.label)}</th>`).join("")}
-              <th class="map-fav-remove-col" aria-label="삭제"></th>
-            </tr>
-          </thead>
-          <tbody>
-            ${items.map((fav, i) => `
-              <tr class="${favExcluded.has(fav.favId) ? "is-excluded" : ""}">
-                <td class="map-fav-no-cell"><input type="checkbox" class="map-fav-incl" data-fav-incl="${AdPlay.esc(fav.favId)}"${favExcluded.has(fav.favId) ? "" : " checked"} aria-label="${AdPlay.esc(fav.name)} 상담 대상 포함"></td>
-                <th class="map-fav-rowhead"><span class="map-fav-media-cell">${thumb(fav)}<span class="map-fav-media-info"><b>${AdPlay.esc(fav.name)}</b><span class="map-fav-media-addr">${AdPlay.esc(fav.address)}</span><span class="map-fav-media-tags">${[fav.size, /\d\s*[x×]\s*\d/.test(fav.resolution) ? fav.resolution + "px" : fav.resolution].filter((v) => v && v !== "-" && v !== "확인 필요").map((v) => `<span>${AdPlay.esc(v)}</span>`).join("")}</span></span></span></th>
-                ${compareRows.map((row) => `<td class="${row.className || ""}">${row.html ? row.value(fav) : AdPlay.esc(row.value(fav))}</td>`).join("")}
-                <td class="map-fav-remove-cell"><button type="button" class="map-fav-remove" data-fav-remove="${AdPlay.esc(fav.favId)}" aria-label="${AdPlay.esc(fav.name)} 관심매체에서 제거">×</button></td>
-              </tr>`).join("")}
-          </tbody>
-        </table>
-      </div>`;
+    favListEl.innerHTML = favCompareTableHtml(items, { allClass: "map-fav-incl-all", inclAttr: "data-fav-incl", rmAttr: "data-fav-remove", excluded: favExcluded });
     recalcFavConsult();
     syncFavAllCheckbox();
     if (favReco) {
@@ -350,6 +393,31 @@
   }
   // 상담 대상(체크된 매체)만으로 월 합계·상담 링크·CTA 라벨을 갱신. 체크박스 토글 시 표 전체를 다시 그리지 않고
   // 이것만 호출해 가로 스크롤 위치를 지킨다. renderFavPanel 초기 렌더에서도 재사용.
+  // 미디어믹스 — 상담 대상(체크된) 매체의 유형별 예산 비중 막대. 금액 정보가 없으면 매체 수 비중으로 폴백.
+  const FAV_TYPE_COLORS = { "전광판": "#2540ea", "빌보드": "#2540ea", "엘리베이터": "#2f8fd0", "버스": "#6b57d6", "버스쉘터": "#6b57d6", "지하철": "#0c9a84", "공항": "#128a9c", "철도": "#128a9c", "쇼핑몰": "#8a5cf0", "쇼핑몰 DID": "#8a5cf0", "편의점": "#3a86b5", "차량": "#5b7cc2" };
+  const FAV_MIX_PALETTE = ["#2540ea", "#2f8fd0", "#6b57d6", "#0c9a84", "#8a5cf0", "#128a9c", "#5b7cc2"];
+  function favTypeColor(type, i) { return FAV_TYPE_COLORS[type] || FAV_MIX_PALETTE[i % FAV_MIX_PALETTE.length]; }
+  function favMixHtml(entries, total, isCount) {
+    const bar = entries.map((e, i) => `<span style="width:${(e.v / total * 100).toFixed(2)}%;background:${favTypeColor(e.t, i)}"></span>`).join("");
+    const leg = entries.map((e, i) => `<span class="map-fav-mix-item"><i style="background:${favTypeColor(e.t, i)}"></i>${AdPlay.esc(e.t)} <b>${Math.round(e.v / total * 100)}%</b>${isCount ? "" : " · " + AdPlay.formatKRW(e.v)}</span>`).join("");
+    return `<div class="map-fav-mix-head">매체 유형별 ${isCount ? "매체 수" : "예산"} 비중</div><div class="map-fav-mix-bar">${bar}</div><div class="map-fav-mix-leg">${leg}</div>`;
+  }
+  function renderFavMix(included) {
+    if (!favMix) return;
+    if (!included || !included.length) { favMix.hidden = true; favMix.innerHTML = ""; return; }
+    const toEntries = (map) => Object.keys(map).map((t) => ({ t, v: map[t] })).sort((a, b) => b.v - a.v);
+    const byCost = {};
+    included.forEach((f) => { const t = f.type || "기타"; byCost[t] = (byCost[t] || 0) + (f.monthly || 0); });
+    const totalCost = included.reduce((s, f) => s + (f.monthly || 0), 0);
+    favMix.hidden = false;
+    if (totalCost > 0) {
+      favMix.innerHTML = favMixHtml(toEntries(byCost), totalCost, false);
+    } else {
+      const byCount = {};
+      included.forEach((f) => { const t = f.type || "기타"; byCount[t] = (byCount[t] || 0) + 1; });
+      favMix.innerHTML = favMixHtml(toEntries(byCount), included.length, true);
+    }
+  }
   function recalcFavConsult() {
     const items = favoriteItems();
     const included = items.filter((fav) => !favExcluded.has(fav.favId));
@@ -369,6 +437,7 @@
         if (label) label.textContent = "상담 대상을 선택하세요";
       }
     }
+    renderFavMix(included);
   }
   // 담은 매체 기준 자동 추천 요약 — 도달(일평균 유동) 최고 · 비용 효율(월 비용) 최저 매체를 짚고 묶음 제안
   function favRecommendation(items) {
@@ -512,6 +581,622 @@
     }
   }
 
+  // 맞춤 추천: 업종/타깃을 고르면 조건(카테고리 + 지역 키워드)에 맞는 매체를 관심매체에 자동으로 담는다.
+  // 매칭이 3곳 미만이면 지역 조건을 풀어 카테고리만으로 폴백. media.json은 수작업 큐레이션 순서라 상위 N = 대표 매체.
+  const MATCH_THEMES = [
+    // 업종(14) — 광고 주요 버티컬을 OOH 적합도로 재구성
+    { key: "beauty", type: "biz", label: "뷰티", cats: ["large_billboard", "package", "shopping_mall_did"], areaKeys: ["강남", "성수", "홍대", "명동", "신사", "가로수", "압구정"], cap: 8 },
+    { key: "fashion", type: "biz", label: "패션", cats: ["large_billboard", "package", "shopping_mall_did"], areaKeys: ["홍대", "성수", "강남", "가로수", "신사", "동대문"], cap: 8 },
+    { key: "luxury", type: "biz", label: "명품", cats: ["large_billboard", "package", "shopping_mall_did"], areaKeys: ["청담", "압구정", "신사", "명동", "강남", "한남"], cap: 8 },
+    { key: "fnb", type: "biz", label: "F&B", cats: ["large_billboard", "package", "convenience", "shopping_mall_did"], areaKeys: ["홍대", "강남", "성수", "명동", "이태원"], cap: 8 },
+    { key: "food", type: "biz", label: "식품", cats: ["large_billboard", "package", "convenience", "daily_touchpoint"], areaKeys: [], cap: 8 },
+    { key: "finance", type: "biz", label: "금융", cats: ["large_billboard", "package", "transport_hub"], areaKeys: ["여의도", "강남", "종로", "을지로", "광화문"], cap: 8 },
+    { key: "tech", type: "biz", label: "테크", cats: ["large_billboard", "package", "transport_hub", "subway"], areaKeys: ["강남", "여의도", "구로", "판교", "역삼"], cap: 8 },
+    { key: "retail", type: "biz", label: "유통", cats: ["shopping_mall_did", "large_billboard", "package", "convenience"], areaKeys: ["잠실", "강남", "영등포", "신촌", "명동"], cap: 8 },
+    { key: "auto", type: "biz", label: "자동차", cats: ["large_billboard", "package", "highway", "transport_hub"], areaKeys: ["강남", "도산", "분당", "서초"], cap: 8 },
+    { key: "pharma", type: "biz", label: "의료", cats: ["large_billboard", "package", "convenience", "subway"], areaKeys: [], cap: 8 },
+    { key: "edu", type: "biz", label: "교육", cats: ["large_billboard", "package", "convenience", "subway"], areaKeys: ["대치", "노원", "목동", "중계", "강남"], cap: 8 },
+    { key: "travel", type: "biz", label: "여행", cats: ["transport_hub", "large_billboard", "package"], areaKeys: ["명동", "홍대", "이태원", "강남", "공항"], cap: 8 },
+    { key: "enter", type: "biz", label: "엔터", cats: ["large_billboard", "package", "shopping_mall_did"], areaKeys: ["홍대", "강남", "건대", "신촌"], cap: 8 },
+    { key: "realestate", type: "biz", label: "부동산", cats: ["large_billboard", "package", "subway"], areaKeys: ["강남", "여의도", "송파", "마포"], cap: 8 },
+    // 타깃(12) — 생애단계 + 인구세분 + 라이프스타일 3축
+    { key: "teen", type: "tgt", label: "10대", cats: ["large_billboard", "package", "bus", "subway"], areaKeys: ["홍대", "노원", "강남", "목동"], cap: 8 },
+    { key: "univ", type: "tgt", label: "대학생", cats: ["large_billboard", "package", "bus", "subway"], areaKeys: ["홍대", "신촌", "건대", "이대", "안암", "회기", "대학"], cap: 8 },
+    { key: "young", type: "tgt", label: "사회초년생", cats: ["large_billboard", "package", "convenience", "shopping_mall_did"], areaKeys: ["성수", "홍대", "강남", "영등포", "관악"], cap: 8 },
+    { key: "worker", type: "tgt", label: "직장인", cats: ["large_billboard", "package", "transport_hub", "subway"], areaKeys: ["여의도", "강남", "종로", "을지로", "광화문", "역삼", "삼성"], cap: 8 },
+    { key: "middle", type: "tgt", label: "중장년", cats: ["large_billboard", "package", "highway", "subway"], areaKeys: ["강남", "목동", "분당", "송파"], cap: 8 },
+    { key: "silver", type: "tgt", label: "실버", cats: ["convenience", "shopping_mall_did", "bus", "subway"], areaKeys: [], cap: 8 },
+    { key: "women2030", type: "tgt", label: "2030여성", cats: ["large_billboard", "package", "shopping_mall_did"], areaKeys: ["강남", "성수", "홍대", "가로수", "명동"], cap: 8 },
+    { key: "men2030", type: "tgt", label: "2030남성", cats: ["large_billboard", "package", "subway"], areaKeys: ["강남", "홍대", "건대", "구로"], cap: 8 },
+    { key: "parents", type: "tgt", label: "영유아부모", cats: ["daily_touchpoint", "convenience", "shopping_mall_did"], areaKeys: ["목동", "대치", "분당", "송파"], cap: 8 },
+    { key: "single", type: "tgt", label: "1인가구", cats: ["convenience", "daily_touchpoint", "large_billboard"], areaKeys: ["관악", "영등포", "성수", "마포"], cap: 8 },
+    { key: "premium", type: "tgt", label: "고소득", cats: ["large_billboard", "package", "shopping_mall_did"], areaKeys: ["청담", "압구정", "도산", "한남", "서초"], cap: 8 },
+    { key: "tourist", type: "tgt", label: "관광객", cats: ["large_billboard", "package", "transport_hub", "shopping_mall_did"], areaKeys: ["명동", "홍대", "이태원", "동대문", "강남"], cap: 8 }
+  ];
+  // ===== ① AI 추천 플래너 — 관심매체 비교(②)와 완전 별도. 자기 데이터(plannerSlugs)로 시작·완결. =====
+  const PLAN_SCOPES = [{ k: "all", l: "전국" }, { k: "metro", l: "수도권" }, { k: "local", l: "지방" }];
+  const PLAN_SIDOS = ["서울", "경기", "인천", "부산", "대구", "광주", "대전", "울산", "세종", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주"];
+  // 플랫폼 전체 매체 카테고리(지도 카테고리 필터와 동일) — 매체유형 선택지의 기준
+  const PLAN_ALL_CATS = ["large_billboard", "package", "subway", "transport_hub", "bus", "shopping_mall_did", "daily_touchpoint", "convenience", "highway", "other"];
+  const PLAN_METRO = ["서울", "경기", "인천"];
+  let plannerSlugs = [];
+  const plannerExcluded = new Set();
+  // A′ 비대칭 동기화: ①에서 직접 담은 매체(②에도 반영) / ①에서 뺀 AI추천(재생성돼도 유지)
+  const plannerAdded = new Set();
+  const plannerRemoved = new Set();
+  // 지역 = 누적 토큰 배열. 토큰: {scope:"metro"|"local"} 또는 {sido, gu}(gu "" = 시도 전체). 빈 배열 = 전국.
+  let plannerRegions = [];
+  let plannerAddSido = "";     // 지역 추가 UI에서 현재 고른 시·도(필터 아님, 구 목록 표시용)
+  let plannerBudget = 5000;    // 만원, 0 = 제한 없음. 기본 3~5천만
+  // 업종(단일) + 타깃(복수) + 기타(직접입력 키워드)
+  let plannerBiz = "beauty";
+  let plannerBizCustom = "";
+  let plannerTargets = [];
+  let plannerCustoms = [];
+  let plannerBody = null, plannerFoot = null;
+  // 예산 상한(만원) — 딱 떨어지는 값 + 직접입력. 플랜 금액은 이 안에 들어감.
+  const PLAN_BUDGETS = [{ v: 1000, l: "1천만" }, { v: 3000, l: "3천만" }, { v: 5000, l: "5천만" }, { v: 10000, l: "1억" }];
+  // 집행 기간 — 딱 떨어지는 값 + 직접입력(일). 1개월 미만은 단기요율, 이상은 월×개월.
+  const PLAN_PERIODS = [
+    { d: 7, l: "7일" }, { d: 15, l: "15일" }, { d: 30, l: "1개월" }, { d: 90, l: "3개월" }, { d: 180, l: "6개월" }, { d: 365, l: "1년" },
+  ];
+  let plannerPeriodDays = 30; // 기본 1개월
+  // 매체유형 = 플랫폼 전체 카테고리(미디어믹스 = 전체)
+  const PLAN_MEDIA_TYPES = [
+    { k: "all", l: "미디어믹스", cats: null },
+    { k: "led", l: "전광판·빌보드", cats: ["large_billboard", "package"] },
+    { k: "subway", l: "지하철", cats: ["subway"] },
+    { k: "hub", l: "공항·터미널·기차", cats: ["transport_hub"] },
+    { k: "bus", l: "버스", cats: ["bus"] },
+    { k: "mall", l: "쇼핑·문화", cats: ["shopping_mall_did"] },
+    { k: "elev", l: "엘리베이터", cats: ["daily_touchpoint"] },
+    { k: "cvs", l: "편의점", cats: ["convenience"] },
+    { k: "highway", l: "고속도로", cats: ["highway"] },
+    { k: "other", l: "기타 생활권", cats: ["other"] },
+  ];
+  const PLAN_SCENARIOS = [
+    { k: "eff", l: "효율형", desc: "CPM 최소" },
+    { k: "bal", l: "균형형", desc: "도달·효율" },
+    { k: "reach", l: "도달우선", desc: "최대 노출" },
+  ];
+  // 커버 = 노출 방식(출력 배지). '매체 종류'가 아니라 '어떻게 분포시키나'. 같은 매체도 방식이 결정.
+  const PLAN_COVERAGE = [
+    { k: "auto", l: "균형 분포", desc: "조건 기준 균형" },
+    { k: "focus", l: "핵심지역 집중", desc: "주요 핵심 상권에 집중" },
+    { k: "wide", l: "와이드 분산", desc: "여러 지역에 넓게" },
+    { k: "local", l: "생활권 밀착", desc: "동네·생활 접점에 반복" },
+    { k: "path", l: "동선형", desc: "이동 동선 따라" },
+  ];
+  // 전국 주요 핵심 상권 — '핵심지역 집중' 판정용
+  const PLAN_PRIME_AREAS = ["강남", "역삼", "삼성", "코엑스", "서초", "여의도", "영등포", "명동", "을지로", "종로", "광화문", "시청", "홍대", "합정", "신촌", "성수", "건대", "가로수", "신사", "압구정", "청담", "도산", "잠실", "송파", "이태원", "동대문", "판교", "서면", "해운대", "동성로"];
+  // 조정 레버 — 직관적 방향 단어. 선택한 안을 그 방향으로 재추천(오버라이드). 대안과 같은 엔진.
+  const PLAN_LEVERS = [
+    [{ l: "저비용·효율", set: { scenario: "eff" } }, { l: "최대 도달", set: { scenario: "reach" } }],
+    [{ l: "핵심 상권 집중", set: { coverage: "focus" } }, { l: "넓게 분산", set: { coverage: "wide" } }],
+    [{ l: "짧게·여러 매체", set: { period: 15 } }, { l: "길게·소수", set: { period: 180 } }],
+    [{ l: "대형 임팩트", set: { media: "impact" } }, { l: "생활밀착", set: { media: "life" } }],
+  ];
+  let plannerMediaType = "all";
+  let plannerAnKey = "custom"; // 선택된 안: custom(맞춤) | alt1 | alt2
+  let plannerLever = {};       // 레버 오버라이드 {scenario?,coverage?,media?,period?}
+  let planEffDays = 30;        // 현재 선택 안의 유효 집행 기간(일) — 금액·노출·라벨 기준
+  let plannerRefineOpen = false;
+  // "활성 수집함" — 플래너가 열려 있으면 지도 ★은 플래너(①)로, 아니면 관심매체(②)로 간다. 두 세트는 끝까지 독립.
+  function plannerOpen() { const o = document.querySelector(".gps-ov"); return !!(o && o.classList.contains("open")); }
+  // ★ = ②관심매체(내 매체 목록) 소속 여부 — 지도 어디서든 의미 하나로 일관.
+  function activeHas(slug) { return favorites.indexOf(slug) >= 0; }
+  // 지도 ★: 항상 ②에 담기/빼기. ①추천 팝업이 열려 있으면 ①에도 반영(①→② 비대칭). ① 닫혀 있으면 ②에만.
+  function activeToggle(slug) {
+    toggleFavorite(slug); // ② 담기/빼기 — 항상 (updateFavoritesUI·관심패널 갱신 포함)
+    if (plannerOpen()) {
+      if (isFavorite(slug)) { plannerAdded.add(slug); plannerRemoved.delete(slug); }
+      else { plannerAdded.delete(slug); plannerRemoved.add(slug); plannerExcluded.delete(slug); }
+      applyPlan();
+      if (plannerBody) renderPlannerResult(plannerBody, plannerFoot, {});
+    }
+  }
+  function planSido(item) {
+    const addr = (item.address || item.areaName || "").replace(/\s+/g, " ").trim();
+    return addr ? (FAV_SIDO_ABBR[addr.split(" ")[0]] || addr.split(" ")[0] || "") : "";
+  }
+  function planGu(item) {
+    const addr = (item.address || item.areaName || "").replace(/\s+/g, " ").trim();
+    const toks = addr.split(" ");
+    for (let i = 1; i < toks.length; i += 1) { if (/(구|군)$/.test(toks[i])) return toks[i]; }
+    for (let i = 1; i < toks.length; i += 1) { if (/시$/.test(toks[i])) return toks[i]; }
+    return "";
+  }
+  function inPlanRegion(item) {
+    if (!plannerRegions.length) return true; // 전국
+    const s = planSido(item), g = planGu(item);
+    return plannerRegions.some((r) => {
+      if (r.scope === "metro") return PLAN_METRO.indexOf(s) >= 0;
+      if (r.scope === "local") return PLAN_METRO.indexOf(s) < 0;
+      return r.sido === s && (!r.gu || r.gu === g);
+    });
+  }
+  // 특정 시·도의 구/시 목록(데이터 기반)
+  function planGuOptions(sido) {
+    if (!sido) return [];
+    const pool = Array.isArray(mediaWithLocations) ? mediaWithLocations : [];
+    const set = {};
+    pool.forEach((m) => { if (planSido(m) === sido) { const g = planGu(m); if (g) set[g] = 1; } });
+    return Object.keys(set).sort((a, b) => a.localeCompare(b, "ko"));
+  }
+  function regionTokenLabel(r) {
+    if (r.scope === "metro") return "수도권";
+    if (r.scope === "local") return "지방";
+    return r.sido + (r.gu ? " " + r.gu : " 전체");
+  }
+  // 업종(단일)+타깃(복수)+기타 키워드를 합쳐 매칭 기준(cats·areaKeys·라벨) 산출
+  function planCriteria() {
+    const themes = [];
+    if (plannerBiz) { const t = MATCH_THEMES.find((x) => x.key === plannerBiz); if (t) themes.push(t); }
+    plannerTargets.forEach((k) => { const t = MATCH_THEMES.find((x) => x.key === k); if (t) themes.push(t); });
+    let cats = [], areaKeys = [];
+    themes.forEach((t) => { cats = cats.concat(t.cats || []); areaKeys = areaKeys.concat(t.areaKeys || []); });
+    const customs = [plannerBizCustom].concat(plannerCustoms).filter(Boolean);
+    areaKeys = areaKeys.concat(customs);
+    const uniq = (a) => a.filter((v, i) => a.indexOf(v) === i);
+    cats = uniq(cats); areaKeys = uniq(areaKeys);
+    const bizT = MATCH_THEMES.find((x) => x.key === plannerBiz);
+    const bizLabel = plannerBizCustom || (bizT ? bizT.label : "");
+    const tgtLabels = plannerTargets.map((k) => (MATCH_THEMES.find((x) => x.key === k) || {}).label).filter(Boolean).concat(plannerCustoms);
+    return { cats, areaKeys, bizLabel, tgtLabels, hasAny: themes.length > 0 || customs.length > 0 };
+  }
+  // 매체유형 선택이 있으면 그 카테고리로, 없으면 조건 카테고리(없으면 전체)로 지도 풀을 좁힌다.
+  function planCatsFor(crit) {
+    const mt = PLAN_MEDIA_TYPES.find((m) => m.k === plannerMediaType);
+    if (mt && mt.cats) return mt.cats;
+    return crit.cats.length ? crit.cats : PLAN_ALL_CATS;
+  }
+  function matchedPool(crit) {
+    const pool = Array.isArray(mediaWithLocations) ? mediaWithLocations : [];
+    const cats = planCatsFor(crit);
+    const areaKeys = crit.areaKeys || [];
+    const matchArea = (item) => {
+      if (!areaKeys.length) return true;
+      const text = [item.name, item.areaName, item.areaSlug, item.address].filter(Boolean).join(" ").toLowerCase();
+      return areaKeys.some((k) => text.includes(k.toLowerCase()));
+    };
+    const base = (withArea) => pool.filter((item) => cats.indexOf(item.category) >= 0 && inPlanRegion(item) && (!withArea || matchArea(item)));
+    let matched = base(true);
+    if (matched.length < 3) matched = base(false);
+    return matched;
+  }
+  // 월 노출(OTS) 추정 — 유동(일평균)×30, 지하철·버스는 월평균 승하차를 그대로. 모두 '추정'이며 디지털 클릭과 다름.
+  function planMonthlyExposure(f) {
+    if (f.foot500Num) return f.foot500Num * 30;
+    if (f.subwayNum) return f.subwayNum;
+    if (f.busNum) return f.busNum;
+    return 0;
+  }
+  function planOts(items) { return items.reduce((s, f) => s + planExposure(f, planEffDays), 0); }
+  function planCpm(cost, ots) { return ots ? cost / (ots / 1000) : null; }
+  // 기간(일) 노출 추정 = 월 노출 × 일수/30
+  function planExposure(f, days) { return planMonthlyExposure(f) * ((days || 30) / 30); }
+  // 단기요율(구간 1/3/7/15 + 월=30) 사이를 선형 보간해 임의 일수 금액 추정. 표에 없는 10일·5일 등 감안.
+  function shortTermPriceForDays(st, days, monthly) {
+    const pts = [];
+    [1, 3, 7, 15].forEach((d) => { if (st && st[d] != null) pts.push([d, st[d]]); });
+    if (monthly) pts.push([30, monthly]);
+    if (!pts.length) return null;
+    pts.sort((a, b) => a[0] - b[0]);
+    if (days <= pts[0][0]) return pts[0][1];
+    if (days >= pts[pts.length - 1][0]) return pts[pts.length - 1][1];
+    for (let i = 0; i < pts.length - 1; i += 1) {
+      const [d0, p0] = pts[i], [d1, p1] = pts[i + 1];
+      if (days >= d0 && days <= d1) return p0 + (p1 - p0) * ((days - d0) / (d1 - d0));
+    }
+    return pts[pts.length - 1][1];
+  }
+  // 집행 기간(일)의 추정 금액. 1개월 이상=월×개월, 미만=단기요율(없으면 월 비례 임시추정).
+  function planPriceForDays(f, days) {
+    const d = days || 30;
+    const monthly = f.monthly || 0;
+    if (d >= 30) return monthly * (d / 30);
+    const st = f.shortTerm;
+    if (!st) return monthly * (d / 30); // 단기요율 없음 → 월 비례(협의 대상)
+    const p = shortTermPriceForDays(st, d, monthly);
+    return p == null ? monthly * (d / 30) : p;
+  }
+  // 기간 라벨(프리셋이면 그 이름, 아니면 'N일')
+  function periodLabel(days) {
+    const hit = PLAN_PERIODS.find((p) => p.d === days);
+    return hit ? hit.l : (days + "일");
+  }
+  // 매체별 역할 — 왜 이 매체인지 한눈에(도달확보/반복강화/임팩트확장/구매유도). 유형 문자열 기반 휴리스틱.
+  function planRole(f) {
+    const t = `${f.type || ""} ${f.name || ""}`;
+    if (/엘리베이터|엘베|타운보드/.test(t)) return { k: "freq", l: "반복강화" };
+    if (/버스|쉘터/.test(t)) return { k: "reach", l: "도달확보" };
+    if (/지하철|철도|공항|역사|터미널/.test(t)) return { k: "reach", l: "도달확보" };
+    if (/편의점|쇼핑|몰|마트|DID|리테일/.test(t)) return { k: "nudge", l: "구매유도" };
+    if (/전광판|빌보드|LED|미디어|옥상|월/.test(t)) return { k: "impact", l: "임팩트확장" };
+    return { k: "reach", l: "도달확보" };
+  }
+  // 역할 뜻(배지 툴팁·목표 칩 설명 공용) — 목표(방향) 선택지와 매체 배지가 같은 용어를 가리킴
+  const PLAN_ROLE_KEY = [
+    { k: "reach", l: "도달확보", d: "많은 사람에게 기본 도달 (지하철·버스·교통거점)" },
+    { k: "freq", l: "반복강화", d: "생활동선 반복 노출로 빈도↑ (엘리베이터 등)" },
+    { k: "impact", l: "임팩트확장", d: "대형 전광판 주목도·브랜드 임팩트" },
+    { k: "nudge", l: "구매유도", d: "매장·편의점 근처에서 구매 유도" },
+  ];
+  // 추천 시나리오별 정렬: 효율형=CPM 최소, 도달우선=노출 최대, 균형형=큐레이션 순서 유지.
+  function orderByScenario(items, scen) {
+    const arr = items.slice();
+    if (scen === "eff") {
+      arr.sort((a, b) => {
+        const ca = planCpm(planPriceForDays(a, planEffDays), planExposure(a, planEffDays));
+        const cb = planCpm(planPriceForDays(b, planEffDays), planExposure(b, planEffDays));
+        if (ca == null && cb == null) return 0;
+        if (ca == null) return 1;
+        if (cb == null) return -1;
+        return ca - cb;
+      });
+    } else if (scen === "reach") {
+      arr.sort((a, b) => planExposure(b, planEffDays) - planExposure(a, planEffDays));
+    }
+    return arr;
+  }
+  // 타깃 동선 단계(0 이동=교통, 1 거리/상권=전광판·쇼핑, 2 생활=엘베·편의점)
+  function planPathStage(f) {
+    const t = `${f.type || ""} ${f.name || ""}`;
+    if (/지하철|버스|쉘터|철도|공항|터미널|역사/.test(t)) return 0;
+    if (/편의점|엘리베이터|엘베|타운보드/.test(t)) return 2;
+    return 1;
+  }
+  function planIsPrime(f) { const t = `${f.name || ""} ${f.area || ""} ${f.address || ""}`; return PLAN_PRIME_AREAS.some((a) => t.indexOf(a) >= 0); }
+  // 핵심지역 집중 = 주요 상권 매체 우선, 와이드 = 넓게 커버하는 네트워크/패키지 매체(엘베·버스·지하철) 우선,
+  // 생활권 밀착 = 동네 접점(엘베·편의점) 우선, 동선형 = 교통→거리→생활 단계 번갈아.
+  function applyCoverage(items, cov) {
+    const by = (re) => { const m = (f) => re.test(`${f.type || ""} ${f.name || ""}`); return items.filter(m).concat(items.filter((f) => !m(f))); };
+    if (cov === "focus") return items.filter(planIsPrime).concat(items.filter((f) => !planIsPrime(f)));
+    if (cov === "wide") return by(/버스|쉘터|지하철|철도|엘리베이터|엘베|타운보드|패키지/);
+    if (cov === "local") return by(/엘리베이터|엘베|타운보드|편의점/);
+    if (cov === "path") {
+      const buckets = { 0: [], 1: [], 2: [] };
+      items.forEach((f) => buckets[planPathStage(f)].push(f));
+      const out = []; let added = true;
+      while (added) { added = false; [0, 1, 2].forEach((s) => { if (buckets[s].length) { out.push(buckets[s].shift()); added = true; } }); }
+      return out;
+    }
+    return items;
+  }
+  // 매체 성격 강조: 대형 임팩트 = 전광판 우선, 생활밀착 = 생활 접점 매체(엘베·편의점·버스·지하철) 우선.
+  function applyMedia(items, media) {
+    if (media === "impact") { const m = (f) => /전광판|빌보드|LED|미디어|옥상|월/.test(`${f.type || ""} ${f.name || ""}`); return items.filter(m).concat(items.filter((f) => !m(f))); }
+    if (media === "life") { const m = (f) => /엘리베이터|엘베|타운보드|편의점|버스|쉘터|지하철/.test(`${f.type || ""} ${f.name || ""}`); return items.filter(m).concat(items.filter((f) => !m(f))); }
+    return items;
+  }
+  // 후보 풀 = 지역 + (고정 시)매체유형 안의 전 매체. 업종·타깃은 '가중'(가두지 않음) — 관련 지역·카테고리를 앞으로.
+  function candidatePool(crit) {
+    const mt = PLAN_MEDIA_TYPES.find((m) => m.k === plannerMediaType);
+    const mtCats = mt && mt.cats;
+    const pool = (Array.isArray(mediaWithLocations) ? mediaWithLocations : []).filter((item) => inPlanRegion(item) && (!mtCats || mtCats.indexOf(item.category) >= 0));
+    const fav = itemsForSlugs(pool.map((m) => m.slug).filter(Boolean));
+    const areaKeys = (crit.areaKeys || []).map((k) => k.toLowerCase());
+    const cats = crit.cats || [];
+    const score = (f) => { let s = 0; const t = `${f.name || ""} ${f.area || ""} ${f.address || ""}`.toLowerCase(); areaKeys.forEach((k) => { if (t.indexOf(k) >= 0) s += 3; }); if (cats.indexOf(f.category) >= 0) s += 2; return s; };
+    return fav.map((f, i) => ({ f, s: score(f), i })).sort((a, b) => (b.s - a.s) || (a.i - b.i)).map((x) => x.f);
+  }
+  // 전략(시나리오·커버·매체·기간) 하나로 최종 매체 slug 목록 산출.
+  function buildPlanSlugs(crit, strat, cap) {
+    planEffDays = strat.period || 30;
+    let arr = applyMedia(applyCoverage(orderByScenario(candidatePool(crit), strat.scenario), strat.coverage), strat.media);
+    if (planEffDays < 30) arr = arr.filter((f) => f.shortTerm).concat(arr.filter((f) => !f.shortTerm)); // 단기면 단기요율 보유 우선
+    if (plannerBudget > 0) {
+      const b = plannerBudget * 10000; let sum = 0; const picked = [];
+      arr.forEach((f) => { const c = planPriceForDays(f, planEffDays); if (sum + c <= b) { picked.push(f); sum += c; } });
+      arr = picked.length ? picked : arr.slice(0, 1);
+    }
+    return arr.slice(0, cap || 8).map((f) => f.favId).filter(Boolean);
+  }
+  // 추천안 정의: 맞춤 + AI 대안 2(의도적으로 맞춤과 다르게). 선택한 안엔 레버 오버라이드 적용.
+  function planAns() {
+    const ip = plannerPeriodDays;
+    const shortP = ip >= 30 ? 15 : ip;
+    return [
+      { k: "custom", label: "맞춤 추천안", note: "선택하신 조건 그대로", scenario: "bal", coverage: "auto", media: null, period: ip },
+      { k: "alt1", label: "AI 대안 ① 효율·분산", note: `기간을 줄여(${periodLabel(shortP)}) 매체 수↑ · 같은 예산에 넓게`, scenario: "eff", coverage: "wide", media: "life", period: shortP },
+      { k: "alt2", label: "AI 대안 ② 핵심·임팩트", note: "핵심 상권 대형 매체에 집중 (주목도↑)", scenario: "reach", coverage: "focus", media: "impact", period: ip },
+    ];
+  }
+  function activeStrat() {
+    const base = planAns().find((a) => a.k === plannerAnKey) || planAns()[0];
+    return Object.assign({}, base, plannerLever);
+  }
+  // 각 안의 미리보기 지표(매체수·노출·CPM) — 카드용
+  function ansPreview(crit) {
+    const saved = planEffDays;
+    const out = planAns().map((a) => {
+      const its = itemsForSlugs(buildPlanSlugs(crit, a, 8));
+      const ots = planOts(its);
+      const cost = its.reduce((s, f) => s + planPriceForDays(f, a.period), 0);
+      return Object.assign({}, a, { n: its.length, ots, cost, cpm: planCpm(cost, ots) });
+    });
+    planEffDays = saved;
+    return out;
+  }
+  // 선택한 안(+레버)을 반영해 ①전용 세트 산출. ②관심매체 미변경. 직접 담은/뺀 결정 보존.
+  function applyPlan() {
+    const crit = planCriteria();
+    const strat = activeStrat();
+    const rec = buildPlanSlugs(crit, strat, 8).filter((s) => !plannerRemoved.has(s));
+    const added = Array.from(plannerAdded).filter((s) => favorites.indexOf(s) >= 0);
+    plannerSlugs = rec.concat(added.filter((s) => rec.indexOf(s) < 0));
+    planEffDays = strat.period || 30;
+    Array.from(plannerExcluded).forEach((s) => { if (plannerSlugs.indexOf(s) < 0) plannerExcluded.delete(s); });
+    return crit;
+  }
+  function planIncludedItems() { return itemsForSlugs(plannerSlugs).filter((f) => !plannerExcluded.has(f.favId)); }
+  // 받기(엑셀/PPT/지도링크)는 ②의 검증된 함수를 그대로 쓰되, 호출 순간만 데이터를 플래너 것으로 바꿔치기 후 복원.
+  function withPlannerData(fn) {
+    const savedFav = favorites.slice();
+    const savedExcl = Array.from(favExcluded);
+    favorites.length = 0; plannerSlugs.forEach((s) => favorites.push(s));
+    favExcluded.clear(); plannerExcluded.forEach((s) => favExcluded.add(s));
+    try { fn(); } finally {
+      favorites.length = 0; savedFav.forEach((s) => favorites.push(s));
+      favExcluded.clear(); savedExcl.forEach((s) => favExcluded.add(s));
+    }
+  }
+  function reapplyPlanner(bodyEl, footEl) {
+    applyPlan();
+    renderPlannerResult(bodyEl, footEl, {});
+  }
+  // 큰 숫자를 억/만 단위로 축약(예: 1,420,000 → 142만, 120,000,000 → 1.2억)
+  function planFmtEok(n) {
+    if (!n) return "—";
+    if (n >= 100000000) return (n / 100000000).toFixed(1).replace(/\.0$/, "") + "억";
+    if (n >= 10000) return Math.round(n / 10000).toLocaleString() + "만";
+    return Math.round(n).toLocaleString();
+  }
+  function plannerChooserHtml() {
+    // 지역 = 시·도 드롭다운(전국/수도권/지방 + 시도) → 구 선택 → 우측 칩 누적
+    const sidoSel = `<select class="map-plan-sel" id="mapPlanSido" aria-label="지역 추가">
+        <option value="">＋ 지역 추가</option>
+        <option value="__all">전국</option>
+        <option value="__metro">수도권</option>
+        <option value="__local">지방</option>
+        <option value="" disabled>──────</option>
+        ${PLAN_SIDOS.map((s) => `<option value="${s}"${plannerAddSido === s ? " selected" : ""}>${s}</option>`).join("")}
+      </select>`;
+    const guSel = plannerAddSido ? `<select class="map-plan-sel" id="mapPlanGu" aria-label="구·시 선택"><option value="">구·시 선택</option><option value="*">${AdPlay.esc(plannerAddSido)} 전체</option>${planGuOptions(plannerAddSido).map((g) => `<option value="${g}">${g}</option>`).join("")}</select>` : "";
+    const regionChips = plannerRegions.length
+      ? plannerRegions.map((r, i) => `<button type="button" class="map-plan-chip is-on" data-region-rm="${i}" title="제거">${AdPlay.esc(regionTokenLabel(r))} ✕</button>`).join("")
+      : `<span class="map-plan-chip is-ghost">전국</span>`;
+    const budgetChips = PLAN_BUDGETS.map((b) => `<button type="button" class="map-plan-chip map-plan-bchip${plannerBudget === b.v ? " is-on" : ""}" data-budget="${b.v}">${b.l}</button>`).join("");
+    const bizChips = MATCH_THEMES.filter((t) => t.type === "biz").map((t) => `<button type="button" class="map-plan-chip${plannerBiz === t.key ? " is-on" : ""}" data-biz="${t.key}">${AdPlay.esc(t.label)}</button>`).join("");
+    const bizCustomChip = plannerBizCustom ? `<button type="button" class="map-plan-chip is-custom is-on" data-bizcustom-rm title="기타 업종 제거">기타: ${AdPlay.esc(plannerBizCustom)} ✕</button>` : "";
+    const bizCustomInput = plannerBizCustom ? "" : `<input type="text" class="map-plan-custom-input" data-custom="biz" placeholder="기타 입력 ⏎" maxlength="12">`;
+    const tgtChips = MATCH_THEMES.filter((t) => t.type === "tgt").map((t) => `<button type="button" class="map-plan-chip is-tgt${plannerTargets.indexOf(t.key) >= 0 ? " is-on" : ""}" data-tgt="${t.key}">${AdPlay.esc(t.label)}</button>`).join("");
+    const tgtCustomChips = plannerCustoms.map((v) => `<button type="button" class="map-plan-chip is-tgt is-custom is-on" data-tgtcustom="${AdPlay.esc(v)}" title="제거">${AdPlay.esc(v)} ✕</button>`).join("");
+    const tgtCustomInput = `<input type="text" class="map-plan-custom-input" data-custom="tgt" placeholder="기타 입력 ⏎" maxlength="12">`;
+    const mtChips = PLAN_MEDIA_TYPES.map((m) => `<button type="button" class="map-plan-chip${plannerMediaType === m.k ? " is-on" : ""}" data-mtype="${m.k}">${m.l}</button>`).join("");
+    const periodChips = PLAN_PERIODS.map((p) => `<button type="button" class="map-plan-chip${plannerPeriodDays === p.d ? " is-on" : ""}" data-period="${p.d}">${p.l}</button>`).join("");
+    const isCustomPeriod = !PLAN_PERIODS.some((p) => p.d === plannerPeriodDays);
+    return `<div class="map-plan-chooser" id="mapPlanChooser">
+        <div class="map-plan-row"><span class="map-plan-tag">지역</span><div class="map-plan-chips">${sidoSel}${guSel}${regionChips}</div></div>
+        <div class="map-plan-row"><span class="map-plan-tag">예산</span><div class="map-plan-chips">${budgetChips}</div><span class="map-plan-budget">직접 총 <input type="number" id="mapPlanBudget" min="0" step="100" inputmode="numeric" placeholder="제한 없음" value="${plannerBudget || ""}"><em>만원</em></span></div>
+        <div class="map-plan-row"><span class="map-plan-tag">기간</span><div class="map-plan-chips">${periodChips}</div><span class="map-plan-budget">직접 <input type="number" id="mapPlanPeriodCustom" min="1" max="365" inputmode="numeric" placeholder="일수" value="${isCustomPeriod ? plannerPeriodDays : ""}"><em>일</em></span></div>
+        <div class="map-plan-row"><span class="map-plan-tag">업종</span><div class="map-plan-chips">${bizChips}${bizCustomChip}${bizCustomInput}</div></div>
+        <div class="map-plan-row"><span class="map-plan-tag">타깃<em class="map-plan-tag-sub">복수</em></span><div class="map-plan-chips">${tgtChips}${tgtCustomChips}${tgtCustomInput}</div></div>
+        <div class="map-plan-row"><span class="map-plan-tag">매체<em class="map-plan-tag-sub">선택</em></span><div class="map-plan-chips">${mtChips}</div></div>
+      </div>`;
+  }
+  function renderPlannerInto(bodyEl, footEl) {
+    if (!bodyEl) return;
+    plannerBody = bodyEl; plannerFoot = footEl;
+    applyPlan(); // 첫 진입부터 기본(뷰티) 추천 플랜이 바로 보이도록
+    bodyEl.innerHTML = plannerChooserHtml() + '<div class="map-plan-body" id="mapPlanBodyInner"></div>';
+    if (footEl) footEl.innerHTML = "";
+    wireChooser(bodyEl, footEl);
+    renderPlannerResult(bodyEl, footEl, {});
+  }
+  // 선택이 바뀌면 조건(chooser)만 다시 그려 칩/드릴다운 상태를 갱신하고(입력 포커스 보존 위해 통째 교체),
+  // 플랜을 재계산해 결과를 다시 렌더한다.
+  function rebuildChooser(bodyEl, footEl) {
+    const host = bodyEl.querySelector("#mapPlanChooser");
+    if (!host) return;
+    const tmp = document.createElement("div");
+    tmp.innerHTML = plannerChooserHtml();
+    host.replaceWith(tmp.firstElementChild);
+    wireChooser(bodyEl, footEl);
+  }
+  function wireChooser(bodyEl, footEl) {
+    const changeSel = () => { applyPlan(); rebuildChooser(bodyEl, footEl); renderPlannerResult(bodyEl, footEl, {}); };
+    // 지역 — 범위 칩(전국/수도권/지방) + 시·도 select + 구/시 드릴다운 select
+    // 지역 추가 드롭다운: 전국(비우기)/수도권/지방 토큰 or 시·도 선택(→구 목록)
+    const sidoSel = bodyEl.querySelector("#mapPlanSido");
+    if (sidoSel) sidoSel.addEventListener("change", () => {
+      const v = sidoSel.value;
+      if (v === "__all") { plannerRegions = []; plannerAddSido = ""; changeSel(); }
+      else if (v === "__metro" || v === "__local") { const sc = v.slice(2); if (!plannerRegions.some((r) => r.scope === sc)) plannerRegions.push({ scope: sc }); plannerAddSido = ""; changeSel(); }
+      else if (v) { plannerAddSido = v; rebuildChooser(bodyEl, footEl); }
+    });
+    const guSel = bodyEl.querySelector("#mapPlanGu");
+    if (guSel) guSel.addEventListener("change", () => {
+      if (!guSel.value) return;
+      const gu = guSel.value === "*" ? "" : guSel.value;
+      if (!plannerRegions.some((r) => r.sido === plannerAddSido && r.gu === gu)) plannerRegions.push({ sido: plannerAddSido, gu });
+      plannerAddSido = ""; changeSel();
+    });
+    bodyEl.querySelectorAll("[data-region-rm]").forEach((b) => b.addEventListener("click", () => { const i = parseInt(b.getAttribute("data-region-rm"), 10); plannerRegions.splice(i, 1); changeSel(); }));
+    // 예산 프리셋 + 직접입력
+    bodyEl.querySelectorAll("[data-budget]").forEach((b) => b.addEventListener("click", () => { const v = parseInt(b.dataset.budget, 10) || 0; plannerBudget = (plannerBudget === v ? 0 : v); changeSel(); }));
+    const bud = bodyEl.querySelector("#mapPlanBudget");
+    if (bud) bud.addEventListener("input", (e) => {
+      plannerBudget = Math.max(0, parseInt(e.target.value, 10) || 0);
+      applyPlan(); renderPlannerResult(bodyEl, footEl, {});
+      bodyEl.querySelectorAll("[data-budget]").forEach((c) => c.classList.toggle("is-on", plannerBudget !== 0 && parseInt(c.dataset.budget, 10) === plannerBudget));
+    });
+    // 집행 기간 — 프리셋 칩 + 기타(직접입력 일수)
+    bodyEl.querySelectorAll("[data-period]").forEach((b) => b.addEventListener("click", () => { plannerPeriodDays = parseInt(b.dataset.period, 10) || 30; changeSel(); }));
+    const pc = bodyEl.querySelector("#mapPlanPeriodCustom");
+    if (pc) pc.addEventListener("input", (e) => {
+      const v = Math.max(1, Math.min(365, parseInt(e.target.value, 10) || 0));
+      if (!v) return;
+      plannerPeriodDays = v;
+      applyPlan(); renderPlannerResult(bodyEl, footEl, {});
+      bodyEl.querySelectorAll("[data-period]").forEach((c) => c.classList.toggle("is-on", parseInt(c.dataset.period, 10) === plannerPeriodDays));
+    });
+    // 업종(단일) / 타깃(복수)
+    bodyEl.querySelectorAll("[data-biz]").forEach((b) => b.addEventListener("click", () => { plannerBiz = (plannerBiz === b.dataset.biz ? "" : b.dataset.biz); changeSel(); }));
+    bodyEl.querySelectorAll("[data-tgt]").forEach((b) => b.addEventListener("click", () => { const k = b.dataset.tgt; const i = plannerTargets.indexOf(k); if (i >= 0) plannerTargets.splice(i, 1); else plannerTargets.push(k); changeSel(); }));
+    // 기타(직접입력) — 업종 1개, 타깃 복수
+    const bizRm = bodyEl.querySelector("[data-bizcustom-rm]");
+    if (bizRm) bizRm.addEventListener("click", () => { plannerBizCustom = ""; changeSel(); });
+    bodyEl.querySelectorAll("[data-tgtcustom]").forEach((b) => b.addEventListener("click", () => { const v = b.getAttribute("data-tgtcustom"); plannerCustoms = plannerCustoms.filter((x) => x !== v); changeSel(); }));
+    bodyEl.querySelectorAll(".map-plan-custom-input").forEach((inp) => inp.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter") return; e.preventDefault();
+      const v = (inp.value || "").trim(); if (!v) return;
+      if (inp.dataset.custom === "biz") plannerBizCustom = v;
+      else if (plannerCustoms.indexOf(v) < 0) plannerCustoms.push(v);
+      inp.value = ""; changeSel();
+    }));
+    // 매체유형 지정(선택, 하드) — 고르면 그 안에서 추천
+    bodyEl.querySelectorAll("[data-mtype]").forEach((b) => b.addEventListener("click", () => { plannerMediaType = b.dataset.mtype; changeSel(); }));
+  }
+  function renderPlannerResult(bodyEl, footEl, info) {
+    const inner = bodyEl.querySelector("#mapPlanBodyInner");
+    if (!inner) return;
+    const allItems = itemsForSlugs(plannerSlugs);
+    if (!allItems.length) { inner.innerHTML = '<p class="map-plan-empty">업종·타깃을 고르거나 지도 ★로 담으면 추천 매체가 여기에 표시됩니다.</p>'; if (footEl) footEl.innerHTML = ""; return; }
+    const items = allItems.filter((f) => !plannerExcluded.has(f.favId)); // 상담 대상(체크)
+    const total = items.reduce((s, f) => s + planPriceForDays(f, planEffDays), 0);
+    const byType = {};
+    items.forEach((f) => { const t = f.type || "기타"; byType[t] = (byType[t] || 0) + planPriceForDays(f, planEffDays); });
+    const entries = Object.keys(byType).map((t) => ({ t, v: byType[t] })).sort((a, b) => b.v - a.v);
+    const mixBar = total ? entries.map((e, i) => `<span style="width:${(e.v / total * 100).toFixed(2)}%;background:${favTypeColor(e.t, i)}"></span>`).join("") : "";
+    const mixLeg = entries.map((e, i) => `<span class="map-fav-mix-item"><i style="background:${favTypeColor(e.t, i)}"></i>${AdPlay.esc(e.t)} <b>${total ? Math.round(e.v / total * 100) : 0}%</b></span>`).join("");
+    const reco = favRecommendation(items);
+    const over = plannerBudget > 0 && total > plannerBudget * 10000;
+    const crit = planCriteria();
+    const curStrat = activeStrat();
+    // 추천안 카드: 맞춤 + AI 대안(의도적으로 다르게). 레버로 조정되면 선택 안에 반영.
+    const ans = ansPreview(crit);
+    const anCards = ans.map((a) => `
+        <button type="button" class="map-plan-sc${a.k === plannerAnKey ? " is-on" : ""}" data-an="${a.k}">
+          <span class="map-plan-sc-t">${AdPlay.esc(a.label)}</span>
+          <span class="map-plan-sc-k">${AdPlay.esc(a.note)}</span>
+          <span class="map-plan-sc-big">${a.cost ? planFmtEok(a.cost) + "원~" : "상담"}</span>
+          <span class="map-plan-sc-li"><span>${AdPlay.esc(periodLabel(a.period))} · ${a.n}곳</span><b>${a.cpm ? "CPM ₩" + Math.round(a.cpm).toLocaleString() : "—"}</b></span>
+        </button>`).join("");
+    // 조정 레버 (방향 단어)
+    const leverHtml = PLAN_LEVERS.map((pair) => `<div class="map-plan-lever-pair">${pair.map((lv) => {
+      const k = Object.keys(lv.set)[0], v = lv.set[k];
+      const on = String(plannerLever[k]) === String(v);
+      return `<button type="button" class="map-plan-lever${on ? " is-on" : ""}" data-lk="${k}" data-lv="${v}">${lv.l}</button>`;
+    }).join("")}</div>`).join("");
+    // 예상 성과
+    const curOts = planOts(items);
+    const curCpm = planCpm(total, curOts);
+    const sidos = {}; items.forEach((f) => { sidos[favRegionLabel(f).split(" ")[0]] = 1; });
+    const regionCount = Object.keys(sidos).length;
+    const areaKeys = crit.areaKeys || [];
+    let fit = null;
+    if (areaKeys.length && items.length) {
+      const hit = items.filter((f) => { const text = `${f.name || ""} ${f.area || ""} ${f.address || ""}`.toLowerCase(); return areaKeys.some((k) => text.includes(k.toLowerCase())); }).length;
+      fit = Math.round(hit / items.length * 100);
+    }
+    const headLabel = (crit.bizLabel || "맞춤") + (crit.tgtLabels.length ? " · " + crit.tgtLabels.slice(0, 3).join("·") + (crit.tgtLabels.length > 3 ? " 외" : "") : "");
+    // 선택 안의 커버·역할 = 출력 배지
+    const covLabel = (PLAN_COVERAGE.find((c) => c.k === curStrat.coverage) || {}).l || "";
+    const roleCount = {}; items.forEach((f) => { const r = planRole(f).k; roleCount[r] = (roleCount[r] || 0) + 1; });
+    const topRole = Object.keys(roleCount).sort((a, b) => roleCount[b] - roleCount[a])[0];
+    const roleLabel = (PLAN_ROLE_KEY.find((r) => r.k === topRole) || {}).l || "";
+    const kpiHtml = `<div class="map-plan-kpis">
+        <div class="map-plan-kpi"><span class="k">예상 ${AdPlay.esc(periodLabel(planEffDays))} 노출<em class="est">추정</em></span><span class="v">${planFmtEok(curOts)}</span><span class="d">유동 실측 기반</span></div>
+        <div class="map-plan-kpi"><span class="k">CPM<em class="est">환산</em></span><span class="v">${curCpm ? "₩" + Math.round(curCpm).toLocaleString() : "—"}</span><span class="d">노출 1,000당</span></div>
+        <div class="map-plan-kpi"><span class="k">커버리지<em class="est est-m">실측</em></span><span class="v">${regionCount}개 지역</span><span class="d">매체 ${items.length}곳</span></div>
+        <div class="map-plan-kpi"><span class="k">타깃 적합도<em class="est">추정</em></span><span class="v">${fit == null ? "—" : fit + "%"}</span><span class="d">${crit.bizLabel ? AdPlay.esc(crit.bizLabel) + " 상권" : "-"}</span></div>
+      </div>`;
+    inner.innerHTML =
+      `<div class="map-plan-result-head"><span>${AdPlay.esc(headLabel)} · ${items.length}곳</span>${covLabel ? `<span class="map-plan-prof"><em class="map-plan-cov">${AdPlay.esc(covLabel)}</em>${roleLabel ? ` <em class="map-plan-role r-${topRole}">${roleLabel}</em>` : ""}</span>` : ""}</div>` +
+      `<div class="map-plan-section-tag">추천(안) 선택 <span class="map-plan-tag-help">맞춤 vs AI 대안 — 클릭하면 아래가 그 안으로</span></div><div class="map-plan-scen">${anCards}</div>` +
+      `<div class="map-plan-section-tag">이 안 조정 <span class="map-plan-tag-help">원하는 방향 누르면 다시 추천</span></div><div class="map-plan-levers">${leverHtml}</div>` +
+      `<div class="map-plan-section-tag">예상 성과</div>${kpiHtml}` +
+      `<div class="map-plan-section-tag">추천 매체 ${items.length}곳 <span class="map-plan-tag-help">지도 ★로 추가(창 유지) · 체크 해제=제외 · ×=삭제</span></div>` +
+      favCompareTableHtml(allItems, { allClass: "map-plan-incl-all", inclAttr: "data-plan-incl", rmAttr: "data-plan-rm2", excluded: plannerExcluded }) +
+      (reco ? `<p class="map-fav-reco map-fav-reco--plan"><strong>추<br>천</strong><span class="map-fav-reco-body">${AdPlay.esc(reco)}</span></p>` : "");
+    // 안 선택(레버 초기화) / 레버 조정
+    inner.querySelectorAll("[data-an]").forEach((b) => b.addEventListener("click", () => { plannerAnKey = b.getAttribute("data-an"); plannerLever = {}; reapplyPlanner(bodyEl, footEl); }));
+    inner.querySelectorAll("[data-lk]").forEach((b) => b.addEventListener("click", () => {
+      const k = b.getAttribute("data-lk"); let v = b.getAttribute("data-lv"); if (k === "period") v = parseInt(v, 10);
+      if (String(plannerLever[k]) === String(v)) delete plannerLever[k]; else plannerLever[k] = v;
+      reapplyPlanner(bodyEl, footEl);
+    }));
+    // 매체별 역할 배지 + '직접추가' 배지를 각 행 매체 셀에 주입(플래너 전용 — ②관심매체 표는 미변경)
+    const byFav = {}; allItems.forEach((f) => { byFav[f.favId] = f; });
+    inner.querySelectorAll("[data-plan-incl]").forEach((cb) => {
+      const id = cb.getAttribute("data-plan-incl");
+      const f = byFav[id];
+      if (!f) return;
+      const tr = cb.closest("tr");
+      const tags = tr && tr.querySelector(".map-fav-media-tags");
+      if (!tags) return;
+      if (plannerAdded.has(id)) {
+        const ad = document.createElement("span");
+        ad.className = "map-plan-added";
+        ad.textContent = "직접추가";
+        tags.appendChild(ad);
+      }
+      const role = planRole(f);
+      const sp = document.createElement("span");
+      sp.className = "map-plan-role r-" + role.k;
+      sp.textContent = role.l;
+      sp.title = (PLAN_ROLE_KEY.find((r) => r.k === role.k) || {}).d || "";
+      tags.appendChild(sp);
+      // 1개월 미만인데 단기요율 없는 매체 → 금액은 월 비례 임시추정, '단기협의' 표시
+      if (planEffDays < 30 && !f.shortTerm && !f.isBus && !f.isElevator) {
+        const ng = document.createElement("span");
+        ng.className = "map-plan-negotiate";
+        ng.textContent = "단기협의";
+        tags.appendChild(ng);
+      }
+    });
+    // ① 플랜에서 빼기(×) — 이 추천안에서만 제외(재생성돼도 유지). ②관심매체는 그대로.
+    inner.querySelectorAll("[data-plan-rm2]").forEach((b) => b.addEventListener("click", () => {
+      const id = b.getAttribute("data-plan-rm2");
+      plannerExcluded.delete(id);
+      plannerAdded.delete(id);
+      plannerRemoved.add(id);
+      plannerSlugs = plannerSlugs.filter((s) => s !== id);
+      renderPlannerResult(bodyEl, footEl, info);
+    }));
+    inner.querySelectorAll("[data-plan-incl]").forEach((cb) => cb.addEventListener("change", () => {
+      const id = cb.getAttribute("data-plan-incl");
+      if (cb.checked) plannerExcluded.delete(id); else plannerExcluded.add(id);
+      renderPlannerResult(bodyEl, footEl, info);
+    }));
+    const inclAll = inner.querySelector(".map-plan-incl-all");
+    if (inclAll) inclAll.addEventListener("change", () => {
+      if (inclAll.checked) plannerExcluded.clear(); else allItems.forEach((f) => plannerExcluded.add(f.favId));
+      renderPlannerResult(bodyEl, footEl, info);
+    });
+    if (footEl) {
+      const svgDL = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>';
+      const svgPDF = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>';
+      const svgShare = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M16 6l-4-4-4 4M12 2v13"/></svg>';
+      // 하단 고정 영역: 미디어믹스 비중 + 정직한 데이터(한 줄) + 월 합계 + 받기 버튼 — 표를 스크롤해도 항상 보임
+      footEl.innerHTML =
+        `<div class="map-plan-foot-mix"><div class="map-fav-mix-head">매체 유형별 예산 비중</div><div class="map-fav-mix-bar">${mixBar}</div><div class="map-fav-mix-leg">${mixLeg}</div></div>` +
+        `<p class="map-plan-foot-note"><b>정직한 데이터</b> · 노출·CPM은 정부 유동 <b>실측 기반 추정치</b>(디지털 클릭과 다름). 매체별 상세·지역 분석은 <b>다운로드 결과물</b>에.</p>` +
+        `<div class="map-plan-foot-row">` +
+        `<div class="map-fav-total-row"><span>예상 ${AdPlay.esc(periodLabel(planEffDays))} 집행 합계${over ? ' · <b style="color:#cf3b3b">예산 초과</b>' : ""}</span><strong>${total ? AdPlay.formatKRW(total) + "~" : "상담 필요"}</strong></div>` +
+        `<button type="button" class="map-fav-download" data-plan-excel>${svgDL}다운로드(Excel)</button>` +
+        `<button type="button" class="map-fav-download" data-plan-pdf>${svgPDF}제안서(PDF)</button>` +
+        `<button type="button" class="map-fav-download" data-plan-maplink>${svgShare}지도링크 복사</button>` +
+        `<a class="map-fav-cta" href="estimate.html?intent=bundle&media=${items.map((f) => encodeURIComponent(f.favId)).join(",")}"><span>${items.length}개 매체로 상담신청</span></a>` +
+        `</div>`;
+      const q = (s) => footEl.querySelector(s);
+      if (q("[data-plan-excel]")) q("[data-plan-excel]").addEventListener("click", () => withPlannerData(downloadFavExcel));
+      if (q("[data-plan-pdf]")) q("[data-plan-pdf]").addEventListener("click", () => withPlannerData(openFavOnePager));
+      if (q("[data-plan-maplink]")) q("[data-plan-maplink]").addEventListener("click", () => withPlannerData(copyFavMapLink));
+    }
+  }
+  window.AdPlayPlanner = { render: renderPlannerInto };
   function openFavPanel() {
     if (!favPanel) return;
     renderFavPanel();
@@ -873,12 +1558,91 @@
 
   document.querySelectorAll("[data-fav-trigger]").forEach((el) => el.addEventListener("click", openFavPanel));
   document.addEventListener("gps:open-favorites", openFavPanel); // 서비스 도크 "관심매체 비교" → 실제 통합 패널 열기
+  // 플래너 열림/닫힘 시 지도 ★ 상태를 활성 수집함(플래너/관심매체) 기준으로 갱신
+  document.addEventListener("gps:planner-opened", updateFavoritesUI);
+  document.addEventListener("gps:planner-closed", updateFavoritesUI);
   // 패널 가장자리 화살표(map-rail-toggle.js)가 상세 열린 상태에서 누르면 → 목록 함께 펼치기/접기
   document.addEventListener("gp:toggle-list-panel", () => {
     panelsExpanded = !panelsExpanded;
     syncPanelMode();
   });
   if (favClose) favClose.addEventListener("click", closeFavPanel);
+  // 이동형 패널: 헤더를 끌어 위치 이동(데스크톱), 접기 토글. 지도는 가리지 않고 계속 탐색 가능.
+  const favHead = document.querySelector("#mapFavHead");
+  const favMin = document.querySelector("#mapFavMin");
+  const favSheet = favPanel && favPanel.querySelector(".map-fav-sheet");
+  if (favHead && favPanel) {
+    let favDrag = null;
+    favHead.addEventListener("pointerdown", (event) => {
+      if (event.target.closest("button")) return;
+      if (mobileLayoutQuery.matches) return;
+      const rect = favPanel.getBoundingClientRect();
+      favDrag = { dx: event.clientX - rect.left, dy: event.clientY - rect.top };
+      favPanel.style.right = "auto";
+      favPanel.style.left = rect.left + "px";
+      favPanel.style.top = rect.top + "px";
+      favHead.setPointerCapture(event.pointerId);
+      favHead.classList.add("is-grabbing");
+    });
+    favHead.addEventListener("pointermove", (event) => {
+      if (!favDrag) return;
+      const w = favPanel.offsetWidth;
+      const x = Math.max(6, Math.min(event.clientX - favDrag.dx, window.innerWidth - w - 6));
+      const y = Math.max(6, Math.min(event.clientY - favDrag.dy, window.innerHeight - 52));
+      favPanel.style.left = x + "px";
+      favPanel.style.top = y + "px";
+    });
+    const favDragEnd = () => { favDrag = null; favHead.classList.remove("is-grabbing"); };
+    favHead.addEventListener("pointerup", favDragEnd);
+    favHead.addEventListener("pointercancel", favDragEnd);
+  }
+  if (favMin && favSheet) {
+    const miIco = favMin.querySelector(".mi-ico");
+    const miLbl = favMin.querySelector(".mi-lbl");
+    favMin.addEventListener("click", () => {
+      const min = favSheet.classList.toggle("is-min");
+      if (miIco) miIco.textContent = min ? "▸" : "▾";
+      if (miLbl) miLbl.textContent = min ? "펼치기" : "접기";
+    });
+  }
+  // 크기 조절: 좌상단(nw)·우하단(se) 손잡이를 끌어 패널 크기 변경. nw는 반대편(우하단) 모서리를 고정한 채 리사이즈.
+  if (favSheet && favPanel) {
+    favSheet.querySelectorAll(".map-fav-resize").forEach((handle) => {
+      const dir = handle.dataset.resize || "";
+      const fromLeft = dir.indexOf("w") >= 0;
+      const fromTop = dir.indexOf("n") >= 0;
+      const hAxis = fromLeft || dir.indexOf("e") >= 0;
+      const vAxis = fromTop || dir.indexOf("s") >= 0;
+      let rsz = null;
+      handle.addEventListener("pointerdown", (event) => {
+        if (mobileLayoutQuery.matches) return;
+        event.preventDefault();
+        event.stopPropagation();
+        const rect = favSheet.getBoundingClientRect();
+        rsz = { x: event.clientX, y: event.clientY, w: rect.width, h: rect.height, left: rect.left, top: rect.top };
+        favPanel.style.right = "auto";
+        favPanel.style.left = rect.left + "px";
+        favPanel.style.top = rect.top + "px";
+        handle.setPointerCapture(event.pointerId);
+      });
+      handle.addEventListener("pointermove", (event) => {
+        if (!rsz) return;
+        const dx = event.clientX - rsz.x;
+        const dy = event.clientY - rsz.y;
+        const minW = 360, minH = 200;
+        const maxW = window.innerWidth - 40, maxH = window.innerHeight - 112;
+        const w = hAxis ? Math.max(minW, Math.min(fromLeft ? rsz.w - dx : rsz.w + dx, maxW)) : rsz.w;
+        const h = vAxis ? Math.max(minH, Math.min(fromTop ? rsz.h - dy : rsz.h + dy, maxH)) : rsz.h;
+        favSheet.style.width = w + "px";
+        favSheet.style.height = h + "px";
+        if (fromLeft) favPanel.style.left = (rsz.left + (rsz.w - w)) + "px";
+        if (fromTop) favPanel.style.top = (rsz.top + (rsz.h - h)) + "px";
+      });
+      const rszEnd = () => { rsz = null; };
+      handle.addEventListener("pointerup", rszEnd);
+      handle.addEventListener("pointercancel", rszEnd);
+    });
+  }
   if (favDownload) favDownload.addEventListener("click", downloadFavExcel);
   if (favShare) favShare.addEventListener("click", copyFavMapLink);
   // 공유 지도링크(?cart=)로 들어온 경우 데이터 로드 후 비교 패널을 자동으로 연다.
@@ -895,7 +1659,7 @@
     if (toggle) {
       event.preventDefault();
       event.stopPropagation();
-      toggleFavorite(toggle.dataset.favToggle);
+      activeToggle(toggle.dataset.favToggle);
       return;
     }
     const remove = event.target.closest("[data-fav-remove]");
@@ -2321,6 +3085,17 @@
   function itemHasShortTerm(item) {
     const list = (item && item.pricing) || [];
     return list.some((p) => p && p.shortTermKRW && Object.keys(p.shortTermKRW).length);
+  }
+  // 매체의 단기요율을 일수→최저가 맵으로 정규화: {1:원,3:원,7:원,15:원} (없으면 null). 플래너 기간 계산용.
+  function shortTermMin(item) {
+    const list = (item && item.pricing) || [];
+    const keys = { "1d": 1, "3d": 3, "7d": 7, "15d": 15 };
+    const out = {};
+    list.forEach((p) => {
+      const st = p && p.shortTermKRW; if (!st) return;
+      Object.keys(keys).forEach((k) => { if (st[k] != null) { const d = keys[k]; out[d] = (out[d] == null) ? st[k] : Math.min(out[d], st[k]); } });
+    });
+    return Object.keys(out).length ? out : null;
   }
 
   function mapCardDecisionSummary(item) {
