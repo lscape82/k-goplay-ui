@@ -304,6 +304,43 @@
     const idx = FAV_SIDO_ORDER.indexOf(sido);
     return String(idx < 0 ? 99 : idx).padStart(2, "0") + "_" + label;
   }
+  // ⑨ 매체 노출력 등급·키워드 배지 — 플래너/관심매체 리스트·매체 상세 공용.
+  //  원본 매체(mediaWithLocations)를 slug로 찾아 유형 내 상대등급까지 산출(1회 캐시).
+  let _mgRelMap = null;
+  function mgRelMap() {
+    if (_mgRelMap) return _mgRelMap;
+    _mgRelMap = {};
+    try {
+      if (window.MediaGrade && window.MediaGrade.assignRelativeGrades && typeof mediaWithLocations !== "undefined" && mediaWithLocations) {
+        window.MediaGrade.assignRelativeGrades(mediaWithLocations, { within: true }).forEach((s) => { _mgRelMap[s.item.slug] = s.g; });
+      }
+    } catch (e) {}
+    return _mgRelMap;
+  }
+  function gradeForFav(fav) {
+    if (!window.MediaGrade || !fav) return null;
+    const rm = mgRelMap();
+    if (rm[fav.favId]) return rm[fav.favId];
+    try {
+      const src = (typeof mediaWithLocations !== "undefined" && mediaWithLocations) ? mediaWithLocations.find((m) => m.slug === fav.favId) : null;
+      return window.MediaGrade.gradeMedia(src || { name: fav.name, category: fav.category, sizeText: fav.size, resolutionPx: fav.resolution, mediaType: fav.type, address: fav.address, areaName: fav.area });
+    } catch (e) { return null; }
+  }
+  // 배지 칩 HTML — 등급 + 3계열(스펙/노출성격/타깃). compact=true면 타깃만 생략 없이 상위 일부만.
+  function gradeBadgesHtml(g, opt) {
+    if (!g) return "";
+    opt = opt || {};
+    const chip = (cls, txt) => `<span class="mg-badge ${cls}">${AdPlay.esc(txt)}</span>`;
+    const gr = g.relGrade || g.grade;
+    let html = "";
+    // 상위% 미노출(결정) — 등급 라벨만 + 산정 기준 툴팁. 정확한 백분위는 산정 기준 페이지에서 확인.
+    if (gr && opt.grade !== false) html += `<span class="mg-badge mg-grade" title="유형(카테고리) 내 노출력 상대평가 — 상위 7%=SSA·25%=SA·60%=A·90%=B. 국토교통부·중소벤처기업부 등 공공데이터와 매체 속성 기반 추정(β). 산정 기준: grade-method.html">${AdPlay.esc(gr)}</span>`;
+    (g.physBadges || []).forEach((b) => { html += chip("mg-spec", b); });
+    (g.ctxBadges || []).forEach((b) => { html += chip("mg-ctx", b); });
+    (g.audienceBadges || []).forEach((b) => { html += chip("mg-aud", b); });
+    return html ? `<span class="map-fav-media-grades">${html}</span>` : "";
+  }
+
   // 관심매체 비교 표(썸네일·규격·유형·보장횟수·비용… 지역그룹)를 생성 — 관심매체(②)와 AI 플래너(①)가 공용으로 재사용.
   // 체크/삭제 data 속성과 전체선택 클래스를 opts 로 분기해 두 메뉴가 서로 간섭하지 않게 한다.
   function favCompareTableHtml(items, opts) {
@@ -329,7 +366,7 @@
     const rowHtml = (fav) => `
               <tr class="${excluded.has(fav.favId) ? "is-excluded" : ""}">
                 <td class="map-fav-no-cell"><input type="checkbox" class="map-fav-incl" ${inclAttr}="${AdPlay.esc(fav.favId)}"${excluded.has(fav.favId) ? "" : " checked"} aria-label="${AdPlay.esc(fav.name)} 상담 대상 포함"></td>
-                <th class="map-fav-rowhead"><span class="map-fav-media-cell">${thumb(fav)}<span class="map-fav-media-info"><b>${AdPlay.esc(fav.name)}</b><span class="map-fav-media-addr">${AdPlay.esc(fav.address)}</span><span class="map-fav-media-tags">${[fav.size, /\d\s*[x×]\s*\d/.test(fav.resolution) ? fav.resolution + "px" : fav.resolution].filter((v) => v && v !== "-" && v !== "확인 필요").map((v) => `<span>${AdPlay.esc(v)}</span>`).join("")}</span></span></span></th>
+                <th class="map-fav-rowhead"><span class="map-fav-media-cell">${thumb(fav)}<span class="map-fav-media-info"><b>${AdPlay.esc(fav.name)}</b><span class="map-fav-media-addr">${AdPlay.esc(fav.address)}</span><span class="map-fav-media-tags">${[fav.size, /\d\s*[x×]\s*\d/.test(fav.resolution) ? fav.resolution + "px" : fav.resolution].filter((v) => v && v !== "-" && v !== "확인 필요").map((v) => `<span>${AdPlay.esc(v)}</span>`).join("")}</span>${gradeBadgesHtml(gradeForFav(fav))}</span></span></th>
                 ${compareRows.map((row) => `<td class="${row.className || ""}">${row.html ? row.value(fav) : AdPlay.esc(row.value(fav))}</td>`).join("")}
                 <td class="map-fav-remove-cell"><button type="button" class="map-fav-remove" ${rmAttr}="${AdPlay.esc(fav.favId)}" aria-label="${AdPlay.esc(fav.name)} 제거">×</button></td>
               </tr>`;
@@ -511,6 +548,18 @@
       s.src = "https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js";
       s.onload = () => (window.XLSX ? resolve(window.XLSX) : reject(new Error("XLSX 로드 실패")));
       s.onerror = () => reject(new Error("XLSX 스크립트 요청 실패"));
+      document.head.appendChild(s);
+    });
+  }
+
+  // ExcelJS — 셀 서식(색·테두리·숫자서식)이 되는 라이브러리. 제안서급 '갖춘 서식' 엑셀용. 지연 로드.
+  function loadExcelJS() {
+    if (window.ExcelJS) return Promise.resolve(window.ExcelJS);
+    return new Promise((resolve, reject) => {
+      const s = document.createElement("script");
+      s.src = "https://cdnjs.cloudflare.com/ajax/libs/exceljs/4.4.0/exceljs.min.js";
+      s.onload = () => (window.ExcelJS ? resolve(window.ExcelJS) : reject(new Error("ExcelJS 로드 실패")));
+      s.onerror = () => reject(new Error("ExcelJS 스크립트 요청 실패"));
       document.head.appendChild(s);
     });
   }
@@ -773,6 +822,26 @@
   }
   function planOts(items) { return items.reduce((s, f) => s + planExposure(f, planEffDays), 0); }
   function planCpm(cost, ots) { return ots ? cost / (ots / 1000) : null; }
+  // 매체유형별 평균 노출 빈도(1인) 가정 — 생활매체는 반복↑, 대형 전광판은 반복↓. 도달·빈도 분해용(추정).
+  function planFreqFactor(f) {
+    const t = `${f.type || ""} ${f.name || ""}`;
+    if (/엘리베이터|엘베|타운보드/.test(t)) return 8;
+    if (/편의점/.test(t)) return 4;
+    if (/지하철|철도/.test(t)) return 2.5;
+    if (/버스|쉘터/.test(t)) return 2;
+    if (/공항|터미널/.test(t)) return 1.3;
+    return 1.5; // 전광판·빌보드 등
+  }
+  function planReachOf(f, days) { const ff = planFreqFactor(f) || 1; return planExposure(f, days) / ff; }
+  // 플랜 집계 — 노출(OTS)·순도달(중복할인)·평균빈도·금액·CPM. 모두 '추정'.
+  function planAggregate(items, days) {
+    const ots = items.reduce((s, f) => s + planExposure(f, days), 0);
+    const sumReach = items.reduce((s, f) => s + planReachOf(f, days), 0);
+    const dedup = items.length > 1 ? 0.85 : 1; // 매체 간 중복 보정(추정)
+    const reach = sumReach * dedup;
+    const cost = items.reduce((s, f) => s + planPriceForDays(f, days), 0);
+    return { ots, reach, freq: reach ? ots / reach : 0, cost, cpm: planCpm(cost, ots) };
+  }
   // 기간(일) 노출 추정 = 월 노출 × 일수/30
   function planExposure(f, days) { return planMonthlyExposure(f) * ((days || 30) / 30); }
   // 단기요율(구간 1/3/7/15 + 월=30) 사이를 선형 보간해 임의 일수 금액 추정. 표에 없는 10일·5일 등 감안.
@@ -930,6 +999,111 @@
     return crit;
   }
   function planIncludedItems() { return itemsForSlugs(plannerSlugs).filter((f) => !plannerExcluded.has(f.favId)); }
+  // AI 추천 미디어플랜 엑셀 — 요약·매체리스트·믹스/역할·기간시나리오(가공 지표 포함). 입금가·마진 미표시.
+  async function downloadPlanExcel() {
+    const items = planIncludedItems();
+    if (!items.length) { window.alert("추천 매체가 없습니다."); return; }
+    const crit = planCriteria();
+    const strat = activeStrat();
+    const days = strat.period || planEffDays || 30;
+    const agg = planAggregate(items, days);
+    const covLabel = (PLAN_COVERAGE.find((c) => c.k === strat.coverage) || {}).l || "";
+    const anLabel = (planAns().find((a) => a.k === plannerAnKey) || {}).label || "맞춤 추천안";
+    const areaKeys = (crit.areaKeys || []).map((k) => k.toLowerCase());
+    const fitOf = (f) => { const t = `${f.name || ""} ${f.area || ""} ${f.address || ""}`.toLowerCase(); return areaKeys.some((k) => t.indexOf(k) >= 0); };
+    const fit = (areaKeys.length && items.length) ? Math.round(items.filter(fitOf).length / items.length * 100) : null;
+    const supply = Math.round(agg.cost), vat = Math.round(agg.cost * 0.1), total = supply + vat;
+    const footOf = (f) => f.foot500Num || f.subwayNum || f.busNum || "";
+    const reasonOf = (f) => [planRole(f).l, fitOf(f) ? "타깃 지역 접점" : "", f.shortTerm ? "단기 집행 가능" : ""].filter(Boolean).join(" · ");
+    try {
+      const ExcelJS = await loadExcelJS();
+      const wb = new ExcelJS.Workbook(); wb.creator = "광고플레이";
+      const NAVY = "FF2540EA", HEAD = "FFFFFFFF", SECT = "FFE8ECFF", ZEBRA = "FFF5F7FD", LINE = "FFD9DDE4", MUTED = "FF667085";
+      const WON = '#,##0', NUM = '#,##0', FRE = '0.0';
+      const edge = { style: "thin", color: { argb: LINE } };
+      const box = { top: edge, left: edge, bottom: edge, right: edge };
+      const headerRow = (rw) => { rw.eachCell((cc) => { cc.fill = { type: "pattern", pattern: "solid", fgColor: { argb: NAVY } }; cc.font = { bold: true, color: { argb: HEAD }, size: 10 }; cc.alignment = { vertical: "middle", horizontal: "center", wrapText: true }; cc.border = box; }); rw.height = 26; };
+      const sect = (ws, a1, a2, text) => { ws.mergeCells(a1 + ":" + a2); const cc = ws.getCell(a1); cc.value = text; cc.font = { bold: true, color: { argb: NAVY }, size: 11 }; cc.fill = { type: "pattern", pattern: "solid", fgColor: { argb: SECT } }; ws.getRow(cc.row).height = 20; };
+
+      // ===== 1. 표지·요약 =====
+      const s1 = wb.addWorksheet("표지·요약", { views: [{ showGridLines: false }] });
+      s1.columns = [{ width: 30 }, { width: 26 }, { width: 24 }, { width: 22 }];
+      s1.mergeCells("A1:D1"); let c = s1.getCell("A1"); c.value = "AI 추천 미디어플랜"; c.font = { bold: true, size: 20, color: { argb: NAVY } }; s1.getRow(1).height = 32;
+      s1.mergeCells("A2:D2"); c = s1.getCell("A2"); c.value = `${anLabel}${covLabel ? " · " + covLabel : ""}   ·   ${crit.bizLabel || "맞춤"}   ·   ${periodLabel(days)}`; c.font = { color: { argb: MUTED }, size: 11 };
+      let r = 4; sect(s1, "A" + r, "D" + r, "■ 캠페인 조건"); r++;
+      [["업종", crit.bizLabel || "-"], ["타깃", (crit.tgtLabels || []).join(", ") || "-"], ["지역", plannerRegions.length ? plannerRegions.map(regionTokenLabel).join(", ") : "전국"], ["집행 기간", periodLabel(days)], ["예산 상한", plannerBudget ? plannerBudget.toLocaleString() + "만원" : "제한 없음"], ["추천안", anLabel]].forEach(([k, v]) => { const rr = s1.getRow(r++); rr.getCell(1).value = k; rr.getCell(1).font = { bold: true, color: { argb: MUTED } }; s1.mergeCells(`B${rr.number}:D${rr.number}`); rr.getCell(2).value = v; });
+      r++; sect(s1, "A" + r, "D" + r, "■ 예상 성과 (정부 유동 실측 기반 추정)"); r++;
+      const kpis = [["예상 도달(명)", Math.round(agg.reach)], ["평균 빈도(회/1인)", agg.freq ? Number(agg.freq.toFixed(1)) : ""], ["예상 노출/OTS(명)", Math.round(agg.ots)], ["CPM(원·1,000노출)", agg.cpm ? Math.round(agg.cpm) : ""], ["타깃 적합도(%)", fit == null ? "" : fit], ["매체 / 지역 수", items.length + " / " + new Set(items.map((f) => sidoShort(f.address))).size]];
+      for (let i = 0; i < kpis.length; i += 2) { const rr = s1.getRow(r++); rr.height = 20; [[1, kpis[i]], [3, kpis[i + 1]]].forEach(([col, kp]) => { rr.getCell(col).value = kp[0]; rr.getCell(col).font = { bold: true, color: { argb: MUTED }, size: 10 }; const vc = rr.getCell(col + 1); vc.value = kp[1]; vc.font = { bold: true, size: 13, color: { argb: NAVY } }; if (typeof kp[1] === "number") vc.numFmt = NUM; }); }
+      r++; sect(s1, "A" + r, "D" + r, "■ 집행 금액 (부가세 별도, 추정)"); r++;
+      [["광고비 (공급가)", supply, false], ["부가세 10%", vat, false], ["집행 총액 (VAT 포함)", total, true]].forEach(([k, v, bold]) => { const rr = s1.getRow(r++); rr.getCell(1).value = k; rr.getCell(1).font = { bold: !!bold, color: { argb: bold ? NAVY : MUTED } }; s1.mergeCells(`B${rr.number}:C${rr.number}`); const vc = rr.getCell(2); vc.value = v; vc.numFmt = WON; vc.alignment = { horizontal: "right" }; if (bold) vc.font = { bold: true, size: 13, color: { argb: NAVY } }; rr.getCell(4).value = "원"; });
+      r++; s1.mergeCells("A" + r + ":D" + r); c = s1.getCell("A" + r); c.value = "※ 제작·출력·설치비는 매체별 별도 견적. ※ 노출·도달·빈도·CPM은 정부 유동 실측 기반 추정치로 디지털 클릭·전환과 다르며 실제 집행 시 변동될 수 있습니다. ※ 노출력 등급(β)은 국토교통부·중소벤처기업부 등 공공데이터와 매체 규격·형태·설치·접점 지표 기반 자동 산정 시범값(유형 내 상대평가, 실측 튜닝 전). 산정 기준: grade-method.html. 입금가·마진 미표시."; c.font = { color: { argb: MUTED }, size: 9, italic: true }; c.alignment = { wrapText: true }; s1.getRow(r).height = 40;
+      r += 2; s1.mergeCells("A" + r + ":D" + r); c = s1.getCell("A" + r); c.value = "복제 불가 · 저작권자 © 광고플레이(주) (Adplay Korea Co., Ltd.) All Rights Reserved."; c.font = { color: { argb: NAVY }, size: 9, bold: true }; c.alignment = { horizontal: "center" };
+
+      // ===== 2. 매체 상세 =====
+      const s2 = wb.addWorksheet("매체 상세", { views: [{ state: "frozen", ySplit: 1 }] });
+      var relMap = {};
+      try { if (window.MediaGrade && window.MediaGrade.assignRelativeGrades && typeof mediaWithLocations !== "undefined" && mediaWithLocations) window.MediaGrade.assignRelativeGrades(mediaWithLocations, { within: true }).forEach(function (s) { relMap[s.item.slug] = s.g; }); } catch (e) {}
+      var gradeOf = function (f) { if (relMap[f.favId]) return relMap[f.favId]; if (!window.MediaGrade) return null; try { return window.MediaGrade.gradeMedia({ category: f.category, sizeText: f.size, mediaType: f.type, address: f.address, areaName: f.area }); } catch (e) { return null; } };
+      s2.addRow(["No", "지역", "매체명", "유형", "역할", "규격", "일 유동(명)", "예상 노출", "예상 도달", "빈도(회)", "CPM(원)", `${periodLabel(days)} 금액(원)`, "단기", "선정 이유", "노출력 등급(β)", "접점 유형", "특성 키워드"]); headerRow(s2.getRow(1));
+      s2.columns = [5, 9, 24, 14, 10, 14, 11, 12, 11, 8, 10, 15, 7, 30, 13, 14, 26].map((w) => ({ width: w }));
+      items.forEach((f, i) => {
+        const exp = planExposure(f, days), reach = planReachOf(f, days), price = planPriceForDays(f, days);
+        const g = gradeOf(f);
+        const row = s2.addRow([i + 1, sidoShort(f.address), f.name, f.type, planRole(f).l, f.size, footOf(f), Math.round(exp), Math.round(reach), Number(planFreqFactor(f).toFixed(1)), exp ? Math.round(price / (exp / 1000)) : "", Math.round(price), f.shortTerm ? "가능" : "협의", reasonOf(f), g ? (g.relGrade || g.grade) : "-", g ? g.context.label : "-", g ? g.badges.join(" · ") : ""]);
+        row.eachCell((cc, col) => { cc.border = box; if (!cc.font) cc.font = { size: 9.5 }; if (col >= 7 && col <= 12) { cc.numFmt = col === 10 ? FRE : NUM; cc.alignment = { horizontal: "right" }; } if (col === 15 && cc.value && cc.value !== "-") { cc.font = { bold: true, color: { argb: NAVY }, size: 9.5 }; cc.alignment = { horizontal: "center" }; } });
+        if (i % 2) row.eachCell((cc) => { if (!cc.fill) cc.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ZEBRA } }; });
+      });
+      const totR = s2.addRow(["", "합계", `${items.length}개 매체`, "", "", "", "", Math.round(agg.ots), Math.round(agg.reach), agg.freq ? Number(agg.freq.toFixed(1)) : "", agg.cpm ? Math.round(agg.cpm) : "", supply, "", "VAT 별도"]);
+      totR.eachCell((cc, col) => { cc.font = { bold: true, color: { argb: NAVY } }; cc.border = box; if (col >= 8 && col <= 12) { cc.numFmt = col === 10 ? FRE : NUM; cc.alignment = { horizontal: "right" }; } });
+
+      // ===== 3. 안별 구성 (3안 비교 + 포함 매트릭스) =====
+      const s3 = wb.addWorksheet("안별 구성");
+      s3.columns = [{ width: 22 }, { width: 26 }, { width: 11 }, { width: 9 }, { width: 13 }, { width: 12 }, { width: 15 }];
+      const savedEff = planEffDays;
+      const ans = planAns().map((a) => { const sl = buildPlanSlugs(crit, a, 8); const its = itemsForSlugs(sl); return { a, sl, its, ag: planAggregate(its, a.period) }; });
+      planEffDays = savedEff;
+      s3.mergeCells("A1:G1"); c = s3.getCell("A1"); c.value = "추천안 3종 비교"; c.font = { bold: true, size: 14, color: { argb: NAVY } }; s3.getRow(1).height = 24;
+      s3.addRow([]); s3.addRow(["추천안", "전략", "기간", "매체 수", "예상 노출", "예상 도달", "집행 금액(원)"]); headerRow(s3.getRow(3));
+      ans.forEach(({ a, its, ag }) => { const row = s3.addRow([a.label, a.note, periodLabel(a.period), its.length, Math.round(ag.ots), Math.round(ag.reach), Math.round(ag.cost)]); row.eachCell((cc, col) => { cc.border = box; if (!cc.font) cc.font = { size: 9.5 }; if (col >= 4) { cc.numFmt = NUM; cc.alignment = { horizontal: "right" }; } }); if (a.k === plannerAnKey) row.eachCell((cc) => { cc.font = { bold: true, color: { argb: NAVY }, size: 9.5 }; }); });
+      s3.addRow([]); const mt = s3.addRow(["매체별 포함 (● = 해당 안에 포함)"]); s3.mergeCells(`A${mt.number}:G${mt.number}`); mt.getCell(1).font = { bold: true, color: { argb: NAVY } }; mt.getCell(1).fill = { type: "pattern", pattern: "solid", fgColor: { argb: SECT } };
+      const uni = []; ans.forEach(({ sl }) => sl.forEach((s) => { if (uni.indexOf(s) < 0) uni.push(s); }));
+      s3.addRow(["매체명", "유형", ans[0].a.label, ans[1].a.label, ans[2].a.label]); headerRow(s3.lastRow);
+      uni.forEach((slug) => { const f = (itemsForSlugs([slug]) || [])[0]; if (!f) return; const row = s3.addRow([f.name, f.type, ans[0].sl.indexOf(slug) >= 0 ? "●" : "–", ans[1].sl.indexOf(slug) >= 0 ? "●" : "–", ans[2].sl.indexOf(slug) >= 0 ? "●" : "–"]); row.eachCell((cc, col) => { cc.border = box; if (col >= 3) { cc.alignment = { horizontal: "center" }; cc.font = { size: 11, bold: cc.value === "●", color: { argb: cc.value === "●" ? NAVY : LINE } }; } else cc.font = { size: 9.5 }; }); });
+
+      // 안별 합계·KPI (● 매트릭스 열에 정렬)
+      var s3sum = function (label, vals, fmt) { var row = s3.addRow([label, ""].concat(vals)); row.eachCell(function (cc, col) { cc.border = box; if (col === 1) cc.font = { bold: true, color: { argb: NAVY }, size: 9.5 }; else if (col >= 3) { cc.alignment = { horizontal: "center" }; cc.font = { bold: true, size: 9.5 }; if (fmt) cc.numFmt = NUM; } }); return row; };
+      s3.addRow([]); headerRow(s3.addRow(["안별 합계·KPI", "", ans[0].a.label, ans[1].a.label, ans[2].a.label]));
+      s3sum("매체 수", ans.map(function (x) { return x.its.length; }), true);
+      s3sum("집행 금액(원)", ans.map(function (x) { return Math.round(x.ag.cost); }), true);
+      s3sum("예상 노출(명)", ans.map(function (x) { return Math.round(x.ag.ots); }), true);
+      s3sum("예상 도달(명)", ans.map(function (x) { return Math.round(x.ag.reach); }), true);
+      s3sum("CPM(원)", ans.map(function (x) { return x.ag.cpm ? Math.round(x.ag.cpm) : ""; }), true);
+
+      // ===== 4. 믹스·역할 =====
+      const s4 = wb.addWorksheet("믹스·역할");
+      s4.columns = [{ width: 18 }, { width: 15 }, { width: 10 }, { width: 24 }];
+      const byType = {}, byRole = {};
+      items.forEach((f) => { const t = f.type || "기타"; byType[t] = (byType[t] || 0) + planPriceForDays(f, days); const ro = planRole(f).l; byRole[ro] = (byRole[ro] || 0) + 1; });
+      const totalCost = agg.cost || 1;
+      s4.mergeCells("A1:D1"); c = s4.getCell("A1"); c.value = "■ 유형별 예산 믹스"; c.font = { bold: true, color: { argb: NAVY }, size: 12 };
+      s4.addRow(["매체 유형", "금액(원)", "비중(%)", "비중 막대"]); headerRow(s4.getRow(2));
+      Object.keys(byType).sort((a, b) => byType[b] - byType[a]).forEach((t) => { const pv = Math.round(byType[t] / totalCost * 100); const row = s4.addRow([t, Math.round(byType[t]), pv, "█".repeat(Math.max(1, Math.round(pv / 5)))]); row.getCell(2).numFmt = WON; row.getCell(2).alignment = { horizontal: "right" }; row.getCell(3).alignment = { horizontal: "right" }; row.getCell(4).font = { color: { argb: NAVY } }; row.eachCell((cc) => cc.border = box); });
+      s4.addRow([]); const rh = s4.addRow(["■ 역할별 분포"]); s4.mergeCells(`A${rh.number}:D${rh.number}`); rh.getCell(1).font = { bold: true, color: { argb: NAVY }, size: 12 };
+      s4.addRow(["역할", "매체 수", "비중 막대", ""]); headerRow(s4.lastRow);
+      Object.keys(byRole).forEach((ro) => { const row = s4.addRow([ro, byRole[ro], "█".repeat(Math.max(1, byRole[ro])), ""]); row.getCell(2).alignment = { horizontal: "right" }; row.getCell(3).font = { color: { argb: NAVY } }; [1, 2, 3].forEach((col) => row.getCell(col).border = box); });
+
+      // ===== 5. 기간 시나리오 =====
+      const s5 = wb.addWorksheet("기간 시나리오");
+      s5.columns = [{ width: 12 }, { width: 9 }, { width: 14 }, { width: 13 }, { width: 15 }, { width: 11 }];
+      s5.mergeCells("A1:F1"); c = s5.getCell("A1"); c.value = "■ 집행 기간별 성과 시나리오 (추정)"; c.font = { bold: true, color: { argb: NAVY }, size: 12 };
+      s5.addRow(["집행 기간", "매체 수", "예상 노출", "예상 도달", "집행 금액(원)", "CPM(원)"]); headerRow(s5.getRow(2));
+      [15, 30, 90].forEach((d) => { const a = planAggregate(items, d); const row = s5.addRow([periodLabel(d), items.length, Math.round(a.ots), Math.round(a.reach), Math.round(a.cost), a.cpm ? Math.round(a.cpm) : ""]); row.eachCell((cc, col) => { cc.border = box; if (col >= 3) { cc.numFmt = NUM; cc.alignment = { horizontal: "right" }; } if (d === days) cc.font = { bold: true, color: { argb: NAVY } }; }); });
+
+      const buf = await wb.xlsx.writeBuffer();
+      saveBlob(new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" }), `AI추천_미디어플랜_${(crit.bizLabel || "맞춤")}.xlsx`);
+    } catch (e) { console.warn("plan xlsx 실패", e); window.alert("엑셀 생성에 실패했습니다."); }
+  }
   // 받기(엑셀/PPT/지도링크)는 ②의 검증된 함수를 그대로 쓰되, 호출 순간만 데이터를 플래너 것으로 바꿔치기 후 복원.
   function withPlannerData(fn) {
     const savedFav = favorites.slice();
@@ -1089,9 +1263,10 @@
       const on = String(plannerLever[k]) === String(v);
       return `<button type="button" class="map-plan-lever${on ? " is-on" : ""}" data-lk="${k}" data-lv="${v}">${lv.l}</button>`;
     }).join("")}</div>`).join("");
-    // 예상 성과
-    const curOts = planOts(items);
-    const curCpm = planCpm(total, curOts);
+    // 예상 성과 — 도달·빈도 가공(추정)
+    const agg = planAggregate(items, planEffDays);
+    const curOts = agg.ots;
+    const curCpm = agg.cpm;
     const sidos = {}; items.forEach((f) => { sidos[favRegionLabel(f).split(" ")[0]] = 1; });
     const regionCount = Object.keys(sidos).length;
     const areaKeys = crit.areaKeys || [];
@@ -1107,16 +1282,30 @@
     const topRole = Object.keys(roleCount).sort((a, b) => roleCount[b] - roleCount[a])[0];
     const roleLabel = (PLAN_ROLE_KEY.find((r) => r.k === topRole) || {}).l || "";
     const kpiHtml = `<div class="map-plan-kpis">
-        <div class="map-plan-kpi"><span class="k">예상 ${AdPlay.esc(periodLabel(planEffDays))} 노출<em class="est">추정</em></span><span class="v">${planFmtEok(curOts)}</span><span class="d">유동 실측 기반</span></div>
+        <div class="map-plan-kpi"><span class="k">예상 도달<em class="est">추정</em></span><span class="v">${agg.reach ? planFmtEok(agg.reach) : "—"}</span><span class="d">노출 ${planFmtEok(curOts)} · ${AdPlay.esc(periodLabel(planEffDays))}</span></div>
+        <div class="map-plan-kpi"><span class="k">평균 빈도<em class="est">추정</em></span><span class="v">${agg.freq ? agg.freq.toFixed(1) + "회" : "—"}</span><span class="d">1인 평균 노출</span></div>
         <div class="map-plan-kpi"><span class="k">CPM<em class="est">환산</em></span><span class="v">${curCpm ? "₩" + Math.round(curCpm).toLocaleString() : "—"}</span><span class="d">노출 1,000당</span></div>
-        <div class="map-plan-kpi"><span class="k">커버리지<em class="est est-m">실측</em></span><span class="v">${regionCount}개 지역</span><span class="d">매체 ${items.length}곳</span></div>
-        <div class="map-plan-kpi"><span class="k">타깃 적합도<em class="est">추정</em></span><span class="v">${fit == null ? "—" : fit + "%"}</span><span class="d">${crit.bizLabel ? AdPlay.esc(crit.bizLabel) + " 상권" : "-"}</span></div>
+        <div class="map-plan-kpi"><span class="k">타깃 적합도<em class="est">추정</em></span><span class="v">${fit == null ? "—" : fit + "%"}</span><span class="d">${regionCount}개 지역 · ${items.length}곳</span></div>
       </div>`;
+    // 1개월 샘플 믹스 — 목적(역할)별 대표 매체 1곳씩 추린 "즉시 제안" 조합 예시
+    const smByRole = {};
+    items.forEach((f) => { const rk = planRole(f).k; const gg = gradeForFav(f); const sc = gg ? gg.score : 0; if (!smByRole[rk] || sc > smByRole[rk].sc) smByRole[rk] = { fav: f, g: gg, sc: sc }; });
+    const smMix = ["impact", "reach", "freq", "nudge"].filter((k) => smByRole[k]).map((k) => ({ role: k, fav: smByRole[k].fav, g: smByRole[k].g }));
+    const smTotal = smMix.reduce((s, m) => s + (m.fav.monthly || 0), 0);
+    const smMoney = (v) => v ? (v >= 10000 ? planFmtEok(v) + "원" : v.toLocaleString() + "원") : "상담";
+    const sampleMixHtml = smMix.length >= 2 ? `<div class="map-plan-samplemix">
+        ${smMix.map((m) => { const rl = (PLAN_ROLE_KEY.find((r) => r.k === m.role) || {}).l || ""; return `<div class="sm-row">
+          <span class="sm-role r-${m.role}">${AdPlay.esc(rl)}</span>
+          <span class="sm-body"><b>${AdPlay.esc(m.fav.name)}</b><span class="sm-badges">${gradeBadgesHtml(m.g)}</span></span>
+          <span class="sm-price">${m.fav.monthly ? "월 " + smMoney(m.fav.monthly) : "상담"}</span></div>`; }).join("")}
+        <div class="sm-foot"><span>샘플 합계 <em>월 · VAT 별도</em></span><b>${smTotal ? planFmtEok(smTotal) + "원~" : "상담"}</b></div>
+      </div>` : "";
     inner.innerHTML =
       `<div class="map-plan-result-head"><span>${AdPlay.esc(headLabel)} · ${items.length}곳</span>${covLabel ? `<span class="map-plan-prof"><em class="map-plan-cov">${AdPlay.esc(covLabel)}</em>${roleLabel ? ` <em class="map-plan-role r-${topRole}">${roleLabel}</em>` : ""}</span>` : ""}</div>` +
       `<div class="map-plan-section-tag">추천(안) 선택 <span class="map-plan-tag-help">맞춤 vs AI 대안 — 클릭하면 아래가 그 안으로</span></div><div class="map-plan-scen">${anCards}</div>` +
       `<div class="map-plan-section-tag">이 안 조정 <span class="map-plan-tag-help">원하는 방향 누르면 다시 추천</span></div><div class="map-plan-levers">${leverHtml}</div>` +
       `<div class="map-plan-section-tag">예상 성과</div>${kpiHtml}` +
+      (sampleMixHtml ? `<div class="map-plan-section-tag">1개월 샘플 믹스 <span class="map-plan-tag-help">목적별 대표 매체 조합 — 즉시 제안용</span></div>${sampleMixHtml}` : "") +
       `<div class="map-plan-section-tag">추천 매체 ${items.length}곳 <span class="map-plan-tag-help">지도 ★로 추가(창 유지) · 체크 해제=제외 · ×=삭제</span></div>` +
       favCompareTableHtml(allItems, { allClass: "map-plan-incl-all", inclAttr: "data-plan-incl", rmAttr: "data-plan-rm2", excluded: plannerExcluded }) +
       (reco ? `<p class="map-fav-reco map-fav-reco--plan"><strong>추<br>천</strong><span class="map-fav-reco-body">${AdPlay.esc(reco)}</span></p>` : "");
@@ -1191,7 +1380,7 @@
         `<a class="map-fav-cta" href="estimate.html?intent=bundle&media=${items.map((f) => encodeURIComponent(f.favId)).join(",")}"><span>${items.length}개 매체로 상담신청</span></a>` +
         `</div>`;
       const q = (s) => footEl.querySelector(s);
-      if (q("[data-plan-excel]")) q("[data-plan-excel]").addEventListener("click", () => withPlannerData(downloadFavExcel));
+      if (q("[data-plan-excel]")) q("[data-plan-excel]").addEventListener("click", () => downloadPlanExcel());
       if (q("[data-plan-pdf]")) q("[data-plan-pdf]").addEventListener("click", () => withPlannerData(openFavOnePager));
       if (q("[data-plan-maplink]")) q("[data-plan-maplink]").addEventListener("click", () => withPlannerData(copyFavMapLink));
     }
@@ -2823,6 +3012,14 @@
         <section class="map-detail-section map-detail-selling">
           <h3>매체 노출 포인트</h3>
           <p class="map-detail-copy">${AdPlay.esc(mediaSellingPoint(item))}</p>
+          ${(function () {
+            const g = mgRelMap()[item.slug] || (window.MediaGrade ? window.MediaGrade.gradeMedia(item) : null);
+            if (!g) return "";
+            const chips = gradeBadgesHtml(g);
+            const cau = (g.cautions && g.cautions.length) ? `<p class="map-detail-cautions">※ ${g.cautions.map(AdPlay.esc).join(" · ")}</p>` : "";
+            const basis = `<p class="map-grades-basis">유형 내 노출력 지표(규격·형태·설치·노출성격·송출) 상대평가 · 국토교통부·중소벤처기업부 등 <strong>공공데이터</strong> 기반 추정(β) · <a href="grade-method.html" target="_blank" rel="noopener">등급 산정 기준·지표 전체 보기</a></p>`;
+            return chips ? `<div class="map-detail-grades"><p class="map-grades-cap">노출력 등급·특성 <em>β</em></p>${chips}${cau}${basis}</div>` : "";
+          })()}
           ${detailAudience(item) ? `<div class="map-detail-audience-box">
             <p class="map-audience-cap">이 앞을 지나는 주 방문층</p>
             <p class="map-detail-audience-line">${AdPlay.esc(detailAudience(item))}</p>

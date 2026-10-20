@@ -366,6 +366,37 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
 .map-fav-media-addr { color: #64748b; font-size: 11px; font-weight: 500; line-height: 1.35; }
 .map-fav-media-tags { display: flex; flex-wrap: wrap; justify-content: flex-start; gap: 4px; margin-top: 1px; }
 .map-fav-media-tags span { display: inline-flex; align-items: center; padding: 1px 6px; border-radius: 5px; background: #eef2f7; color: #475569; font-size: 10px; font-weight: 500; white-space: nowrap; }
+/* ⑨ 매체 노출력 등급·키워드 배지 (스펙=회색 / 노출성격=네이비 / 타깃=민트 / 등급=진네이비칩) */
+.map-fav-media-grades { display: flex; flex-wrap: wrap; gap: 3px; margin-top: 3px; }
+.map-fav-media-grades .mg-badge { display: inline-flex; align-items: center; padding: 1px 6px; border-radius: 999px; font-size: 9.5px; font-weight: 700; line-height: 1.5; letter-spacing: -.2px; white-space: nowrap; }
+.mg-badge.mg-grade { background: #1e293b; color: #fff; }
+.mg-badge.mg-spec { background: #f1f5f9; color: #475569; border: 1px solid #e2e8f0; font-weight: 600; }
+.mg-badge.mg-ctx { background: #eef1fe; color: #2540ea; border: 1px solid #d6ddfc; }
+.mg-badge.mg-aud { background: #e7f7f0; color: #0f8a57; border: 1px solid #c5ecda; }
+/* 매체 상세 — 등급·특성 배지 블록 */
+.map-detail-grades { margin-top: 10px; }
+.map-detail-grades .map-grades-cap { font-size: 11px; font-weight: 700; color: #475569; margin: 0 0 5px; }
+.map-detail-grades .map-grades-cap em { font-style: normal; font-size: 9px; font-weight: 700; color: #94a3b8; border: 1px solid #cbd5e1; border-radius: 4px; padding: 0 3px; margin-left: 3px; vertical-align: middle; }
+.map-detail-grades .map-fav-media-grades { gap: 4px; }
+.map-detail-grades .mg-badge { font-size: 10.5px; padding: 2px 8px; }
+.map-detail-cautions { margin: 7px 0 0; font-size: 10.5px; color: #b45309; }
+.map-detail-grades .map-grades-basis { margin: 8px 0 0; font-size: 10px; line-height: 1.5; color: #64748b; }
+.map-detail-grades .map-grades-basis strong { color: #334155; font-weight: 700; }
+.map-detail-grades .map-grades-basis a { color: #2540ea; font-weight: 700; text-decoration: underline; }
+/* 1개월 샘플 믹스 — 목적별 대표 매체 조합 */
+.map-plan-samplemix { border: 1px solid #e2e8f0; border-radius: 12px; overflow: hidden; background: #fff; }
+.map-plan-samplemix .sm-row { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-bottom: 1px solid #f1f5f9; }
+.map-plan-samplemix .sm-role { flex: 0 0 auto; align-self: flex-start; margin-top: 2px; font-size: 10px; font-weight: 800; color: #fff; background: #2540ea; border-radius: 999px; padding: 2px 8px; white-space: nowrap; }
+.map-plan-samplemix .sm-role.r-reach { background: #2540ea; } .map-plan-samplemix .sm-role.r-freq { background: #2f8fd0; }
+.map-plan-samplemix .sm-role.r-impact { background: #6b57d6; } .map-plan-samplemix .sm-role.r-nudge { background: #16a860; }
+.map-plan-samplemix .sm-body { flex: 1 1 auto; min-width: 0; }
+.map-plan-samplemix .sm-body b { display: block; font-size: 12.5px; font-weight: 700; color: #0f172a; line-height: 1.3; }
+.map-plan-samplemix .sm-badges .map-fav-media-grades { margin-top: 3px; }
+.map-plan-samplemix .sm-price { flex: 0 0 auto; font-size: 12px; font-weight: 800; color: #1e293b; white-space: nowrap; }
+.map-plan-samplemix .sm-foot { display: flex; justify-content: space-between; align-items: center; padding: 11px 13px; background: #f8fafc; }
+.map-plan-samplemix .sm-foot span { font-size: 12px; font-weight: 700; color: #475569; }
+.map-plan-samplemix .sm-foot em { font-style: normal; font-size: 10px; color: #94a3b8; font-weight: 600; margin-left: 4px; }
+.map-plan-samplemix .sm-foot b { font-size: 16px; font-weight: 800; color: #2540ea; }
 /* 유형 이후 비교 값들 — 글씨 색·크기 통일(#334155 / 13px / 600). 방문층은 줄바꿈만 다르게 */
 .map-fav-compare--rows tbody td { color: #334155; font-size: 11px; font-weight: 500; }
 .map-fav-compare--rows tbody td.is-price { color: #334155; font-weight: 500; }

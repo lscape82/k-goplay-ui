@@ -9063,3 +9063,14 @@ body:has(#geocodeForm) .button[type="submit"] {
   body.appview .app-topband .ins-sticky { position: static; top: auto; }
   body.appview .app-scroll { flex: 1 1 auto; min-height: 0; overflow-y: auto; overflow-x: hidden; }
 }
+
+/* 페이지 상단 공용 eyebrow(섹션 라벨) — 메뉴 페이지 상단 통일 (cases·insights·media-catalog) */
+.cs-eyebrow{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:800;color:#2540ea;letter-spacing:.2px;margin:2px 0 14px}
+.cs-eyebrow .dash{width:26px;height:3px;border-radius:2px;background:#2540ea;display:inline-block;flex:0 0 auto}
+
+/* 페이지 상단 히어로 타이틀 공용 — 목록·사례·인사이트·회사소개 통일 (eyebrow→제목→리드 리듬).
+   페이지별 h1 규칙(.ins-wrap h1 등)을 넘어서야 해서 !important 로 강제(의도된 유틸리티 오버라이드). */
+h1.cs-hero-title{font-size:42px!important;line-height:1.2!important;font-weight:800!important;letter-spacing:-1px!important;color:#0f172a!important;margin:0 0 14px!important}
+h1.cs-hero-title em,h1.cs-hero-title span{color:#2540ea!important;font-style:normal}
+@media(max-width:820px){h1.cs-hero-title{font-size:32px!important}}
+@media(max-width:560px){h1.cs-hero-title{font-size:27px!important}}

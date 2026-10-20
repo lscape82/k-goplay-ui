@@ -59,6 +59,35 @@
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "광고플레이",
+      "image": "https://lscape82.github.io/k-goplay-ui/assets/images/k-goplay-logo-new.png",
+      "url": "https://lscape82.github.io/k-goplay-ui/",
+      "telephone": "+82-1533-1975",
+      "email": "info@k-goplay.com",
+      "priceRange": "₩₩",
+      "description": "전국 대형 전광판·디지털 옥외광고(DOOH)·교통·생활밀착형 매체를 데이터 기반으로 기획·집행하는 옥외광고 대행사.",
+      "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "한누리대로 350, 뱅크빌딩 6층 D45호(어진동)",
+        "addressLocality": "세종특별자치시",
+        "addressCountry": "KR"
+      },
+      "areaServed": [
+        { "@type": "Country", "name": "대한민국" },
+        { "@type": "City", "name": "서울" }
+      ],
+      "serviceType": ["옥외광고 대행", "전광판 광고", "디지털 옥외광고(DOOH)", "교통 광고", "옥외광고 미디어 플래닝"],
+      "sameAs": [
+        "https://www.k-goplay.com",
+        "https://blog.naver.com/k-goplay",
+        "https://www.youtube.com/channel/UCxXNbNumZkcpjIGzUaOnfnQ"
+      ]
+    }
+    </script>
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
       "@type": "FAQPage",
       "mainEntity": [
         {"@type":"Question","name":"광고플레이는 어떤 회사인가요?","acceptedAnswer":{"@type":"Answer","text":"광고플레이(ADplay)는 전국 대형 전광판·디지털 옥외광고(DOOH)·교통·생활밀착형 매체를 데이터 기반으로 기획하고 집행하는 옥외광고 대행사입니다. 법인명은 광고플레이 주식회사이며, 중소벤처기업부와 한국데이터산업진흥원의 지원을 받아 옥외광고 플랫폼 '광고플레이'를 개발했습니다."}},
@@ -122,7 +151,7 @@
     .viewtog .consult .ic{background:#2540ea;color:#fff}
     /* 본문도 옥외광고 매체 페이지와 같은 폭·기준선을 쓴다 */
     .ab-wrap{width:min(var(--shell-max),calc(100% - 40px));margin:0 auto;box-sizing:border-box;
-             padding:22px var(--dock-gutter) 90px;font-family:var(--font-sans);color:#1c1c1c}
+             padding:16px var(--dock-gutter) 90px;font-family:var(--font-sans);color:#1c1c1c}
       .ab-bc{font:13px/1.6 var(--font-sans);color:#8a8a8a;margin:0 0 8px}
       .ab-bc a{color:#8a8a8a;text-decoration:none}
       .ab-wrap h1{font:850 26px/1.3 var(--font-sans);margin:6px 0 10px}
@@ -167,9 +196,8 @@
 
     <main class="ab-wrap">
       <div class="viewtog"><a href="map.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3 3 5.5v15L9 18l6 3 6-2.5v-15L15 6 9 3z"/><path d="M9 3v15M15 6v15"/></svg></span>지도로 보기</a><a href="media-catalog.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></span>목록으로 보기</a><a href="areas.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>지역으로 보기</a><a class="consult" href="estimate.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.5 9.5 0 0 1-3.4-.6L3 21l1.7-5a8.2 8.2 0 0 1-.7-3.4 8.4 8.4 0 0 1 8.4-8.4 8.4 8.4 0 0 1 8.6 7.9z"/></svg></span>상담신청</a></div>
-      <p class="ab-bc"><a href="index.html">홈</a> › 회사소개</p>
-      <p class="ab-eyebrow">Experiential OOH &amp; DOOH Media Partner</p>
-      <h1>광고플레이는 데이터 기반 옥외광고 대행사입니다</h1>
+      <p class="cs-eyebrow"><span class="dash"></span>회사소개 · 광고플레이</p>
+      <h1 class="cs-hero-title">광고플레이는 데이터 기반 <span>옥외광고 대행사</span>입니다</h1>
       <p class="ab-lead"><b>광고플레이(ADplay)</b>는 전국 대형 전광판·디지털 옥외광고(DOOH)·교통·생활밀착형 매체를 데이터 기반으로 기획·집행하는 <b>옥외광고 대행사</b>입니다. 법인명은 <b>광고플레이 주식회사</b>이며, 중소벤처기업부와 한국데이터산업진흥원의 지원을 받아 옥외광고 플랫폼 ‘광고플레이’를 개발했습니다. 광고 비용 조정, 구좌 예약, 영상 송출, 현장 모니터링, 결과보고까지 원스톱으로 진행합니다.</p>
 
       <h2>회사 개요</h2>
@@ -247,7 +275,7 @@
           <span><b>통신판매업신고</b> 제2024-세종아름-0724</span>
           <span><b>사업자등록번호</b> 148-81-03399</span>
         </address>
-        <p class="foot-copy">Copyright ⓒ Adplay Korea Co., Ltd. All Rights Reserved.</p>
+        <p class="foot-copy">복제 불가 · 저작권자 © 광고플레이(주) (Adplay Korea Co., Ltd.) All Rights Reserved.</p>
       </div>
     </footer>
     <style>

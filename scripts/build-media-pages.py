@@ -504,13 +504,23 @@ def viewtog():
             '</div>')
 
 
-def head(title, desc, canon, extra_ld=""):
+def head(title, desc, canon, extra_ld="", og_image=LOGO):
     return f"""<!doctype html>
 <html lang="ko"><head>
 <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
 <title>{esc(title)}</title>
 <meta name="description" content="{esc(desc)}">
 <link rel="canonical" href="{canon}">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="광고플레이">
+<meta property="og:title" content="{esc(title)}">
+<meta property="og:description" content="{esc(desc)}">
+<meta property="og:url" content="{canon}">
+<meta property="og:image" content="{og_image}">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{esc(title)}">
+<meta name="twitter:description" content="{esc(desc)}">
+<meta name="twitter:image" content="{og_image}">
 <link rel="stylesheet" href="assets/css/styles.css">
 {extra_ld}
 <style>{CSS}</style></head><body>
@@ -832,7 +842,8 @@ def detail(x):
     meta_desc = f"{name}({cat}) 옥외광고 매체 — 위치 {x.get('address') or '서울'}, {price_lead}(VAT 별도). 규격·광고비·집행 안내."
 
     return head(f"{name} 옥외광고 매체 – 위치·광고비 | 광고플레이", meta_desc,
-                f"{BASE}/media-{slug}.html", ld_html) + f"""
+                f"{BASE}/media-{slug}.html", ld_html,
+                og_image=(f"{BASE}/{x['imageUrl']}" if x.get("imageUrl") else LOGO)) + f"""
 <main class="wrap">
 {viewtog()}
 <p class="bc"><a href="index.html">홈</a> › <a href="media-catalog.html">옥외광고 매체</a> › {esc(name)}</p>

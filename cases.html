@@ -189,6 +189,37 @@
     /* 모바일 가드 (위 오버라이드가 기존 반응형을 덮으므로 재지정) */
     @media(max-width:820px){.cs-hero img{max-height:360px}}
     @media(max-width:560px){.ins-wrap .cs-title{font-size:22px}}
+    /* ===== 쇼케이스 헤더 + 집행 캠페인 카드 ===== */
+    .cs-eyebrow{display:flex;align-items:center;gap:10px;font-size:13px;font-weight:800;color:#2540ea;letter-spacing:.2px;margin:2px 0 14px}
+    .cs-eyebrow .dash{width:26px;height:3px;border-radius:2px;background:#2540ea;display:inline-block}
+    .ins-wrap h1.cs-bigtitle{font-size:42px;line-height:1.18;font-weight:800;color:#0f172a;letter-spacing:-1px;margin:0 0 14px}
+    .cs-bigtitle span{color:#2540ea}
+    .cs-biglead{font-size:15.5px;line-height:1.7;color:#64748b;max-width:640px;margin:0 0 20px}
+    .cs-sc-cta{display:flex;flex-wrap:wrap;gap:10px;margin:0 0 8px}
+    .cs-sc-cta a{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:14px;padding:12px 20px;border-radius:12px;text-decoration:none}
+    .cs-sc-cta .yt{background:#ff0000;color:#fff}
+    .cs-sc-cta .yt svg{width:18px;height:18px;fill:#fff}
+    .cs-sc-cta .talk{background:#fff;color:#1e293b;border:1px solid #d7dce5}
+    .cs-cardrow-h{font-size:18px;font-weight:800;color:#0f172a;margin:32px 0 14px}
+    .cs-cardrow-h span{font-size:12.5px;font-weight:600;color:#94a3b8;margin-left:8px}
+    .cs-cards{display:flex;gap:16px;overflow-x:auto;padding:2px 2px 8px;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
+    .cs-cards::-webkit-scrollbar{height:7px}
+    .cs-cards::-webkit-scrollbar-thumb{background:#cbd5e1;border-radius:4px}
+    .cs-card{position:relative;flex:0 0 310px;scroll-snap-align:start;border-radius:16px;overflow:hidden;min-height:210px;display:block;text-decoration:none;background:#0b1220;box-shadow:0 16px 34px -20px rgba(15,23,42,.45);transition:transform .2s ease}
+    .cs-card::before{content:"";position:absolute;inset:0;background-image:repeating-linear-gradient(135deg,rgba(255,255,255,.035) 0 2px,transparent 2px 12px);z-index:1}
+    .cs-card .glow{position:absolute;width:72%;height:62%;filter:blur(48px);opacity:.55;border-radius:50%}
+    .cs-card.g-red .glow{background:#e0563f;top:-10%;left:-8%}
+    .cs-card.g-blue .glow{background:#2f6fe0;top:6%;left:26%}
+    .cs-card.g-green .glow{background:#1f9e6a;bottom:-14%;right:-10%}
+    .cs-card:hover{transform:translateY(-3px)}
+    .cs-card-tag{position:absolute;top:16px;left:18px;z-index:2;font-size:11px;font-weight:800;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.26);color:#fff;padding:4px 11px;border-radius:999px}
+    .cs-card-in{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:18px 20px;color:#fff;background:linear-gradient(180deg,transparent,rgba(11,18,32,.6))}
+    .cs-card-in b{display:block;font-size:18px;font-weight:800;margin-bottom:3px}
+    .cs-card-in span{font-size:12.5px;color:rgba(255,255,255,.74)}
+    @media(max-width:820px){.ins-wrap h1.cs-bigtitle{font-size:32px}}
+    @media(max-width:560px){.cs-card{flex-basis:260px}.ins-wrap h1.cs-bigtitle{font-size:27px}}
+    .ins-wrap .catalog-toolbar{margin-top:18px}
+    .case-noresult{margin:18px 0;padding:22px;text-align:center;color:#8a94a6;font-size:14px;background:#f8fafc;border:1px solid #eef1f6;border-radius:12px}
 </style>
   </head>
   <body>
@@ -210,27 +241,54 @@
     <main class="ins-wrap">
       <div class="viewtog"><a href="map.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 3 3 5.5v15L9 18l6 3 6-2.5v-15L15 6 9 3z"/><path d="M9 3v15M15 6v15"/></svg></span>지도로 보기</a><a href="media-catalog.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16"/></svg></span>목록으로 보기</a><a href="areas.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 21s7-5.6 7-11a7 7 0 1 0-14 0c0 5.4 7 11 7 11z"/><circle cx="12" cy="10" r="2.5"/></svg></span>지역으로 보기</a><a class="consult" href="estimate.html"><span class="ic"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.4 8.4 0 0 1-9 8.4 9.5 9.5 0 0 1-3.4-.6L3 21l1.7-5a8.2 8.2 0 0 1-.7-3.4 8.4 8.4 0 0 1 8.4-8.4 8.4 8.4 0 0 1 8.6 7.9z"/></svg></span>상담신청</a></div>
       <div class="ins-sticky">
-      <p class="ins-bc"><a href="index.html">홈</a> › 광고집행사례</p>
-      <h1>광고집행사례</h1>
-      <p class="ins-lead">광고플레이가 집행한 <b>전광판·디지털 옥외광고(DOOH)</b> 캠페인을 영상으로 만나보세요. 브랜드별 매체 선정과 집행 현장을 확인하실 수 있습니다.</p>
+      <p class="cs-eyebrow"><span class="dash"></span>광고집행사례 · 광고플레이</p>
+      <h1 class="cs-bigtitle">브랜드가 <span>도시를 무대로</span> 선 순간</h1>
+      <p class="ins-lead cs-biglead">광고플레이가 집행한 <b>전광판·디지털 옥외광고(DOOH)</b> 캠페인. 매체 선정부터 현장 송출까지, 실제 결과를 확인하세요.</p>
       </div><!-- /ins-sticky -->
 
-      <a class="case-yt" href="https://www.youtube.com/channel/UCxXNbNumZkcpjIGzUaOnfnQ" target="_blank" rel="noopener">
-        <span class="ic" aria-hidden="true"><svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.2 3.6z"/></svg></span>
-        <span class="tx"><b>유튜브에서 집행 사례영상 보기</b><span>광고플레이 공식 유튜브 채널의 실제 집행 캠페인 영상</span></span>
-        <span class="go">채널 바로가기 →</span>
-      </a>
-
-      <div class="case-filter" role="tablist" aria-label="업종별 사례 필터">
-        <button type="button" class="is-active" data-f="all">전체 <em></em></button>
-        <button type="button" data-f="beauty-medical">미용·에스테틱 의료기기 <em></em></button>
-        <button type="button" data-f="public-campaign">환경·공익 캠페인 <em></em></button>
+      <div class="cs-sc-cta">
+        <a class="yt" href="https://www.youtube.com/channel/UCxXNbNumZkcpjIGzUaOnfnQ" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.6 12 3.6 12 3.6s-7.5 0-9.4.5A3 3 0 0 0 .5 6.2 31 31 0 0 0 0 12a31 31 0 0 0 .5 5.8 3 3 0 0 0 2.1 2.1c1.9.5 9.4.5 9.4.5s7.5 0 9.4-.5a3 3 0 0 0 2.1-2.1A31 31 0 0 0 24 12a31 31 0 0 0-.5-5.8zM9.6 15.6V8.4l6.2 3.6z"/></svg>유튜브 채널</a>
+        <a class="talk" href="estimate.html">캠페인 상담</a>
       </div>
+
+      <h2 class="cs-cardrow-h">집행 캠페인 <span>브랜드별 매체 믹스와 현장</span></h2>
+      <div class="cs-cards">
+        <a class="cs-card g-red" href="#case-coolsoniq" data-industry="beauty-medical">
+          <span class="glow" aria-hidden="true"></span>
+          <span class="cs-card-tag">전광판 · 교통</span>
+          <div class="cs-card-in"><b>쿨소닉 (CoolSoniq)</b><span>강남·광화문 랜드마크 DOOH + 버스·지하철</span></div>
+        </a>
+        <a class="cs-card g-blue" href="#case-capplastic" data-industry="public-campaign">
+          <span class="glow" aria-hidden="true"></span>
+          <span class="cs-card-tag">공익 캠페인</span>
+          <div class="cs-card-in"><b>Cap Plastic Production</b><span>부산·서울 랜드마크·역사 매체</span></div>
+        </a>
+      </div>
+
+      <div class="catalog-toolbar">
+        <div class="catalog-tabs" role="tablist" aria-label="사례 분류">
+          <button type="button" class="catalog-tab is-active" data-casetab="all" aria-selected="true">전체 <em id="caseCountAll">0</em></button>
+        </div>
+        <details class="filters" open>
+          <summary>필터</summary>
+          <div class="filter-grid">
+            <div class="field"><label for="caseIndustry">업종</label>
+              <select id="caseIndustry"><option value="all">전체 업종</option></select></div>
+            <div class="field"><label for="caseRegion">집행 지역</label>
+              <select id="caseRegion"><option value="all">전체 지역</option></select></div>
+            <div class="field search-field"><label for="caseSearch">검색</label>
+              <input id="caseSearch" type="search" placeholder="브랜드·캠페인 검색 (예: 쿨소닉, 공익)"></div>
+            <div class="field"><label for="caseSort">정렬</label>
+              <select id="caseSort"><option value="recent">최신순</option><option value="old">과거순</option></select></div>
+          </div>
+        </details>
+      </div>
+      <p id="caseNoResult" class="case-noresult" hidden>조건에 맞는 사례가 없습니다.</p>
 
       <!-- 집행 사례 샘플 — 광고주 비공개, 브랜드/업종·장소 중심 -->
       <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"쿨소닉 옥외광고 집행 사례 — 랜드마크 전광판·버스·지하철 미디어믹스","datePublished":"2026-07-19","keywords":"미용 의료기기 옥외광고, 에스테틱 광고, 옥외광고 사례, 전광판 광고 사례, 미디어믹스, 버스광고, 지하철 광고, 강남 옥외광고","about":["옥외광고","전광판 광고","DOOH","버스 광고","지하철 광고","미용 의료기기 옥외광고"],"locationCreated":[{"@type":"Place","name":"서울"},{"@type":"Place","name":"대구"},{"@type":"Place","name":"부산"}],"image":"https://lscape82.github.io/k-goplay-ui/assets/images/cases/coolsoniq/coolsoniq-hero.jpg","creator":{"@type":"Organization","name":"광고플레이"}}</script>
       <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{"@type":"Question","name":"미용·에스테틱 의료기기는 어떤 옥외광고가 효과적인가요?","acceptedAnswer":{"@type":"Answer","text":"고관여·고가 시술이라 프리미엄 브랜드 인상과 반복 노출이 중요합니다. 강남·압구정·광화문 등 고소득 상권의 랜드마크 전광판(DOOH)으로 브랜드 격을 세우고, 버스쉘터·버스 외부·지하철로 출퇴근·생활 동선에서 반복 노출하는 미디어믹스가 효과적입니다."}},{"@type":"Question","name":"옥외광고 미디어믹스는 어떻게 구성하나요?","acceptedAnswer":{"@type":"Answer","text":"인지도를 만드는 대형 랜드마크 전광판과, 반복 도달을 만드는 교통 매체(버스쉘터·버스 외부·지하철)를 함께 씁니다. 같은 상권·동선에 겹쳐 배치하면 도달과 빈도를 동시에 높일 수 있습니다."}},{"@type":"Question","name":"우리 업종·예산에 맞는 매체는 어떻게 찾나요?","acceptedAnswer":{"@type":"Answer","text":"광고플레이 지도에서 지역·예산·매체 유형으로 검색하고, 관심 매체를 담아 한 번에 상담·견적을 받을 수 있습니다. 업종·목표에 맞는 미디어믹스는 상담 시 제안드립니다."}}]}</script>
-      <section class="case-study" data-industry="beauty-medical" aria-label="옥외광고 집행 사례 — 쿨소닉">
+      <section id="case-coolsoniq" class="case-study" data-industry="beauty-medical" data-industry-label="미용·에스테틱 의료기기" data-regions="서울,대구,부산" data-year="2026" aria-label="옥외광고 집행 사례 — 쿨소닉">
         <div class="cs-topline">
           <span class="cs-badge">미용·에스테틱 의료기기</span>
           <span class="cs-meta">서울·대구·부산 · 랜드마크 DOOH + 교통 미디어믹스</span>
@@ -321,7 +379,7 @@
 
       <!-- 집행 사례 2 — 환경·공익 캠페인 (광고주 비공개, 캠페인 브랜드만 노출) -->
       <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"Cap Plastic Production 공익 캠페인 옥외광고 집행 사례 — 부산·서울 랜드마크·역사 매체","datePublished":"2026-07-19","keywords":"공익 캠페인 옥외광고, 환경 광고, 옥외광고 사례, 역사 광고, 스크린도어 광고, 부산 옥외광고, 광화문 옥외광고, BEXCO 광고","about":["옥외광고","전광판 광고","DOOH","역사 광고","지하철 광고","공익 캠페인 옥외광고"],"locationCreated":[{"@type":"Place","name":"부산"},{"@type":"Place","name":"서울"}],"image":"https://lscape82.github.io/k-goplay-ui/assets/images/cases/capplastic/capplastic-hero.jpg","creator":{"@type":"Organization","name":"광고플레이"}}</script>
-      <section class="case-study" data-industry="public-campaign" aria-label="옥외광고 집행 사례 — Cap Plastic Production">
+      <section id="case-capplastic" class="case-study" data-industry="public-campaign" data-industry-label="환경·공익 캠페인" data-regions="부산,서울" data-year="2026" aria-label="옥외광고 집행 사례 — Cap Plastic Production">
         <div class="cs-topline">
           <span class="cs-badge">환경·공익 캠페인</span>
           <span class="cs-meta">부산·서울 · 랜드마크 LED + 역사 디지털 미디어믹스</span>
@@ -410,22 +468,46 @@
         <span><b>통신판매업신고</b> 제2024-세종아름-0724</span>
         <span><b>사업자등록번호</b> 148-81-03399</span>
       </address>
-      <p class="foot-copy">Copyright &copy; Adplay Korea Co., Ltd. All Rights Reserved.</p>
+      <p class="foot-copy">복제 불가 · 저작권자 © 광고플레이(주) (Adplay Korea Co., Ltd.) All Rights Reserved.</p>
     </div></footer>
     <script>(function(){var d=document.documentElement,h=document.querySelector(".hd");if(!h)return;function s(){d.style.setProperty("--hd-h",h.offsetHeight+"px")}s();try{new ResizeObserver(s).observe(h)}catch(e){}addEventListener("resize",s);addEventListener("load",s)})();</script>
     <script>(function(){
-      var tabs=[].slice.call(document.querySelectorAll(".case-filter button"));
-      var cards=[].slice.call(document.querySelectorAll(".case-study"));
-      if(!tabs.length)return;
-      tabs.forEach(function(t){
-        var k=t.getAttribute("data-f");
-        var n=k==="all"?cards.length:cards.filter(function(c){return c.getAttribute("data-industry")===k;}).length;
-        var em=t.querySelector("em"); if(em)em.textContent=n;
-        t.addEventListener("click",function(){
-          tabs.forEach(function(x){x.classList.toggle("is-active",x===t);});
-          cards.forEach(function(c){c.hidden=(k!=="all"&&c.getAttribute("data-industry")!==k);});
-        });
+      // 사례 필터 바 — 업종·지역·검색·정렬. 옵션은 사례 데이터에서 자동 생성(사례가 늘면 옵션도 자동 증가).
+      var sections=[].slice.call(document.querySelectorAll(".case-study"));
+      if(!sections.length)return;
+      var cards=[].slice.call(document.querySelectorAll('.cs-card[href^="#case-"]'));
+      var indSel=document.getElementById("caseIndustry"),regSel=document.getElementById("caseRegion");
+      var searchEl=document.getElementById("caseSearch"),sortSel=document.getElementById("caseSort");
+      var countEl=document.getElementById("caseCountAll"),noResult=document.getElementById("caseNoResult");
+      var cardRow=document.querySelector(".cs-cards");
+      var listRoot=sections[0].parentNode, afterNode=sections[sections.length-1].nextElementSibling;
+      // 옵션 자동 생성
+      var inds={},regs={};
+      sections.forEach(function(s){
+        var ik=s.getAttribute("data-industry"); if(ik)inds[ik]=s.getAttribute("data-industry-label")||ik;
+        (s.getAttribute("data-regions")||"").split(",").forEach(function(r){r=r.trim();if(r)regs[r]=1;});
       });
+      Object.keys(inds).forEach(function(k){var o=document.createElement("option");o.value=k;o.textContent=inds[k];indSel.appendChild(o);});
+      Object.keys(regs).sort().forEach(function(r){var o=document.createElement("option");o.value=r;o.textContent=r;regSel.appendChild(o);});
+      function matches(s){
+        var fi=indSel.value,fr=regSel.value,q=(searchEl.value||"").trim().toLowerCase();
+        if(fi!=="all"&&s.getAttribute("data-industry")!==fi)return false;
+        if(fr!=="all"&&(s.getAttribute("data-regions")||"").split(",").map(function(x){return x.trim();}).indexOf(fr)<0)return false;
+        if(q&&(s.textContent||"").toLowerCase().indexOf(q)<0)return false;
+        return true;
+      }
+      function apply(){
+        var dir=sortSel.value==="old"?1:-1;
+        var ordered=sections.slice().sort(function(a,b){return dir*(((+a.getAttribute("data-year"))||0)-((+b.getAttribute("data-year"))||0));});
+        var shown=0;
+        ordered.forEach(function(s){var ok=matches(s);s.hidden=!ok;if(ok)shown++;if(afterNode&&afterNode.parentNode===listRoot)listRoot.insertBefore(s,afterNode);else listRoot.appendChild(s);});
+        if(cardRow){ordered.forEach(function(s){var c=cards.filter(function(x){return x.getAttribute("href")==="#"+s.id;})[0];if(c){c.hidden=!matches(s);cardRow.appendChild(c);}});}
+        if(countEl)countEl.textContent=shown;
+        if(noResult)noResult.hidden=shown>0;
+      }
+      [indSel,regSel,sortSel].forEach(function(el){el.addEventListener("change",apply);});
+      searchEl.addEventListener("input",apply);
+      apply();
     })();</script>
   </body>
 </html>
