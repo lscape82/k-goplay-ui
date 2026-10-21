@@ -34,7 +34,7 @@
   //  · 제안서 만들기 삭제 — 관심매체 비교 패널의 PDF 버튼으로 흡수(one-pager.html).
   //  · 성과 리포트 이동 — 계약 광고주용이라 로그인 → 마이페이지로.
   var SERVICES = [
-    { key: "planner",  icon: ICONS.planner,  label: "AI 추천받기", sub: "예산·업종·지역 → 매체 조합 자동 설계" },
+    { key: "planner",  icon: ICONS.planner,  label: "업종·타깃별 AI 추천받기", sub: "예산·업종·지역 → 매체 조합 자동 설계" },
     { key: "compare",  icon: ICONS.compare,  label: "관심 매체 담기", sub: "담은 매체 비교 · 제안서(PDF)·엑셀 받기" },
     { key: "creative", icon: ICONS.creative, label: "소재 제작 의뢰", sub: "의뢰서 작성하면 제작 견적 발송", href: "creative-request.html" }
   ];

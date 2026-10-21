@@ -390,7 +390,7 @@
         <table>
           <thead>
             <tr>
-              <th class="map-fav-no-h">${opts.noHeadCheckbox ? "" : `<input type="checkbox" class="${allClass}" aria-label="전체 선택/해제" title="전체 선택/해제"><span class="map-fav-no-h-label">선택</span>`}</th>
+              <th class="map-fav-no-h"><label class="map-fav-selall-h"><input type="checkbox" class="${allClass}" aria-label="전체 선택/해제" title="전체 선택/해제"><span>전체선택</span></label></th>
               <th class="map-fav-compare-corner">매체</th>
               ${compareRows.map((row) => `<th class="${row.className || ""}">${AdPlay.esc(row.label)}</th>`).join("")}
             </tr>
@@ -663,6 +663,16 @@
     { key: "premium", type: "tgt", label: "고소득", cats: ["large_billboard", "package", "shopping_mall_did"], areaKeys: ["청담", "압구정", "도산", "한남", "서초"], cap: 8 },
     { key: "tourist", type: "tgt", label: "관광객", cats: ["large_billboard", "package", "transport_hub", "shopping_mall_did"], areaKeys: ["명동", "홍대", "이태원", "동대문", "강남"], cap: 8 }
   ];
+  // 상품(세부유형) → 같은 업종·타깃 안에서도 '상품'에 따라 상권이 달라짐. 선택 시 부모의 지역키워드를 이 상권으로 override(가장 구체 신호).
+  // 시드(핵심 예시) — 이 테이블만 넓히면 세분화가 확장됨. 관련: [[data-catalog-and-needs]].
+  const PLAN_SUBTYPES = {
+    beauty:  [ { k: "cosmetic", l: "화장품", areaKeys: ["명동", "홍대", "성수", "가로수", "강남", "신사"] }, { k: "clinic", l: "성형·피부과", areaKeys: ["압구정", "신사", "논현", "청담", "강남", "역삼"] }, { k: "device", l: "뷰티 디바이스·의료기기", areaKeys: ["강남", "판교", "가산", "구로", "역삼"] } ],
+    fashion: [ { k: "street", l: "스트리트·캐주얼", areaKeys: ["홍대", "성수", "건대", "동대문"] }, { k: "contemp", l: "컨템포러리·명품", areaKeys: ["청담", "압구정", "신사", "가로수", "한남"] } ],
+    fnb:     [ { k: "cafe", l: "카페·디저트", areaKeys: ["성수", "연남", "홍대", "가로수", "익선"] }, { k: "dining", l: "외식·다이닝", areaKeys: ["강남", "이태원", "여의도", "을지로", "서촌"] } ],
+    pharma:  [ { k: "clinic", l: "병원·클리닉", areaKeys: ["압구정", "신사", "강남", "논현", "서초"] }, { k: "otc", l: "약국·건강기능", areaKeys: ["종로", "영등포", "노원", "신촌"] } ],
+    tourist: [ { k: "foreign", l: "외국인 관광", areaKeys: ["명동", "동대문", "홍대", "이태원", "인사동", "남대문"] }, { k: "domestic", l: "내국인 관광", areaKeys: ["광화문", "북촌", "경복궁", "인사동", "서촌", "여의도"] } ],
+    univ:    [ { k: "hongdae", l: "홍대·신촌권", areaKeys: ["홍대", "신촌", "이대"] }, { k: "gangnam", l: "강남·대학가", areaKeys: ["건대", "안암", "회기", "대학"] } ]
+  };
   // ===== ① AI 추천 플래너 — 관심매체 비교(②)와 완전 별도. 자기 데이터(plannerSlugs)로 시작·완결. =====
   const PLAN_SCOPES = [{ k: "all", l: "전국" }, { k: "metro", l: "수도권" }, { k: "local", l: "지방" }];
   const PLAN_SIDOS = ["서울", "경기", "인천", "부산", "대구", "광주", "대전", "울산", "세종", "강원", "충북", "충남", "전북", "전남", "경북", "경남", "제주"];
@@ -685,6 +695,7 @@
   let plannerBiz = "beauty";
   let plannerBizCustom = "";
   let plannerTargets = [];
+  let plannerSubtypes = {}; // {부모키(업종/타깃): 선택 상품키} — 세분화. 부모 지역키워드를 상품 상권으로 override.
   let plannerCustoms = [];
   let plannerBody = null, plannerFoot = null;
   // 예산 상한(만원) — 딱 떨어지는 값 + 직접입력. 플랜 금액은 이 안에 들어감.
@@ -805,16 +816,24 @@
     const themes = [];
     if (plannerBiz) { const t = MATCH_THEMES.find((x) => x.key === plannerBiz); if (t) themes.push(t); }
     plannerTargets.forEach((k) => { const t = MATCH_THEMES.find((x) => x.key === k); if (t) themes.push(t); });
-    let cats = [], areaKeys = [];
-    themes.forEach((t) => { cats = cats.concat(t.cats || []); areaKeys = areaKeys.concat(t.areaKeys || []); });
+    let cats = [];
+    themes.forEach((t) => { cats = cats.concat(t.cats || []); });
     const customs = [plannerBizCustom].concat(plannerCustoms).filter(Boolean);
-    areaKeys = areaKeys.concat(customs);
     const uniq = (a) => a.filter((v, i) => a.indexOf(v) === i);
-    cats = uniq(cats); areaKeys = uniq(areaKeys);
+    cats = uniq(cats);
     const bizT = MATCH_THEMES.find((x) => x.key === plannerBiz);
+    // 상품(세부) 선택 시 그 상권으로 부모 지역키워드 override(가장 구체) — 예: 뷰티>성형·피부과 → 압구정·신사
+    const subAK = (parent) => { const sel = plannerSubtypes[parent]; const list = PLAN_SUBTYPES[parent]; if (sel && list) { const s = list.find((x) => x.k === sel); if (s) return s.areaKeys || []; } return null; };
+    // 업종 지역키워드(×1) — 세부 선택 시 override
+    const bizAreaKeys = uniq((subAK(plannerBiz) || (bizT ? bizT.areaKeys || [] : [])).concat(plannerBizCustom ? [plannerBizCustom] : []));
+    // 타깃 지역키워드(×2, 지역 랭킹에서 업종보다 세게) — 각 타깃의 세부 선택 시 override
+    let tgtAreaKeys = [];
+    plannerTargets.forEach((k) => { const t = MATCH_THEMES.find((x) => x.key === k); if (!t) return; tgtAreaKeys = tgtAreaKeys.concat(subAK(k) || t.areaKeys || []); });
+    tgtAreaKeys = uniq(tgtAreaKeys.concat(plannerCustoms));
+    const areaKeys = uniq(bizAreaKeys.concat(tgtAreaKeys));
     const bizLabel = plannerBizCustom || (bizT ? bizT.label : "");
     const tgtLabels = plannerTargets.map((k) => (MATCH_THEMES.find((x) => x.key === k) || {}).label).filter(Boolean).concat(plannerCustoms);
-    return { cats, areaKeys, bizLabel, tgtLabels, hasAny: themes.length > 0 || customs.length > 0 };
+    return { cats, areaKeys, tgtAreaKeys, bizAreaKeys, bizLabel, tgtLabels, hasAny: themes.length > 0 || customs.length > 0 };
   }
   // 매체유형 선택이 있으면 그 카테고리로, 없으면 조건 카테고리(없으면 전체)로 지도 풀을 좁힌다.
   function planCatsFor(crit) {
@@ -995,10 +1014,15 @@
   //   타깃·업종 키워드가 있으면 적합(0.55) 중심, 없으면 유동·매체수만. ⓒ 외부집계(ext) 있으면 2030 타깃 시 소폭 보정.
   function buildRegionRanking(crit) {
     const pool = candidatePool(crit);
-    const areaKeys = (crit.areaKeys || []).map((k) => k.toLowerCase()).filter(Boolean);
+    const lc = (k) => k.toLowerCase();
+    const tgtKeys = (crit.tgtAreaKeys || []).map(lc).filter(Boolean); // 타깃 지역키워드(가중 ×2)
+    const bizKeys = (crit.bizAreaKeys || []).map(lc).filter(Boolean); // 업종 지역키워드(가중 ×1)
     const cats = crit.cats || [];
     const tgtStr = (crit.tgtLabels || []).join(" ") + " " + (crit.bizLabel || "");
     const tgt2030 = /2030|대학생|사회초년|영유아|뷰티|패션/.test(tgtStr); // ext(연령) 보정 대상
+    // 상권 키워드가 '건물명'의 일부로 걸리는 오매칭 방지(예: 진주 '강남빌딩' → 강남 상권 아님).
+    const BLDG = /^(빌딩|타워|빌\b|센터|스퀘어|플라자|프라자|관\b|상가)/;
+    const keyHit = (t, a) => { let i = t.indexOf(a); while (i >= 0) { if (!BLDG.test(t.slice(i + a.length))) return true; i = t.indexOf(a, i + 1); } return false; };
     const groups = {};
     pool.forEach((f) => {
       const key = planRegionKeyOf(f);
@@ -1007,7 +1031,8 @@
       g.items.push(f);
       g.foot += f.foot500Num || 0; g.subway += f.subwayNum || 0;
       const t = `${f.name || ""} ${f.area || ""} ${f.address || ""} ${f.audience || ""}`.toLowerCase();
-      let fit = 0; areaKeys.forEach((a) => { if (t.indexOf(a) >= 0) fit += 1; }); if (cats.indexOf(f.category) >= 0) fit += 1;
+      // 타깃 지역 적합을 업종보다 2배 가중 → 20대 타깃이면 홍대·신촌이 뷰티 기본상권(강남)보다 우선
+      let fit = 0; tgtKeys.forEach((a) => { if (keyHit(t, a)) fit += 2; }); bizKeys.forEach((a) => { if (keyHit(t, a)) fit += 1; }); if (cats.indexOf(f.category) >= 0) fit += 1;
       g.fit += fit; g.types[f.type || "기타"] = 1;
     });
     const arr = Object.keys(groups).map((k) => groups[k]);
@@ -1015,16 +1040,46 @@
     arr.forEach((g) => { g.typeCount = Object.keys(g.types).length; g.fitRatio = g.fit / g.items.length; g.footAvg = g.foot / g.items.length; g.ext = regionStats[g.key] || null; });
     const norm = (sel) => { const m = Math.max(1e-9, ...arr.map(sel)); return (g) => sel(g) / m; };
     const nFit = norm((g) => g.fitRatio), nFoot = norm((g) => g.footAvg), nN = norm((g) => g.items.length);
-    const hasFit = areaKeys.length || cats.length;
+    const hasFit = tgtKeys.length || bizKeys.length || cats.length;
+    const maxFitRatio = Math.max(1e-9, ...arr.map((g) => g.fitRatio));
     arr.forEach((g) => {
       let s = hasFit ? (0.55 * nFit(g) + 0.25 * nFoot(g) + 0.20 * nN(g)) : (0.6 * nFoot(g) + 0.4 * nN(g));
+      // 적합 신호가 있을 때, 최상위 대비 적합도가 바닥(부분매칭 수준)인 지역은 강등 → 유동만으로 상위 오르는 것 방지
+      if (hasFit && g.fitRatio < maxFitRatio * 0.2) s *= 0.15;
       if (g.ext && tgt2030 && typeof g.ext.age2030 === "number") s += 0.15 * g.ext.age2030; // ⓒ 외부 연령집계 보정
       g.score = s;
     });
     arr.sort((a, b) => (b.score - a.score) || (b.foot - a.foot));
-    const top = arr[0].score || 1;
-    arr.forEach((g, i) => { g.rel = Math.round(g.score / top * 100); g.rank = i + 1; });
-    return arr;
+    // 적합 신호가 있으면, 최상위 대비 적합도가 바닥(부분매칭 수준)인 지역은 후보에서 제외(최소 3곳은 유지).
+    // 후보 지역 = 적합도 바닥 아니고(부분매칭 배제) + 최소 3매체 이상(1~2매체짜리 '건물명 오매칭' 지역 제외). 최소 3곳 유지.
+    let out = arr;
+    if (hasFit) { const kept = arr.filter((g) => g.fitRatio >= maxFitRatio * 0.2 && g.items.length >= 3 && g.fit >= 2); out = kept.length >= 3 ? kept : arr.filter((g) => g.items.length >= 3).slice(0, 3); if (out.length < 3) out = arr.slice(0, 3); }
+    const top = out[0] ? out[0].score || 1 : 1;
+    out.forEach((g, i) => { g.rel = Math.round(g.score / top * 100); g.rank = i + 1; });
+    return out;
+  }
+  // 후보 집합 내 백분위(0~1, 1=최상위) — 지역 상대 장단점 산출용.
+  function regionRankPct(arr, sel, g) {
+    if (arr.length <= 1) return 1;
+    const v = sel(g); const below = arr.filter((x) => sel(x) < v).length;
+    return below / (arr.length - 1);
+  }
+  // 지역 상대 장단점 — 후보 지역들과 비교해 '강점/약점'을 가공 근거로 자동 생성.
+  function regionProsCons(g, arr) {
+    const pros = [], cons = [];
+    const pFit = regionRankPct(arr, (x) => x.fitRatio, g);
+    const pFoot = regionRankPct(arr, (x) => x.foot, g);   // 표시값(총 유동)과 같은 기준으로 강약점 산출
+    const pSub = regionRankPct(arr, (x) => x.subway, g);
+    const pN = regionRankPct(arr, (x) => x.items.length, g);
+    const pTy = regionRankPct(arr, (x) => x.typeCount, g);
+    if (pFit >= 0.7) pros.push("타깃 적합 높음");
+    if (pFoot >= 0.8) pros.push("유동 최상위"); else if (pFoot >= 0.6) pros.push("유동 상위"); else if (pFoot <= 0.2) cons.push("유동 낮음");
+    if (pSub >= 0.75) pros.push("지하철 강세");
+    if (pN >= 0.7) pros.push("매체 선택폭 넓음"); else if (pN <= 0.15) cons.push("매체 수 적음");
+    if (pTy >= 0.7) pros.push("매체 유형 다양"); else if (pTy <= 0.15) cons.push("매체 유형 단조");
+    if (g.ext) { if (g.ext.age2030 >= 0.37) pros.push("2030 밀집"); if (g.ext.weekend >= 0.45) pros.push("주말 강세"); else if (g.ext.weekend <= 0.35) cons.push("주말 약함"); }
+    if (!pros.length && !cons.length) pros.push("균형형"); // 뚜렷한 강약점 없음
+    return { pros: pros.slice(0, 3), cons: cons.slice(0, 2) };
   }
   // 전략별 선택 지역 키 집합. null = 지역 제한 없음(전체/와이드).
   function strategyRegionKeys(ranking, strat) {
@@ -1266,6 +1321,14 @@
     const tgtCustomChips = plannerCustoms.map((v) => `<button type="button" class="map-plan-chip is-tgt is-custom is-on" data-tgtcustom="${AdPlay.esc(v)}" title="제거">${AdPlay.esc(v)} ✕</button>`).join("");
     const tgtCustomInput = `<input type="text" class="map-plan-custom-input" data-custom="tgt" placeholder="기타 입력 ⏎" maxlength="12">`;
     const mtChips = PLAN_MEDIA_TYPES.map((m) => `<button type="button" class="map-plan-chip${plannerMediaType === m.k ? " is-on" : ""}" data-mtype="${m.k}">${m.l}</button>`).join("");
+    // 상품(세부) 하위 칩 행 — 선택한 업종/타깃에 세부유형이 있으면 노출. 고르면 그 상권으로 지역 추천이 정교해짐.
+    const subRow = (parentKey, parentLabel) => {
+      const list = PLAN_SUBTYPES[parentKey]; if (!list) return "";
+      const chips = list.map((s) => `<button type="button" class="map-plan-chip map-plan-subchip${plannerSubtypes[parentKey] === s.k ? " is-on" : ""}" data-subtype="${parentKey}:${s.k}">${AdPlay.esc(s.l)}</button>`).join("");
+      return `<div class="map-plan-row map-plan-subrow"><span class="map-plan-tag map-plan-subtag">${AdPlay.esc(parentLabel)} 상품</span><div class="map-plan-chips">${chips}</div></div>`;
+    };
+    const bizSubRow = plannerBiz ? subRow(plannerBiz, (MATCH_THEMES.find((x) => x.key === plannerBiz) || {}).label || "업종") : "";
+    const tgtSubRows = plannerTargets.filter((k) => PLAN_SUBTYPES[k]).map((k) => subRow(k, (MATCH_THEMES.find((x) => x.key === k) || {}).label || "타깃")).join("");
     const periodChips = PLAN_PERIODS.map((p) => `<button type="button" class="map-plan-chip${plannerPeriodDays === p.d ? " is-on" : ""}" data-period="${p.d}">${p.l}</button>`).join("");
     const isCustomPeriod = !PLAN_PERIODS.some((p) => p.d === plannerPeriodDays);
     return `<div class="map-plan-chooser" id="mapPlanChooser">
@@ -1273,7 +1336,9 @@
         <div class="map-plan-row"><span class="map-plan-tag">예산</span><div class="map-plan-chips">${budgetChips}</div><span class="map-plan-budget">직접 총 <input type="number" id="mapPlanBudget" min="0" step="100" inputmode="numeric" placeholder="제한 없음" value="${plannerBudget || ""}"><em>만원</em></span></div>
         <div class="map-plan-row"><span class="map-plan-tag">기간</span><div class="map-plan-chips">${periodChips}</div><span class="map-plan-budget">직접 <input type="number" id="mapPlanPeriodCustom" min="1" max="365" inputmode="numeric" placeholder="일수" value="${isCustomPeriod ? plannerPeriodDays : ""}"><em>일</em></span></div>
         <div class="map-plan-row"><span class="map-plan-tag">업종</span><div class="map-plan-chips">${bizChips}${bizCustomChip}${bizCustomInput}</div></div>
+        ${bizSubRow}
         <div class="map-plan-row"><span class="map-plan-tag">타깃<em class="map-plan-tag-sub">복수</em></span><div class="map-plan-chips">${tgtChips}${tgtCustomChips}${tgtCustomInput}</div></div>
+        ${tgtSubRows}
         <div class="map-plan-row"><span class="map-plan-tag">매체<em class="map-plan-tag-sub">선택</em></span><div class="map-plan-chips">${mtChips}</div></div>
       </div>`;
   }
@@ -1336,6 +1401,7 @@
     // 업종(단일) / 타깃(복수)
     bodyEl.querySelectorAll("[data-biz]").forEach((b) => b.addEventListener("click", () => { plannerBiz = (plannerBiz === b.dataset.biz ? "" : b.dataset.biz); changeSel(); }));
     bodyEl.querySelectorAll("[data-tgt]").forEach((b) => b.addEventListener("click", () => { const k = b.dataset.tgt; const i = plannerTargets.indexOf(k); if (i >= 0) plannerTargets.splice(i, 1); else plannerTargets.push(k); changeSel(); }));
+    bodyEl.querySelectorAll("[data-subtype]").forEach((b) => b.addEventListener("click", () => { const parts = b.dataset.subtype.split(":"); const p = parts[0], k = parts[1]; plannerSubtypes[p] = (plannerSubtypes[p] === k ? "" : k); changeSel(); }));
     // 기타(직접입력) — 업종 1개, 타깃 복수
     const bizRm = bodyEl.querySelector("[data-bizcustom-rm]");
     if (bizRm) bizRm.addEventListener("click", () => { plannerBizCustom = ""; changeSel(); });
@@ -1436,16 +1502,28 @@
       ranking.forEach((g) => { rankMap[g.key] = g.rank; });
       selRegionKeys = strategyRegionKeys(ranking, plannerRegionStrat); // null = 전체
       const inSel = (k) => !selRegionKeys || selRegionKeys.indexOf(k) >= 0;
-      const chips = ranking.slice(0, 6).map((g, i) => {
-        const ext = g.ext && typeof g.ext.age2030 === "number" ? ` · 20·30 ${Math.round(g.ext.age2030 * 100)}%` : ""; // ⓒ 외부집계 있으면 표시
-        return `<span class="map-plan-rgn${inSel(g.key) ? " is-on" : ""}"><b class="r-rank">${i + 1}</b><span class="r-name">${AdPlay.esc(g.key)}</span><span class="r-score" title="타깃 적합 상대점수(1순위=100)">${g.rel}</span><span class="r-meta">${g.items.length}매체 · 유동 ${planFmtEok(g.foot)}${ext}</span></span>`;
+      const show = ranking.slice(0, 5);
+      // 강약점은 '후보 상위권끼리' 상대 비교(전국 93개 전체와 비교하면 상위권이 전부 '최상위'로 평평해짐)
+      const cmpSet = ranking.slice(0, Math.max(5, Math.min(12, ranking.length)));
+      const rows = show.map((g) => {
+        const pc = regionProsCons(g, cmpSet);
+        const extTxt = g.ext && typeof g.ext.age2030 === "number" ? ` · 20·30 ${Math.round(g.ext.age2030 * 100)}%${typeof g.ext.weekend === "number" ? " · 주말 " + Math.round(g.ext.weekend * 100) + "%" : ""}` : "";
+        const pros = pc.pros.map((p) => `<span class="rr-pro">${AdPlay.esc(p)}</span>`).join("");
+        const cons = pc.cons.map((c) => `<span class="rr-con">${AdPlay.esc(c)}</span>`).join("");
+        return `<div class="map-plan-rgnrow${inSel(g.key) ? " is-on" : ""}">` +
+          `<div class="rr-head"><b class="rr-rank">${g.rank})</b><span class="rr-name">${AdPlay.esc(g.key)}</span><span class="rr-score" title="타깃 적합 상대점수(1순위=100)">${g.rel}</span></div>` +
+          `<div class="rr-metrics">유동 ${planFmtEok(g.foot)} · 매체 ${g.items.length}곳(${g.typeCount}종)${extTxt}</div>` +
+          `<div class="rr-tags">${pros}${cons}</div>` +
+        `</div>`;
       }).join("");
+      const more = ranking.length > show.length ? `<div class="map-plan-tag-help" style="margin-top:2px">+ ${ranking.length - show.length}개 후보 더 · 전체 지역 비교는 아래 <b>다운로드(Excel·PDF)</b>에서</div>` : `<div class="map-plan-tag-help" style="margin-top:2px">연령·성별·주말 등 지역 상세 비교는 아래 <b>다운로드(Excel·PDF)</b>에서</div>`;
       const stratChips = PLAN_REGION_STRATS.map((s) => `<button type="button" class="map-plan-rgn-strat${plannerRegionStrat === s.k ? " is-on" : ""}" data-rstrat="${s.k}" title="${AdPlay.esc(s.desc)}">${s.l}</button>`).join("");
       regionHtml =
         `<div class="map-plan-reco-group">` +
-          `<div class="map-plan-substep"><span class="map-plan-step-no">${nRegion}</span>지역 후보 · 커버리지 <span class="map-plan-tag-help">타깃 적합 순 상위 지역 — <b>어떻게 덮을지</b> 고르면 추천이 그 지역에서 만들어집니다</span></div>` +
-          `<div class="map-plan-rgns">${chips || '<span class="map-plan-tag-help">후보 지역을 계산할 수 없습니다.</span>'}</div>` +
-          `<div class="map-plan-rgn-strats">${stratChips}</div>` +
+          `<div class="map-plan-substep"><span class="map-plan-step-no">${nRegion}</span>추천 지역 비교 <span class="map-plan-tag-help">타깃·예산 조건의 <b>후보 지역을 상대 비교</b> — 점수·지표·강약점 확인 후 아래에서 <b>어떻게 덮을지</b> 선택</span></div>` +
+          `<div class="map-plan-rgnrows">${rows || '<span class="map-plan-tag-help">후보 지역을 계산할 수 없습니다.</span>'}</div>` +
+          more +
+          `<div class="map-plan-rgn-strats-h">커버리지 전략</div><div class="map-plan-rgn-strats">${stratChips}</div>` +
         `</div>`;
     }
     const nSel = (sStep += 1), nAdj = (sStep += 1), nPerf = (sStep += 1), nList = (sStep += 1);
@@ -1456,8 +1534,8 @@
         `<div class="map-plan-substep"><span class="map-plan-step-no">${nAdj}</span>추천(안) 조정 <span class="map-plan-tag-help">바꾸고 싶으면 <b>아래 지표를 선택하세요</b> · 누르면 위 추천(안)이 다시 만들어집니다</span></div><div class="map-plan-levers">${leverHtml}</div>` +
       `</div>` +
       `<div class="map-plan-substep map-plan-substep--open"><span class="map-plan-step-no">${nPerf}</span>예상 성과 <span class="map-plan-tag-help">선택·조정한 안 기준 추정치</span></div>${kpiHtml}` +
-      `<div class="map-plan-substep map-plan-substep--open map-plan-media-head"><span class="map-plan-step-no">${nList}</span><label class="map-plan-selall"><input type="checkbox" class="map-plan-incl-all" aria-label="전체 선택/해제" title="전체 선택/해제"><span>추천 매체 리스트 <b>${items.length}곳</b></span></label> <span class="map-plan-tag-help">리스트에 매체를 직접 추가하려면 지도에서 매체 선택 후 <b>★ 관심</b>을 누르세요 · 왼쪽 <b>체크박스를 해제</b>하면 리스트에서 제외됩니다</span></div>` +
-      favCompareTableHtml(allItems, { allClass: "map-plan-incl-all", inclAttr: "data-plan-incl", rmAttr: "data-plan-rm2", excluded: plannerExcluded, noHeadCheckbox: true }) +
+      `<div class="map-plan-substep map-plan-substep--open map-plan-media-head"><span class="map-plan-step-no">${nList}</span><span class="mh-title">추천 매체 리스트 <b>${items.length}곳</b></span> <span class="map-plan-tag-help">리스트에 매체를 직접 추가하려면 지도에서 매체 선택 후 <b>★ 관심</b>을 누르세요 · 왼쪽 <b>체크박스를 해제</b>하면 리스트에서 제외됩니다</span></div>` +
+      favCompareTableHtml(allItems, { allClass: "map-plan-incl-all", inclAttr: "data-plan-incl", rmAttr: "data-plan-rm2", excluded: plannerExcluded }) +
       (reco ? `<p class="map-fav-reco map-fav-reco--plan"><strong>추<br>천</strong><span class="map-fav-reco-body">${AdPlay.esc(reco)}</span></p>` : "");
     // 지역 커버리지 전략 선택 → 재추천
     inner.querySelectorAll("[data-rstrat]").forEach((b) => b.addEventListener("click", () => { plannerRegionStrat = b.getAttribute("data-rstrat"); reapplyPlanner(bodyEl, footEl); }));
