@@ -6560,10 +6560,9 @@ body:has(.map-workspace-page) {
 .map-fav-resize.s { bottom: 0; left: 18px; right: 18px; height: 6px; cursor: ns-resize; }
 .map-fav-resize.w { left: 0; top: 18px; bottom: 18px; width: 6px; cursor: ew-resize; }
 .map-fav-resize.e { right: 0; top: 18px; bottom: 18px; width: 6px; cursor: ew-resize; }
-.map-fav-resize.nw::after, .map-fav-resize.se::after { content: ""; position: absolute; width: 9px; height: 9px; }
-.map-fav-resize.nw::after { left: 4px; top: 4px; border-left: 2px solid #9fb3d6; border-top: 2px solid #9fb3d6; border-top-left-radius: 3px; }
-.map-fav-resize.se::after { right: 4px; bottom: 4px; border-right: 2px solid #9fb3d6; border-bottom: 2px solid #9fb3d6; border-bottom-right-radius: 3px; }
-.map-fav-resize.nw:hover::after, .map-fav-resize.se:hover::after { border-color: #2540ea; }
+/* 크기 조절 표시는 우측 하단 모서리 한 곳에만(플래너 .gps-rsz.se 와 통일) */
+.map-fav-resize.se::after { content: ""; position: absolute; width: 9px; height: 9px; right: 4px; bottom: 4px; border-right: 2px solid #9fb3d6; border-bottom: 2px solid #9fb3d6; border-bottom-right-radius: 3px; }
+.map-fav-resize.se:hover::after { border-color: #2540ea; }
 
 /* 지역 그룹 헤더 (광역시도 › 구) */
 .map-fav-compare tr.map-fav-group td {
@@ -6577,7 +6576,7 @@ body:has(.map-workspace-page) {
   border-top: 1px solid #eef2f7;
 }
 .map-fav-compare tr.map-fav-group:first-child td { border-top: 0; padding-top: 6px; }
-.map-fav-compare tr.map-fav-group .map-fav-group-pin { color: #2540ea; font-size: 8px; margin-right: 7px; vertical-align: middle; }
+.map-fav-compare tr.map-fav-group .map-fav-group-pin { display: none; } /* 지역명 앞 ● 제거 — 색 덜어냄 */
 .map-fav-compare tr.map-fav-group em { margin-left: 7px; color: #94a3b8; font-weight: 600; font-style: normal; font-size: 11px; }
 
 /* 이동형 패널 — 헤더를 끌어서 이동, 접기 */
@@ -6621,6 +6620,9 @@ body:has(.map-workspace-page) {
   font-size: 18px;
   font-weight: 850;
 }
+
+.map-fav-head-title { display: flex; flex-direction: column; gap: 3px; min-width: 0; }
+.map-fav-sub { margin: 0; font-size: 12px; font-weight: 600; color: #94a3b8; line-height: 1.35; }
 
 .map-fav-head strong {
   color: #2540ea;

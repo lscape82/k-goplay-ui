@@ -34,8 +34,8 @@
   //  · 제안서 만들기 삭제 — 관심매체 비교 패널의 PDF 버튼으로 흡수(one-pager.html).
   //  · 성과 리포트 이동 — 계약 광고주용이라 로그인 → 마이페이지로.
   var SERVICES = [
-    { key: "planner",  icon: ICONS.planner,  label: "① AI 추천받기", sub: "예산·업종·지역 → 매체 조합 자동 설계" },
-    { key: "compare",  icon: ICONS.compare,  label: "② 관심 매체 담기", sub: "담은 매체 비교 · 제안서(PDF)·엑셀 받기" },
+    { key: "planner",  icon: ICONS.planner,  label: "AI 추천받기", sub: "예산·업종·지역 → 매체 조합 자동 설계" },
+    { key: "compare",  icon: ICONS.compare,  label: "관심 매체 담기", sub: "담은 매체 비교 · 제안서(PDF)·엑셀 받기" },
     { key: "creative", icon: ICONS.creative, label: "소재 제작 의뢰", sub: "의뢰서 작성하면 제작 견적 발송", href: "creative-request.html" }
   ];
 
@@ -49,7 +49,7 @@
   }
   var FEAT = {
     planner: {
-      icon: "🤖", title: "① 업종·타깃별 AI 추천받기", sub: "예산·업종·지역·목표로 최적 매체 조합을 설계합니다",
+      icon: ICONS.planner, title: "업종·타깃별 AI 추천받기", sub: "예산·업종·지역·목표로 최적 매체 조합을 설계합니다",
       body:
         '<div class="gps-chips" style="margin-bottom:14px">' +
           '<span class="gps-chip">예산 <b>월 500만</b></span><span class="gps-chip">업종 <b>F&amp;B·카페</b></span>' +
@@ -82,7 +82,7 @@
       foot: '<button class="gps-bs">관심매체로 담기</button><button class="gps-bp">제안서 만들기 →</button>'
     },
     compare: {
-      icon: "⚖️", title: "② 관심 매체 담기", sub: "담은 매체를 지표별로 나란히 비교하고 바로 상담합니다",
+      icon: ICONS.compare, title: "관심 매체 담기", sub: "담은 매체를 지표별로 나란히 비교하고 바로 상담합니다",
       body:
         '<div class="gps-card cmp">' +
           '<div class="gps-rowh"><span>일 유동인구 · 많을수록 유리</span></div>' +
@@ -141,6 +141,7 @@
         '</div>' +
         '<div class="gps-modal-b"></div>' +
         '<div class="gps-modal-f"></div>' +
+        '<span class="gps-rsz nw" data-rsz="nw"></span><span class="gps-rsz n" data-rsz="n"></span><span class="gps-rsz ne" data-rsz="ne"></span><span class="gps-rsz e" data-rsz="e"></span><span class="gps-rsz se" data-rsz="se"></span><span class="gps-rsz s" data-rsz="s"></span><span class="gps-rsz sw" data-rsz="sw"></span><span class="gps-rsz w" data-rsz="w"></span>' +
       '</div>';
     document.body.appendChild(ov);
 
@@ -150,7 +151,7 @@
 
     function open(key) {
       if (key === "planner") {
-        mi.textContent = "🤖"; mt.textContent = "① 업종·타깃별 AI 추천받기";
+        mi.innerHTML = ICONS.planner; mt.textContent = "업종·타깃별 AI 추천받기";
         msub.textContent = "업종·타깃을 고르면 추천 매체로 플랜이 만들어집니다";
         modalEl.classList.remove("is-min");
         if (minBtn) { minBtn.querySelector(".gmi").textContent = "▾"; minBtn.querySelector(".gml").textContent = "접기"; }
@@ -161,11 +162,14 @@
           mf.innerHTML = "";
         }
         ov.classList.add("open");
+        var favP0 = document.getElementById("mapFavPanel");
+        if (favP0) favP0.style.zIndex = "60"; // 추천받기를 열면 맨 앞 + 활성 수집함
+        document.body.dataset.gpsFront = "planner";
         document.dispatchEvent(new CustomEvent("gps:planner-opened"));
         return;
       }
       var f = FEAT[key]; if (!f) return;
-      mi.textContent = f.icon; mt.textContent = f.title; msub.textContent = f.sub;
+      mi.innerHTML = f.icon; mt.textContent = f.title; msub.textContent = f.sub;
       mb.innerHTML = f.body; mf.innerHTML = f.foot;
       ov.classList.add("open");
     }
@@ -184,6 +188,12 @@
     ov.addEventListener("click", function (e) { if (e.target === ov) close(); });
     document.addEventListener("keydown", function (e) { if (e.key === "Escape") close(); });
 
+    // 두 창(AI 추천받기·관심 매체 담기)이 함께 떠 있을 때 — 추천받기를 누르면 관심매체 창을 다시 뒤로(z:60) 보내 추천받기가 위로.
+    if (modalEl) modalEl.addEventListener("pointerdown", function () {
+      var favP = document.getElementById("mapFavPanel");
+      if (favP) favP.style.zIndex = "60";
+      document.body.dataset.gpsFront = "planner"; // 추천받기 창이 앞(활성 수집함) → 지도 ★은 ①에도 반영
+    }, true);
     // 비차단 플래너 패널: 헤더를 끌어 위치 이동(데스크톱). 크기 조절은 CSS resize(오른쪽 아래 모서리).
     if (modalEl && headEl) {
       var mdrag = null;
@@ -205,6 +215,37 @@
       var mend = function () { mdrag = null; headEl.classList.remove("is-grabbing"); };
       headEl.addEventListener("pointerup", mend);
       headEl.addEventListener("pointercancel", mend);
+    }
+    // 8방향 크기 조절 — 관심매체 패널과 동일(모서리·변 핸들, 반대편 고정). 우하단만 되던 것을 사방으로.
+    if (modalEl) {
+      ["nw", "n", "ne", "e", "se", "s", "sw", "w"].forEach(function (dir) {
+        var handle = modalEl.querySelector(".gps-rsz." + dir);
+        if (!handle) return;
+        var fromLeft = dir.indexOf("w") >= 0, fromTop = dir.indexOf("n") >= 0;
+        var hAxis = fromLeft || dir.indexOf("e") >= 0, vAxis = fromTop || dir.indexOf("s") >= 0;
+        var rsz = null;
+        handle.addEventListener("pointerdown", function (e) {
+          if (window.matchMedia("(max-width:700px)").matches) return;
+          e.preventDefault(); e.stopPropagation();
+          var r = modalEl.getBoundingClientRect();
+          rsz = { x: e.clientX, y: e.clientY, w: r.width, h: r.height, left: r.left, top: r.top };
+          modalEl.style.right = "auto"; modalEl.style.left = r.left + "px"; modalEl.style.top = r.top + "px";
+          handle.setPointerCapture(e.pointerId); modalEl.classList.add("is-rsz");
+        });
+        handle.addEventListener("pointermove", function (e) {
+          if (!rsz) return;
+          var dx = e.clientX - rsz.x, dy = e.clientY - rsz.y;
+          var minW = 360, minH = 240, maxW = window.innerWidth - 24, maxH = window.innerHeight - 24;
+          var w = hAxis ? Math.max(minW, Math.min(fromLeft ? rsz.w - dx : rsz.w + dx, maxW)) : rsz.w;
+          var h = vAxis ? Math.max(minH, Math.min(fromTop ? rsz.h - dy : rsz.h + dy, maxH)) : rsz.h;
+          modalEl.style.width = w + "px"; modalEl.style.height = h + "px";
+          if (fromLeft) modalEl.style.left = (rsz.left + (rsz.w - w)) + "px";
+          if (fromTop) modalEl.style.top = (rsz.top + (rsz.h - h)) + "px";
+        });
+        var rend = function () { rsz = null; modalEl.classList.remove("is-rsz"); };
+        handle.addEventListener("pointerup", rend);
+        handle.addEventListener("pointercancel", rend);
+      });
     }
     if (minBtn && modalEl) {
       minBtn.addEventListener("click", function () {
