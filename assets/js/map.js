@@ -740,10 +740,21 @@
   //  ③ 집행 리듬 — 지속 노출(continuity) vs 집중(플라이팅), Ephron 리센시 플래닝
   //  ④ 매체 성격 — 임팩트/체류·주목(dwell time>size·MRC 주목도)/생활밀착/운전자·도로변(포맷 오디언스)
   // 두 줄로 정리: 1행 = 목표·커버리지(효율/도달·집중/분산/반복/동선), 2행 = 집행·매체 성격(기간·매체 유형). 라벨은 두 줄에 맞게 간결화.
+  // 조정 레버 = '미디어 믹스'만(지역 집중/분산은 지역 믹스가 담당 → 레버에서 제거, 중복·혼동 방지).
+  // 1행 = 목표·기간(무엇을 더 살지), 2행 = 매체 성격(어떤 매체로). 단어 간 차이가 명확하도록 정리.
   const PLAN_LEVERS = [
-    [{ l: "효율(CPM↓)", set: { scenario: "eff" } }, { l: "도달(규모↑)", set: { scenario: "reach" } }, { l: "핵심 집중", set: { coverage: "focus" } }, { l: "넓게 분산", set: { coverage: "wide" } }, { l: "생활권 반복", set: { coverage: "local" } }, { l: "구매 동선", set: { coverage: "path" } }],
-    [{ l: "짧게·여러(자주)", set: { period: 15 } }, { l: "길게·소수(지속)", set: { period: 180 } }, { l: "대형 임팩트", set: { media: "impact" } }, { l: "체류·주목", set: { media: "dwell" } }, { l: "생활 밀착", set: { media: "life" } }, { l: "운전자·도로변", set: { media: "driver" } }],
+    [{ l: "효율(CPM↓)", set: { scenario: "eff" } }, { l: "도달(규모↑)", set: { scenario: "reach" } }, { l: "짧게·자주", set: { period: 15 } }, { l: "길게·꾸준히", set: { period: 180 } }],
+    [{ l: "대형 임팩트", set: { media: "impact" } }, { l: "체류·주목형", set: { media: "dwell" } }, { l: "생활 밀착형", set: { media: "life" } }, { l: "운전자·도로변", set: { media: "driver" } }],
   ];
+  // ★ 캠페인 목적(objective) — 매체·송출·지역 믹스를 '목적'이 구동(브랜드 티어 아님). 맞춤 추천안의 기본 축과 지역 믹스 기본값을 결정.
+  const PLAN_OBJECTIVES = [
+    { k: "awareness", l: "인지 확대", scenario: "reach", media: null, coverage: "auto", rstrat: "topN", note: "넓은 도달 — 상위 상권에 고루" },
+    { k: "launch", l: "런칭·신제품", scenario: "reach", media: "impact", coverage: "focus", rstrat: "core1", note: "핵심 상권 대형 매체로 각인" },
+    { k: "sustain", l: "지속·생활밀착", scenario: "eff", media: "life", coverage: "wide", rstrat: "all", note: "생활 동선 반복 노출 — 효율 우선" },
+    { k: "convert", l: "방문·전환", scenario: "eff", media: "driver", coverage: "focus", rstrat: "topN", note: "매장·상권 인근 접점 집중" },
+  ];
+  let plannerObjective = "awareness";
+  function curObjective() { return PLAN_OBJECTIVES.find((o) => o.k === plannerObjective) || PLAN_OBJECTIVES[0]; }
   let plannerMediaType = "all";
   let plannerRegionStrat = "topN"; // 지역 커버리지 전략: all|topN|core1|coreMulti|wide (지역 직접 지정 시 무시)
   let plannerRegionN = 3;          // '상위권 집중'이 덮을 상위 지역 수
@@ -926,6 +937,16 @@
     if (/전광판|빌보드|LED|미디어|옥상|월/.test(t)) return { k: "impact", l: "임팩트확장" };
     return { k: "reach", l: "도달확보" };
   }
+  // ★ 송출 방식 — digital(로테이션: 타 브랜드와 사이클 공유·영상 주목도↑) / fixed(고정 단독: 내 브랜드만·각인↑, 정적 '병풍' 위험).
+  // 둘의 장단점이 분명해 '송출방식 믹스'(주목+각인)도 중요한 설계 축. 키워드 휴리스틱(데이터 정식 플래그 확보 전).
+  function broadcastMode(f) {
+    const t = `${f.type || ""} ${f.name || ""}`.toLowerCase();
+    const ps = `${f.playSpec || ""}`;
+    if (/조명|래핑|포스터|와이드|인쇄|옥상|빌보드/.test(t)) return "fixed";                 // 명시적 고정형 우선
+    if (/롤링|회전|로테이션|\d+\s*회/.test(ps) || /전광판|led|디지털|사이니지|미디어|did|비전|psd|스크린/i.test(t)) return "digital";
+    if (/쉘터|정류장|스크린도어/.test(t)) return "fixed";                                   // 쉘터·정류장 조명광고 등 대개 고정
+    return "";
+  }
   // 역할 뜻(배지 툴팁·목표 칩 설명 공용) — 목표(방향) 선택지와 매체 배지가 같은 용어를 가리킴
   const PLAN_ROLE_KEY = [
     { k: "reach", l: "도달확보", d: "많은 사람에게 기본 도달 (지하철·버스·교통거점)" },
@@ -999,16 +1020,47 @@
   // ===== 지역(상권) 상대평가 레이어 =====
   // 광고주 판단 = "이 장소 몇 명"(절대값)이 아니라 "후보 지역 중 어디가 타깃에 상대적으로 맞나 + 어떻게 덮나".
   // 지역 커버리지 전략 프리셋 — 후보 지역 랭킹 위에서 '어디를 어떻게 덮을지' 선택.
+  // ★ 상권 프로파일 — 유동 숫자만으론 설득력 약함. '그 상권을 지배하는 업종·시설·성격'을 근거/가중치로.
+  // 지금은 큐레이션 사전(placeholder). 국세청/카드사 상가업소(업종별 점포)·소진공 주요상권·집객시설 데이터 연동 시 자동·정밀화. [[data-catalog-and-needs]]
+  const PLAN_AREA_PROFILE = [
+    { re: /도산|압구정|청담|신사/, trait: "성형외과·피부과·수입차 쇼룸·명품 패션이 밀집한 고소득 상권", biz: ["beauty", "luxury", "fashion", "auto", "pharma"] },
+    { re: /가로수/, trait: "패션·뷰티 플래그십이 늘어선 트렌드 거리 상권", biz: ["fashion", "beauty", "luxury"] },
+    { re: /강남역|강남대로|역삼|서초/, trait: "학원·오피스·성형·피부과가 밀집한 유동 최대 상권", biz: ["beauty", "pharma", "finance", "tech", "edu"] },
+    { re: /명동|을지로|남대문|동대문/, trait: "외국인 관광·면세·화장품 로드숍 중심의 관문 상권", biz: ["beauty", "retail", "travel", "fashion"] },
+    { re: /삼성|코엑스/, trait: "전시·MICE·오피스 중심의 비즈니스 상권", biz: ["tech", "finance", "auto", "travel"] },
+    { re: /홍대|신촌|이대/, trait: "대학가 2030·스트리트 패션·클럽 중심의 MZ 상권", biz: ["fashion", "fnb", "enter", "beauty"] },
+    { re: /성수|연무장|연남/, trait: "카페·팝업·힙플레이스 중심의 트렌드 상권", biz: ["fashion", "fnb", "beauty", "enter"] },
+    { re: /여의도|광화문|종로|시청/, trait: "대기업 오피스·직장인이 밀집한 업무 상권", biz: ["finance", "tech", "realestate", "food"] },
+    { re: /건대|회기|안암|성신/, trait: "대학가·젊은 유동 중심 상권", biz: ["fashion", "fnb", "enter", "edu"] },
+    { re: /이태원|한남/, trait: "외국인·프리미엄 F&B·패션 상권", biz: ["fnb", "fashion", "luxury", "travel"] },
+    { re: /잠실|송파/, trait: "대형 쇼핑몰·가족 생활권 상권", biz: ["retail", "food", "edu"] },
+  ];
+  function areaProfile(key) { for (let i = 0; i < PLAN_AREA_PROFILE.length; i += 1) { if (PLAN_AREA_PROFILE[i].re.test(key || "")) return PLAN_AREA_PROFILE[i]; } return null; }
+  // 지역 믹스 = '지역 범위'만 정함(매체 개념 섞지 않음). 한곳 집중 ↔ 여러 곳 분산 3단계.
   const PLAN_REGION_STRATS = [
-    { k: "all",       l: "후보 전체 커버",  desc: "후보 지역 모두에 분산" },
-    { k: "topN",      l: "상위권 집중",     desc: "타깃 적합 상위 지역" },
-    { k: "core1",     l: "핵심 1곳",        desc: "1순위 지역만 깊게" },
-    { k: "coreMulti", l: "1순위 멀티매체",  desc: "핵심 1곳에 매체 다양하게(이동 내내 반복 노출)" },
-    { k: "wide",      l: "단일매체 와이드", desc: "한 매체종류로 여러 지역 넓게" },
+    { k: "core1", l: "1곳 집중",  desc: "1순위 지역 한 곳에만 예산 집중" },
+    { k: "topN",  l: "상위 3곳",  desc: "타깃 적합 상위 3개 지역에 분산" },
+    { k: "all",   l: "전체 분산",  desc: "후보 지역 전체에 넓게 분산" },
   ];
   // 지역 전략은 '지역 직접 지정 안 함(전국/타깃 기반)'일 때만 활성. 직접 지정 시 그 지역을 그대로 따름.
   function regionLayerActive() { return !plannerRegions.length; }
   function planRegionKeyOf(f) { return (f.area && f.area !== "-") ? f.area : favRegionLabel(f); }
+  // ⓒ 외부 정밀집계(region-stats.json) 가중 보정 — 공신식 자료 분석으로 보강한 지표. 있는 필드만 반영(없으면 0 = 영향 없음, graceful).
+  //  유효노출(vai)·시간대적합(dayFit)·연령(age2030)·소득(income)·직장(worker)·배후거주(resident) 가산, 경쟁 클러터(competition) 감산.
+  //  타깃/업종에 따라 관련 지표만 가중(예: 명품→income, 직장인→worker, 2030/뷰티→age2030).
+  function regionExtBoost(g, crit, tgtStr) {
+    const e = g.ext; if (!e) return 0;
+    const n = (v) => (typeof v === "number" ? v : 0);
+    let b = 0;
+    b += 0.10 * n(e.vai);        // 유효노출(가시성) 보정 — Geopath VAI류
+    b += 0.10 * n(e.dayFit);     // 시간대·요일 타깃 적합(dayparting)
+    b -= 0.08 * n(e.competition); // 경쟁·클러터 → SOV 하락 패널티
+    if (/2030|대학생|사회초년|영유아|뷰티|패션|엔터/.test(tgtStr)) b += 0.12 * n(e.age2030);
+    if (/명품|고소득|프리미엄|luxury|자동차/.test(tgtStr)) b += 0.12 * n(e.income);
+    if (/직장|오피스|금융|테크|worker/.test(tgtStr)) b += 0.10 * n(e.worker);
+    if (/주거|거주|가족|영유아|실버|1인|부동산/.test(tgtStr)) b += 0.10 * n(e.resident);
+    return b;
+  }
   // 후보 지역 상대 랭킹 — 후보풀을 상권(area)별로 묶어 '타깃 적합(밀도)·평균 유동·매체 수'로 상대 스코어(1순위=100).
   // ⓐ 가중 튜닝: 크기 편향 제거 위해 '합'이 아닌 '밀도/평균' 사용 — fitRatio(적합 밀도)·footAvg(평균 유동).
   //   타깃·업종 키워드가 있으면 적합(0.55) 중심, 없으면 유동·매체수만. ⓒ 외부집계(ext) 있으면 2030 타깃 시 소폭 보정.
@@ -1033,11 +1085,11 @@
       const t = `${f.name || ""} ${f.area || ""} ${f.address || ""} ${f.audience || ""}`.toLowerCase();
       // 타깃 지역 적합을 업종보다 2배 가중 → 20대 타깃이면 홍대·신촌이 뷰티 기본상권(강남)보다 우선
       let fit = 0; tgtKeys.forEach((a) => { if (keyHit(t, a)) fit += 2; }); bizKeys.forEach((a) => { if (keyHit(t, a)) fit += 1; }); if (cats.indexOf(f.category) >= 0) fit += 1;
-      g.fit += fit; g.types[f.type || "기타"] = 1;
+      g.fit += fit; const ty = f.type || "기타"; g.types[ty] = (g.types[ty] || 0) + 1;
     });
     const arr = Object.keys(groups).map((k) => groups[k]);
     if (!arr.length) return arr;
-    arr.forEach((g) => { g.typeCount = Object.keys(g.types).length; g.fitRatio = g.fit / g.items.length; g.footAvg = g.foot / g.items.length; g.ext = regionStats[g.key] || null; });
+    arr.forEach((g) => { g.typeCount = Object.keys(g.types).length; g.typeTop = Object.keys(g.types).sort((a, b) => g.types[b] - g.types[a])[0] || ""; g.fitRatio = g.fit / g.items.length; g.footAvg = g.foot / g.items.length; g.ext = regionStats[g.key] || null; });
     const norm = (sel) => { const m = Math.max(1e-9, ...arr.map(sel)); return (g) => sel(g) / m; };
     const nFit = norm((g) => g.fitRatio), nFoot = norm((g) => g.footAvg), nN = norm((g) => g.items.length);
     const hasFit = tgtKeys.length || bizKeys.length || cats.length;
@@ -1046,7 +1098,11 @@
       let s = hasFit ? (0.55 * nFit(g) + 0.25 * nFoot(g) + 0.20 * nN(g)) : (0.6 * nFoot(g) + 0.4 * nN(g));
       // 적합 신호가 있을 때, 최상위 대비 적합도가 바닥(부분매칭 수준)인 지역은 강등 → 유동만으로 상위 오르는 것 방지
       if (hasFit && g.fitRatio < maxFitRatio * 0.2) s *= 0.15;
-      if (g.ext && tgt2030 && typeof g.ext.age2030 === "number") s += 0.15 * g.ext.age2030; // ⓒ 외부 연령집계 보정
+      // ⓒ 외부 정밀집계(region-stats.json) 가중 — 있는 필드만 반영(graceful). 5지표+VAI+연령.
+      s += regionExtBoost(g, crit, tgtStr);
+      // ★ 상권 지배 업종이 캠페인 업종과 맞으면 가중(유동 숫자 외에 '상권 성격'을 반영). profile 없으면 영향 없음.
+      g.profile = areaProfile(g.key);
+      if (plannerBiz && g.profile && g.profile.biz && g.profile.biz.indexOf(plannerBiz) >= 0) s *= 1.3;
       g.score = s;
     });
     arr.sort((a, b) => (b.score - a.score) || (b.foot - a.foot));
@@ -1064,29 +1120,62 @@
     const v = sel(g); const below = arr.filter((x) => sel(x) < v).length;
     return below / (arr.length - 1);
   }
-  // 지역 상대 장단점 — 후보 지역들과 비교해 '강점/약점'을 가공 근거로 자동 생성.
+  // 대표 매체유형 → 상권 성격 구절(근거 문장·설명용).
+  function typePhrase(t) {
+    t = t || "";
+    if (/전광판|빌보드|led|옥상|미디어/i.test(t)) return "대형 전광판 중심";
+    if (/편의점/.test(t)) return "편의점 생활매체 중심";
+    if (/엘리베이터|엘베|타운보드/.test(t)) return "엘리베이터 생활매체 중심";
+    if (/지하철|역사|승강장|철도|스크린도어/.test(t)) return "지하철 역사매체 중심";
+    if (/버스|쉘터|정류장/.test(t)) return "버스 교통매체 중심";
+    if (/공항|터미널/.test(t)) return "교통거점 매체 중심";
+    if (/쇼핑|몰|마트|did|리테일/i.test(t)) return "쇼핑몰 매체 중심";
+    return (t ? t + " 중심" : "혼합 매체");
+  }
+  // 지역 상대 장단점 — 후보 지역들과 비교해 '강점/약점'을 가공 근거로 자동 생성(근거 없는/혼동 배지 제외).
   function regionProsCons(g, arr) {
     const pros = [], cons = [];
     const pFit = regionRankPct(arr, (x) => x.fitRatio, g);
     const pFoot = regionRankPct(arr, (x) => x.foot, g);   // 표시값(총 유동)과 같은 기준으로 강약점 산출
-    const pSub = regionRankPct(arr, (x) => x.subway, g);
     const pN = regionRankPct(arr, (x) => x.items.length, g);
-    const pTy = regionRankPct(arr, (x) => x.typeCount, g);
     if (pFit >= 0.7) pros.push("타깃 적합 높음");
     if (pFoot >= 0.8) pros.push("유동 최상위"); else if (pFoot >= 0.6) pros.push("유동 상위"); else if (pFoot <= 0.2) cons.push("유동 낮음");
-    if (pSub >= 0.75) pros.push("지하철 강세");
     if (pN >= 0.7) pros.push("매체 선택폭 넓음"); else if (pN <= 0.15) cons.push("매체 수 적음");
-    if (pTy >= 0.7) pros.push("매체 유형 다양"); else if (pTy <= 0.15) cons.push("매체 유형 단조");
     if (g.ext) { if (g.ext.age2030 >= 0.37) pros.push("2030 밀집"); if (g.ext.weekend >= 0.45) pros.push("주말 강세"); else if (g.ext.weekend <= 0.35) cons.push("주말 약함"); }
     if (!pros.length && !cons.length) pros.push("균형형"); // 뚜렷한 강약점 없음
     return { pros: pros.slice(0, 3), cons: cons.slice(0, 2) };
   }
+  // 후보 집합 내 순위(1=최상). 동점이면 같은 순위.
+  function rankPos(arr, sel, g) { const v = sel(g); return arr.filter((x) => sel(x) > v).length + 1; }
+  // 받침 유무로 조사 은/는 선택.
+  function josaEN(w) { const c = (w || "").charCodeAt((w || "").length - 1); if (c < 0xAC00 || c > 0xD7A3) return "은"; return ((c - 0xAC00) % 28) ? "은" : "는"; }
+  // 지역별 '왜 이 순위·왜 적합한지' 한 문장 근거 — 지역마다 강점(1위 지표)·트레이드오프를 다르게 서술.
+  function regionSummary(g, arr) {
+    const dom = g.typeTop || "";
+    const n = arr.length;
+    const metrics = [["타깃 적합도", rankPos(arr, (x) => x.fitRatio, g)], ["유동", rankPos(arr, (x) => x.foot, g)], ["매체 선택폭", rankPos(arr, (x) => x.items.length, g)]];
+    const best = metrics.slice().sort((a, b) => a[1] - b[1])[0];
+    const worst = metrics.slice().sort((a, b) => b[1] - a[1])[0];
+    const lead = best[1] <= 3 ? `${best[0]} ${best[1]}위` : `${best[0]} 양호`;
+    const weak = (n >= 4 && worst[1] !== best[1] && worst[1] >= Math.ceil(n * 0.6)) ? ` 다만 ${worst[0]}${josaEN(worst[0])} 상위권 대비 낮습니다.` : "";
+    const prof = g.profile || areaProfile(g.key);
+    // 상권 성격(지배 업종·시설)을 앞에 세워 설득력 강화. 없으면 매체유형 기반 서술.
+    const head = prof ? `${prof.trait}.` : `${typePhrase(dom)} 상권.`;
+    // 매체는 단정 짓지 않음 — 같은 상권도 '캠페인 목적'(런칭·신제품 고지·인지도=임팩트 / 지속·효율=교통매체)에 따라 믹스가 달라짐.
+    // (브랜드 티어로 못박지 않음: 저가도 런칭이면 대형 전광판, 고가도 지속이면 교통매체를 쓸 수 있음.)
+    const topTypes = Object.keys(g.types || {}).sort((a, b) => g.types[b] - g.types[a]);
+    const typesTxt = topTypes.slice(0, 3).join("·");
+    const media = g.typeCount >= 3 ? ` ${typesTxt} 등 ${g.typeCount}종 매체가 있어 목적에 따라 임팩트↔지속 믹스를 설계할 수 있습니다.`
+      : g.typeCount === 2 ? ` ${typesTxt} 중심으로, 목적에 맞춰 믹스가 가능합니다.`
+      : topTypes.length ? ` ${typesTxt} 중심 상권입니다.` : "";
+    return `${head} ${lead}.${media}${weak}`.replace(/\s+/g, " ").trim();
+  }
   // 전략별 선택 지역 키 집합. null = 지역 제한 없음(전체/와이드).
   function strategyRegionKeys(ranking, strat) {
     if (!ranking.length) return null;
-    if (strat === "all" || strat === "wide") return null;
-    if (strat === "topN") return ranking.slice(0, plannerRegionN).map((g) => g.key);
-    return [ranking[0].key]; // core1 · coreMulti
+    if (strat === "all") return null;                                            // 전체 분산
+    if (strat === "topN") return ranking.slice(0, plannerRegionN).map((g) => g.key); // 상위 3곳
+    return [ranking[0].key];                                                     // core1 = 1곳 집중
   }
   // 라운드로빈 섞기 — keyFn 기준으로 고르게 분산(유형 다양화 / 지역 분산 공용).
   function roundRobin(arr, keyFn) {
@@ -1106,13 +1195,9 @@
     if (regionLayerActive()) {
       const keys = strategyRegionKeys(buildRegionRanking(crit), plannerRegionStrat);
       if (keys) { const set = {}; keys.forEach((k) => { set[k] = 1; }); base = base.filter((f) => set[planRegionKeyOf(f)]); }
-      if (plannerRegionStrat === "wide") { const tc = {}; base.forEach((f) => { tc[f.type] = (tc[f.type] || 0) + 1; }); const topT = Object.keys(tc).sort((a, b) => tc[b] - tc[a])[0]; if (topT) base = base.filter((f) => f.type === topT); }
     }
     let arr = applyMedia(applyCoverage(orderByScenario(base, strat.scenario), strat.coverage), strat.media);
-    if (regionLayerActive()) {
-      if (plannerRegionStrat === "coreMulti") arr = interleaveByType(arr);              // 한 지역 내 매체 다양화
-      else if (plannerRegionStrat === "all" || plannerRegionStrat === "wide") arr = interleaveByRegion(arr); // 여러 지역에 고르게 분산
-    }
+    if (regionLayerActive() && plannerRegionStrat === "all") arr = interleaveByRegion(arr); // 전체 분산 시 여러 지역에 고르게
     if (planEffDays < 30) arr = arr.filter((f) => f.shortTerm).concat(arr.filter((f) => !f.shortTerm)); // 단기면 단기요율 보유 우선
     // 가격 있는 매체 우선 — 패키지·상담가(월정가 0) 매체가 상위를 메워 합계가 '상담'으로 뜨는 것 방지(순서는 전략 내 안정 유지)
     arr = arr.filter((f) => (f.monthly || 0) > 0).concat(arr.filter((f) => !((f.monthly || 0) > 0)));
@@ -1137,8 +1222,9 @@
   function planAns() {
     const ip = plannerPeriodDays;
     const shortP = ip >= 30 ? 15 : ip;
+    const ob = curObjective();
     return [
-      { k: "custom", label: "맞춤 추천안", note: "선택하신 조건 그대로", scenario: "bal", coverage: "auto", media: null, period: ip },
+      { k: "custom", label: "맞춤 추천안", note: `목적: ${ob.l} — ${ob.note}`, scenario: ob.scenario, coverage: ob.coverage, media: ob.media, period: ip },
       { k: "alt1", label: "AI 대안 ① 효율·분산", note: `기간을 줄여(${periodLabel(shortP)}) 매체 수↑ · 같은 예산에 넓게`, scenario: "eff", coverage: "wide", media: "life", period: shortP },
       { k: "alt2", label: "AI 대안 ② 핵심·임팩트", note: "핵심 상권 대형 매체에 집중 (주목도↑)", scenario: "reach", coverage: "focus", media: "impact", period: ip },
     ];
@@ -1313,6 +1399,7 @@
     const regionChips = plannerRegions.length
       ? plannerRegions.map((r, i) => `<button type="button" class="map-plan-chip is-on" data-region-rm="${i}" title="제거">${AdPlay.esc(regionTokenLabel(r))} ✕</button>`).join("")
       : `<span class="map-plan-chip is-ghost">전국</span>`;
+    const objChips = PLAN_OBJECTIVES.map((o) => `<button type="button" class="map-plan-chip map-plan-objchip${plannerObjective === o.k ? " is-on" : ""}" data-obj="${o.k}" title="${AdPlay.esc(o.note)}">${AdPlay.esc(o.l)}</button>`).join("");
     const budgetChips = PLAN_BUDGETS.map((b) => `<button type="button" class="map-plan-chip map-plan-bchip${plannerBudget === b.v ? " is-on" : ""}" data-budget="${b.v}">${b.l}</button>`).join("");
     const bizChips = MATCH_THEMES.filter((t) => t.type === "biz").map((t) => `<button type="button" class="map-plan-chip${plannerBiz === t.key ? " is-on" : ""}" data-biz="${t.key}">${AdPlay.esc(t.label)}</button>`).join("");
     const bizCustomChip = plannerBizCustom ? `<button type="button" class="map-plan-chip is-custom is-on" data-bizcustom-rm title="기타 업종 제거">기타: ${AdPlay.esc(plannerBizCustom)} ✕</button>` : "";
@@ -1332,6 +1419,7 @@
     const periodChips = PLAN_PERIODS.map((p) => `<button type="button" class="map-plan-chip${plannerPeriodDays === p.d ? " is-on" : ""}" data-period="${p.d}">${p.l}</button>`).join("");
     const isCustomPeriod = !PLAN_PERIODS.some((p) => p.d === plannerPeriodDays);
     return `<div class="map-plan-chooser" id="mapPlanChooser">
+        <div class="map-plan-row"><span class="map-plan-tag">목적</span><div class="map-plan-chips">${objChips}</div></div>
         <div class="map-plan-row"><span class="map-plan-tag">지역</span><div class="map-plan-chips">${sidoSel}${guSel}${regionChips}</div></div>
         <div class="map-plan-row"><span class="map-plan-tag">예산</span><div class="map-plan-chips">${budgetChips}</div><span class="map-plan-budget">직접 총 <input type="number" id="mapPlanBudget" min="0" step="100" inputmode="numeric" placeholder="제한 없음" value="${plannerBudget || ""}"><em>만원</em></span></div>
         <div class="map-plan-row"><span class="map-plan-tag">기간</span><div class="map-plan-chips">${periodChips}</div><span class="map-plan-budget">직접 <input type="number" id="mapPlanPeriodCustom" min="1" max="365" inputmode="numeric" placeholder="일수" value="${isCustomPeriod ? plannerPeriodDays : ""}"><em>일</em></span></div>
@@ -1380,6 +1468,14 @@
       plannerAddSido = ""; changeSel();
     });
     bodyEl.querySelectorAll("[data-region-rm]").forEach((b) => b.addEventListener("click", () => { const i = parseInt(b.getAttribute("data-region-rm"), 10); plannerRegions.splice(i, 1); changeSel(); }));
+    // 목적 — 선택하면 맞춤 추천안(시나리오·매체·커버리지)과 지역 믹스 기본값을 목적이 구동. 레버 초기화 후 맞춤 안으로.
+    bodyEl.querySelectorAll("[data-obj]").forEach((b) => b.addEventListener("click", () => {
+      plannerObjective = b.dataset.obj;
+      const ob = curObjective();
+      plannerAnKey = "custom"; plannerLever = {};
+      plannerRegionStrat = ob.rstrat;
+      changeSel();
+    }));
     // 예산 프리셋 + 직접입력
     bodyEl.querySelectorAll("[data-budget]").forEach((b) => b.addEventListener("click", () => { const v = parseInt(b.dataset.budget, 10) || 0; plannerBudget = (plannerBudget === v ? 0 : v); changeSel(); }));
     const bud = bodyEl.querySelector("#mapPlanBudget");
@@ -1428,6 +1524,12 @@
     const entries = Object.keys(byType).map((t) => ({ t, v: byType[t] })).sort((a, b) => b.v - a.v);
     const mixBar = total ? entries.map((e, i) => `<span style="width:${(e.v / total * 100).toFixed(2)}%;background:${favTypeColor(e.t, i)}"></span>`).join("") : "";
     const mixLeg = entries.map((e, i) => `<span class="map-fav-mix-item"><i style="background:${favTypeColor(e.t, i)}"></i>${AdPlay.esc(e.t)} <b>${total ? Math.round(e.v / total * 100) : 0}%</b></span>`).join("");
+    // 송출방식 믹스 — 디지털(주목) vs 고정(각인). 예산 비중 기준.
+    const bc = { digital: 0, fixed: 0 };
+    items.forEach((f) => { const m = broadcastMode(f); if (m) bc[m] += planPriceForDays(f, planEffDays); });
+    const bcTotal = bc.digital + bc.fixed;
+    const bcDig = bcTotal ? Math.round(bc.digital / bcTotal * 100) : 0;
+    const bcHtml = bcTotal ? `<div class="map-plan-bcmix"><span class="bc-head">송출방식</span><span class="bc-bar"><span class="bc-seg bc-d" style="width:${bcDig}%"></span><span class="bc-seg bc-f" style="width:${100 - bcDig}%"></span></span><span class="bc-leg"><b>디지털 ${bcDig}%</b> 주목 · <b>고정 ${100 - bcDig}%</b> 각인</span></div>` : "";
     const reco = favRecommendation(items);
     const over = plannerBudget > 0 && total > plannerBudget * 10000;
     const crit = planCriteria();
@@ -1497,6 +1599,7 @@
     const rankMap = {}; // 상권키 → 순위 (매체 출처 배지용)
     let sStep = 0;
     const nRegion = regionLayerActive() ? (sStep += 1) : 0;
+    const nMix = regionLayerActive() ? (sStep += 1) : 0;
     if (regionLayerActive()) {
       const ranking = buildRegionRanking(crit);
       ranking.forEach((g) => { rankMap[g.key] = g.rank; });
@@ -1513,6 +1616,7 @@
         return `<div class="map-plan-rgnrow${inSel(g.key) ? " is-on" : ""}">` +
           `<div class="rr-head"><b class="rr-rank">${g.rank})</b><span class="rr-name">${AdPlay.esc(g.key)}</span><span class="rr-score" title="타깃 적합 상대점수(1순위=100)">${g.rel}</span></div>` +
           `<div class="rr-metrics">유동 ${planFmtEok(g.foot)} · 매체 ${g.items.length}곳(${g.typeCount}종)${extTxt}</div>` +
+          `<div class="rr-why">${AdPlay.esc(regionSummary(g, cmpSet))}</div>` +
           `<div class="rr-tags">${pros}${cons}</div>` +
         `</div>`;
       }).join("");
@@ -1523,7 +1627,7 @@
           `<div class="map-plan-substep"><span class="map-plan-step-no">${nRegion}</span>추천 지역 비교 <span class="map-plan-tag-help">타깃·예산 조건의 <b>후보 지역을 상대 비교</b> — 점수·지표·강약점 확인 후 아래에서 <b>어떻게 덮을지</b> 선택</span></div>` +
           `<div class="map-plan-rgnrows">${rows || '<span class="map-plan-tag-help">후보 지역을 계산할 수 없습니다.</span>'}</div>` +
           more +
-          `<div class="map-plan-rgn-strats-h">커버리지 전략</div><div class="map-plan-rgn-strats">${stratChips}</div>` +
+          `<div class="map-plan-substep map-plan-substep--mix"><span class="map-plan-step-no">${nMix}</span>지역 믹스 <span class="map-plan-tag-help"><b>한곳 집중 ↔ 여러 곳 분산</b> — 예산을 어떻게 나눌지 고르면 추천이 다시 만들어집니다</span></div><div class="map-plan-rgn-strats">${stratChips}</div>` +
         `</div>`;
     }
     const nSel = (sStep += 1), nAdj = (sStep += 1), nPerf = (sStep += 1), nList = (sStep += 1);
@@ -1531,7 +1635,7 @@
       regionHtml +
       `<div class="map-plan-reco-group">` +
         `<div class="map-plan-substep"><span class="map-plan-step-no">${nSel}</span>안 선택 <span class="map-plan-tag-help">맞춤 추천안·AI 대안 중 <b>원하는 안을 클릭하면 아래에서 예상 성과와 추천 매체 리스트를 확인</b>할 수 있어요</span></div><div class="map-plan-scen">${anCards}</div>` +
-        `<div class="map-plan-substep"><span class="map-plan-step-no">${nAdj}</span>추천(안) 조정 <span class="map-plan-tag-help">바꾸고 싶으면 <b>아래 지표를 선택하세요</b> · 누르면 위 추천(안)이 다시 만들어집니다</span></div><div class="map-plan-levers">${leverHtml}</div>` +
+        `<div class="map-plan-substep"><span class="map-plan-step-no">${nAdj}</span>미디어 믹스 조정 <span class="map-plan-tag-help">목표·기간·매체 성격을 바꾸면 <b>위 추천(안)이 다시 만들어집니다</b></span></div><div class="map-plan-levers">${leverHtml}</div>` +
       `</div>` +
       `<div class="map-plan-substep map-plan-substep--open"><span class="map-plan-step-no">${nPerf}</span>예상 성과 <span class="map-plan-tag-help">선택·조정한 안 기준 추정치</span></div>${kpiHtml}` +
       `<div class="map-plan-substep map-plan-substep--open map-plan-media-head"><span class="map-plan-step-no">${nList}</span><span class="mh-title">추천 매체 리스트 <b>${items.length}곳</b></span> <span class="map-plan-tag-help">리스트에 매체를 직접 추가하려면 지도에서 매체 선택 후 <b>★ 관심</b>을 누르세요 · 왼쪽 <b>체크박스를 해제</b>하면 리스트에서 제외됩니다</span></div>` +
@@ -1601,7 +1705,7 @@
       const svgShare = '<svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M16 6l-4-4-4 4M12 2v13"/></svg>';
       // 하단 고정 영역: 미디어믹스 비중 + 정직한 데이터(한 줄) + 월 합계 + 받기 버튼 — 표를 스크롤해도 항상 보임
       footEl.innerHTML =
-        `<div class="map-plan-foot-mix"><div class="map-fav-mix-head">매체 유형별 예산 비중</div><div class="map-fav-mix-bar">${mixBar}</div><div class="map-fav-mix-leg">${mixLeg}</div></div>` +
+        `<div class="map-plan-foot-mix"><div class="map-fav-mix-head">매체 유형별 예산 비중</div><div class="map-fav-mix-bar">${mixBar}</div><div class="map-fav-mix-leg">${mixLeg}</div>${bcHtml}</div>` +
         `<p class="map-plan-foot-note"><b>정직한 데이터</b> · 노출·CPM은 정부 유동 <b>실측 기반 추정치</b>(디지털 클릭과 다름). 매체별 상세·지역 분석은 <b>다운로드 결과물</b>에.</p>` +
         `<div class="map-plan-foot-row">` +
         `<div class="map-fav-total-row"><span>예상 ${AdPlay.esc(periodLabel(planEffDays))} 집행 합계${over ? ' · <b style="color:#cf3b3b">예산 초과</b>' : ""}</span><strong>${total ? AdPlay.formatKRW(total) + "~" : "상담 필요"}</strong></div>` +
