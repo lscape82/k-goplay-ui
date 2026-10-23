@@ -25,7 +25,10 @@
     compare: svg('<rect x="3.5" y="5" width="7" height="14" rx="1.5"/>' +
                  '<rect x="13.5" y="5" width="7" height="14" rx="1.5"/>'),
     creative: svg('<rect x="3" y="4.5" width="18" height="15" rx="2"/>' +
-                  '<circle cx="8.5" cy="10" r="1.6"/><path d="M21 15.5l-4.5-4L10 19"/>')
+                  '<circle cx="8.5" cy="10" r="1.6"/><path d="M21 15.5l-4.5-4L10 19"/>'),
+    // 지역 자료 = 문서 + 다운로드 화살표
+    regiondata: svg('<path d="M6 3h8l4 4v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/>' +
+                    '<path d="M14 3v4h4"/><path d="M12 11v5m0 0l-2-2m2 2l2-2"/>')
   };
 
   // 6개 → 3개 축소(2026-07-17 확정). 도크는 "사기 전"에 쓰는 자리라 구매 후 기능은 두지 않는다.
@@ -36,6 +39,7 @@
   var SERVICES = [
     { key: "planner",  icon: ICONS.planner,  label: "업종·타깃별 AI 추천받기", sub: "예산·업종·지역 → 매체 조합 자동 설계" },
     { key: "compare",  icon: ICONS.compare,  label: "관심 매체 담기", sub: "담은 매체 비교 · 제안서(PDF)·엑셀 받기" },
+    { key: "regiondata", icon: ICONS.regiondata, label: "지역 자료", sub: "권역별 유동·연령·월별 데이터 다운로드" },
     { key: "creative", icon: ICONS.creative, label: "소재 제작 의뢰", sub: "의뢰서 작성하면 제작 견적 발송", href: "creative-request.html" }
   ];
 
@@ -166,6 +170,16 @@
         if (favP0) favP0.style.zIndex = "60"; // 추천받기를 열면 맨 앞 + 활성 수집함
         document.body.dataset.gpsFront = "planner";
         document.dispatchEvent(new CustomEvent("gps:planner-opened"));
+        return;
+      }
+      if (key === "regiondata") {
+        mi.innerHTML = ICONS.regiondata; mt.textContent = "지역 자료";
+        msub.textContent = "권역별 유동·교통·연령 데이터를 엑셀로 받습니다";
+        modalEl.classList.remove("is-min");
+        if (minBtn) { minBtn.querySelector(".gmi").textContent = "▾"; minBtn.querySelector(".gml").textContent = "접기"; }
+        if (window.AdPlayPlanner && window.AdPlayPlanner.renderRegionData) window.AdPlayPlanner.renderRegionData(mb, mf);
+        else { mb.innerHTML = '<p style="padding:10px;color:#64748b;font-size:13px">데이터를 불러오는 중입니다. 잠시 후 다시 눌러주세요.</p>'; mf.innerHTML = ""; }
+        ov.classList.add("open");
         return;
       }
       var f = FEAT[key]; if (!f) return;

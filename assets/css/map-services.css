@@ -1145,6 +1145,17 @@ body:has(.map-workspace-page) { --map-rail-gutter: 16px; }
 .map-plan-rgnrow.is-on .rr-rank { color: #2540ea; }
 .map-plan-rgnrow .rr-name { font-size: 12.5px; font-weight: 800; color: #0f172a; }
 .map-plan-rgnrow .rr-score { margin-left: auto; font-size: 13px; font-weight: 800; color: #2540ea; font-variant-numeric: tabular-nums; }
+.map-plan-rgnrow .rr-report { flex: 0 0 auto; margin-left: 8px; border: 1px solid #c7cef7; background: #fff; color: #2540ea; border-radius: 7px; padding: 2px 8px; font-size: 11px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: background .12s, border-color .12s, color .12s; }
+.map-plan-rgnrow .rr-report:hover { background: #2540ea; border-color: #2540ea; color: #fff; }
+/* 도크 '지역 자료' 패널 */
+.map-rgndata-help { font-size: 12.5px; color: #475569; line-height: 1.55; margin: 0 0 12px; }
+.map-rgndata-src { font-size: 11px; color: #94a3b8; }
+.map-rgndata-row { display: flex; align-items: center; gap: 10px; padding: 11px 12px; border: 1px solid #e5e9f0; border-radius: 10px; margin-bottom: 8px; background: #fff; }
+.map-rgndata-row .rd-info { flex: 1 1 auto; min-width: 0; }
+.map-rgndata-row .rd-info b { display: block; font-size: 13px; font-weight: 800; color: #0f172a; }
+.map-rgndata-row .rd-info span { display: block; font-size: 11px; color: #64748b; margin-top: 2px; }
+.map-rgndata-row .rd-dl { flex: 0 0 auto; border: 1px solid #2540ea; background: #2540ea; color: #fff; border-radius: 8px; padding: 7px 14px; font-size: 12px; font-weight: 700; cursor: pointer; white-space: nowrap; transition: background .12s; }
+.map-rgndata-row .rd-dl:hover { background: #1b32b8; }
 .map-plan-rgnrow .rr-metrics { margin-top: 3px; font-size: 11px; color: #64748b; font-variant-numeric: tabular-nums; }
 .map-plan-rgnrow .rr-why { margin-top: 4px; font-size: 11px; line-height: 1.45; color: #475569; }
 .map-plan-rgnrow .rr-tags { display: flex; flex-wrap: wrap; gap: 4px; margin-top: 6px; }

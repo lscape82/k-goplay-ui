@@ -762,6 +762,72 @@
   // data/region-stats.json: { "<areaName>": { age2030, genderM, weekend, dayFoot, subwayDaily, source } } (0~1 비율). 나중에 채우면 랭킹·표시 정밀화.
   let regionStats = {};
   (function loadRegionStats() { try { fetch("data/region-stats.json").then((r) => (r.ok ? r.json() : null)).then((j) => { if (j) regionStats = j.regions || j; }).catch(function () {}); } catch (e) {} })();
+  // 지역 자료 다운로드용 권역 리포트(유동·교통·지하철·버스 월별 + 연령·성별 + 대상매체). data/region-reports.json.
+  let regionReports = {};
+  (function loadRegionReports() { try { fetch("data/region-reports.json").then((r) => (r.ok ? r.json() : null)).then((j) => { if (j) regionReports = j.regions || j; }).catch(function () {}); } catch (e) {} })();
+  // 지역 랭킹 키(예:'강남역/강남대로','광화문')를 권역 리포트에 매칭(matchKey 토큰 포함 여부).
+  function regionReportFor(key) { if (!key || !regionReports) return null; const s = String(key); for (const rk in regionReports) { const mk = regionReports[rk].matchKey || rk; if (s.indexOf(mk) >= 0 || mk.indexOf(s) >= 0) return { k: rk, r: regionReports[rk] }; } return null; }
+  // 권역 데이터 엑셀 다운로드 — 핵심지표·월별추이·연령성별·대상매체. 출처·저작권 포함.
+  async function downloadRegionReport(reportKey) {
+    const rep = regionReports[reportKey];
+    if (!rep) { window.alert("지역 자료가 없습니다."); return; }
+    try {
+      const ExcelJS = await loadExcelJS();
+      const wb = new ExcelJS.Workbook(); wb.creator = "광고플레이";
+      const NAVY = "FF2540EA", HEAD = "FFFFFFFF", SECT = "FFE8ECFF", ZEBRA = "FFF5F7FD", LINE = "FFD9DDE4", MUTED = "FF667085", NUM = '#,##0';
+      const edge = { style: "thin", color: { argb: LINE } }, box = { top: edge, left: edge, bottom: edge, right: edge };
+      const headerRow = (rw) => { rw.eachCell((cc) => { cc.fill = { type: "pattern", pattern: "solid", fgColor: { argb: NAVY } }; cc.font = { bold: true, color: { argb: HEAD }, size: 10 }; cc.alignment = { vertical: "middle", horizontal: "center", wrapText: true }; cc.border = box; }); rw.height = 24; };
+      const sect = (ws, a1, a2, text) => { ws.mergeCells(a1 + ":" + a2); const cc = ws.getCell(a1); cc.value = text; cc.font = { bold: true, color: { argb: NAVY }, size: 11 }; cc.fill = { type: "pattern", pattern: "solid", fgColor: { argb: SECT } }; ws.getRow(cc.row).height = 20; };
+      const ws = wb.addWorksheet("권역 데이터", { views: [{ showGridLines: false }] });
+      ws.columns = Array.from({ length: 13 }, (_, i) => ({ width: i === 0 ? 30 : 12 }));
+      let r = 1, c;
+      ws.mergeCells("A1:M1"); c = ws.getCell("A1"); c.value = rep.label + " · 권역 데이터"; c.font = { bold: true, size: 18, color: { argb: NAVY } }; ws.getRow(1).height = 30; r = 3;
+      if (rep.summary && rep.summary.length) {
+        sect(ws, "A" + r, "F" + r, "■ 핵심 지표 (2025년 12개월 평균)"); r++;
+        ws.getRow(r).values = ["지표", "값", "단위", "출처"]; headerRow(ws.getRow(r)); r++;
+        rep.summary.forEach((s, i) => { const rw = ws.getRow(r++); rw.values = [s["지표"], s["값"], s["단위"], s["출처"]]; rw.eachCell((cc, col) => { cc.border = box; if (!cc.font) cc.font = { size: 9.5 }; if (col === 2 && typeof s["값"] === "number") { cc.numFmt = NUM; cc.alignment = { horizontal: "right" }; } }); if (i % 2) rw.eachCell((cc) => { if (!cc.fill) cc.fill = { type: "pattern", pattern: "solid", fgColor: { argb: ZEBRA } }; }); });
+        r++;
+      }
+      const months = ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"];
+      const monRows = [["유동인구(일평균)", rep.footMonthly], ["교통량(일평균)", rep.trafficMonthly], ["지하철 승하차(월)", rep.subwayMonthly], ["버스 승하차(월·합)", rep.busMonthly]].filter((x) => x[1]);
+      if (monRows.length) {
+        sect(ws, "A" + r, "M" + r, "■ 월별 추이 (2025)"); r++;
+        ws.getRow(r).values = ["구분"].concat(months); headerRow(ws.getRow(r)); r++;
+        monRows.forEach(([label, arr]) => { const rw = ws.getRow(r++); rw.values = [label].concat(arr.map((v) => v || 0)); rw.eachCell((cc, col) => { cc.border = box; if (!cc.font) cc.font = { size: 9 }; if (col > 1) { cc.numFmt = NUM; cc.alignment = { horizontal: "right" }; } }); });
+        r++;
+      }
+      if (rep.age) {
+        sect(ws, "A" + r, "H" + r, "■ 연령·성별 구성비 (%)"); r++;
+        const ak = Object.keys(rep.age);
+        ws.getRow(r).values = ak.concat(["남", "여"]); headerRow(ws.getRow(r)); r++;
+        const rw = ws.getRow(r++); rw.values = ak.map((k) => rep.age[k]).concat([rep.gender && rep.gender["남"], rep.gender && rep.gender["여"]]); rw.eachCell((cc) => { cc.border = box; cc.alignment = { horizontal: "right" }; if (!cc.font) cc.font = { size: 9.5 }; });
+        r++;
+      }
+      if (rep.media && rep.media.length) {
+        sect(ws, "A" + r, "D" + r, "■ 이 권역 매체 (" + rep.media.length + "개)"); r++;
+        rep.media.forEach((m) => { const cc = ws.getCell("A" + r); cc.value = m; cc.font = { size: 9.5 }; cc.border = box; r++; });
+        r++;
+      }
+      ws.mergeCells("A" + r + ":M" + r); c = ws.getCell("A" + r); c.value = "출처: 소상공인365·서울시 TOPIS·철도통계·서울열린데이터 (2025년 12개월). ※ 복제 불가 · 저작권자 © 광고플레이(주) (Adplay Korea Co., Ltd.) All Rights Reserved."; c.font = { color: { argb: MUTED }, size: 9, italic: true }; c.alignment = { wrapText: true }; ws.getRow(r).height = 28;
+      const buf = await wb.xlsx.writeBuffer();
+      const blob = new Blob([buf], { type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet" });
+      const a = document.createElement("a"); a.href = URL.createObjectURL(blob); a.download = "광고플레이_" + rep.label + "_권역데이터.xlsx"; a.click(); setTimeout(() => URL.revokeObjectURL(a.href), 1500);
+    } catch (e) { window.alert("자료 생성 중 오류: " + (e && e.message || e)); }
+  }
+  // '지역 자료' 도크 패널 — 데이터 보유 권역 목록 + 각 엑셀 다운로드.
+  function renderRegionDataPanel(bodyEl, footEl) {
+    if (!bodyEl) return;
+    const regs = Object.keys(regionReports || {});
+    const rows = regs.length ? regs.map((k) => {
+      const r = regionReports[k];
+      const foot = (r.summary && r.summary[0] && typeof r.summary[0]["값"] === "number") ? Math.round(r.summary[0]["값"]).toLocaleString() : (r.footAvg ? Math.round(r.footAvg).toLocaleString() : "");
+      const tags = [foot ? "유동 " + foot + "명/일" : "", r.age ? "연령·성별" : "", (r.media && r.media.length) ? "매체 " + r.media.length : ""].filter(Boolean).join(" · ");
+      return `<div class="map-rgndata-row"><div class="rd-info"><b>${AdPlay.esc(r.label)}</b><span>${AdPlay.esc(tags)}</span></div><button type="button" class="rd-dl" data-rgnreport="${AdPlay.esc(k)}">자료 ↓</button></div>`;
+    }).join("") : '<p style="padding:14px;color:#64748b;font-size:13px">지역 데이터를 불러오는 중입니다. 잠시 후 다시 눌러주세요.</p>';
+    bodyEl.innerHTML = `<div class="map-rgndata"><p class="map-rgndata-help">권역별 <b>유동인구·교통량·지하철/버스 승하차·연령/성별·월별 추이 + 대상 매체</b>를 엑셀로 받습니다.<br><span class="map-rgndata-src">출처: 소상공인365 · 서울시 TOPIS · 철도통계 · 서울열린데이터 (2025년 12개월)</span></p>${rows}</div>`;
+    if (footEl) footEl.innerHTML = "";
+    bodyEl.querySelectorAll("[data-rgnreport]").forEach((b) => b.addEventListener("click", () => downloadRegionReport(b.getAttribute("data-rgnreport"))));
+  }
   let plannerAnKey = "custom"; // 선택된 안: custom(맞춤) | alt1 | alt2
   let plannerLever = {};       // 레버 오버라이드 {scenario?,coverage?,media?,period?}
   let planEffDays = 30;        // 현재 선택 안의 유효 집행 기간(일) — 금액·노출·라벨 기준
@@ -1187,6 +1253,9 @@
   }
   function interleaveByType(arr) { return roundRobin(arr, (f) => f.type || "기타"); }
   function interleaveByRegion(arr) { return roundRobin(arr, (f) => planRegionKeyOf(f)); }
+  // (지역+유형) 라운드로빈 — 분산=여러 지역 고르게, 집중=한 지역 안에서 매체 유형 다양화(지하철+야외+차내 = 교차접점 각인).
+  // 같은 (지역,유형) 매체는 같은 버킷이라 두 번째부터 뒤로 밀림 → '서울역 전광판 2개' 같은 중복을 자동 억제.
+  function interleaveByRegionType(arr) { return roundRobin(arr, (f) => planRegionKeyOf(f) + "|" + (f.type || "기타")); }
   // 전략(시나리오·커버·매체·기간) 하나로 최종 매체 slug 목록 산출.
   function buildPlanSlugs(crit, strat, cap) {
     planEffDays = strat.period || 30;
@@ -1197,7 +1266,21 @@
       if (keys) { const set = {}; keys.forEach((k) => { set[k] = 1; }); base = base.filter((f) => set[planRegionKeyOf(f)]); }
     }
     let arr = applyMedia(applyCoverage(orderByScenario(base, strat.scenario), strat.coverage), strat.media);
-    if (regionLayerActive() && plannerRegionStrat === "all") arr = interleaveByRegion(arr); // 전체 분산 시 여러 지역에 고르게
+    // 지역 믹스별 '중복 지양 + 다양화':
+    //  · 분산(all) = 지역 고르게 1곳씩(도달·커버리지 우선) → 지역 라운드로빈
+    //  · 집중(1곳)·상위3 = 선택 지역 안에서 매체 유형 다양화(지하철+야외+차내 = 각인·교차접점) + 지역 간 균형 → (지역,유형) 라운드로빈.
+    //    같은 (지역,유형)은 같은 버킷이라 뒤로 밀려 중복(예: 서울역 전광판 2개)을 억제.
+    if (regionLayerActive()) {
+      if (plannerRegionStrat === "all") arr = interleaveByRegion(arr);
+      else if (!(strat && strat.mix === "impact")) arr = interleaveByRegionType(arr); // 임팩트 집중 외엔 유형 다양화
+    }
+    if (strat && strat.mix === "impact") { // 임팩트 집중 — 소형 매체 제외 + 큰(고가) 매체 우선 → 소수 대형으로 각인
+      const small = /쉘터|정류장|포스터|스크린도어|스티커|배너|벤치|가로/;
+      const big = arr.filter((f) => !small.test(f.type || "") && !small.test(f.name || ""));
+      if (big.length >= 2) arr = big; // 대형 매체가 충분하면 소형 제외(대형 위주)
+      const pr = arr.filter((f) => (f.monthly || 0) > 0).sort((a, b) => (b.monthly || 0) - (a.monthly || 0));
+      arr = pr.concat(arr.filter((f) => !((f.monthly || 0) > 0)));
+    }
     if (planEffDays < 30) arr = arr.filter((f) => f.shortTerm).concat(arr.filter((f) => !f.shortTerm)); // 단기면 단기요율 보유 우선
     // 가격 있는 매체 우선 — 패키지·상담가(월정가 0) 매체가 상위를 메워 합계가 '상담'으로 뜨는 것 방지(순서는 전략 내 안정 유지)
     arr = arr.filter((f) => (f.monthly || 0) > 0).concat(arr.filter((f) => !((f.monthly || 0) > 0)));
@@ -1214,6 +1297,7 @@
   function anCap(a, period) {
     const base = planCapFor(period != null ? period : (a && a.period) || 30);
     if (!a) return base;
+    if (a.capMul) return Math.max(3, Math.min(15, Math.round(base * a.capMul))); // 안이 매체수 배율을 직접 지정(집중 모드 등)
     if (a.k === "alt1") return Math.min(15, Math.round(base * 1.5));
     if (a.k === "alt2") return Math.max(3, Math.round(base * 0.65));
     return base;
@@ -1223,6 +1307,14 @@
     const ip = plannerPeriodDays;
     const shortP = ip >= 30 ? 15 : ip;
     const ob = curObjective();
+    // 1곳 집중 — 지역이 하나로 고정되므로 3안을 '지역'이 아니라 '매체 구성 관점'으로 변별(안끼리 겹침 방지).
+    if (regionLayerActive() && plannerRegionStrat === "core1") {
+      return [
+        { k: "custom", label: "임팩트 집중", note: "큰 매체 소수로 각인 (주목도↑)", scenario: "reach", coverage: "focus", media: "impact", mix: "impact", capMul: 0.6, period: ip },
+        { k: "alt1", label: "도달·다양", note: "여러 유형 많이 — 교차접점 각인", scenario: "reach", coverage: "wide", media: null, capMul: 1.6, period: ip },
+        { k: "alt2", label: "효율·가성비", note: `저비용 매체 위주 · 짧게(${periodLabel(shortP)})`, scenario: "eff", coverage: "wide", media: "life", capMul: 1.3, period: shortP },
+      ];
+    }
     return [
       { k: "custom", label: "맞춤 추천안", note: `목적: ${ob.l} — ${ob.note}`, scenario: ob.scenario, coverage: ob.coverage, media: ob.media, period: ip },
       { k: "alt1", label: "AI 대안 ① 효율·분산", note: `기간을 줄여(${periodLabel(shortP)}) 매체 수↑ · 같은 예산에 넓게`, scenario: "eff", coverage: "wide", media: "life", period: shortP },
@@ -1613,8 +1705,10 @@
         const extTxt = g.ext && typeof g.ext.age2030 === "number" ? ` · 20·30 ${Math.round(g.ext.age2030 * 100)}%${typeof g.ext.weekend === "number" ? " · 주말 " + Math.round(g.ext.weekend * 100) + "%" : ""}` : "";
         const pros = pc.pros.map((p) => `<span class="rr-pro">${AdPlay.esc(p)}</span>`).join("");
         const cons = pc.cons.map((c) => `<span class="rr-con">${AdPlay.esc(c)}</span>`).join("");
+        const rep = regionReportFor(g.key);
+        const repBtn = rep ? `<button type="button" class="rr-report" data-rgnreport="${AdPlay.esc(rep.k)}" title="${AdPlay.esc(rep.r.label)} 권역 데이터(유동·교통·지하철·연령 등) 엑셀 다운로드">자료 ↓</button>` : "";
         return `<div class="map-plan-rgnrow${inSel(g.key) ? " is-on" : ""}">` +
-          `<div class="rr-head"><b class="rr-rank">${g.rank})</b><span class="rr-name">${AdPlay.esc(g.key)}</span><span class="rr-score" title="타깃 적합 상대점수(1순위=100)">${g.rel}</span></div>` +
+          `<div class="rr-head"><b class="rr-rank">${g.rank})</b><span class="rr-name">${AdPlay.esc(g.key)}</span><span class="rr-score" title="타깃 적합 상대점수(1순위=100)">${g.rel}</span>${repBtn}</div>` +
           `<div class="rr-metrics">유동 ${planFmtEok(g.foot)} · 매체 ${g.items.length}곳(${g.typeCount}종)${extTxt}</div>` +
           `<div class="rr-why">${AdPlay.esc(regionSummary(g, cmpSet))}</div>` +
           `<div class="rr-tags">${pros}${cons}</div>` +
@@ -1643,6 +1737,7 @@
       (reco ? `<p class="map-fav-reco map-fav-reco--plan"><strong>추<br>천</strong><span class="map-fav-reco-body">${AdPlay.esc(reco)}</span></p>` : "");
     // 지역 커버리지 전략 선택 → 재추천
     inner.querySelectorAll("[data-rstrat]").forEach((b) => b.addEventListener("click", () => { plannerRegionStrat = b.getAttribute("data-rstrat"); reapplyPlanner(bodyEl, footEl); }));
+    inner.querySelectorAll("[data-rgnreport]").forEach((b) => b.addEventListener("click", (e) => { e.stopPropagation(); downloadRegionReport(b.getAttribute("data-rgnreport")); }));
     // 안 선택(레버 초기화) / 레버 조정
     inner.querySelectorAll("[data-an]").forEach((b) => b.addEventListener("click", () => { plannerAnKey = b.getAttribute("data-an"); plannerLever = {}; reapplyPlanner(bodyEl, footEl); }));
     inner.querySelectorAll("[data-lk]").forEach((b) => b.addEventListener("click", () => {
@@ -1720,7 +1815,7 @@
       if (q("[data-plan-maplink]")) q("[data-plan-maplink]").addEventListener("click", () => withPlannerData(copyFavMapLink));
     }
   }
-  window.AdPlayPlanner = { render: renderPlannerInto };
+  window.AdPlayPlanner = { render: renderPlannerInto, renderRegionData: renderRegionDataPanel };
   function openFavPanel() {
     if (!favPanel) return;
     renderFavPanel();
