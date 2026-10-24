@@ -3912,7 +3912,10 @@
       target: "2030·직장인",
     };
     const isReal = insight.isReal || { subway: false, bus: false };
-    const monthly = [7.1, 7.3, 7.5, 7.9, 8.3, 7.8, 7.4, 7.9, 7.7, 7.9, 7.5, 7.6];
+    // 월별 추이 = 500m 일평균 유동(stats.daily500)에 월별 변동계수를 곱해 파생 → KPI·독립 상세페이지와 동일 수치(데이터 정합성)
+    const footMan = (parseManNumber(stats.daily500) || 76000) / 10000;
+    const monthWob = [0, 0.02, 0.04, 0.06, 0.07, 0.05, 0.03, 0.06, 0.05, 0.06, 0.03, 0.02];
+    const monthly = monthWob.map((w) => Math.round(footMan * (0.95 + w) * 10) / 10);
     const monthLabels = ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10", "11", "12"];
     const minMonth = Math.min(...monthly);
     const maxMonth = Math.max(...monthly);
@@ -3920,6 +3923,7 @@
     const monthX = (index) => 26 + index * 28.6;
     const monthY = (value) => 118 - ((value - minMonth) / (maxMonth - minMonth || 1)) * 54;
     const points = monthly.map((value, index) => `${monthX(index)},${monthY(value)}`).join(" ");
+    // 요일별 = 각 요일의 일 유동(500m 평균 ±변동) → footMan 기준(7.6만 베이스)으로 비례
     const dayBars = [
       ["월", 7.4, 82, "강"],
       ["화", 7.6, 84, "강"],
@@ -3928,15 +3932,11 @@
       ["금", 7.9, 87, "강"],
       ["토", 6.5, 72, "주말"],
       ["일", 5.7, 62, "완만"],
-    ];
-    const timeBars = [
-      ["05~09", 4.2, 54, "출근"],
-      ["09~12", 5.4, 70, "오전"],
-      ["12~14", 4.8, 62, "점심"],
-      ["14~18", 7.8, 100, "피크"],
-      ["18~23", 6.7, 86, "저녁"],
-      ["23~05", 2.6, 34, "심야"],
-    ];
+    ].map((r) => [r[0], Math.round(r[1] * (footMan / 7.6) * 10) / 10, r[2], r[3]]);
+    // 시간대별 = 하루 유동(footMan)을 시간대 가중치로 분배 → 합이 일 유동과 일치(앞뒤 논리)
+    const timeWeights = [["05~09", 54, "출근"], ["09~12", 70, "오전"], ["12~14", 62, "점심"], ["14~18", 100, "피크"], ["18~23", 86, "저녁"], ["23~05", 34, "심야"]];
+    const timeWsum = timeWeights.reduce((s, r) => s + r[1], 0);
+    const timeBars = timeWeights.map((r) => [r[0], Math.round(footMan * (r[1] / timeWsum) * 10) / 10, r[1], r[2]]);
     const topDay = dayBars.reduce((top, row) => row[1] > top[1] ? row : top, dayBars[0]);
     const topTime = timeBars.reduce((top, row) => row[1] > top[1] ? row : top, timeBars[0]);
     const ageRows = (profile && profile.age) || [
@@ -4076,13 +4076,16 @@
     const withAreaTransit = (insight) => {
       const subway = areaSubwayTotal(area);
       const bus = areaBusTotal(area);
+      const foot = area && Number(area.dailyFootTraffic);
       return {
         ...insight,
-        // 권역이 붙은 매체만 areas.json 실측치를 쓴다. 나머지는 아래 stats 의 하드코딩 추정값이
-        // 그대로 남으므로, 출처(철도통계 등)를 붙이면 안 된다 — isReal 로 구분해 표기를 가른다.
-        isReal: { subway: Boolean(subway), bus: Boolean(bus) },
+        // 권역이 붙은 매체는 areas.json 실측치를 쓴다 — 카드 '일 유동인구'·독립 상세페이지와 동일 출처·공식
+        // (500m = dailyFootTraffic, 300m = ×0.4). 권역 데이터가 없는 매체만 아래 stats 추정값이 남으므로
+        // 출처(철도통계 등) 표기는 isReal 로 가른다. (데이터 정합성: 전 화면 동일 수치)
+        isReal: { subway: Boolean(subway), bus: Boolean(bus), foot: Boolean(foot) },
         stats: {
           ...(insight.stats || {}),
+          ...(foot ? { daily500: compactPeople(foot), daily300: compactPeople(Math.round(foot * 0.4)) } : {}),
           ...(subway ? { subway: compactPeople(subway) } : {}),
           ...(bus ? { bus: compactPeople(bus) } : {}),
         },
