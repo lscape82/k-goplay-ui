@@ -1416,8 +1416,22 @@ p.map-elev-broadcast { margin: 3px 0 0; font-size: 11px; font-weight: 600; color
 .map-global-nav button.is-active:not(.map-filter-entry) { color: #2540ea; font-weight: 600; }
 .map-global-nav button.is-active:not(.map-filter-entry)::after { display: none; }
 .map-filter-entry::after { display: none; }  /* 참고 이미지엔 드롭다운 화살표 없음 → 제거 */
-/* 좌측 도구 3개(추천 큐레이션·지역검색·예산·기간 검색) = 블루 아웃라인 박스로 그룹핑 */
-.map-global-nav { border: 1px solid #e5e8ee; border-radius: 3px; padding: 2px 3px; width: fit-content; flex: none; gap: 2px; }
+/* 좌측 도구 3개(추천 큐레이션·지역검색·예산·기간 검색) 그룹 — 외곽 박스 제거(촌스러움), 간격만 */
+.map-global-nav { border: 0; border-radius: 0; padding: 0; width: fit-content; flex: none; gap: 14px; }
+
+/* 전부 함께 스크롤: 도구(추천큐레이션·지역검색·예산검색) + 카테고리를 한 컨테이너에서 가로 스크롤 */
+.map-category-strip .map-strip-scroll {
+  display: flex; align-items: center; gap: 14px;
+  min-width: 0; flex: 1 1 auto; overflow-x: auto; overflow-y: hidden;
+}
+.map-strip-scroll .map-global-nav { overflow: visible; flex: 0 0 auto; }
+.map-strip-scroll .map-category-list { overflow: visible; flex: 0 0 auto; margin: 0; padding-right: clamp(28px, 4vw, 56px); }
+
+/* 카테고리도 도구(추천큐레이션·지역검색·예산검색)와 동일한 호버: 살짝 떠오름 + 비활성은 글자 진해짐 */
+.map-category-strip .map-category-pill { transition: color .15s ease, transform .15s ease; }
+.map-category-strip .map-category-pill:hover { transform: translateY(-2px); }
+.map-category-strip .map-category-pill:not(.is-active):hover { color: #0b1b3f; }
+
 /* 지도 좌측 목록 카드: 유동 1,000명당 효율 보조줄 */
 .map-card-st { margin: 5px 0 0; }
 .map-card-st span { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 4px; background: #eef1fe; color: #2540ea; font-size: 11px; font-weight: 800; letter-spacing: .01em; }

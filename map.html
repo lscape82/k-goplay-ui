@@ -104,12 +104,14 @@
               <svg viewBox="0 0 24 24" width="16" height="16" aria-hidden="true"><circle cx="11" cy="11" r="7" fill="none" stroke="currentColor" stroke-width="2"></circle><line x1="16.5" y1="16.5" x2="21" y2="21" stroke="currentColor" stroke-width="2" stroke-linecap="round"></line></svg>
             </button>
           </form>
-          <nav class="map-global-nav" aria-label="지도 검색 도구">
-            <button type="button" class="is-active" id="mapCurationToggle" aria-expanded="true" aria-controls="mapCurationPanel">추천큐레이션</button>
-            <button type="button" class="map-filter-entry map-header-filter" id="mapRegionToggle" aria-expanded="false" aria-controls="mapRegionPanel">지역검색</button>
-            <button type="button" class="map-filter-entry map-header-filter" id="mapCostFilterToggle" aria-expanded="false" aria-controls="mapCostFilterPanel">예산검색</button>
-          </nav>
-          <div class="map-category-list" id="mapCategoryBar" aria-label="매체 유형"></div>
+          <div class="map-strip-scroll">
+            <nav class="map-global-nav" aria-label="지도 검색 도구">
+              <button type="button" class="is-active" id="mapCurationToggle" aria-expanded="true" aria-controls="mapCurationPanel">추천큐레이션</button>
+              <button type="button" class="map-filter-entry map-header-filter" id="mapRegionToggle" aria-expanded="false" aria-controls="mapRegionPanel">지역검색</button>
+              <button type="button" class="map-filter-entry map-header-filter" id="mapCostFilterToggle" aria-expanded="false" aria-controls="mapCostFilterPanel">예산검색</button>
+            </nav>
+            <div class="map-category-list" id="mapCategoryBar" aria-label="매체 유형"></div>
+          </div>
         </div>
         <div class="map-workspace">
           <aside class="map-sidebar" aria-label="지도 매체 목록과 상세 정보">

@@ -37,9 +37,9 @@
   //  · 제안서 만들기 삭제 — 관심매체 비교 패널의 PDF 버튼으로 흡수(one-pager.html).
   //  · 성과 리포트 이동 — 계약 광고주용이라 로그인 → 마이페이지로.
   var SERVICES = [
-    { key: "planner",  icon: ICONS.planner,  label: "업종·타깃별 AI 추천받기", sub: "예산·업종·지역 → 매체 조합 자동 설계" },
+    { key: "planner",  icon: ICONS.planner,  label: "업종·타깃별 AI 추천 받기", sub: "예산·업종·지역 → 매체 조합 자동 설계" },
+    { key: "regiondata", icon: ICONS.regiondata, label: "지역별 매체 제안서 받기", sub: "지역을 고르면 핵심 매체·데이터를 제안서로" },
     { key: "compare",  icon: ICONS.compare,  label: "관심 매체 담기", sub: "담은 매체 비교 · 제안서(PDF)·엑셀 받기" },
-    { key: "regiondata", icon: ICONS.regiondata, label: "지역 자료", sub: "권역별 유동·연령·월별 데이터 다운로드" },
     { key: "creative", icon: ICONS.creative, label: "소재 제작 의뢰", sub: "의뢰서 작성하면 제작 견적 발송", href: "creative-request.html" }
   ];
 
@@ -53,7 +53,7 @@
   }
   var FEAT = {
     planner: {
-      icon: ICONS.planner, title: "업종·타깃별 AI 추천받기", sub: "예산·업종·지역·목표로 최적 매체 조합을 설계합니다",
+      icon: ICONS.planner, title: "업종·타깃별 AI 추천 받기", sub: "예산·업종·지역·목표로 최적 매체 조합을 설계합니다",
       body:
         '<div class="gps-chips" style="margin-bottom:14px">' +
           '<span class="gps-chip">예산 <b>월 500만</b></span><span class="gps-chip">업종 <b>F&amp;B·카페</b></span>' +
@@ -108,7 +108,7 @@
     // ---- dock ----
     var dock = document.createElement("div");
     dock.className = "gps-dock";
-    var html = '';
+    var html = '<div class="gps-dock-h">원하는 방식으로 제안 받기</div>';
     SERVICES.forEach(function (s) {
       // 관심매체 비교 배지는 실제 관심 개수와 동기화(data-fav-count), 0이면 숨김
       var badge = s.key === "compare"
@@ -155,7 +155,7 @@
 
     function open(key) {
       if (key === "planner") {
-        mi.innerHTML = ICONS.planner; mt.textContent = "업종·타깃별 AI 추천받기";
+        mi.innerHTML = ICONS.planner; mt.textContent = "업종·타깃별 AI 추천 받기";
         msub.textContent = "업종·타깃을 고르면 추천 매체로 플랜이 만들어집니다";
         modalEl.classList.remove("is-min");
         if (minBtn) { minBtn.querySelector(".gmi").textContent = "▾"; minBtn.querySelector(".gml").textContent = "접기"; }
@@ -173,8 +173,8 @@
         return;
       }
       if (key === "regiondata") {
-        mi.innerHTML = ICONS.regiondata; mt.textContent = "지역 자료";
-        msub.textContent = "권역별 유동·교통·연령 데이터를 엑셀로 받습니다";
+        mi.innerHTML = ICONS.regiondata; mt.textContent = "지역별 매체 제안서 받기";
+        msub.textContent = "지역을 고르면 핵심 매체·상권·유동 데이터를 제안서로 받습니다";
         modalEl.classList.remove("is-min");
         if (minBtn) { minBtn.querySelector(".gmi").textContent = "▾"; minBtn.querySelector(".gml").textContent = "접기"; }
         if (window.AdPlayPlanner && window.AdPlayPlanner.renderRegionData) window.AdPlayPlanner.renderRegionData(mb, mf);
