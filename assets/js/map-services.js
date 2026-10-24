@@ -43,63 +43,10 @@
     { key: "creative", icon: ICONS.creative, label: "소재 제작 의뢰", sub: "의뢰서 작성하면 제작 견적 발송", href: "creative-request.html" }
   ];
 
-  function tip(text) {
-    return '<span class="gps-tip"><span class="ic">i</span><span class="pop">' + text + '</span></span>';
-  }
-  function bl(win, label, w, val) {
-    return '<div class="gps-bl' + (win ? " win" : "") + '"><span class="l">' + label +
-      '</span><span class="gps-bt"><span class="gps-bf" style="width:' + w + '%"></span></span>' +
-      '<span class="val tnum">' + val + '</span></div>';
-  }
-  var FEAT = {
-    planner: {
-      icon: ICONS.planner, title: "업종·타깃별 AI 추천 받기", sub: "예산·업종·지역·목표로 최적 매체 조합을 설계합니다",
-      body:
-        '<div class="gps-chips" style="margin-bottom:14px">' +
-          '<span class="gps-chip">예산 <b>월 500만</b></span><span class="gps-chip">업종 <b>F&amp;B·카페</b></span>' +
-          '<span class="gps-chip">지역 <b>강남·성수</b></span><span class="gps-chip">목표 <b>인지도</b></span><span class="gps-chip">기간 <b>4주</b></span>' +
-        '</div>' +
-        '<div class="mblock"><h4>추천 시나리오 3안 <span class="gps-badge est">추정</span></h4>' +
-          '<div class="gps-scen">' +
-            '<div class="gps-sc on"><div class="t">효율형</div><div class="kk">CPM 최소</div><div class="big">₩3,100</div><div class="li"><span>월 도달</span><b>142만</b></div></div>' +
-            '<div class="gps-sc"><div class="t">균형형</div><div class="kk">도달·효율</div><div class="big">₩3,600</div><div class="li"><span>월 도달</span><b>168만</b></div></div>' +
-            '<div class="gps-sc"><div class="t">도달우선</div><div class="kk">최대 노출</div><div class="big">₩4,200</div><div class="li"><span>월 도달</span><b>205만</b></div></div>' +
-          '</div></div>' +
-        '<div class="gps-row2">' +
-          '<div class="mblock"><h4>선택안 · 포트폴리오</h4>' +
-            '<div class="gps-alloc"><div style="width:46%;background:#3b74f2">전광판 46%</div><div style="width:34%;background:#6a8ff5">엘리베이터 34%</div><div style="width:20%;background:#9db8ff;color:#1b46c4">버스 20%</div></div>' +
-            '<div class="gps-poi"><div class="th"></div><div><div class="nm">강남 신사 H스퀘어 전광판</div><div class="mt">대형 LED · 도달 82만</div></div><div class="pct"><b>46%</b><span>₩820만</span></div></div>' +
-            '<div class="gps-poi"><div class="th"></div><div><div class="nm">성수 생활밀착 엘리베이터</div><div class="mt">생활밀착 · 도달 41만</div></div><div class="pct"><b>34%</b><span>₩170만</span></div></div>' +
-            '<div class="gps-poi"><div class="th"></div><div><div class="nm">강남권 버스정류장 패키지</div><div class="mt">20곳 묶음 · 도달 19만</div></div><div class="pct"><b>20%</b><span>₩100만</span></div></div>' +
-          '</div>' +
-          '<div class="mblock"><h4>예상 성과 <span class="gps-badge est">추정</span></h4>' +
-            '<div class="gps-kpis">' +
-              '<div class="gps-kpi"><div class="k">순도달 ' + tip("일정 기간 내 최소 1회 이상 노출된 순 인원(중복 제외). 정부 유동데이터 기반 추정.") + '</div><div class="v tnum">142만</div><div class="d up">타깃 적합 89%</div></div>' +
-              '<div class="gps-kpi"><div class="k">노출 빈도 ' + tip("1인당 평균 노출 횟수 = 총 노출 ÷ 순도달. 추정 모델 값.") + '</div><div class="v tnum">3.4회</div><div class="d">1인 기준</div></div>' +
-              '<div class="gps-kpi"><div class="k">평균 CPM ' + tip("1,000명 도달당 광고비. 낮을수록 효율적.") + '</div><div class="v tnum">₩3,100</div><div class="d up">▼ 시장가 -18%</div></div>' +
-              '<div class="gps-kpi"><div class="k">총 집행 예산</div><div class="v tnum">₩490만</div><div class="d">목표 내 98%</div></div>' +
-            '</div>' +
-            '<p class="gps-cap">* 도달은 정부 유동데이터(실측 기반), 빈도·CPM은 노출모델 추정치입니다.</p>' +
-            '<div style="margin-top:8px"><span class="gps-src">소상공인 상권정보 · 관광 데이터랩 매칭</span></div>' +
-          '</div>' +
-        '</div>',
-      foot: '<button class="gps-bs">관심매체로 담기</button><button class="gps-bp">제안서 만들기 →</button>'
-    },
-    compare: {
-      icon: ICONS.compare, title: "관심 매체 담기", sub: "담은 매체를 지표별로 나란히 비교하고 바로 상담합니다",
-      body:
-        '<div class="gps-card cmp">' +
-          '<div class="gps-rowh"><span>일 유동인구 · 많을수록 유리</span></div>' +
-          bl(true, "신사 H스퀘어", 92, "18.7만") + bl(false, "코엑스 K-POP", 74, "15.1만") + bl(false, "서울역 파노라마", 58, "11.8만") +
-          '<div class="gps-rowh"><span>천명당 비용(CPM) · 낮을수록 유리</span></div>' +
-          bl(true, "서울역 파노라마", 40, "₩2,600") + bl(false, "신사 H스퀘어", 52, "₩3,200") + bl(false, "코엑스 K-POP", 88, "₩5,400") +
-          '<div class="gps-rowh"><span>2030 타깃 비중 · 목표 적합</span></div>' +
-          bl(true, "신사 H스퀘어", 86, "53%") + bl(false, "코엑스 K-POP", 78, "48%") + bl(false, "서울역 파노라마", 60, "37%") +
-        '</div>' +
-        '<div class="gps-note" style="margin-top:14px"><span>◆</span><span><b>추천:</b> 효율은 서울역, 타깃 적합은 신사가 우세 — 인지도 목표라면 신사+서울역 2종 묶음이 CPM·도달 균형이 가장 좋습니다.</span></div>',
-      foot: '<button class="gps-bs">제안서로 내보내기</button><button class="gps-bp">묶음 상담 신청 →</button>'
-    }
-  };
+  // (제거됨 2026-10-24) planner·compare 데모 모달(FEAT)은 화면에 쓰이지 않는 죽은 코드였고,
+  // 도달 142만·CPM ₩3,100·유동 18.7만 등 '가짜 숫자'를 담고 있어 삭제. 실제 플래너는 map.js의
+  // AdPlayPlanner(renderPlannerInto)가, 관심매체는 gps:open-favorites 패널이 실데이터로 렌더한다.
+  var FEAT = {};
 
   ready(function () {
     var shell = document.querySelector(".map-canvas-shell");

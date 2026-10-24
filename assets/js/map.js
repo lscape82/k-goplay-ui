@@ -4077,15 +4077,17 @@
       const subway = areaSubwayTotal(area);
       const bus = areaBusTotal(area);
       const foot = area && Number(area.dailyFootTraffic);
+      // 유동인구는 전 화면 동일 출처·공식으로 파생: 권역 실측(dailyFootTraffic)이 있으면 그 값,
+      // 없으면 독립 상세페이지(media-detail.js)와 동일한 기본값 76000 → 지도/상세가 항상 일치.
+      // (500m = 기준값, 300m = ×0.4). 권역 실측 유무는 isReal.foot 로 구분해 '추정' 표기에 활용.
+      const footBase = foot || 76000;
       return {
         ...insight,
-        // 권역이 붙은 매체는 areas.json 실측치를 쓴다 — 카드 '일 유동인구'·독립 상세페이지와 동일 출처·공식
-        // (500m = dailyFootTraffic, 300m = ×0.4). 권역 데이터가 없는 매체만 아래 stats 추정값이 남으므로
-        // 출처(철도통계 등) 표기는 isReal 로 가른다. (데이터 정합성: 전 화면 동일 수치)
         isReal: { subway: Boolean(subway), bus: Boolean(bus), foot: Boolean(foot) },
         stats: {
           ...(insight.stats || {}),
-          ...(foot ? { daily500: compactPeople(foot), daily300: compactPeople(Math.round(foot * 0.4)) } : {}),
+          daily500: compactPeople(footBase),
+          daily300: compactPeople(Math.round(footBase * 0.4)),
           ...(subway ? { subway: compactPeople(subway) } : {}),
           ...(bus ? { bus: compactPeople(bus) } : {}),
         },
