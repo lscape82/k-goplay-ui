@@ -28,7 +28,9 @@
                   '<circle cx="8.5" cy="10" r="1.6"/><path d="M21 15.5l-4.5-4L10 19"/>'),
     // 지역 자료 = 문서 + 다운로드 화살표
     regiondata: svg('<path d="M6 3h8l4 4v12a1 1 0 0 1-1 1H6a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1z"/>' +
-                    '<path d="M14 3v4h4"/><path d="M12 11v5m0 0l-2-2m2 2l2-2"/>')
+                    '<path d="M14 3v4h4"/><path d="M12 11v5m0 0l-2-2m2 2l2-2"/>'),
+    // 온·오프라인 통합 = 겹친 두 원(믹스/통합)
+    onlinemix: svg('<circle cx="9" cy="12" r="6"/><circle cx="15" cy="12" r="6"/>')
   };
 
   // 6개 → 3개 축소(2026-07-17 확정). 도크는 "사기 전"에 쓰는 자리라 구매 후 기능은 두지 않는다.
@@ -40,7 +42,8 @@
     { key: "planner",  icon: ICONS.planner,  label: "업종·타깃별 AI 추천 받기", sub: "예산·업종·지역 → 매체 조합 자동 설계" },
     { key: "regiondata", icon: ICONS.regiondata, label: "지역별 매체 제안서 받기", sub: "지역을 고르면 핵심 매체·데이터를 제안서로" },
     { key: "compare",  icon: ICONS.compare,  label: "관심 매체 담기", sub: "담은 매체 비교 · 제안서(PDF)·엑셀 받기" },
-    { key: "creative", icon: ICONS.creative, label: "소재 제작 의뢰", sub: "의뢰서 작성하면 제작 견적 발송", href: "creative-request.html" }
+    { key: "creative", icon: ICONS.creative, label: "소재 제작 의뢰", sub: "의뢰서 작성하면 제작 견적 발송", href: "creative-request.html" },
+    { key: "onlinemix", icon: ICONS.onlinemix, label: "온·오프라인 믹스 문의", sub: "OOH + 앱·리워드 디지털 믹스", href: "online-mix.html" }
   ];
 
   // (제거됨 2026-10-24) planner·compare 데모 모달(FEAT)은 화면에 쓰이지 않는 죽은 코드였고,

@@ -20,6 +20,52 @@
   const listRoot = document.querySelector("#mapMediaList");
   const countRoot = document.querySelector("#mapResultCount");
   const summaryRoot = document.querySelector("#mapResultSummary");
+
+  // 좌측 목록 정렬 — ① 주력(자사) 7개 상단 고정(지정 순서) → ② 광역 티어(서울→수도권→지방) → ③ 티어 내 노출력 등급(score) 높은 순.
+  //  구형 옥상 가로형(커브·벽면 제외)은 등급 강등(-100)해 상위 제외. (상단 선언: render()가 먼저 사용.)
+  var FLAGSHIP_ORDER = ["m-98", "m-231", "m-215", "m-303", "m-443", "m-299", "m-301"]; // 청계광장·경복궁적선·명동을지한국·강남점프밀라노·여의도유진·홍대스칼렛·서울역부양
+  var _gradeScoreCache = {};
+  // 구형 판별: 가로형 + 옥상(옥탑/상단) + 커브형 아님 + 벽면 아님 → 구형이라 상위 등급에서 제외(강등). 커브형·벽면 가로형은 OK.
+  function isOldRooftopHorizontal(item) {
+    var t = [item.name, item.sizeText, item.locationDescription, item.locationFeature, item.exposureShort, item.mediaType, item.areaName].filter(Boolean).join(" ");
+    if (/커브|곡면|라운드/.test(t)) return false;          // 커브형 제외(OK)
+    if (/벽면/.test(t)) return false;                       // 벽면 가로형 OK
+    // 가로형 판정 (키워드 또는 가로>세로)
+    var horiz = /가로형/.test(t);
+    if (!horiz && item.widthM && item.heightM) horiz = (Number(item.widthM) > Number(item.heightM));
+    if (!horiz) { var mm = String(item.sizeText || "").match(/([\d.]+)\s*m?\s*[xX×]\s*([\d.]+)\s*m/); if (mm) { var w = parseFloat(mm[1]), h = parseFloat(mm[2]); if (w < 100 && h < 100) horiz = (w > h); } }
+    if (!horiz) return false;
+    // 옥상 판정: 키워드 OR 대형빌보드/고속도로 카테고리(가로형 빌보드는 대개 옥상 구형) → 커브·벽면만 아니면 구형으로 강등
+    var rooftopKw = /옥상|옥탑|빌딩\s*상단|상단\s*설치|고층\s*설치|빌딩\s*상/.test(t);
+    var boardCat = item.category === "large_billboard" || item.category === "highway";
+    return rooftopKw || boardCat;
+  }
+  function gradeScoreOf(item) {
+    var slug = item && item.slug;
+    if (slug && _gradeScoreCache[slug] != null) return _gradeScoreCache[slug];
+    var sc = 0;
+    try { if (window.MediaGrade && window.MediaGrade.gradeMedia) sc = window.MediaGrade.gradeMedia(item).score || 0; } catch (e) {}
+    if (isOldRooftopHorizontal(item)) sc -= 100; // 구형 옥상 가로형(커브·벽면 제외) → 상위 제외(맨 아래로)
+    if (slug) _gradeScoreCache[slug] = sc;
+    return sc;
+  }
+  // 광역 지역 티어: 1=서울, 2=수도권(경기·인천), 3=지방, 4=미상
+  function coarseRegionTier(item) {
+    if (item.areaSlug) return 1; // curated 권역은 전부 서울 핵심
+    var s = (item.areaName || "") + " " + (item.address || "") + " " + (item.jibunAddress || "");
+    if (/서울/.test(s)) return 1;
+    if (/경기|인천/.test(s)) return 2;
+    if (/[가-힣]/.test(s)) return 3;
+    return 4;
+  }
+  function mediaListOrder(a, b) {
+    if (!a || !b) return 0;
+    var pa = FLAGSHIP_ORDER.indexOf(a.slug), pb = FLAGSHIP_ORDER.indexOf(b.slug);
+    if (pa >= 0 || pb >= 0) { if (pa >= 0 && pb >= 0) return pa - pb; return pa >= 0 ? -1 : 1; }
+    var ta = coarseRegionTier(a), tb = coarseRegionTier(b);
+    if (ta !== tb) return ta - tb;            // 서울 → 수도권 → 지방
+    return gradeScoreOf(b) - gradeScoreOf(a); // 티어 내 등급순(구형 옥상 가로형 강등 포함)
+  }
   const searchForm = document.querySelector(".map-global-search");
   const searchInput = document.querySelector("#mapGlobalSearch");
   const curationToggle = document.querySelector("#mapCurationToggle");
@@ -3346,6 +3392,7 @@
       renderBusStopList(busStopsForCurrentMapView());
       return;
     }
+    items = (Array.isArray(items) ? items.slice() : []).sort(mediaListOrder); // 주력 고정 → 핵심 지역 → 지역 내 등급순
     listRoot.innerHTML = items.length
       ? items.map(listCard).join("")
       : `<div class="empty">조건에 맞는 매체가 없습니다.</div>`;
@@ -3406,7 +3453,7 @@
         <figure class="map-detail-video-preview${item.videoUrl ? " has-video" : ""}">
           ${item.videoUrl
             ? `<video src="${AdPlay.esc(item.videoUrl)}" poster="${AdPlay.esc(galleryImages[1] || image)}" autoplay muted loop playsinline preload="metadata" controls aria-label="${AdPlay.esc(item.name)} 광고 현장 영상"><img src="${AdPlay.esc(galleryImages[1] || image)}" alt="${AdPlay.esc(item.name)} 광고 현장"></video>`
-            : `<img src="${AdPlay.esc(galleryImages[1] || image)}" alt="${AdPlay.esc(item.name)} 광고 현장 영상 미리보기">`}
+            : `<img src="${AdPlay.esc(image || galleryImages[0])}" alt="${AdPlay.esc(item.name)} 대표 현장 사진">`}
         </figure>
         <div class="map-detail-media-grid">
           ${galleryImages.slice(0, 4).map((src, index) => `
@@ -3462,8 +3509,8 @@
           <div class="map-nearby-brands">${nearby.brands.map((brand) => `<span>${AdPlay.esc(brand)}</span>`).join("")}</div>` : ""}
         </section>
         <a class="map-detail-live-card" href="estimate.html?intent=live-talk&media=${encodeURIComponent(item.slug)}">
-          <strong>라이브 톡 상담하기</strong>
-          <span>할인, 패키지, 예산 맞춤 집행은 1533-1975 또는 라이브 상담 신청</span>
+          <strong>예산 맞춤 상담 · 라이브톡</strong>
+          <span>예산·기간 맞춤, 단기 집행 상담 — 1533-1975 또는 라이브 톡 상담</span>
         </a>
         <section class="map-detail-section" id="detailGallery">
           <h3>갤러리</h3>
@@ -3487,13 +3534,13 @@
         <section class="map-detail-section" id="detailLocation">
           <h3>입지 특성</h3>
           ${item.locationFeature ? `<p class="map-detail-copy map-detail-location-feature">${AdPlay.esc(item.locationFeature)}</p>` : ""}
-          <div class="map-insight-score">
+          ${(insight.scores && insight.scores.length) ? `<div class="map-insight-score">
             ${insight.scores.map((score) => `<div><span>${AdPlay.esc(score.label)}</span><i style="--score:${score.value}"></i><strong>${score.value}</strong></div>`).join("")}
-          </div>
-          <p class="map-nearby-label">주요 시설·행사</p>
+          </div>` : ""}
+          ${(insight.facilities && insight.facilities.length) ? `<p class="map-nearby-label">주요 시설·행사</p>
           <dl class="map-detail-table">
             ${insight.facilities.map((row) => `<dt>${AdPlay.esc(row.label)}</dt><dd>${AdPlay.esc(row.value)}</dd>`).join("")}
-          </dl>
+          </dl>` : ""}
         </section>
         <section class="map-detail-section" id="detailConsult">
           <details class="map-consult-accordion">
@@ -3606,18 +3653,22 @@
   }
 
   function mediaSellingPoint(item) {
-    if (item.exposureLong) return item.exposureLong; // 매체별 실데이터 우선(있으면), 없으면 아래 상권 키워드 폴백
-    const text = [item.name, item.areaName, item.areaSlug, item.address].filter(Boolean).join(" ");
-    if (/광화문|종로|시청|청계|gwanghwamun|jongno|jung/i.test(text)) {
-      return "광장과 횡단보도 대기 동선에서 정면 시야가 형성되고, 주변 공공기관·언론사·문화시설 방문객에게 반복 노출되는 도심 랜드마크형 매체입니다.";
-    }
-    if (/삼성|코엑스|COEX|samseong|coex/i.test(text)) {
-      return "코엑스·무역센터·백화점 방문 동선과 차량 흐름을 동시에 커버해 전시, 팝업, 프리미엄 브랜드 캠페인의 인지 확산에 유리합니다.";
-    }
-    if (/서울역|KTX|seoul-station|transport/i.test(text)) {
-      return "철도·지하철·버스 환승객이 매체 전면을 지나며 확인하는 교통 허브형 매체로, 단기 고빈도 고지와 광역 캠페인에 적합합니다.";
-    }
-    return "횡단보도 대기 지점과 차량 정체 구간에서 시야가 오래 머무는 대형 전광판으로, 도산대로·강남 상권의 뷰티·패션·F&B 브랜드 노출에 강점이 있습니다.";
+    if (item.exposureLong) return item.exposureLong; // 매체별 실데이터 우선(있으면), 없으면 아래 권역 폴백
+    // 큐레이션 권역(areaSlug)만 정확 매칭, 그 외는 중립 문구(틀린 강남 주장 금지).
+    const POINT = {
+      "gwanghwamun": "광장과 횡단보도 대기 동선에서 정면 시야가 형성되고, 주변 공공기관·언론사·문화시설 방문객에게 반복 노출되는 도심 랜드마크형 매체입니다.",
+      "samseong-coex": "코엑스·무역센터·백화점 방문 동선과 차량 흐름을 동시에 커버해 전시, 팝업, 프리미엄 브랜드 캠페인의 인지 확산에 유리합니다.",
+      "seoul-station": "철도·지하철·버스 환승객이 매체 전면을 지나며 확인하는 교통 허브형 매체로, 단기 고빈도 고지와 광역 캠페인에 적합합니다.",
+      "gangnam-daero": "횡단보도 대기 지점과 차량 정체 구간에서 시야가 오래 머무는 대형 매체로, 강남대로 상권의 뷰티·패션·F&B 브랜드 노출에 강점이 있습니다.",
+      "dosan-daero": "도산대로·청담 프리미엄 상권의 보행·차량 동선에서 시야가 오래 머무는 매체로, 뷰티·패션·럭셔리 브랜드 노출에 강점이 있습니다.",
+      "myeongdong-euljiro": "관광·쇼핑 인파가 밀집한 명동 상권에서 내·외국인 보행 동선에 정면 노출되는 매체로, 글로벌·뷰티·면세 캠페인에 유리합니다.",
+      "hongdae": "2030·대학가·공연 상권의 밀집 보행 동선에서 반복 노출되는 매체로, 트렌드·엔터·패션 캠페인에 강점이 있습니다.",
+      "yeouido": "금융·방송 업무지구와 대형 쇼핑몰 동선을 커버하는 매체로, B2B·금융·프리미엄 캠페인의 고지에 적합합니다.",
+      "jamsil": "롯데월드타워·몰 방문 인파와 차량 흐름을 함께 커버하는 매체로, 대규모 도달과 가족·2030 타깃 캠페인에 유리합니다.",
+      "seongsu": "카페·팝업 상권의 2030 보행 동선에서 반복 노출되는 매체로, 라이프스타일·패션·브랜드 체험 캠페인에 강점이 있습니다.",
+      "mapo": "공덕·마포 업무지구와 환승 동선을 커버하는 매체로, 직장인·생활권 타깃 고지에 적합합니다.",
+    };
+    return POINT[item.areaSlug || ""] || "주요 보행·차량 동선에서 반복적으로 시야에 들어오는 매체로, 지역 상권·생활권 타깃 노출에 적합합니다.";
   }
 
   function openDetail(slug, panToMarker, moveFocus = false) {
@@ -3709,7 +3760,7 @@
 
   function mapCardPriceLabel(item) {
     const min = AdPlay.minMonthlyPrice(item);
-    return min ? `월 ${AdPlay.formatKRW(min)}` : "월 비용 상담 필요";
+    return min ? `월 ${AdPlay.formatKRW(min)}` : "예산 맞춤 견적";
   }
 
   // 엑셀 단가표 기준 단기요율(1/3/7/15일) 보유 여부
@@ -3777,7 +3828,7 @@
 
   function contractSummary(item) {
     const min = AdPlay.minMonthlyPrice(item);
-    const monthly = min ? `월 ${AdPlay.formatKRW(min)}` : "월 비용 상담 필요";
+    const monthly = min ? `월 ${AdPlay.formatKRW(min)}` : "예산 맞춤 견적";
     return `${monthly} · 1개월 미만 집행 협의 가능`;
   }
   // 계약정보 원문(줄단위) 표시 — 실데이터 우선, 없으면 요약 폴백
@@ -4045,29 +4096,22 @@
     if (Array.isArray(item.nearbyBrands) && item.nearbyBrands.length) {
       return { summary: item.nearbySummary || "", brands: item.nearbyBrands.slice(0, 8) };
     }
-    const text = [item.name, item.areaName, item.areaSlug, item.address, item.mapLocation && item.mapLocation.sourceAddress].filter(Boolean).join(" ");
-    if (/삼성|코엑스|COEX|samseong|coex/i.test(text)) {
-      return {
-        summary: "전시·쇼핑·업무가 겹치는 복합 상권으로, 백화점·몰 방문객과 B2B 유동이 함께 발생합니다.",
-        brands: ["현대백화점", "스타필드 코엑스", "메가박스", "스타벅스", "올리브영", "무신사 스탠다드", "자라", "별마당도서관"],
-      };
-    }
-    if (/서울역|KTX|seoul-station|transport/i.test(text)) {
-      return {
-        summary: "철도·지하철·버스 환승 허브로, 출퇴근·출장·관광 유동이 반복 교차하는 교통 중심 상권입니다.",
-        brands: ["롯데마트", "롯데아울렛 서울역", "스타벅스", "파리바게뜨", "버거킹", "던킨", "CU", "서울로7017"],
-      };
-    }
-    if (/광화문|종로|시청|청계|gwanghwamun|jongno|jung/i.test(text)) {
-      return {
-        summary: "도심 랜드마크 입지로, 직장인 출퇴근·점심 유동과 관광·문화행사 동선이 함께 형성됩니다.",
-        brands: ["교보문고", "광화문 D타워", "세종문화회관", "스타벅스", "올리브영", "파리바게뜨", "GS25", "덕수궁"],
-      };
-    }
-    return {
-      summary: "강남·도산·신사를 잇는 프리미엄 소비 동선으로, 2030·구매력 직장인이 밀집하고 뷰티·패션·F&B가 강세입니다.",
-      brands: ["올리브영", "무신사", "애플 가로수길", "스타벅스", "다이소", "투썸플레이스", "자라", "CU"],
+    // 큐레이션 권역(areaSlug)에만 대표 브랜드를 매칭. 그 외 지역은 실데이터가 없으면
+    // 틀린 브랜드(예: 홍대인데 강남 가로수길)를 보이지 않도록 빈 배열 → 섹션 자동 숨김.
+    const NEARBY = {
+      "samseong-coex": { summary: "전시·쇼핑·업무가 겹치는 복합 상권으로, 백화점·몰 방문객과 B2B 유동이 함께 발생합니다.", brands: ["현대백화점", "스타필드 코엑스", "메가박스", "스타벅스", "올리브영", "무신사 스탠다드", "자라", "별마당도서관"] },
+      "seoul-station": { summary: "철도·지하철·버스 환승 허브로, 출퇴근·출장·관광 유동이 반복 교차하는 교통 중심 상권입니다.", brands: ["롯데마트", "롯데아울렛 서울역", "스타벅스", "파리바게뜨", "버거킹", "던킨", "CU", "서울로7017"] },
+      "gwanghwamun": { summary: "도심 랜드마크 입지로, 직장인 출퇴근·점심 유동과 관광·문화행사 동선이 함께 형성됩니다.", brands: ["교보문고", "광화문 D타워", "세종문화회관", "스타벅스", "올리브영", "파리바게뜨", "GS25", "덕수궁"] },
+      "gangnam-daero": { summary: "강남대로·신사를 잇는 프리미엄 소비 동선으로, 2030·구매력 직장인이 밀집하고 뷰티·패션·F&B가 강세입니다.", brands: ["올리브영", "무신사", "애플 가로수길", "스타벅스", "다이소", "투썸플레이스", "자라", "CU"] },
+      "dosan-daero": { summary: "도산대로·압구정·청담을 잇는 프리미엄 뷰티·패션·F&B 상권입니다.", brands: ["애플 가로수길", "올리브영", "젠틀몬스터", "탬버린즈", "스타벅스 리저브", "설화수", "브랜드 플래그십", "다이닝"] },
+      "myeongdong-euljiro": { summary: "관광·쇼핑·면세가 밀집한 서울 대표 상권으로, 외국인 관광객과 직장인 유동이 겹칩니다.", brands: ["올리브영", "롯데백화점 본점", "신세계면세점", "ABC마트", "스타벅스", "다이소", "유니클로", "명동교자"] },
+      "hongdae": { summary: "2030·대학가·문화 상권으로, 패션·카페·공연·나이트라이프 유동이 밀집합니다.", brands: ["무신사 스탠다드", "올리브영", "스파오", "에이랜드", "스타벅스", "교보문고 홍대", "다이소", "CU"] },
+      "yeouido": { summary: "금융·방송 업무지구와 대형 쇼핑몰이 겹치는 상권으로, 직장인·쇼핑 유동이 함께 발생합니다.", brands: ["더현대 서울", "IFC몰", "스타벅스", "교보문고", "올리브영", "버거킹", "투썸플레이스", "CU"] },
+      "jamsil": { summary: "롯데월드타워·몰 중심의 동남권 복합 상권으로, 쇼핑·관광·레저 유동이 밀집합니다.", brands: ["롯데백화점 잠실", "롯데월드몰", "롯데월드", "스타벅스", "올리브영", "자라", "유니클로", "CGV"] },
+      "seongsu": { summary: "카페·팝업·편집숍이 밀집한 트렌드 상권으로, 2030·크리에이터 유동이 강세입니다.", brands: ["블루보틀", "올리브영", "무신사", "대림창고", "성수연방", "스타벅스", "어니언", "자라"] },
+      "mapo": { summary: "공덕·마포 업무지구와 생활 상권이 겹치는 입지로, 직장인·생활권 유동이 함께 발생합니다.", brands: ["스타벅스", "올리브영", "이마트 공덕", "CGV", "맘스터치", "공덕 먹자골목", "투썸플레이스", "CU"] },
     };
+    return NEARBY[item.areaSlug || ""] || { summary: "", brands: [] };
   }
 
   function locationInsight(item) {
@@ -4093,7 +4137,8 @@
         },
       };
     };
-    if (/삼성|코엑스|COEX|samseong|coex/i.test(text)) {
+    const slug = item.areaSlug || "";
+    if (slug === "samseong-coex") {
       return withAreaTransit({
         location: "코엑스, 무역센터, 백화점, 호텔, 전시·컨벤션 동선이 겹치는 복합 상권입니다. B2B 방문객과 쇼핑·관광 체류 인구가 함께 발생해 브랜드 인지도와 행사 연계 캠페인에 적합합니다.",
         traffic: "평일에는 업무·전시 방문 수요가 안정적으로 유입되고, 주말에는 쇼핑몰·영화관·행사 방문객 중심으로 체류 시간이 길어지는 특성이 있습니다.",
@@ -4103,7 +4148,7 @@
         audience: audienceSet([["평일 업무·전시", 88, "오피스·컨벤션"], ["주말 쇼핑·관광", 78, "체류형 방문"], ["2030 활동층", 82, "문화·쇼핑"], ["프리미엄 소비층", 74, "백화점·호텔"]]),
       });
     }
-    if (/서울역|KTX|seoul-station|transport/i.test(text)) {
+    if (slug === "seoul-station") {
       return withAreaTransit({
         location: "철도, 지하철, 버스, 택시 동선이 집중되는 광역 교통 허브입니다. 출퇴근·출장·관광객이 반복적으로 교차해 단기간 고빈도 노출과 전국 단위 도달 메시지에 유리합니다.",
         traffic: "평일 출퇴근 피크와 주말 여행 수요가 모두 발생합니다. 이동 목적이 뚜렷한 이용자가 많아 금융, 통신, 여행, 공공 캠페인 고지에 적합합니다.",
@@ -4113,7 +4158,7 @@
         audience: audienceSet([["출퇴근 피크", 86, "반복 노출"], ["출장·관광객", 90, "광역 이동"], ["주말 여행", 76, "목적형 방문"], ["고지 수용도", 80, "이동 전 대기"]]),
       });
     }
-    if (/광화문|종로|시청|청계|gwanghwamun|jongno|jung/i.test(text)) {
+    if (slug === "gwanghwamun") {
       return withAreaTransit({
         location: "광화문, 청계광장, 시청, 종로 업무지구를 연결하는 서울 도심 랜드마크 입지입니다. 관광·문화·공공행사 동선과 오피스 유동이 함께 발생해 신뢰도 높은 브랜드 노출에 적합합니다.",
         traffic: "평일에는 직장인 출퇴근·점심 유동이 강하고, 주말에는 관광객과 행사 방문객 비중이 커집니다. 축제·문화행사 시 체류 시간이 길어져 반복 노출이 가능합니다.",
@@ -4123,14 +4168,98 @@
         audience: audienceSet([["평일 직장인", 86, "출퇴근·점심"], ["주말 관광객", 78, "도심 명소"], ["행사 체류", 84, "반복 노출"], ["40대 이상", 72, "구매력 높은 층"]]),
       });
     }
-    return withAreaTransit({
-      location: "강남대로, 도산대로, 신사·청담 상권을 잇는 프리미엄 소비 동선입니다. 업무, 뷰티, 패션, F&B, 야간 활동 수요가 겹쳐 브랜드 런칭과 고관여 소비재 캠페인에 적합합니다.",
-      traffic: "평일에는 출퇴근·점심 직장인 유동이 안정적이고, 저녁과 주말에는 쇼핑·약속·외식 목적 방문객이 증가합니다. 2030 활동층과 구매력 높은 직장인층을 함께 공략할 수 있습니다.",
-      stats: { daily500: "7.6만명", daily300: "3.1만명", subway: "12.4만명", bus: "3.8만명", traffic: "8.6만대", target: "2030·직장인" },
-      scores: scoreSet([["기업·오피스", 5], ["상업시설", 5], ["지역명소", 4], ["교통접점", 4], ["야간활동", 4]]),
-      facilities: facilitySet([["주요 교통", "신사역, 강남대로, 도산대로, 주요 버스 동선"], ["지역 명소", "가로수길, 압구정·청담 상권, 프리미엄 뷰티·패션 거리"], ["상업 시설", "병원, 뷰티, F&B, 쇼룸, 브랜드 플래그십"], ["기업·오피스", "강남 업무시설, 스타트업, 전문직 종사자"], ["행사", "브랜드 팝업, 패션·뷰티 런칭, 시즌 프로모션"]]),
-      audience: audienceSet([["평일 직장인", 84, "출퇴근·점심"], ["2030 활동층", 88, "쇼핑·약속"], ["프리미엄 소비", 82, "뷰티·패션"], ["야간 유동", 76, "외식·모임"]]),
-    });
+    if (slug === "myeongdong-euljiro") {
+      return withAreaTransit({
+        location: "명동, 을지로입구, 롯데백화점 본점을 잇는 서울 대표 관광·쇼핑 상권입니다. 외국인 관광객과 직장인·쇼핑 인구가 겹쳐 글로벌 브랜드·뷰티·면세 캠페인에 강합니다.",
+        traffic: "평일에는 직장인·관광 유동이 꾸준하고, 주말·관광 성수기에는 외국인 방문객 비중이 크게 늘어 체류·구매 전환이 활발합니다.",
+        stats: { target: "관광객·직장인" },
+        scores: scoreSet([["관광·명소", 5], ["상업시설", 5], ["교통접점", 5], ["기업·오피스", 4], ["글로벌", 5]]),
+        facilities: facilitySet([["주요 교통", "명동역, 을지로입구역, 회현역"], ["지역 명소", "명동성당, 남산, 명동거리, 롯데백화점 본점"], ["상업 시설", "면세점, 백화점, 뷰티 로드숍, 호텔, F&B"], ["기업·오피스", "을지로 금융·업무지구, 본사 밀집"], ["행사", "관광 성수기, K-뷰티·면세 프로모션, 연말 점등"]]),
+        audience: audienceSet([["외국인 관광객", 90, "면세·뷰티"], ["평일 직장인", 82, "을지로 업무"], ["주말 쇼핑", 84, "체류형 방문"], ["2030 소비층", 80, "패션·뷰티"]]),
+      });
+    }
+    if (slug === "hongdae") {
+      return withAreaTransit({
+        location: "홍대입구, 연남, 상수를 잇는 서울 대표 2030·문화·나이트라이프 상권입니다. 공연·클럽·패션·카페가 밀집해 트렌드·엔터·패션 캠페인에 강합니다.",
+        traffic: "낮에는 대학가·카페 유동, 저녁·주말·심야에는 공연·클럽·외식 목적 방문이 급증해 2030 집중 노출에 유리합니다.",
+        stats: { target: "2030·대학생·관광객" },
+        scores: scoreSet([["2030 활동", 5], ["상업시설", 5], ["문화·엔터", 5], ["교통접점", 4], ["야간활동", 5]]),
+        facilities: facilitySet([["주요 교통", "홍대입구역(2·공항철도·경의중앙), 상수역, 합정역"], ["지역 명소", "홍대 걷고싶은거리, 연남동, 경의선숲길, 상상마당"], ["상업 시설", "패션 편집숍, 카페, 클럽·라이브, 뷰티, F&B"], ["기업·오피스", "스타트업·크리에이티브 스튜디오"], ["행사", "인디·버스킹, 패션 팝업, 대학 행사, 축제"]]),
+        audience: audienceSet([["2030 활동층", 92, "트렌드·패션"], ["대학생", 84, "대학가"], ["야간·주말 유동", 86, "클럽·외식"], ["외국인 관광객", 74, "K-컬처"]]),
+      });
+    }
+    if (slug === "yeouido") {
+      return withAreaTransit({
+        location: "여의도 금융·방송 업무지구와 IFC·더현대 서울 상권을 잇는 입지입니다. 금융·대기업 직장인과 쇼핑·한강공원 방문객이 함께 발생해 B2B·금융·프리미엄 캠페인에 적합합니다.",
+        traffic: "평일 출퇴근·점심 직장인 유동이 매우 강하고, 주말에는 더현대·한강공원·축제 등 체류형 방문이 늘어납니다.",
+        stats: { target: "금융·직장인" },
+        scores: scoreSet([["기업·오피스", 5], ["상업시설", 5], ["교통접점", 4], ["지역명소", 4], ["행사연계", 4]]),
+        facilities: facilitySet([["주요 교통", "여의도역, 여의나루역, 국회의사당역"], ["지역 명소", "한강공원, 63빌딩, 국회, 더현대 서울"], ["상업 시설", "IFC몰, 더현대 서울, 오피스 F&B"], ["기업·오피스", "증권·금융사, 방송국, 대기업 본사"], ["행사", "서울세계불꽃축제, 벚꽃축제, 금융 컨퍼런스"]]),
+        audience: audienceSet([["평일 직장인", 90, "금융·업무"], ["점심·퇴근 유동", 84, "오피스"], ["주말 쇼핑·한강", 78, "체류형"], ["프리미엄 소비", 76, "더현대·IFC"]]),
+      });
+    }
+    if (slug === "jamsil") {
+      return withAreaTransit({
+        location: "잠실역, 롯데월드타워·몰, 석촌호수를 잇는 동남권 대표 복합 상권입니다. 쇼핑·관광·스포츠·업무 유동이 겹쳐 대규모 도달과 가족·2030 타깃 캠페인에 유리합니다.",
+        traffic: "평일 업무·쇼핑 유동과 주말 가족·관광·경기장 방문이 모두 강합니다. 콘서트·스포츠 이벤트 시 순간 집중 유동이 발생합니다.",
+        stats: { target: "가족·2030·관광객" },
+        scores: scoreSet([["상업시설", 5], ["지역명소", 5], ["교통접점", 5], ["행사연계", 5], ["기업·오피스", 4]]),
+        facilities: facilitySet([["주요 교통", "잠실역(2·8호선), 잠실나루역"], ["지역 명소", "롯데월드타워, 롯데월드, 석촌호수, 올림픽공원"], ["상업 시설", "롯데월드몰, 백화점, 면세점, 영화관, 호텔"], ["기업·오피스", "롯데타워 업무시설, 동남권 오피스"], ["행사", "콘서트, 스포츠(야구·경기장), 시즌 축제"]]),
+        audience: audienceSet([["주말 가족·관광", 88, "쇼핑·레저"], ["2030 활동층", 82, "몰·관광"], ["평일 업무·쇼핑", 80, "타워·몰"], ["이벤트 집중", 86, "콘서트·스포츠"]]),
+      });
+    }
+    if (slug === "seongsu") {
+      return withAreaTransit({
+        location: "성수동 카페거리·팝업 성지와 서울숲을 잇는 서울 대표 트렌드·브랜드 체험 상권입니다. 2030·크리에이터·브랜드 팝업 유동이 밀집해 라이프스타일·패션·F&B 캠페인에 강합니다.",
+        traffic: "평일에는 오피스·카페 유동, 주말에는 팝업·전시·브런치 목적 2030 방문이 급증합니다. 브랜드 팝업 시즌에 체류·공유가 활발합니다.",
+        stats: { target: "2030·크리에이터" },
+        scores: scoreSet([["2030 활동", 5], ["문화·팝업", 5], ["상업시설", 4], ["지역명소", 4], ["기업·오피스", 4]]),
+        facilities: facilitySet([["주요 교통", "성수역, 뚝섬역, 서울숲역"], ["지역 명소", "서울숲, 성수동 카페거리, 팝업·쇼룸 거리"], ["상업 시설", "카페, 브랜드 팝업, 편집숍, 베이커리, F&B"], ["기업·오피스", "IT·패션 스타트업, 지식산업센터"], ["행사", "브랜드 팝업, 전시, 플리마켓, 포토 이벤트"]]),
+        audience: audienceSet([["2030 활동층", 90, "트렌드·팝업"], ["주말 체류", 84, "브런치·전시"], ["크리에이터·직장인", 80, "오피스·스튜디오"], ["SNS 공유층", 86, "포토·팝업"]]),
+      });
+    }
+    if (slug === "mapo") {
+      return withAreaTransit({
+        location: "공덕·마포 업무지구와 경의선·공항철도 환승 동선을 잇는 입지입니다. 직장인 출퇴근과 주거·상권 생활 유동이 함께 발생해 직장인·생활밀착 캠페인에 적합합니다.",
+        traffic: "평일 출퇴근·점심 직장인 유동이 강하고, 저녁·주말에는 공덕·마포 상권의 외식·생활 방문이 이어집니다.",
+        stats: { target: "직장인·생활권" },
+        scores: scoreSet([["기업·오피스", 5], ["교통접점", 5], ["상업시설", 4], ["지역명소", 3], ["생활밀착", 4]]),
+        facilities: facilitySet([["주요 교통", "공덕역(5·6·경의중앙·공항철도), 마포역"], ["지역 명소", "경의선숲길, 마포 먹자골목, 한강"], ["상업 시설", "오피스 F&B, 전통시장, 생활 상권"], ["기업·오피스", "공덕 업무지구, 언론·공공기관, 대기업"], ["행사", "직장인 상권 프로모션, 생활 이벤트"]]),
+        audience: audienceSet([["평일 직장인", 88, "출퇴근·점심"], ["환승 유동", 84, "공항철도·경의선"], ["생활권 주민", 76, "외식·생활"], ["저녁 상권", 72, "회식·모임"]]),
+      });
+    }
+    if (slug === "gangnam-daero" || slug === "dosan-daero") {
+      return withAreaTransit({
+        location: "강남대로, 도산대로, 신사·청담 상권을 잇는 프리미엄 소비 동선입니다. 업무, 뷰티, 패션, F&B, 야간 활동 수요가 겹쳐 브랜드 런칭과 고관여 소비재 캠페인에 적합합니다.",
+        traffic: "평일에는 출퇴근·점심 직장인 유동이 안정적이고, 저녁과 주말에는 쇼핑·약속·외식 목적 방문객이 증가합니다. 2030 활동층과 구매력 높은 직장인층을 함께 공략할 수 있습니다.",
+        stats: { daily500: "7.6만명", daily300: "3.1만명", subway: "12.4만명", bus: "3.8만명", traffic: "8.6만대", target: "2030·직장인" },
+        scores: scoreSet([["기업·오피스", 5], ["상업시설", 5], ["지역명소", 4], ["교통접점", 4], ["야간활동", 4]]),
+        facilities: facilitySet([["주요 교통", "신사역, 강남대로, 도산대로, 주요 버스 동선"], ["지역 명소", "가로수길, 압구정·청담 상권, 프리미엄 뷰티·패션 거리"], ["상업 시설", "병원, 뷰티, F&B, 쇼룸, 브랜드 플래그십"], ["기업·오피스", "강남 업무시설, 스타트업, 전문직 종사자"], ["행사", "브랜드 팝업, 패션·뷰티 런칭, 시즌 프로모션"]]),
+        audience: audienceSet([["평일 직장인", 84, "출퇴근·점심"], ["2030 활동층", 88, "쇼핑·약속"], ["프리미엄 소비", 82, "뷰티·패션"], ["야간 유동", 76, "외식·모임"]]),
+      });
+    }
+    return withAreaTransit(genericInsight(item));
+  }
+
+  // 큐레이션 권역(areaSlug)이 없는 매체는 지역명 기반의 정직한 설명만 제공합니다.
+  // 틀린 명소·상권(예: 홍대인데 강남)을 주장하지 않도록, 아는 사실(지역명·매체유형·실측 주변 브랜드)만 표기하고
+  // 모르는 항목(상권 성격 점수 등)은 비워 둡니다. 유동/지하철/버스 수치는 withAreaTransit가 동일 출처로 채웁니다.
+  function genericInsight(item) {
+    const an = (item.areaName || "").trim();
+    const place = an || "해당 지역";
+    const brands = Array.isArray(item.nearbyBrands) ? item.nearbyBrands.slice(0, 8) : [];
+    const facilities = [];
+    facilities.push(["위치", an || (item.address ? compactAddress(item) : "지역 상권")]);
+    if (item.mediaType) facilities.push(["매체 유형", item.mediaType]);
+    if (brands.length) facilities.push(["주변 브랜드", brands.join(", ")]);
+    return {
+      location: place + " 일대에 위치한 옥외광고 매체입니다. 주변 상권과 보행·차량 동선을 따라 반복 노출됩니다.",
+      traffic: place + "의 평일·주말 유동 패턴에 맞춰 노출이 이어지며, 지역 생활권·상권을 겨냥한 캠페인에 적합합니다.",
+      stats: { target: "지역 생활권 유동" },
+      scores: [],
+      facilities: facilitySet(facilities),
+      audience: [],
+    };
   }
 
   function renderBusStopList(stops) {

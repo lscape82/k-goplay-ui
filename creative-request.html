@@ -7,6 +7,29 @@
     <meta name="description" content="옥외광고(DOOH) 소재 제작을 의뢰하세요. 촬영 여부와 보유 소재만 선택하면 예상 제작비 범위를 즉시 확인하고, 24시간 이내 정식 견적서를 받아보실 수 있습니다.">
     <link rel="stylesheet" href="assets/css/styles.css?v=creative-request-20260717-d790">
     <style>
+      /* ── 상단(헤더+타이틀)을 옥외광고 목록·집행사례와 동일하게 ── */
+      body{background:#fff}
+      :root{--shell-max:1760px;--dock-gutter:248px}
+      :root{--shell-w:min(var(--shell-max),calc(100% - 40px))}
+      .hd{position:sticky;top:0;z-index:30;border-bottom:1px solid #e9edf3;background:#fff}
+      .hd-in{display:flex;align-items:center;gap:22px;min-height:54px;flex-wrap:wrap;box-sizing:border-box;width:var(--shell-w);margin:0 auto;padding-inline:var(--dock-gutter)}
+      .hd-brand{display:inline-flex;align-items:center;gap:10px;text-decoration:none;flex:none}
+      .hd-brand strong{font-size:25px;font-weight:500;font-variation-settings:"wght" 500;letter-spacing:0;color:#2540ea}.hd-brand .brand-mark{display:none}
+      .hd-nav{margin-left:auto;display:flex;align-items:center;gap:22px;flex-wrap:wrap}
+      .hd-act{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+      .hd a{font-size:12px;font-weight:600;color:#2540ea;text-decoration:none;white-space:nowrap;transition:color .15s ease}
+      .hd-nav a:hover,.hd-act a:hover{color:#16249e}
+      @media(max-width:900px){.hd-in{gap:12px;min-height:50px}.hd-nav{gap:14px}.hd-act{gap:12px}.hd a{font-size:13px}}
+      /* 초록 그라데이션 타이틀 → 흰색·동일 정렬(상단 22px) */
+      .page-title{background:#fff!important;border:none!important;box-shadow:none!important;padding:0!important}
+      .page-title::before,.page-title::after{display:none!important}
+      .page-title>.container{width:var(--shell-w);max-width:none;margin:0 auto;padding:22px var(--dock-gutter) 0;box-sizing:border-box}
+      .page-title h1{color:#161a22!important;font-size:clamp(26px,4.6vw,34px);letter-spacing:-.02em;margin:0 0 10px}
+      .page-title p{color:#5a6270!important;max-width:72ch}
+      /* 본문도 동일 폭·들여쓰기 */
+      #main .section>.container{width:var(--shell-w);max-width:none;margin:0 auto;padding-inline:var(--dock-gutter);box-sizing:border-box}
+      @media(max-width:1079px){.hd-in,.page-title>.container,#main .section>.container{padding-inline:0}}
+
       /* ── 소재 제작 의뢰서 전용 (styles.css 뒤에 와야 유산 규칙을 이깁니다) ── */
       .cr-step{display:flex;align-items:center;gap:8px;margin:0 0 6px}
       .cr-step-no{font:700 11px/1 ui-monospace,Menlo,Consolas,monospace;letter-spacing:.04em;background:#111827;color:#fff;padding:4px 7px;border-radius:5px;flex:none}
@@ -68,7 +91,20 @@
   </head>
   <body>
     <a class="skip-link" href="#main">본문 바로가기</a>
-    <header class="site-header" data-site-header></header>
+    <header class="hd"><div class="hd-in">
+      <a class="hd-brand" href="map.html" aria-label="광고플레이 홈"><span class="brand-mark">AD</span><strong>k-goplay.com</strong></a>
+      <nav class="hd-nav" aria-label="주요 메뉴">
+        <a href="map.html">옥외광고 지도</a>
+        <a href="media-catalog.html">옥외광고 목록</a>
+        <a href="cases.html">광고집행사례</a>
+        <a href="insights.html">광고 인사이트</a>
+      </nav>
+      <div class="hd-act">
+        <a href="about.html">회사소개</a>
+        <a href="login.html">로그인</a>
+        <a href="join.html">회원가입</a>
+      </div>
+    </div></header>
     <main id="main">
       <section class="page-title">
         <div class="container">
