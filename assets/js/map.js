@@ -3509,7 +3509,7 @@
           <div class="map-nearby-brands">${nearby.brands.map((brand) => `<span>${AdPlay.esc(brand)}</span>`).join("")}</div>` : ""}
         </section>
         <a class="map-detail-live-card" href="estimate.html?intent=live-talk&media=${encodeURIComponent(item.slug)}">
-          <strong>예산 맞춤 상담 · 라이브톡</strong>
+          <strong>예산 맞춤 상담</strong>
           <span>예산·기간 맞춤, 단기 집행 상담 — 1533-1975 또는 라이브 톡 상담</span>
         </a>
         <section class="map-detail-section" id="detailGallery">

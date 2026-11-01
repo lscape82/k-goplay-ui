@@ -10,8 +10,18 @@ Allow: /
 User-agent: Googlebot
 Allow: /
 
+# 빙 크롤러 (ChatGPT 검색·Copilot = Bing 색인 기반)
+User-agent: Bingbot
+Allow: /
+
 # AI 검색/인용 크롤러 (GEO)
 User-agent: GPTBot
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: anthropic-ai
 Allow: /
 
 User-agent: OAI-SearchBot
