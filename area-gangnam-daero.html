@@ -134,11 +134,18 @@
         <a href="cases.html">광고집행사례</a>
         <a href="insights.html">광고 인사이트</a>
       </nav>
-      <div class="hd-act">
+      <div class="hd-act gp-acct" id="gpAcct" data-logged="out">
         <a href="about.html">회사소개</a>
-        <a href="admin.html">관리자</a>
-        <a href="login.html">로그인</a>
-        <a href="join.html">회원가입</a>
+        <a class="hd-login gp-out" href="login.html"><svg class="hd-login-ico" viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><circle cx="12" cy="12" r="11" fill="none" stroke="#2540ea" stroke-width="1.4"></circle><circle cx="12" cy="9.6" r="3" fill="#2540ea"></circle><path d="M6.2 18.4c0-3 2.8-4.6 5.8-4.6s5.8 1.6 5.8 4.6z" fill="#2540ea"></path></svg><span>로그인</span></a>
+        <a class="gp-out" href="join.html">회원가입</a>
+        <div class="gp-acct-in gp-in">
+          <button type="button" class="gp-acct-user" id="gpAcctUser" aria-haspopup="true" aria-expanded="false"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="9" r="3.4" fill="#2540ea"></circle><path d="M5.5 19c0-3.3 3-5 6.5-5s6.5 1.7 6.5 5z" fill="#2540ea"></path></svg><strong id="gpAcctName">lscape82</strong>님<svg class="gp-acct-caret" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg></button>
+          <div class="gp-acct-menu" id="gpAcctMenu" role="menu" hidden>
+            <a href="admin.html" role="menuitem">관리 페이지</a>
+            <a href="mypage.html" role="menuitem">마이 페이지</a>
+            <button type="button" role="menuitem" id="gpAcctLogout">로그아웃</button>
+          </div>
+        </div>
       </div>
     </div></header>
     <main class="ins-wrap">
@@ -189,5 +196,5 @@
       </address>
       <p class="foot-copy">복제 불가 · 저작권자 © 광고플레이(주) (Adplay Korea Co., Ltd.) All Rights Reserved.</p>
     </div></footer>
-  </body>
+  <script src="assets/js/account-menu.js?v=20261108"></script></body>
 </html>

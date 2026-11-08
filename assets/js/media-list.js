@@ -201,7 +201,7 @@ document.addEventListener("DOMContentLoaded", async () => {
           </dl>
           <div class="actions">
             <a class="button" href="media-detail.html?slug=${encodeURIComponent(item.slug)}">상세보기</a>
-            <a class="button secondary" href="estimate.html?media=${encodeURIComponent(item.slug)}">견적 문의</a>
+            <a class="button secondary" href="javascript:void(0)" data-consult="channeltalk">라이브톡 상담</a>
           </div>
         </div>
       </article>`;

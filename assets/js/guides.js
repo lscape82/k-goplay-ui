@@ -62,7 +62,7 @@ function renderGuideDetail(root, guides) {
                 <strong>매체 비교와 견적 요청</strong>
               </div>
               <a class="button" href="media.html">매체 찾기</a>
-              <a class="button secondary" href="estimate.html">견적 문의</a>
+              <a class="button secondary" href="javascript:void(0)" data-consult="channeltalk">라이브톡 상담</a>
             </div>
           </aside>
         </div>

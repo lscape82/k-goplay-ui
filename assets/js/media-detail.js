@@ -138,7 +138,7 @@ document.addEventListener("DOMContentLoaded", async () => {
             ${factRow("송출 조건", playCondition)}
             ${factRow("운영 시간", item.operationHours || "확인 필요")}
             ${factRow("단기 집행", item.shortTermAvailable ? "가능" : "협의 필요")}
-            <a class="button" href="estimate.html?media=${encodeURIComponent(item.slug)}">이 매체 견적 문의</a>
+            <a class="button" href="javascript:void(0)" data-consult="channeltalk">라이브톡 상담</a>
             <a class="button secondary" href="one-pager.html?slug=${encodeURIComponent(item.slug)}">매체 제안서 (PDF)</a>
             <p>${AdPlay.priceNotice()}</p>
           </div>
