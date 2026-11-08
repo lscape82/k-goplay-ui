@@ -80,10 +80,10 @@
         <a class="map-nav-media-link is-guide" href="cases.html">광고집행사례</a>
         <a class="map-nav-media-link is-guide" href="insights.html">광고 인사이트</a>
       </nav>
-      <!-- 우: 계정 (로그인) -->
-      <div class="map-global-actions">
+      <!-- 우: 계정 — 껍데기(로그아웃=기존 Log In 아이콘 그대로 ↔ 로그인=[아이디]님 드롭다운). 동작(인증·세션·로그아웃)은 개발자가 _Layout에 연결 -->
+      <div class="map-global-actions gp-acct" id="gpAcct" data-logged="out">
         <a href="about.html">회사소개</a>
-        <a class="map-login" href="login.html">
+        <a class="map-login gp-acct-out" href="login.html">
           <svg class="map-login-ico" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
             <circle cx="12" cy="12" r="11" fill="none" stroke="#2540ea" stroke-width="1.4"></circle>
             <circle cx="12" cy="9.6" r="3" fill="#2540ea"></circle>
@@ -91,6 +91,18 @@
           </svg>
           <span>Log In</span>
         </a>
+        <div class="gp-acct-in">
+          <button type="button" class="gp-acct-user" id="gpAcctUser" aria-haspopup="true" aria-expanded="false">
+            <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="9" r="3.4" fill="#2540ea"></circle><path d="M5.5 19c0-3.3 3-5 6.5-5s6.5 1.7 6.5 5z" fill="#2540ea"></path></svg>
+            <strong id="gpAcctName">lscape82</strong>님
+            <svg class="gp-acct-caret" viewBox="0 0 24 24" width="14" height="14" aria-hidden="true"><path d="M6 9l6 6 6-6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path></svg>
+          </button>
+          <div class="gp-acct-menu" id="gpAcctMenu" role="menu" hidden>
+            <a href="admin.html" role="menuitem">관리 페이지</a>
+            <a href="mypage.html" role="menuitem">마이 페이지</a>
+            <button type="button" role="menuitem" id="gpAcctLogout">로그아웃</button>
+          </div>
+        </div>
       </div>
     </header>
     <main id="main">
@@ -303,6 +315,45 @@
     <script src="assets/js/media-grade.js?v=grade-20261023k"></script>
     <script src="assets/js/map.js?v=cta-20261027d"></script>
     <script src="assets/js/map-services.js?v=svc-20261023g"></script>
+    <!-- ===== 껍데기 데모: 로그인 후 메뉴 + 채널톡 자리. 동작(채널톡 init·세션)은 개발자가 연결 ===== -->
+    <style>
+      .gp-acct{display:flex;align-items:center;gap:16px}
+      .gp-acct[data-logged="out"] .gp-acct-in{display:none}
+      .gp-acct[data-logged="in"] .gp-acct-out{display:none}
+      .gp-acct-in{position:relative}
+      .gp-acct-user{display:inline-flex;align-items:center;gap:6px;background:none;border:none;cursor:pointer;font-size:13px;color:#161a22;font-family:inherit;padding:4px 2px}
+      .gp-acct-user strong{font-weight:700;margin-left:2px}
+      .gp-acct-caret{color:#8a90a2;transition:transform .15s}
+      .gp-acct-user[aria-expanded="true"] .gp-acct-caret{transform:rotate(180deg)}
+      .gp-acct-menu{position:absolute;top:calc(100% + 8px);right:0;min-width:152px;background:#fff;border:1px solid #e7e8ee;border-radius:12px;box-shadow:0 10px 28px rgba(16,20,34,.12);padding:6px;z-index:60;display:flex;flex-direction:column}
+      .gp-acct-menu[hidden]{display:none}
+      .gp-acct-menu a,.gp-acct-menu button{display:block;text-align:left;padding:10px 12px;font-size:13.5px;color:#1c1c1c;text-decoration:none;background:none;border:none;border-radius:8px;cursor:pointer;font-family:inherit;width:100%}
+      .gp-acct-menu a:hover,.gp-acct-menu button:hover{background:#f4f5f8}
+      .gp-acct-menu #gpAcctLogout{color:#d92b32;border-top:1px solid #f0f2f7;margin-top:2px}
+      /* 채널톡: 우측 도크(약 210px)와 겹치지 않게 그 왼쪽에 배치 */
+      .gp-channeltalk{position:fixed;right:242px;bottom:22px;width:52px;height:52px;border-radius:50%;background:#2540ea;border:none;box-shadow:0 8px 22px rgba(37,64,234,.38);cursor:pointer;display:flex;align-items:center;justify-content:center;z-index:45}
+      .gp-channeltalk svg{color:#fff}
+      .gp-channeltalk:hover{background:#1b32b8}
+      /* 데모 토글: 헤더 밖(좌하단) — 이식 시 제거 */
+      .gp-demo-toggle{position:fixed;left:16px;bottom:16px;z-index:45;font-size:11px;color:#6b7280;background:#fff;border:1px solid #e3e5ec;border-radius:999px;padding:6px 12px;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,.08);font-family:inherit}
+      @media(max-width:1100px){.gp-channeltalk{right:24px;bottom:84px}}
+    </style>
+    <button type="button" class="gp-channeltalk" id="gpChannelTalk" aria-label="채널톡 상담 열기">
+      <svg viewBox="0 0 24 24" width="25" height="25" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 11.5a8.5 8.5 0 0 1-12.3 7.6L3 21l1.9-5.7A8.5 8.5 0 1 1 21 11.5z"></path></svg>
+    </button>
+    <button type="button" class="gp-demo-toggle" id="gpAcctDemo" title="데모: 로그인/로그아웃 상태 미리보기 (이식 시 제거)">로그인 데모 ⟳</button>
+    <script>
+      (function(){
+        var acct=document.getElementById('gpAcct'),demo=document.getElementById('gpAcctDemo');
+        var userBtn=document.getElementById('gpAcctUser'),menu=document.getElementById('gpAcctMenu'),logout=document.getElementById('gpAcctLogout');
+        function closeMenu(){if(menu){menu.hidden=true;userBtn.setAttribute('aria-expanded','false');}}
+        if(demo&&acct){demo.addEventListener('click',function(){acct.setAttribute('data-logged',acct.getAttribute('data-logged')==='in'?'out':'in');closeMenu();});}
+        if(userBtn&&menu){userBtn.addEventListener('click',function(e){e.stopPropagation();var willOpen=menu.hidden;menu.hidden=!willOpen;userBtn.setAttribute('aria-expanded',willOpen?'true':'false');});document.addEventListener('click',closeMenu);}
+        if(logout&&acct){logout.addEventListener('click',function(){acct.setAttribute('data-logged','out');});}
+        var ct=document.getElementById('gpChannelTalk');
+        if(ct){ct.addEventListener('click',function(){alert('채널톡 상담 — 개발자가 채널톡 스크립트(플러그인 키)를 연결하면 실제 상담창이 열립니다. (껍데기 데모)');});}
+      })();
+    </script>
     <script src="assets/js/map-rail-toggle.js?v=rail-20260717b"></script>
     <script src="assets/js/map-category-scroll.js?v=catscroll-20260713e"></script>  <div class="site-copy-mini" style="padding:8px 14px;text-align:center;font-size:11px;color:#94a3b8;background:#f8fafc;border-top:1px solid #eef2f7">복제 불가 · 저작권자 © 광고플레이(주) All Rights Reserved.</div>
 </body>
