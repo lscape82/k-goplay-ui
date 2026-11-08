@@ -42,28 +42,28 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
    흐린 라벤더가 아니라 '확실한 인디고'로 보이게 한다. 숫자는 전 단계 연한 흰색으로 통일. */
 .map-cluster--s {
   width: 30px; height: 30px;
-  background: radial-gradient(circle at 50% 34%, #b3c2e6, #93a8d6 72%);
-  box-shadow: 0 0 0 4px rgba(147, 168, 214, .30), 0 2px 6px rgba(15, 23, 42, .26);
+  background: radial-gradient(circle at 50% 32%, #9aa6f5, #6c7ef1 72%);
+  box-shadow: 0 0 0 4px rgba(108, 126, 241, .24), 0 2px 6px rgba(15, 23, 42, .22);
 }
 .map-cluster--m {
   width: 38px; height: 38px;
-  background: radial-gradient(circle at 50% 34%, #849dd3, #5f80c1 72%);
-  box-shadow: 0 0 0 4px rgba(95, 128, 193, .28), 0 2px 7px rgba(15, 23, 42, .28);
+  background: radial-gradient(circle at 50% 32%, #7183f2, #4d61ee 72%);
+  box-shadow: 0 0 0 4px rgba(77, 97, 238, .24), 0 2px 7px rgba(15, 23, 42, .24);
 }
 .map-cluster--l {
   width: 46px; height: 46px;
-  background: radial-gradient(circle at 50% 34%, #5c7cbf, #3a5faa 72%);
-  box-shadow: 0 0 0 5px rgba(58, 95, 170, .28), 0 2px 8px rgba(15, 23, 42, .3);
+  background: radial-gradient(circle at 50% 32%, #4f63ee, #3147e8 72%);
+  box-shadow: 0 0 0 5px rgba(49, 71, 232, .24), 0 2px 8px rgba(15, 23, 42, .26);
 }
 .map-cluster--xl {
   width: 54px; height: 54px;
-  background: radial-gradient(circle at 50% 34%, #3a63ab, #1c4796 72%);
-  box-shadow: 0 0 0 5px rgba(28, 71, 150, .28), 0 3px 9px rgba(15, 23, 42, .32);
+  background: radial-gradient(circle at 50% 32%, #3650ec, #2540ea 72%);
+  box-shadow: 0 0 0 5px rgba(37, 64, 234, .26), 0 3px 9px rgba(15, 23, 42, .28);
 }
 .map-cluster--xxl {
   width: 62px; height: 62px;
-  background: radial-gradient(circle at 50% 34%, #2a54a2, #2540ea 72%);
-  box-shadow: 0 0 0 6px rgba(11, 58, 145, .30), 0 3px 10px rgba(15, 23, 42, .34);
+  background: radial-gradient(circle at 50% 32%, #2a45e4, #1f34c4 72%);
+  box-shadow: 0 0 0 6px rgba(37, 64, 234, .28), 0 3px 10px rgba(15, 23, 42, .3);
 }
 
 /* 상세페이지 거리뷰 인라인 파노라마 (거리뷰좌표 기반) */
@@ -543,7 +543,7 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
 .map-curation-copy { background: #fff; }
 
 /* 팝업 내부 타이포 정리 — 리스트 항목 글씨 12px로 통일(헤더 16px은 위계상 유지). 버튼도 12px(위 규칙). 실시간 상담/소개서 다운로드 위 분리 선(리스트 border-bottom) 제거 */
-.map-curation-list strong { font-size: 12px; }
+.map-curation-list strong { font-size: 10px; }
 .map-curation-list { border-bottom: 0; }
 
 /* 큐레이션 리스트 항목 — 기본은 흰색. 호버: 배경 틴트(#f8fafc)만. 클릭(선택): 배경 틴트 + 파란 왼쪽 띠. (선택 규칙을 뒤에 둬 선택 항목은 호버해도 띠 유지) */
@@ -995,7 +995,7 @@ body:has(.map-workspace-page) { --map-rail-gutter: 16px; }
   .map-workspace-page .map-curation-panel,
   .map-workspace-page .map-cost-filter-panel,
   .map-workspace-page .map-region-panel { left: calc(var(--gp-list-w) + 18px); }
-  .map-workspace-page .map-curation-panel { z-index: 6; width: min(660px, calc(100% - var(--gp-list-w) - 36px)); }
+  .map-workspace-page .map-curation-panel { z-index: 6; width: min(614px, calc(100% - var(--gp-list-w) - 36px)); }
   .map-workspace-page .map-cost-filter-panel { width: min(350px, calc(100% - var(--gp-list-w) - 36px)); }
   .map-workspace-page .map-region-panel { width: min(420px, calc(100% - var(--gp-list-w) - 36px)); }
 }
@@ -1508,3 +1508,12 @@ p.map-elev-broadcast { margin: 3px 0 0; font-size: 11px; font-weight: 600; color
 .bus-stop-pin.is-pick.is-pick-foc { background: #e53935 !important; }
 /* 핀 툴팁 커서(hover 안내) */
 .bus-stop-pin.is-pick { cursor: pointer; }
+
+/* 주요매체(구 추천큐레이션) 헤더 탭 — 옥외광고전체·회원가입과 동일 네이비(#2540ea) 상시 적용 */
+#mapCurationToggle { color: #2540ea; font-weight: 700; }
+
+/* 왼쪽 검색도구(주요매체·지역검색·예산검색)와 오른쪽 카테고리 그룹을 세로선으로 분리 */
+.map-strip-scroll .map-category-list::before {
+  content: ""; flex: 0 0 auto; align-self: center;
+  width: 1px; height: 15px; margin-right: 2px; background: #d9dee8;
+}

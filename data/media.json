@@ -511,7 +511,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/295/image/1681273865-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5568792,
       "lng": 126.9461584,
@@ -568,7 +568,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/296/image/1681274389-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 35.107068,
       "lng": 129.0360447,
@@ -625,7 +625,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/297/image/1681274871-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 33.486182,
       "lng": 126.4793428,
@@ -946,7 +946,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/302/image/1681964173-0.JPG",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5618942,
       "lng": 126.8068704,
@@ -2478,7 +2478,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/331/image/1684214371-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 33.5130961,
       "lng": 126.5244019,
@@ -2593,7 +2593,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/333/image/1686299623-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 33.5004935,
       "lng": 126.5286414,
@@ -2709,7 +2709,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/335/image/1684213930-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.519561,
       "lng": 127.0183207,
@@ -3856,7 +3856,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/351/image/1685415161-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5614619,
       "lng": 126.9850517,
@@ -3913,7 +3913,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/352/image/1684219498-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5633582,
       "lng": 126.9883334,
@@ -4161,7 +4161,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/356/image/1685430726-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5604851,
       "lng": 126.982476,
@@ -4229,7 +4229,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/357/image/1686300787-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.503472,
       "lng": 127.002147,
@@ -4674,7 +4674,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/363/image/1686298784-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5120936,
       "lng": 127.0616173,
@@ -4810,7 +4810,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/365/image/1740102905-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5693413,
       "lng": 127.0096838,
@@ -5019,7 +5019,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/368/image/1686300084-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.508763,
       "lng": 127.062348,
@@ -5075,7 +5075,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/369/image/1686300162-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.55516,
       "lng": 126.9364554,
@@ -5147,7 +5147,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/370/image/1686300217-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5244101,
       "lng": 126.9283834,
@@ -5337,7 +5337,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/373/image/1686300978-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5611449,
       "lng": 126.9891342,
@@ -5399,7 +5399,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/374/image/1689643510-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5028522,
       "lng": 127.0427735,
@@ -5543,7 +5543,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/376/image/1704961430-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5549545,
       "lng": 126.9720271,
@@ -5600,7 +5600,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/377/image/1689055614-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5345042,
       "lng": 126.994461,
@@ -5671,7 +5671,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/378/image/1686300480-1.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5344511,
       "lng": 126.9936084,
@@ -5743,7 +5743,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/379/image/1686300594-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5343267,
       "lng": 126.9939646,
@@ -5803,7 +5803,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/381/image/1686188809-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 35.1612279,
       "lng": 126.8835958,
@@ -5863,7 +5863,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/382/image/1686189885-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 35.1612514,
       "lng": 126.8828856,
@@ -5928,7 +5928,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/383/image/1686301072-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 35.8781113,
       "lng": 128.6266613,
@@ -5985,7 +5985,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/384/image/1686723505-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 35.876411,
       "lng": 128.6252413,
@@ -6043,7 +6043,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/385/image/1684732534-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 35.862169,
       "lng": 128.5728737,
@@ -6153,7 +6153,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/387/image/1686615299-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 35.8655964,
       "lng": 128.593394,
@@ -6217,7 +6217,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/392/image/1686125270-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.4938311,
       "lng": 126.722975,
@@ -6276,7 +6276,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/394/image/1686288308-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 35.8590055,
       "lng": 128.6258159,
@@ -6336,7 +6336,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/395/image/1686644427-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 35.2078403,
       "lng": 129.0697611,
@@ -6396,7 +6396,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/396/image/1686289855-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 35.1577185,
       "lng": 129.0590553,
@@ -6455,7 +6455,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/397/image/1686625982-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 35.1859242,
       "lng": 129.081654,
@@ -6513,7 +6513,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/398/image/1686290569-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 35.8592367,
       "lng": 128.6255874,
@@ -6570,7 +6570,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/399/image/1686618684-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 35.8194492,
       "lng": 128.539204,
@@ -6627,7 +6627,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/400/image/1686291758-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 35.8502624,
       "lng": 128.5372658,
@@ -6694,7 +6694,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/401/image/1686292426-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 35.0992465,
       "lng": 129.031493,
@@ -6752,7 +6752,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/402/image/1686293586-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 35.0981907,
       "lng": 129.0298047,
@@ -6875,7 +6875,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/404/image/1687754723-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 35.2459392,
       "lng": 129.0934037,
@@ -6935,7 +6935,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/405/image/1686635155-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 36.330057,
       "lng": 127.4296864,
@@ -6993,7 +6993,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/406/image/1686642248-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 36.3516289,
       "lng": 127.4422606,
@@ -7195,7 +7195,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/410/image/1686641425-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.4843484,
       "lng": 126.9306343,
@@ -7255,7 +7255,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/411/image/1709782190-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5701198,
       "lng": 126.9768682,
@@ -7320,7 +7320,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/412/image/1686638818-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5135708,
       "lng": 126.9397384,
@@ -7378,7 +7378,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/413/image/1687746427-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.4843004,
       "lng": 126.9024113,
@@ -7444,7 +7444,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/414/image/1686708585-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5100741,
       "lng": 127.0627161,
@@ -7513,7 +7513,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/415/image/1687510104-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5097805,
       "lng": 127.0619728,
@@ -7573,7 +7573,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/417/image/1686710888-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.552779,
       "lng": 126.9184036,
@@ -7631,7 +7631,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/418/image/1687416472-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.4812616,
       "lng": 126.9528261,
@@ -7745,7 +7745,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/421/image/1686723158-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5654567,
       "lng": 126.978655,
@@ -7805,7 +7805,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/422/image/1719279015-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5701623,
       "lng": 126.9835266,
@@ -7869,7 +7869,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/423/image/1687741849-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5804747,
       "lng": 127.0460884,
@@ -7991,7 +7991,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/425/image/1687408264-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5257801,
       "lng": 127.0546432,
@@ -8052,7 +8052,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/426/image/1687408804-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5702923,
       "lng": 126.9907047,
@@ -8110,7 +8110,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/427/image/1687409429-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 35.244926,
       "lng": 128.5878427,
@@ -8166,7 +8166,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/428/image/1687410597-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 35.5319569,
       "lng": 129.3079525,
@@ -8242,7 +8242,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/429/image/1732519996-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5254581,
       "lng": 126.9243955,
@@ -8387,7 +8387,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/431/image/1687411891-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.4847425,
       "lng": 127.0340733,
@@ -8475,7 +8475,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/432/image/1687510730-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5103906,
       "lng": 127.0598541,
@@ -8534,7 +8534,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/433/image/1688111937-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5181461,
       "lng": 127.0187986,
@@ -8591,7 +8591,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/434/image/1688112365-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5651623,
       "lng": 126.97773,
@@ -8722,7 +8722,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/437/image/1693203670-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/437/image/1693203670-0.jpg",
@@ -8779,7 +8779,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/438/image/1709170110-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5921419,
       "lng": 127.0141753,
@@ -8855,7 +8855,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/439/image/1688371259-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.4967553,
       "lng": 127.0283348,
@@ -8995,7 +8995,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/443/image/1716793576-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 37.5252497,
       "lng": 126.9277638,
@@ -9676,7 +9676,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/458/image/1691658458-2.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": {
       "lat": 36.5042976,
       "lng": 127.2613204,
@@ -9868,7 +9868,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/464/image/1783492654-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/464/image/1783492654-0.jpg",
@@ -9908,7 +9908,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/465/image/1696522235-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/465/image/1696522235-0.jpg",
@@ -9977,7 +9977,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/466/image/1697450150-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/466/image/1697450150-0.jpg",
@@ -10043,7 +10043,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/467/image/1696409952-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/467/image/1696409952-0.jpg",
@@ -10110,7 +10110,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/468/image/1696484583-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/468/image/1696484583-0.jpg",
@@ -10242,7 +10242,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/470/image/1697182792-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/470/image/1697182792-0.jpg",
@@ -10300,7 +10300,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/471/image/1698640109-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/471/image/1698640109-0.jpg",
@@ -10354,7 +10354,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/473/image/1700112200-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/473/image/1700112200-0.jpg",
@@ -10407,7 +10407,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/474/image/1700113683-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/474/image/1700113683-0.jpg",
@@ -10460,7 +10460,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/475/image/1700126200-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/475/image/1700126200-0.jpg",
@@ -10569,7 +10569,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/477/image/1702256816-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/477/image/1702256816-0.jpg",
@@ -10621,7 +10621,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/478/image/1702274424-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/478/image/1702274424-0.jpg",
@@ -10691,7 +10691,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/479/image/1702275668-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/479/image/1702275668-0.jpg",
@@ -10744,7 +10744,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/480/image/1702280655-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/480/image/1702280655-0.jpg",
@@ -10797,7 +10797,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/481/image/1702344754-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/481/image/1702344754-0.jpg",
@@ -10859,7 +10859,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/482/image/1703058433-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/482/image/1703058433-0.jpg",
@@ -10938,7 +10938,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/483/image/1702367765-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/483/image/1702367765-0.jpg",
@@ -11045,7 +11045,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/485/image/1702449631-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/485/image/1702449631-0.jpg",
@@ -11171,7 +11171,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/487/image/1703213917-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/487/image/1703213917-0.jpg",
@@ -11229,7 +11229,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/488/image/1703639196-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/488/image/1703639196-0.jpg",
@@ -11280,7 +11280,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/489/image/1703658075-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/489/image/1703658075-0.jpg",
@@ -11342,7 +11342,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/490/image/1703658556-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/490/image/1703658556-0.jpg",
@@ -11397,7 +11397,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/491/image/1719997064-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/491/image/1719997064-0.jpg",
@@ -11510,7 +11510,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/493/image/1704962868-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/493/image/1704962868-0.jpg",
@@ -11559,7 +11559,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/494/image/1705564160-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/494/image/1705564160-0.jpg",
@@ -11628,7 +11628,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/495/image/1705566799-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/495/image/1705566799-0.jpg",
@@ -11681,7 +11681,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/496/image/1706084083-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/496/image/1706084083-0.jpg",
@@ -11741,7 +11741,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/497/image/1706149058-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/497/image/1706149058-0.jpg",
@@ -11892,7 +11892,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/501/image/1709449613-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/501/image/1709449613-0.jpg",
@@ -12137,7 +12137,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/506/image/1709451387-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/506/image/1709451387-0.jpg",
@@ -12284,7 +12284,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/509/image/1709452019-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/509/image/1709452019-0.jpg",
@@ -12921,7 +12921,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/522/image/1709455542-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/522/image/1709455542-0.jpg",
@@ -13463,7 +13463,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/534/image/1709468278-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/534/image/1709468278-0.jpg",
@@ -13542,7 +13542,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/535/image/1710227105-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/535/image/1710227105-0.jpg",
@@ -14006,7 +14006,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/544/image/1714726862-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/544/image/1714726862-0.jpg",
@@ -14138,7 +14138,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/546/image/1716787820-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/546/image/1716787820-0.jpg",
@@ -14196,7 +14196,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/547/image/1716880530-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/547/image/1716880530-0.jpg",
@@ -14249,7 +14249,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/548/image/1716882290-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/548/image/1716882290-0.jpg",
@@ -14320,7 +14320,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/549/image/1716886422-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/549/image/1716886422-0.jpg",
@@ -14377,7 +14377,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/550/image/1716946470-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/550/image/1716946470-0.jpg",
@@ -14670,7 +14670,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/555/image/1719275737-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/555/image/1719275737-0.jpg",
@@ -14719,7 +14719,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/557/image/1719326671-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/557/image/1719326671-0.jpg",
@@ -14830,7 +14830,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/559/image/1720079030-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/559/image/1720079030-0.jpg",
@@ -14937,7 +14937,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/561/image/1720407321-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/561/image/1720407321-0.jpg",
@@ -15079,7 +15079,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/565/image/1720489918-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/565/image/1720489918-0.jpg",
@@ -15143,7 +15143,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/566/image/1720508889-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/566/image/1720508889-0.jpg",
@@ -15190,7 +15190,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/567/image/1720573860-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/567/image/1720573860-0.jpg",
@@ -15240,7 +15240,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/568/image/1721008590-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/568/image/1721008590-0.jpg",
@@ -15288,7 +15288,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/569/image/1721010464-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/569/image/1721010464-0.jpg",
@@ -15328,7 +15328,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/570/image/1721023964-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/570/image/1721023964-0.jpg",
@@ -15375,7 +15375,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/571/image/1721717860-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/571/image/1721717860-0.jpg",
@@ -15422,7 +15422,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/572/image/1721875170-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/572/image/1721875170-0.jpg",
@@ -15469,7 +15469,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/573/image/1721959369-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/573/image/1721959369-0.jpg",
@@ -15521,7 +15521,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/574/image/1721898316-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/574/image/1721898316-0.jpg",
@@ -15568,7 +15568,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/575/image/1771808764-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/575/image/1771808764-0.jpg",
@@ -15615,7 +15615,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/576/image/1722222548-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/576/image/1722222548-0.jpg",
@@ -15662,7 +15662,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/577/image/1722222948-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/577/image/1722222948-0.jpg",
@@ -15709,7 +15709,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/578/image/1722228534-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/578/image/1722228534-0.jpg",
@@ -15860,7 +15860,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/581/image/1745548359-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/581/image/1745548359-0.jpg",
@@ -16079,7 +16079,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/585/image/1724211415-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/585/image/1724211415-0.jpg",
@@ -16127,7 +16127,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/586/image/1725931788-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/586/image/1725931788-0.jpg",
@@ -16676,7 +16676,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/600/image/1727254642-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/600/image/1727254642-0.jpg",
@@ -16729,7 +16729,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/601/image/1727310356-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/601/image/1727310356-0.jpg",
@@ -16899,7 +16899,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/604/image/1753148070-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/604/image/1753148070-0.jpg",
@@ -17003,7 +17003,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/606/image/1728615109-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/606/image/1728615109-0.jpg",
@@ -17054,7 +17054,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/607/image/1728615203-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/607/image/1728615203-0.jpg",
@@ -17108,7 +17108,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/608/image/1728615305-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/608/image/1728615305-0.jpg",
@@ -17157,7 +17157,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/609/image/1728615566-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/609/image/1728615566-0.jpg",
@@ -17206,7 +17206,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/610/image/1728615699-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/610/image/1728615699-0.jpg",
@@ -17641,7 +17641,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/617/image/1730100651-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/617/image/1730100651-0.jpg",
@@ -17713,7 +17713,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/618/image/1730356921-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/618/image/1730356921-0.jpg",
@@ -17779,7 +17779,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/619/image/1730357781-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/619/image/1730357781-0.jpg",
@@ -18068,7 +18068,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/624/image/1730940654-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/624/image/1730940654-0.jpg",
@@ -18118,7 +18118,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/625/image/1730942767-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/625/image/1730942767-0.jpg",
@@ -18168,7 +18168,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/626/image/1730944176-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/626/image/1730944176-0.jpg",
@@ -18227,7 +18227,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/627/image/1767831224-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/627/image/1767831224-0.jpg",
@@ -18285,7 +18285,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/628/image/1731461469-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/628/image/1731461469-0.jpg",
@@ -18386,7 +18386,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/630/image/1732518276-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/630/image/1732518276-0.jpg",
@@ -18437,7 +18437,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/631/image/1732518712-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/631/image/1732518712-0.jpg",
@@ -18487,7 +18487,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/632/image/1732597340-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/632/image/1732597340-0.jpg",
@@ -18847,7 +18847,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/639/image/1747804834-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/639/image/1747804834-0.jpg",
@@ -18912,7 +18912,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/640/image/1734054402-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/640/image/1734054402-0.jpg",
@@ -19080,7 +19080,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/643/image/1734066385-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/643/image/1734066385-0.jpg",
@@ -19139,7 +19139,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/644/image/1783492762-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/644/image/1783492762-0.jpg",
@@ -19205,7 +19205,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/645/image/1736494503-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/645/image/1736494503-0.jpg",
@@ -19263,7 +19263,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/646/image/1736820558-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/646/image/1736820558-0.jpg",
@@ -19329,7 +19329,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/647/image/1738652056-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/647/image/1738652056-0.jpg",
@@ -19380,7 +19380,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/648/image/1738743849-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/648/image/1738743849-0.jpg",
@@ -19430,7 +19430,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/649/image/1739865956-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/649/image/1739865956-0.jpg",
@@ -19480,7 +19480,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/650/image/1739868963-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/650/image/1739868963-0.jpg",
@@ -19530,7 +19530,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/651/image/1739869753-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/651/image/1739869753-0.jpg",
@@ -19635,7 +19635,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/653/image/1740555976-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/653/image/1740555976-0.jpg",
@@ -19685,7 +19685,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/654/image/1744181888-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/654/image/1744181888-0.jpg",
@@ -19782,7 +19782,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/656/image/1740558456-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/656/image/1740558456-0.jpg",
@@ -19832,7 +19832,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/657/image/1740641362-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/657/image/1740641362-0.jpg",
@@ -19882,7 +19882,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/658/image/1740641880-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/658/image/1740641880-0.jpg",
@@ -19933,7 +19933,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/659/image/1740642260-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/659/image/1740642260-0.jpg",
@@ -19983,7 +19983,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/660/image/1740643262-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/660/image/1740643262-0.jpg",
@@ -20033,7 +20033,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/661/image/1741245277-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/661/image/1741245277-0.jpg",
@@ -20174,7 +20174,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/664/image/1741588071-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/664/image/1741588071-0.jpg",
@@ -20267,7 +20267,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/666/image/1741848292-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/666/image/1741848292-0.jpg",
@@ -20318,7 +20318,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/667/image/1741850466-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/667/image/1741850466-0.jpg",
@@ -20376,7 +20376,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/668/image/1741916105-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/668/image/1741916105-0.jpg",
@@ -20426,7 +20426,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/669/image/1742450896-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/669/image/1742450896-0.jpg",
@@ -20476,7 +20476,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/670/image/1744677967-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/670/image/1744677967-0.jpg",
@@ -20527,7 +20527,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/671/image/1744679126-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/671/image/1744679126-0.jpg",
@@ -20578,7 +20578,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/672/image/1744679448-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/672/image/1744679448-0.jpg",
@@ -20629,7 +20629,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/673/image/1744695412-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/673/image/1744695412-0.jpg",
@@ -20684,7 +20684,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/674/image/1744699220-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/674/image/1744699220-0.jpg",
@@ -20790,7 +20790,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/676/image/1745550198-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/676/image/1745550198-0.jpg",
@@ -20840,7 +20840,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/677/image/1745561526-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/677/image/1745561526-0.jpg",
@@ -20896,7 +20896,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/678/image/1745565889-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/678/image/1745565889-0.jpg",
@@ -20947,7 +20947,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/679/image/1745893391-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/679/image/1745893391-0.jpg",
@@ -21005,7 +21005,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/680/image/1783492728-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/680/image/1783492728-0.jpg",
@@ -21057,7 +21057,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/681/image/1747376380-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/681/image/1747376380-0.jpg",
@@ -21121,7 +21121,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/682/image/1747385147-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/682/image/1747385147-0.jpg",
@@ -21612,7 +21612,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/691/image/1749717103-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/691/image/1749717103-0.jpg",
@@ -21667,7 +21667,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/692/image/1749717223-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/692/image/1749717223-0.jpg",
@@ -21722,7 +21722,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/693/image/1749717361-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/693/image/1749717361-0.jpg",
@@ -21777,7 +21777,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/694/image/1749717497-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/694/image/1749717497-0.jpg",
@@ -21871,7 +21871,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/696/image/1749718705-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/696/image/1749718705-0.jpg",
@@ -21915,7 +21915,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/697/image/1750403638-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/697/image/1750403638-0.jpg",
@@ -21960,7 +21960,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/698/image/1750404774-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/698/image/1750404774-0.jpg",
@@ -22019,7 +22019,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/700/image/1750411909-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/700/image/1750411909-0.jpg",
@@ -22067,7 +22067,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/701/image/1750668097-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/701/image/1750668097-0.jpg",
@@ -22114,7 +22114,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/702/image/1750729427-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/702/image/1750729427-0.jpg",
@@ -22161,7 +22161,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/703/image/1750729656-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/703/image/1750729656-0.jpg",
@@ -22208,7 +22208,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/704/image/1750729867-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/704/image/1750729867-0.jpg",
@@ -22255,7 +22255,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/705/image/1750901718-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/705/image/1750901718-0.jpg",
@@ -22303,7 +22303,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/706/image/1750730180-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/706/image/1750730180-0.jpg",
@@ -22350,7 +22350,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/707/image/1750901758-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/707/image/1750901758-0.jpg",
@@ -22397,7 +22397,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/708/image/1750730495-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/708/image/1750730495-0.jpg",
@@ -22445,7 +22445,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/709/image/1750730629-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/709/image/1750730629-0.jpg",
@@ -22492,7 +22492,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/710/image/1750730752-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/710/image/1750730752-0.jpg",
@@ -22585,7 +22585,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/712/image/1750864738-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/712/image/1750864738-0.jpg",
@@ -22631,7 +22631,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/713/image/1750864959-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/713/image/1750864959-0.jpg",
@@ -22676,7 +22676,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/714/image/1750865182-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/714/image/1750865182-0.jpg",
@@ -22722,7 +22722,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/715/image/1750865779-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/715/image/1750865779-0.jpg",
@@ -22767,7 +22767,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/716/image/1750865950-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/716/image/1750865950-0.jpg",
@@ -22833,7 +22833,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/717/image/1750922881-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/717/image/1750922881-0.jpg",
@@ -22880,7 +22880,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/718/image/1751181013-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/718/image/1751181013-0.jpg",
@@ -22985,7 +22985,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/720/image/1751181515-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/720/image/1751181515-0.jpg",
@@ -23197,7 +23197,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/724/image/1751197558-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/724/image/1751197558-0.jpg",
@@ -23249,7 +23249,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/725/image/1771546892-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/725/image/1771546892-0.jpg",
@@ -23418,7 +23418,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/728/image/1753686718-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/728/image/1753686718-0.jpg",
@@ -23470,7 +23470,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/729/image/1753686848-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/729/image/1753686848-0.jpg",
@@ -23529,7 +23529,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/730/image/1753766139-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/730/image/1753766139-0.jpg",
@@ -23580,7 +23580,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/731/image/1753766696-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/731/image/1753766696-0.jpg",
@@ -23631,7 +23631,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/732/image/1753842479-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/732/image/1753842479-0.jpg",
@@ -23697,7 +23697,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/733/image/1754293265-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/733/image/1754293265-0.jpg",
@@ -23764,7 +23764,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/734/image/1754378871-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/734/image/1754378871-0.jpg",
@@ -23815,7 +23815,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/735/image/1754381789-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/735/image/1754381789-0.jpg",
@@ -23987,7 +23987,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/738/image/1754460821-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/738/image/1754460821-0.jpg",
@@ -24062,7 +24062,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/739/image/1757060780-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/739/image/1757060780-0.jpg",
@@ -24113,7 +24113,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/740/image/1754464797-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/740/image/1754464797-0.jpg",
@@ -24164,7 +24164,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/741/image/1754468989-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/741/image/1754468989-0.jpg",
@@ -24218,7 +24218,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/742/image/1754533889-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/742/image/1754533889-0.jpg",
@@ -24271,7 +24271,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/743/image/1754470639-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/743/image/1754470639-0.jpg",
@@ -24332,7 +24332,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/744/image/1754529420-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/744/image/1754529420-0.jpg",
@@ -24533,7 +24533,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/748/image/1754543140-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/748/image/1754543140-0.jpg",
@@ -24584,7 +24584,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/749/image/1754630921-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/749/image/1754630921-0.jpg",
@@ -24636,7 +24636,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/750/image/1754631400-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/750/image/1754631400-0.jpg",
@@ -24689,7 +24689,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/751/image/1754632975-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/751/image/1754632975-0.jpg",
@@ -24742,7 +24742,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/752/image/1754633384-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/752/image/1754633384-0.jpg",
@@ -24796,7 +24796,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/753/image/1754634419-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/753/image/1754634419-0.jpg",
@@ -24848,7 +24848,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/754/image/1754634860-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/754/image/1754634860-0.jpg",
@@ -24952,7 +24952,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/756/image/1754635836-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/756/image/1754635836-0.jpg",
@@ -25005,7 +25005,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/757/image/1754636578-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/757/image/1754636578-0.jpg",
@@ -25061,7 +25061,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/758/image/1755071912-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/758/image/1755071912-0.jpg",
@@ -25113,7 +25113,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/759/image/1756796834-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/759/image/1756796834-0.jpg",
@@ -25167,7 +25167,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/760/image/1756888428-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/760/image/1756888428-0.jpg",
@@ -25499,7 +25499,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/766/image/1758762018-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/766/image/1758762018-0.jpg",
@@ -25582,7 +25582,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/767/image/1758789286-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/767/image/1758789286-0.jpg",
@@ -25778,7 +25778,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/770/image/1761531384-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/770/image/1761531384-0.jpg",
@@ -25909,7 +25909,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/772/image/1761287369-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/772/image/1761287369-0.jpg",
@@ -25960,7 +25960,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/773/image/1762930027-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/773/image/1762930027-0.jpg",
@@ -26011,7 +26011,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/774/image/1763364899-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/774/image/1763364899-0.jpg",
@@ -26063,7 +26063,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/775/image/1763365228-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/775/image/1763365228-0.jpg",
@@ -26122,7 +26122,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/776/image/1763365695-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/776/image/1763365695-0.jpg",
@@ -26179,7 +26179,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/777/image/1764219282-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/777/image/1764219282-0.jpg",
@@ -26236,7 +26236,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/779/image/1764901809-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/779/image/1764901809-0.jpg",
@@ -26287,7 +26287,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/780/image/1765262694-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/780/image/1765262694-0.jpg",
@@ -26338,7 +26338,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/781/image/1765262922-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/781/image/1765262922-0.jpg",
@@ -26388,7 +26388,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/782/image/1765263274-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/782/image/1765263274-0.jpg",
@@ -26439,7 +26439,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/783/image/1765263473-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/783/image/1765263473-0.jpg",
@@ -26515,7 +26515,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/784/image/1766726754-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/784/image/1766726754-0.jpg",
@@ -26591,7 +26591,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/785/image/1766726948-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/785/image/1766726948-0.jpg",
@@ -26663,7 +26663,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/786/image/1773642748-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/786/image/1773642748-0.jpg",
@@ -26711,7 +26711,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/787/image/1767684538-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/787/image/1767684538-0.jpg",
@@ -26759,7 +26759,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/788/image/1767684683-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/788/image/1767684683-0.jpg",
@@ -26807,7 +26807,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/789/image/1767685622-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/789/image/1767685622-0.jpg",
@@ -26855,7 +26855,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/790/image/1767685706-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/790/image/1767685706-0.jpg",
@@ -26903,7 +26903,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/791/image/1767685783-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/791/image/1767685783-0.jpg",
@@ -26951,7 +26951,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/792/image/1767685861-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/792/image/1767685861-0.jpg",
@@ -26999,7 +26999,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/793/image/1767685942-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/793/image/1767685942-0.jpg",
@@ -27047,7 +27047,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/794/image/1767686018-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/794/image/1767686018-0.jpg",
@@ -27098,7 +27098,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/795/image/1767687489-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/795/image/1767687489-0.jpg",
@@ -27145,7 +27145,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/796/image/1767688729-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/796/image/1767688729-0.jpg",
@@ -27246,7 +27246,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/798/image/1768294770-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/798/image/1768294770-0.jpg",
@@ -27299,7 +27299,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/799/image/1768294874-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/799/image/1768294874-0.jpg",
@@ -27357,7 +27357,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/800/image/1768372622-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/800/image/1768372622-0.jpg",
@@ -27700,7 +27700,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/805/image/1770886920-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/805/image/1770886920-0.jpg",
@@ -28844,7 +28844,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/829/image/1771900480-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/829/image/1771900480-0.jpg",
@@ -28902,7 +28902,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": true,
     "imageUrl": "https://www.k-goplay.com/Assets/public/830/image/1772775295-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/830/image/1772775295-0.jpg",
@@ -28961,7 +28961,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/831/image/1773726864-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/831/image/1773726864-0.jpg",
@@ -29012,7 +29012,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/832/image/1773728095-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/832/image/1773728095-0.jpg",
@@ -29063,7 +29063,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/833/image/1773728859-0.jpg",
-    "videoUrl": "video/231.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/833/image/1773728859-0.jpg",
@@ -29110,7 +29110,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/834/image/1773730538-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/834/image/1773730538-0.jpg",
@@ -29161,7 +29161,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/835/image/1778744110-0.jpg",
-    "videoUrl": "video/303.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/835/image/1778744110-0.jpg",
@@ -29263,7 +29263,7 @@
     "taxNote": "VAT 별도",
     "shortTermAvailable": false,
     "imageUrl": "https://www.k-goplay.com/Assets/public/837/image/1779414522-0.jpg",
-    "videoUrl": "assets/videos/large-billboard-260513.mp4",
+    "videoUrl": "",
     "streetView": null,
     "images": [
       "https://www.k-goplay.com/Assets/public/837/image/1779414522-0.jpg",

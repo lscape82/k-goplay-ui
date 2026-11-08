@@ -512,7 +512,8 @@
     if (favCta) {
       const label = favCta.querySelector("span");
       if (included.length) {
-        favCta.setAttribute("href", `estimate.html?intent=bundle&media=${included.map((fav) => encodeURIComponent(fav.favId)).join(",")}`);
+        favCta.setAttribute("href", "javascript:void(0)");
+        favCta.setAttribute("data-consult", "channeltalk");
         favCta.removeAttribute("aria-disabled");
         if (label) label.textContent = `${included.length}개 매체로 상담신청`;
       } else {
@@ -1853,7 +1854,7 @@
         `<button type="button" class="map-fav-download" data-plan-excel>${svgDL}다운로드(Excel)</button>` +
         `<button type="button" class="map-fav-download" data-plan-pdf>${svgPDF}제안서(PDF)</button>` +
         `<button type="button" class="map-fav-download" data-plan-maplink>${svgShare}지도링크 복사</button>` +
-        `<a class="map-fav-cta" href="estimate.html?intent=bundle&media=${items.map((f) => encodeURIComponent(f.favId)).join(",")}"><span>${items.length}개 매체로 상담신청</span></a>` +
+        `<a class="map-fav-cta" href="javascript:void(0)" data-consult="channeltalk"><span>${items.length}개 매체로 상담신청</span></a>` +
         `</div>`;
       const q = (s) => footEl.querySelector(s);
       if (q("[data-plan-excel]")) q("[data-plan-excel]").addEventListener("click", () => downloadPlanExcel());
@@ -3508,8 +3509,8 @@
           ${nearby.brands && nearby.brands.length ? `<p class="map-nearby-label map-nearby-label--brands">상권 대표 브랜드</p>
           <div class="map-nearby-brands">${nearby.brands.map((brand) => `<span>${AdPlay.esc(brand)}</span>`).join("")}</div>` : ""}
         </section>
-        <a class="map-detail-live-card" href="estimate.html?intent=live-talk&media=${encodeURIComponent(item.slug)}">
-          <strong>예산 맞춤 상담</strong>
+        <a class="map-detail-live-card" href="javascript:void(0)" data-consult="channeltalk">
+          <strong>라이브톡 상담</strong>
           <span>예산·기간 맞춤, 단기 집행 상담 — 1533-1975 또는 라이브 톡 상담</span>
         </a>
         <section class="map-detail-section" id="detailGallery">
@@ -3544,8 +3545,8 @@
         </section>
         <section class="map-detail-section" id="detailConsult">
           <details class="map-consult-accordion">
-            <summary>온라인 상담</summary>
-          <form class="map-consult-form" action="estimate.html" method="get">
+            <summary>이메일 상담</summary>
+          <form class="map-consult-form" data-consult="email" method="get" onsubmit="return false">
             <input type="hidden" name="media" value="${AdPlay.esc(item.slug)}">
             <p class="map-consult-required">* 필수 정보를 입력해 주세요</p>
             <label>

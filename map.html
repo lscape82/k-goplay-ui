@@ -17,8 +17,8 @@
     <meta property="og:url" content="https://lscape82.github.io/k-goplay-ui/map.html">
     <meta property="og:image" content="https://lscape82.github.io/k-goplay-ui/assets/images/k-goplay-logo-new.png">
     <meta name="twitter:card" content="summary">
-    <link rel="stylesheet" href="assets/css/styles.css?v=aiplanner-20261022b">
-    <link rel="stylesheet" href="assets/css/map-services.css?v=grade-20261023k">
+    <link rel="stylesheet" href="assets/css/styles.css?v=20261108">
+    <link rel="stylesheet" href="assets/css/map-services.css?v=20261108">
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -89,7 +89,7 @@
             <circle cx="12" cy="9.6" r="3" fill="#2540ea"></circle>
             <path d="M6.2 18.4c0-3 2.8-4.6 5.8-4.6s5.8 1.6 5.8 4.6z" fill="#2540ea"></path>
           </svg>
-          <span>Log In</span>
+          <span>로그인</span>
         </a>
         <a class="gp-out" href="join.html">회원가입</a>
         <div class="gp-acct-in gp-in">
@@ -119,7 +119,7 @@
           </form>
           <div class="map-strip-scroll">
             <nav class="map-global-nav" aria-label="지도 검색 도구">
-              <button type="button" class="is-active" id="mapCurationToggle" aria-expanded="true" aria-controls="mapCurationPanel">추천큐레이션</button>
+              <button type="button" class="is-active" id="mapCurationToggle" aria-expanded="true" aria-controls="mapCurationPanel">주요매체</button>
               <button type="button" class="map-filter-entry map-header-filter" id="mapRegionToggle" aria-expanded="false" aria-controls="mapRegionPanel">지역검색</button>
               <button type="button" class="map-filter-entry map-header-filter" id="mapCostFilterToggle" aria-expanded="false" aria-controls="mapCostFilterPanel">예산검색</button>
             </nav>
@@ -211,14 +211,11 @@
               <div class="map-curation-copy">
                 <div class="map-curation-title-row">
                   <div>
-                    <h2>NEW · 새소식 &amp; 프로모션</h2>
+                    <h2>주요매체 &amp; NEW</h2>
                   </div>
                   <button type="button" class="map-curation-close" id="mapCurationClose" aria-label="소식 패널 닫기">×</button>
                 </div>
                 <div class="map-curation-list" id="mapCurationList" aria-label="시즌·프로모션·신규매체·OOH 새소식"></div>
-                <div class="map-curation-quick-actions">
-                  <a class="map-curation-live" id="mapCurationLive" href="estimate.html?intent=live-talk">예산 맞춤 상담</a>
-                </div>
               </div>
               <div class="map-curation-media">
                 <figure class="map-curation-visual">
@@ -254,15 +251,15 @@
             </div>
             <div class="map-contact-card" aria-label="상담 채널">
               <a href="tel:1533-1975"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M5 4h3l2 5-2.5 1.5a11 11 0 0 0 5 5L14 13l5 2v3a2 2 0 0 1-2 2A16 16 0 0 1 3 6a2 2 0 0 1 2-2z"/></svg>1533-1975</a>
-              <a href="estimate.html"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 20h4L18.5 9.5l-4-4L4 16v4z"/><path d="M13.5 6l4 4"/></svg>온라인 상담<span class="map-contact-en">Contact</span></a>
+              <a href="javascript:void(0)" data-consult="email"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 20h4L18.5 9.5l-4-4L4 16v4z"/><path d="M13.5 6l4 4"/></svg>이메일 상담<span class="map-contact-en">Contact</span></a>
               <a href="#" id="mapKakaoConsult"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 4C7 4 3 7.2 3 11.2c0 2.5 1.6 4.7 4 6-.2.8-.7 2.3-.8 2.6 0 .2.1.4.4.3.3-.2 2.6-1.7 3.4-2.3.6.1 1.3.2 2 .2 5 0 9-3.2 9-7.1S17 4 12 4z"/></svg>카톡상담</a>
-              <a class="primary" href="estimate.html">예산 맞춤 상담</a>
+              <a class="primary" href="javascript:void(0)" data-consult="channeltalk">라이브톡 상담</a>
             </div>
             <button type="button" class="map-mobile-list-toggle" id="mapMobileListToggle" aria-expanded="false" aria-controls="mapListView">
               <svg class="map-mobile-list-toggle-icon" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 6h16M4 12h16M4 18h16"/></svg>
               <span class="map-mobile-list-toggle-label" id="mapMobileListToggleLabel">목록 보기</span>
             </button>
-            <a class="map-consult-fab" id="mapConsultFab" href="estimate.html?intent=live-talk" aria-label="실시간 상담">
+            <a class="map-consult-fab" id="mapConsultFab" href="javascript:void(0)" data-consult="channeltalk" aria-label="실시간 상담">
               <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 4h16a1 1 0 0 1 1 1v10a1 1 0 0 1-1 1H9.5L5 20.5V16H4a1 1 0 0 1-1-1V5a1 1 0 0 1 1-1z"/></svg>
               <span class="map-consult-fab-label">상담</span>
             </a>
@@ -294,7 +291,7 @@
                   <button type="button" class="map-fav-download" id="mapFavDownload"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 3v12m0 0l-4-4m4 4l4-4M5 21h14"/></svg>다운로드(Excel)</button>
                   <button type="button" class="map-fav-download" id="mapFavPdf"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M14 3H7a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V8z"/><path d="M14 3v5h5M9 13h6M9 17h4"/></svg>제안서(PDF)</button>
                   <button type="button" class="map-fav-download" id="mapFavShare"><svg viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 12v7a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-7"/><path d="M16 6l-4-4-4 4M12 2v13"/></svg>지도링크 복사</button>
-                  <a class="map-fav-cta" id="mapFavCta" href="estimate.html"><span>선택 매체로 상담신청</span></a>
+                  <a class="map-fav-cta" id="mapFavCta" href="javascript:void(0)" data-consult="channeltalk"><span>선택 매체로 상담신청</span></a>
                 </div>
                 <span class="map-fav-resize nw" data-resize="nw" aria-hidden="true"></span>
                 <span class="map-fav-resize n" data-resize="n" aria-hidden="true"></span>
@@ -312,10 +309,10 @@
     </main>
     <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1ouo31myef&submodules=geocoder,panorama"></script>
     <script src="assets/js/marker-clustering.js?v=real-data-20260705c"></script>
-    <script src="assets/js/common.js?v=shared-audience-20260718c"></script>
+    <script src="assets/js/common.js?v=20261108"></script>
     <script src="assets/js/media-grade.js?v=grade-20261023k"></script>
-    <script src="assets/js/map.js?v=cta-20261027d"></script>
-    <script src="assets/js/map-services.js?v=svc-20261023g"></script>
+    <script src="assets/js/map.js?v=20261108"></script>
+    <script src="assets/js/map-services.js?v=20261108"></script>
     <!-- ===== 껍데기 데모: 로그인 후 메뉴 + 채널톡 자리. 동작(채널톡 init·세션)은 개발자가 연결 ===== -->
     <style>
       .gp-acct[data-logged="in"] .gp-out{display:none}

@@ -43,7 +43,7 @@
     { key: "regiondata", icon: ICONS.regiondata, label: "지역별 매체 제안서 받기", sub: "지역을 고르면 핵심 매체·데이터를 제안서로" },
     { key: "compare",  icon: ICONS.compare,  label: "관심 매체 담기", sub: "담은 매체 비교 · 제안서(PDF)·엑셀 받기" },
     { key: "creative", icon: ICONS.creative, label: "소재 제작 의뢰", sub: "의뢰서 작성하면 제작 견적 발송", href: "creative-request.html" },
-    { key: "onlinemix", icon: ICONS.onlinemix, label: "온·오프라인 믹스 문의", sub: "OOH + 앱·리워드 디지털 믹스", href: "online-mix.html" }
+    { key: "onlinemix", icon: ICONS.onlinemix, label: "온·오프라인 믹스", sub: "OOH + 앱·리워드 디지털 믹스", href: "online-mix.html" }
   ];
 
   // (제거됨 2026-10-24) planner·compare 데모 모달(FEAT)은 화면에 쓰이지 않는 죽은 코드였고,
@@ -58,7 +58,7 @@
     // ---- dock ----
     var dock = document.createElement("div");
     dock.className = "gps-dock";
-    var html = '<div class="gps-dock-h">원하는 방식으로 제안 받기</div>';
+    var html = '';
     SERVICES.forEach(function (s) {
       // 관심매체 비교 배지는 실제 관심 개수와 동기화(data-fav-count), 0이면 숨김
       var badge = s.key === "compare"
