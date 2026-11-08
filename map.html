@@ -83,14 +83,10 @@
       <!-- 우: 계정 — 껍데기(로그아웃=기존 Log In 아이콘 그대로 ↔ 로그인=[아이디]님 드롭다운). 동작(인증·세션·로그아웃)은 개발자가 _Layout에 연결 -->
       <div class="map-global-actions gp-acct" id="gpAcct" data-logged="out">
         <a href="about.html">회사소개</a>
-        <a class="map-login gp-acct-out" href="login.html">
-          <svg class="map-login-ico" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
-            <circle cx="12" cy="12" r="11" fill="none" stroke="#2540ea" stroke-width="1.4"></circle>
-            <circle cx="12" cy="9.6" r="3" fill="#2540ea"></circle>
-            <path d="M6.2 18.4c0-3 2.8-4.6 5.8-4.6s5.8 1.6 5.8 4.6z" fill="#2540ea"></path>
-          </svg>
-          <span>Log In</span>
-        </a>
+        <span class="gp-acct-out">
+          <a class="gp-acct-link" href="login.html">로그인</a>
+          <a class="gp-acct-link gp-acct-join" href="join.html">회원가입</a>
+        </span>
         <div class="gp-acct-in">
           <button type="button" class="gp-acct-user" id="gpAcctUser" aria-haspopup="true" aria-expanded="false">
             <svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><circle cx="12" cy="9" r="3.4" fill="#2540ea"></circle><path d="M5.5 19c0-3.3 3-5 6.5-5s6.5 1.7 6.5 5z" fill="#2540ea"></path></svg>
@@ -320,6 +316,10 @@
       .gp-acct{display:flex;align-items:center;gap:16px}
       .gp-acct[data-logged="out"] .gp-acct-in{display:none}
       .gp-acct[data-logged="in"] .gp-acct-out{display:none}
+      .gp-acct-out{display:flex;align-items:center;gap:12px}
+      .gp-acct-link{font-size:13px;font-weight:600;color:#2540ea;text-decoration:none;white-space:nowrap}
+      .gp-acct-join{padding:5px 12px;border:1px solid #d6ddf3;border-radius:999px}
+      .gp-acct-join:hover{border-color:#2540ea}
       .gp-acct-in{position:relative}
       .gp-acct-user{display:inline-flex;align-items:center;gap:6px;background:none;border:none;cursor:pointer;font-size:13px;color:#161a22;font-family:inherit;padding:4px 2px}
       .gp-acct-user strong{font-weight:700;margin-left:2px}
