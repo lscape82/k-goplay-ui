@@ -42,28 +42,28 @@ html.map-only-mode .map-elev-detail-link { display: none !important; }
    흐린 라벤더가 아니라 '확실한 인디고'로 보이게 한다. 숫자는 전 단계 연한 흰색으로 통일. */
 .map-cluster--s {
   width: 30px; height: 30px;
-  background: radial-gradient(circle at 50% 32%, #9aa6f5, #6c7ef1 72%);
-  box-shadow: 0 0 0 4px rgba(108, 126, 241, .24), 0 2px 6px rgba(15, 23, 42, .22);
+  background: radial-gradient(circle at 50% 34%, #b3c2e6, #93a8d6 72%);
+  box-shadow: 0 0 0 4px rgba(147, 168, 214, .30), 0 2px 6px rgba(15, 23, 42, .26);
 }
 .map-cluster--m {
   width: 38px; height: 38px;
-  background: radial-gradient(circle at 50% 32%, #7183f2, #4d61ee 72%);
-  box-shadow: 0 0 0 4px rgba(77, 97, 238, .24), 0 2px 7px rgba(15, 23, 42, .24);
+  background: radial-gradient(circle at 50% 34%, #849dd3, #5f80c1 72%);
+  box-shadow: 0 0 0 4px rgba(95, 128, 193, .28), 0 2px 7px rgba(15, 23, 42, .28);
 }
 .map-cluster--l {
   width: 46px; height: 46px;
-  background: radial-gradient(circle at 50% 32%, #4f63ee, #3147e8 72%);
-  box-shadow: 0 0 0 5px rgba(49, 71, 232, .24), 0 2px 8px rgba(15, 23, 42, .26);
+  background: radial-gradient(circle at 50% 34%, #5c7cbf, #3a5faa 72%);
+  box-shadow: 0 0 0 5px rgba(58, 95, 170, .28), 0 2px 8px rgba(15, 23, 42, .3);
 }
 .map-cluster--xl {
   width: 54px; height: 54px;
-  background: radial-gradient(circle at 50% 32%, #3650ec, #2540ea 72%);
-  box-shadow: 0 0 0 5px rgba(37, 64, 234, .26), 0 3px 9px rgba(15, 23, 42, .28);
+  background: radial-gradient(circle at 50% 34%, #3a63ab, #1c4796 72%);
+  box-shadow: 0 0 0 5px rgba(28, 71, 150, .28), 0 3px 9px rgba(15, 23, 42, .32);
 }
 .map-cluster--xxl {
   width: 62px; height: 62px;
-  background: radial-gradient(circle at 50% 32%, #2a45e4, #1f34c4 72%);
-  box-shadow: 0 0 0 6px rgba(37, 64, 234, .28), 0 3px 10px rgba(15, 23, 42, .3);
+  background: radial-gradient(circle at 50% 34%, #2a54a2, #2540ea 72%);
+  box-shadow: 0 0 0 6px rgba(11, 58, 145, .30), 0 3px 10px rgba(15, 23, 42, .34);
 }
 
 /* 상세페이지 거리뷰 인라인 파노라마 (거리뷰좌표 기반) */
