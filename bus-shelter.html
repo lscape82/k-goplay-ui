@@ -286,9 +286,6 @@
         if (s.face) facts.push("광고면 " + s.face);
         if (s.target) facts.push(s.target);
         var priceLine = s.price ? "월 광고료 " + won(s.price) + "원" : "";
-        var evbadge = s.feasible
-          ? '<span class="evbadge ok">✓ 행사기간(12/17~20) 집행 가능</span>'
-          : '<span class="evbadge no">✕ 행사기간 집행 불가</span>';
         return '<div class="iw"><button type="button" class="iwx" aria-label="닫기" onclick="window.__closeIw()">✕</button><h3>' + esc(s.name) + '</h3>' +
           '<div class="tags"><span class="brand ' + s.category + '">' + CLABEL[s.category] + '</span>' +
           (s.direction ? '<span class="rtag">' + esc(s.direction) + '</span>' : '') +
@@ -297,7 +294,6 @@
           (facts.length ? '<div class="facts">' + esc(facts.join(" · ")) + '</div>' : '') +
           (priceLine ? '<div class="price">' + esc(priceLine) + '</div>' : '') +
           '<div class="avail"><span class="k">광고 시작 가능일</span><br>' + esc(availLine(s)) + '</div>' +
-          evbadge +
           '<a class="iwrv" href="https://map.kakao.com/link/roadview/' + s.lat + ',' + s.lng + '" target="_blank" rel="noopener">🛣 거리뷰로 현장 보기</a>' +
           '<button type="button" class="iwsel' + (on ? " on" : "") + '" onclick="window.__toggleSel(' + r.idx + ')">' + (on ? "✓ 선택됨 (해제)" : "+ 이 지점 선택") + '</button></div>';
       }
