@@ -36,11 +36,11 @@
      "avail": "2026-12-01"
     }
    ],
-   "lat": 37.5723209,
-   "lng": 126.9774163,
-   "stopName": "광화문역2번출구.KT광화문지사",
-   "stopArs": "01118",
-   "snapDist": 125,
+   "lat": 37.5700448,
+   "lng": 126.9764072,
+   "stopName": "광화문역6번출구",
+   "stopArs": "01120",
+   "snapDist": 0,
    "feasible": true
   },
   {
@@ -68,7 +68,7 @@
    "lng": 126.975837,
    "stopName": "광화문역7번출구",
    "stopArs": "01125",
-   "snapDist": 34,
+   "snapDist": 0,
    "feasible": true
   },
   {
@@ -92,11 +92,11 @@
      "avail": "즉시 가능"
     }
    ],
-   "lat": 37.5694963,
-   "lng": 126.9977438,
-   "stopName": "광장시장",
-   "stopArs": "01247",
-   "snapDist": 49,
+   "lat": 37.5694513,
+   "lng": 126.9997974,
+   "stopName": "청계5가.광장시장",
+   "stopArs": "01177",
+   "snapDist": 0,
    "feasible": true
   },
   {
@@ -120,11 +120,11 @@
      "avail": "2026-11-24"
     }
    ],
-   "lat": 37.5673961,
-   "lng": 126.9773391,
-   "stopName": "시청역1호선.서울시청",
-   "stopArs": "02507",
-   "snapDist": 33,
+   "lat": 37.5683633,
+   "lng": 126.9773647,
+   "stopName": "서울신문사",
+   "stopArs": "02137",
+   "snapDist": 0,
    "feasible": true
   },
   {
@@ -152,7 +152,7 @@
    "lng": 126.9929651,
    "stopName": "청계3가.관수교",
    "stopArs": "02240",
-   "snapDist": 27,
+   "snapDist": 0,
    "feasible": true
   },
   {
@@ -184,7 +184,7 @@
    "lng": 126.980129,
    "stopName": "종로1가",
    "stopArs": "01763",
-   "snapDist": 27,
+   "snapDist": 0,
    "feasible": true
   },
   {
@@ -216,7 +216,7 @@
    "lng": 126.9828944,
    "stopName": "종각역",
    "stopArs": "01912",
-   "snapDist": 71,
+   "snapDist": 0,
    "feasible": true
   },
   {
@@ -244,11 +244,11 @@
    ],
    "avail": "즉시 가능",
    "availkey": 20261110,
-   "lat": 37.5698055,
-   "lng": 126.9877523,
-   "stopName": "종로2가사거리",
-   "stopArs": "01001",
-   "snapDist": 38,
+   "lat": 37.5703976,
+   "lng": 126.9850893,
+   "stopName": "종각역.YMCA",
+   "stopArs": "01683",
+   "snapDist": 0,
    "feasible": true
   },
   {
@@ -276,11 +276,11 @@
    ],
    "avail": "즉시 가능",
    "availkey": 20261110,
-   "lat": 37.5710876,
-   "lng": 126.9920932,
-   "stopName": "종로3가역9번출구",
-   "stopArs": "01550",
-   "snapDist": 80,
+   "lat": 37.5701155,
+   "lng": 126.9888006,
+   "stopName": "인사동.탑골공원",
+   "stopArs": "01913",
+   "snapDist": 0,
    "feasible": true
   },
   {
@@ -312,7 +312,7 @@
    "lng": 126.9932082,
    "stopName": "종로3가역11번출구",
    "stopArs": "01767",
-   "snapDist": 22,
+   "snapDist": 0,
    "feasible": true
   },
   {
@@ -340,11 +340,11 @@
    ],
    "avail": "즉시 가능",
    "availkey": 20261110,
-   "lat": 37.570635,
-   "lng": 126.9953957,
-   "stopName": "종로4가.종묘",
-   "stopArs": "01018",
-   "snapDist": 33,
+   "lat": 37.5703736,
+   "lng": 126.9934997,
+   "stopName": "종묘.세운상가",
+   "stopArs": "01914",
+   "snapDist": 0,
    "feasible": true
   },
   {
@@ -404,11 +404,11 @@
    ],
    "avail": "2026-12-01",
    "availkey": 20261201,
-   "lat": 37.568799,
-   "lng": 126.9769068,
-   "stopName": "광화문",
-   "stopArs": "02661",
-   "snapDist": 25,
+   "lat": 37.569011,
+   "lng": 126.978207,
+   "stopName": "청계광장",
+   "stopArs": "02247",
+   "snapDist": 0,
    "feasible": true
   },
   {
@@ -436,11 +436,11 @@
    ],
    "avail": "즉시 가능",
    "availkey": 20261110,
-   "lat": 37.5683633,
+   "lat": 37.5682993,
    "lng": 126.9773647,
-   "stopName": "서울신문사",
-   "stopArs": "02137",
-   "snapDist": 80,
+   "stopName": "시청.서울신문사",
+   "stopArs": "02706",
+   "snapDist": 0,
    "feasible": true
   },
   {
@@ -464,11 +464,11 @@
    ],
    "avail": "2026-12-02",
    "availkey": 20261202,
-   "lat": 37.576414,
-   "lng": 126.9848871,
-   "stopName": "안국역.서울공예박물관",
-   "stopArs": "01295",
-   "snapDist": 11,
+   "lat": 37.5766138,
+   "lng": 126.9852296,
+   "stopName": "안국역",
+   "stopArs": "01779",
+   "snapDist": 0,
    "feasible": true
   },
   {
@@ -492,11 +492,11 @@
    ],
    "avail": "2026-12-13",
    "availkey": 20261213,
-   "lat": 37.5775406,
-   "lng": 126.9885394,
-   "stopName": "창덕궁.우리소리박물관",
-   "stopArs": "01172",
-   "snapDist": 28,
+   "lat": 37.5775204,
+   "lng": 126.9889001,
+   "stopName": "창덕궁",
+   "stopArs": "01781",
+   "snapDist": 0,
    "feasible": true
   }
  ]
