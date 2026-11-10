@@ -62,7 +62,8 @@
     .evpin.sel { box-shadow: 0 0 0 3px #ffd60a, 0 2px 7px rgba(15,23,42,.5); }
     .evpin i { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(45deg); font-style: normal; font-weight: 800; font-size: 13px; line-height: 1; color: #fff; }
     /* 주변 버스정류장 참조 점 */
-    .busstop { width: 9px; height: 9px; border-radius: 50%; background: #7f93a8; border: 1.5px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.12); opacity: .85; }
+    .busstop { width: 17px; height: 17px; display: flex; align-items: center; justify-content: center; }
+    .busstop svg { width: 16px; height: 16px; display: block; filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff) drop-shadow(0 0 2px #fff); }
 
     /* 팝업 */
     .iw { font-family: inherit; padding: 13px 15px; min-width: 220px; max-width: 300px; background: #fff; border: 1px solid #e5e9f0; border-radius: 12px; box-shadow: 0 8px 26px rgba(15,23,42,.25); }
@@ -135,7 +136,7 @@
           <button type="button" class="row" id="btnAir" data-c="airport" aria-pressed="true"><span class="dot airport">공</span>공항쉘터 <span id="lf"></span><span class="chk"></span></button>
           <button type="button" class="row" id="btnNor" data-c="normal" aria-pressed="true"><span class="dot normal">일</span>일반쉘터 <span id="lt"></span><span class="chk"></span></button>
           <button type="button" class="row" id="btnFeas" aria-pressed="false" style="margin-top:4px"><span class="dot" style="background:#9aa3b0">✕</span>행사기간 불가 숨기기 <span class="chk"></span></button>
-          <button type="button" class="row" id="btnStops" aria-pressed="true"><span class="dot" style="background:#7f93a8;box-shadow:none"></span>주변 버스정류장 <span id="lstop"></span><span class="chk"></span></button>
+          <button type="button" class="row" id="btnStops" aria-pressed="true"><span class="dot" style="background:none;box-shadow:none;display:inline-flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="17" height="17" fill="#5b6b82" xmlns="http://www.w3.org/2000/svg"><path d="M5 4.3C6.6 3.7 9 3.4 12 3.4s5.4.3 7 .9c1.3.5 2 1.4 2 2.7v8.8c0 .8-.4 1.5-1 1.9V19a1.2 1.2 0 0 1-2.4 0v-.9H6.4V19A1.2 1.2 0 0 1 4 19v-1.3c-.6-.4-1-1.1-1-1.9V7c0-1.3.7-2.2 2-2.7Zm.6 3.4v4.2h5.1V7.2H6.7c-.7 0-1.1.2-1.1.5Zm7.1-.5v4.7h5.1V7.7c0-.3-.4-.5-1.1-.5h-4ZM7.3 15.6a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Zm9.4 0a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Z"/></svg></span>주변 버스정류장 <span id="lstop"></span><span class="chk"></span></button>
           <div class="grayrow"><span class="dot">✕</span>회색 = 행사기간(12/17~20) 집행 불가</div>
           <div class="tot" id="ltot"></div>
           <button type="button" class="listtoggle" id="listtoggle">📋 지점 리스트 선택하기</button>
@@ -210,13 +211,14 @@
       var iw = new naver.maps.InfoWindow({ borderWidth: 0, backgroundColor: "transparent", disableAnchor: false, pixelOffset: new naver.maps.Point(0, -6) });
       var PIN_ANCHOR = new naver.maps.Point(10, 20);
 
-      // 주변 버스정류장(참조) 점 — 쉘터보다 아래(zIndex 낮게)
-      var STOP_ANCHOR = new naver.maps.Point(6, 6);
+      // 주변 버스정류장(참조) — 버스 모양 아이콘, 쉘터보다 아래(zIndex 낮게)
+      var STOP_ANCHOR = new naver.maps.Point(8, 8);
+      var BUS_SVG = '<svg viewBox="0 0 24 24" fill="#5b6b82" xmlns="http://www.w3.org/2000/svg"><path d="M5 4.3C6.6 3.7 9 3.4 12 3.4s5.4.3 7 .9c1.3.5 2 1.4 2 2.7v8.8c0 .8-.4 1.5-1 1.9V19a1.2 1.2 0 0 1-2.4 0v-.9H6.4V19A1.2 1.2 0 0 1 4 19v-1.3c-.6-.4-1-1.1-1-1.9V7c0-1.3.7-2.2 2-2.7Zm.6 3.4v4.2h5.1V7.2H6.7c-.7 0-1.1.2-1.1.5Zm7.1-.5v4.7h5.1V7.7c0-.3-.4-.5-1.1-.5h-4ZM7.3 15.6a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Zm9.4 0a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Z"/></svg>';
       var stopMarkers = [];
       stopData.forEach(function (st) {
         var m = new naver.maps.Marker({
           map: map, position: new naver.maps.LatLng(st.lat, st.lng),
-          icon: { content: '<div class="busstop" title="' + esc(st.name) + '"></div>', anchor: STOP_ANCHOR },
+          icon: { content: '<div class="busstop" title="' + esc(st.name) + '">' + BUS_SVG + '</div>', anchor: STOP_ANCHOR },
           zIndex: 5, clickable: false
         });
         stopMarkers.push(m);
