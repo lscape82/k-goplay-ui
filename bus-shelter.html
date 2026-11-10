@@ -167,7 +167,7 @@
       var CLETTER = { airport: "공", normal: "일" };
 
       var data;
-      try { data = await (await fetch("data/bus-shelter.json?v=1")).json(); }
+      try { data = await (await fetch("data/bus-shelter.json?v=2")).json(); }
       catch (e) { document.getElementById("sub").textContent = "데이터 로드 실패"; return; }
       var sites = data.sites || [];
       var ev = data.event || {};
