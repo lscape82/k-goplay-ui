@@ -63,6 +63,7 @@
     .iw .rtag { display: inline-block; font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: #eef2f8; color: #475569; }
     .iw p { margin: 6px 0 0; font-size: 12.5px; color: #475569; line-height: 1.5; }
     .iw .facts { margin-top: 6px; font-size: 12.5px; color: #0b3a91; font-weight: 700; }
+    .iw .price { margin-top: 5px; font-size: 13.5px; color: #0f172a; font-weight: 800; }
     .iw .iwsel { margin-top: 10px; width: 100%; padding: 8px; border: 1px solid #0b3a91; background: #0b3a91; color: #fff; border-radius: 8px; font: inherit; font-weight: 800; font-size: 12.5px; cursor: pointer; }
     .iw .iwsel.on { background: #fff; color: #0b3a91; }
 
@@ -149,7 +150,7 @@
       var PSHORT = { focus: "매체 F", townboard: "매체 T" };
 
       var data;
-      try { data = await (await fetch("data/apta-elevator.json?v=5")).json(); }
+      try { data = await (await fetch("data/apta-elevator.json?v=6")).json(); }
       catch (e) { document.getElementById("sub").textContent = "데이터 로드 실패"; return; }
       var sites = data.sites || [];
 
@@ -197,11 +198,13 @@
         if (s.households) facts.push(Number(s.households).toLocaleString("ko-KR") + "세대");
         if (s.pyeong) facts.push(s.pyeong + "평");
         if (s.year) facts.push(s.year + "년");
+        var priceLine = s.price ? Number(s.price).toLocaleString("ko-KR") + "원 / 4주" : "";
         return '<div class="iw"><h3>' + esc(s.name) + '</h3>' +
           '<div class="tags"><span class="brand ' + s.product + '">' + PLABEL[s.product] + '</span>' +
           '<span class="rtag">' + esc(s.regionLabel) + '</span></div>' +
           '<p>' + esc(s.addr) + '</p>' +
           (facts.length ? '<div class="facts">' + esc(facts.join(" · ")) + '</div>' : '') +
+          (priceLine ? '<div class="price">' + esc(priceLine) + '</div>' : '') +
           '<button type="button" class="iwsel' + (on ? " on" : "") + '" onclick="window.__toggleSel(' + r.idx + ')">' + (on ? "✓ 선택됨 (해제)" : "+ 이 단지 선택") + '</button></div>';
       }
 
@@ -222,7 +225,7 @@
         item.innerHTML = '<input type="checkbox">' +
           '<span><span class="nm"><span class="tag ' + s.product + '">' + (s.product === "focus" ? "F" : "T") + '</span>' +
           '<span class="rtag">' + esc(s.regionLabel) + '</span>' + esc(s.name) + '</span>' +
-          '<span class="meta">' + esc(s.addr) + (s.monitors ? " · 모니터 " + s.monitors + "대" : "") + '</span></span>';
+          '<span class="meta">' + esc(s.addr) + (s.monitors ? " · 모니터 " + s.monitors + "대" : "") + (s.price ? ' · <b>' + Number(s.price).toLocaleString("ko-KR") + '원/4주</b>' : "") + '</span></span>';
         var cb = item.querySelector("input");
         cb.addEventListener("change", function () { setSel(idx, cb.checked); });
         plist.appendChild(item);
@@ -321,12 +324,15 @@
       document.getElementById("dlbtn").addEventListener("click", function () {
         var rows = recs.filter(function (r) { return selected.has(r.idx); });
         if (!rows.length) return;
-        var head = ["지역", "단지명", "매체", "주소", "평형", "세대수", "모니터수", "준공년도"];
+        var head = ["지역", "단지명", "매체", "주소", "평형", "세대수", "모니터수", "대당단가(원)", "4주 금액(원)", "준공년도"];
         var lines = [head.map(csvCell).join(",")];
+        var sumMon = 0, sumAmt = 0;
         rows.forEach(function (r) {
           var s = r.site;
-          lines.push([s.regionLabel, s.name, PLABEL[s.product], s.addr || "", s.pyeong || "", s.households || "", s.monitors || "", s.year || ""].map(csvCell).join(","));
+          sumMon += (s.monitors || 0); sumAmt += (s.price || 0);
+          lines.push([s.regionLabel, s.name, PLABEL[s.product], s.addr || "", s.pyeong || "", s.households || "", s.monitors || "", s.unitprice || "", s.price || "", s.year || ""].map(csvCell).join(","));
         });
+        lines.push(["합계", rows.length + "곳", "", "", "", "", sumMon, "", sumAmt, ""].map(csvCell).join(","));
         var csv = "﻿" + lines.join("\r\n");
         var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
         var a = document.createElement("a");

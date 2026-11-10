@@ -65,6 +65,8 @@
    "pyeong": "32",
    "households": 1060,
    "monitors": 19,
+   "unitprice": 15000,
+   "price": 285000,
    "lat": 37.4886321,
    "lng": 127.0704418
   },
@@ -83,6 +85,8 @@
    "pyeong": "17",
    "households": 1623,
    "monitors": 12,
+   "unitprice": 15000,
+   "price": 180000,
    "lat": 37.493122,
    "lng": 127.073815
   },
@@ -101,6 +105,8 @@
    "pyeong": "30",
    "households": 261,
    "monitors": 14,
+   "unitprice": 15000,
+   "price": 210000,
    "lat": 37.4879191,
    "lng": 127.0620061
   },
@@ -119,6 +125,8 @@
    "pyeong": "34",
    "households": 900,
    "monitors": 8,
+   "unitprice": 15000,
+   "price": 120000,
    "lat": 37.4886321,
    "lng": 127.0704418
   },
@@ -137,6 +145,8 @@
    "pyeong": "16",
    "households": 113,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.5063234,
    "lng": 127.0276548
   },
@@ -155,6 +165,8 @@
    "pyeong": "41",
    "households": 160,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.5103719,
    "lng": 127.0376964
   },
@@ -173,6 +185,8 @@
    "pyeong": "32",
    "households": 644,
    "monitors": 20,
+   "unitprice": 15000,
+   "price": 300000,
    "lat": 37.5148589,
    "lng": 127.0228831
   },
@@ -191,6 +205,8 @@
    "pyeong": "28",
    "households": 111,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.5198793,
    "lng": 127.0383142
   },
@@ -209,6 +225,8 @@
    "pyeong": "32",
    "households": 130,
    "monitors": 7,
+   "unitprice": 15000,
+   "price": 105000,
    "lat": 37.5134887,
    "lng": 127.0384184
   },
@@ -227,6 +245,8 @@
    "pyeong": "32",
    "households": 136,
    "monitors": 7,
+   "unitprice": 15000,
+   "price": 105000,
    "lat": 37.512541,
    "lng": 127.0381349
   },
@@ -245,6 +265,8 @@
    "pyeong": "21",
    "households": 60,
    "monitors": 1,
+   "unitprice": 15000,
+   "price": 15000,
    "lat": 37.5070687,
    "lng": 127.0321744
   },
@@ -263,6 +285,8 @@
    "pyeong": "32",
    "households": 1140,
    "monitors": 6,
+   "unitprice": 15000,
+   "price": 90000,
    "lat": 37.4914207,
    "lng": 127.0597838
   },
@@ -281,6 +305,8 @@
    "pyeong": "16",
    "households": 210,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.5041769,
    "lng": 127.0508936
   },
@@ -299,6 +325,8 @@
    "pyeong": "23",
    "households": 658,
    "monitors": 7,
+   "unitprice": 15000,
+   "price": 105000,
    "lat": 37.5042024,
    "lng": 127.0520244
   },
@@ -317,6 +345,8 @@
    "pyeong": "0",
    "households": 120,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.5000638,
    "lng": 127.0653441
   },
@@ -335,6 +365,8 @@
    "pyeong": "41",
    "households": 142,
    "monitors": 1,
+   "unitprice": 15000,
+   "price": 15000,
    "lat": 37.5051133,
    "lng": 127.0567133
   },
@@ -353,6 +385,8 @@
    "pyeong": "30",
    "households": 630,
    "monitors": 21,
+   "unitprice": 15000,
+   "price": 315000,
    "lat": 37.4982418,
    "lng": 127.0712856
   },
@@ -371,6 +405,8 @@
    "pyeong": "31",
    "households": 4424,
    "monitors": 9,
+   "unitprice": 15000,
+   "price": 135000,
    "lat": 37.4977414,
    "lng": 127.0650701
   },
@@ -389,6 +425,8 @@
    "pyeong": "50",
    "households": 276,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.5040553,
    "lng": 127.0573191
   },
@@ -407,6 +445,8 @@
    "pyeong": "26",
    "households": 668,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.5008929,
    "lng": 127.06104
   },
@@ -425,6 +465,8 @@
    "pyeong": "0",
    "households": 282,
    "monitors": 13,
+   "unitprice": 15000,
+   "price": 195000,
    "lat": 37.5030553,
    "lng": 127.0606316
   },
@@ -443,6 +485,8 @@
    "pyeong": "43",
    "households": 354,
    "monitors": 5,
+   "unitprice": 15000,
+   "price": 75000,
    "lat": 37.5012731,
    "lng": 127.0653619
   },
@@ -461,6 +505,8 @@
    "pyeong": "44",
    "households": 144,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.4962925,
    "lng": 127.054073
   },
@@ -479,6 +525,8 @@
    "pyeong": "0",
    "households": 240,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.5041804,
    "lng": 127.051498
   },
@@ -497,6 +545,8 @@
    "pyeong": "31",
    "households": 67,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.5007773,
    "lng": 127.0621225
   },
@@ -515,6 +565,8 @@
    "pyeong": "46",
    "households": 2436,
    "monitors": 16,
+   "unitprice": 15000,
+   "price": 240000,
    "lat": 37.4947911,
    "lng": 127.0664816
   },
@@ -533,6 +585,8 @@
    "pyeong": "43",
    "households": 96,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.4851832,
    "lng": 127.0358917
   },
@@ -551,6 +605,8 @@
    "pyeong": "32",
    "households": 348,
    "monitors": 7,
+   "unitprice": 15000,
+   "price": 105000,
    "lat": 37.4886314,
    "lng": 127.0408207
   },
@@ -569,6 +625,8 @@
    "pyeong": "77",
    "households": 64,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4879363,
    "lng": 127.0476656
   },
@@ -587,6 +645,8 @@
    "pyeong": "30",
    "households": 197,
    "monitors": 9,
+   "unitprice": 15000,
+   "price": 135000,
    "lat": 37.4866346,
    "lng": 127.040409
   },
@@ -605,6 +665,8 @@
    "pyeong": "32",
    "households": 3002,
    "monitors": 8,
+   "unitprice": 15000,
+   "price": 120000,
    "lat": 37.4938546,
    "lng": 127.0509144
   },
@@ -623,6 +685,8 @@
    "pyeong": "40",
    "households": 384,
    "monitors": 18,
+   "unitprice": 15000,
+   "price": 270000,
    "lat": 37.4878989,
    "lng": 127.0384154
   },
@@ -641,6 +705,8 @@
    "pyeong": "31",
    "households": 211,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.4888496,
    "lng": 127.0379938
   },
@@ -659,6 +725,8 @@
    "pyeong": "29",
    "households": 171,
    "monitors": 6,
+   "unitprice": 15000,
+   "price": 90000,
    "lat": 37.4888983,
    "lng": 127.039121
   },
@@ -677,6 +745,8 @@
    "pyeong": "52",
    "households": 71,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.4887231,
    "lng": 127.0350648
   },
@@ -695,6 +765,8 @@
    "pyeong": "40",
    "households": 397,
    "monitors": 9,
+   "unitprice": 15000,
+   "price": 135000,
    "lat": 37.4951436,
    "lng": 127.0510656
   },
@@ -713,6 +785,8 @@
    "pyeong": "0",
    "households": 132,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.4891698,
    "lng": 127.0488278
   },
@@ -731,6 +805,8 @@
    "pyeong": "24",
    "households": 252,
    "monitors": 5,
+   "unitprice": 15000,
+   "price": 75000,
    "lat": 37.5154824,
    "lng": 127.0617877
   },
@@ -749,6 +825,8 @@
    "pyeong": "0",
    "households": 68,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.5167362,
    "lng": 127.064731
   },
@@ -767,6 +845,8 @@
    "pyeong": "51",
    "households": 36,
    "monitors": 1,
+   "unitprice": 15000,
+   "price": 15000,
    "lat": 37.5162326,
    "lng": 127.0658576
   },
@@ -785,6 +865,8 @@
    "pyeong": "9",
    "households": 299,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.5062798,
    "lng": 127.0497315
   },
@@ -803,6 +885,8 @@
    "pyeong": "58",
    "households": 298,
    "monitors": 1,
+   "unitprice": 15000,
+   "price": 15000,
    "lat": 37.5160695,
    "lng": 127.0461126
   },
@@ -821,6 +905,8 @@
    "pyeong": "0",
    "households": 127,
    "monitors": 5,
+   "unitprice": 15000,
+   "price": 75000,
    "lat": 37.5139661,
    "lng": 127.0499154
   },
@@ -839,6 +925,8 @@
    "pyeong": "24",
    "households": 339,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.5179814,
    "lng": 127.0487641
   },
@@ -857,6 +945,8 @@
    "pyeong": "13",
    "households": 299,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.5057545,
    "lng": 127.0500421
   },
@@ -875,6 +965,8 @@
    "pyeong": "32",
    "households": 198,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.5167641,
    "lng": 127.0446104
   },
@@ -893,6 +985,8 @@
    "pyeong": "0",
    "households": 139,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.5174162,
    "lng": 127.0449647
   },
@@ -911,6 +1005,8 @@
    "pyeong": "20",
    "households": 345,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.5066263,
    "lng": 127.0484328
   },
@@ -929,6 +1025,8 @@
    "pyeong": "55",
    "households": 19,
    "monitors": 1,
+   "unitprice": 15000,
+   "price": 15000,
    "lat": 37.5190363,
    "lng": 127.0639511
   },
@@ -947,6 +1045,8 @@
    "pyeong": "15",
    "households": 108,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.5196629,
    "lng": 127.0578295
   },
@@ -965,6 +1065,8 @@
    "pyeong": "31",
    "households": 141,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.5079777,
    "lng": 127.0555281
   },
@@ -983,6 +1085,8 @@
    "pyeong": "43",
    "households": 546,
    "monitors": 21,
+   "unitprice": 15000,
+   "price": 315000,
    "lat": 37.4603217,
    "lng": 127.1012224
   },
@@ -1001,6 +1105,8 @@
    "pyeong": "19",
    "households": 60,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4660449,
    "lng": 127.1013669
   },
@@ -1019,6 +1125,8 @@
    "pyeong": "32",
    "households": 410,
    "monitors": 13,
+   "unitprice": 15000,
+   "price": 195000,
    "lat": 37.4643056,
    "lng": 127.1029137
   },
@@ -1037,6 +1145,8 @@
    "pyeong": "21",
    "households": 395,
    "monitors": 12,
+   "unitprice": 15000,
+   "price": 180000,
    "lat": 37.4643163,
    "lng": 127.1005204
   },
@@ -1055,6 +1165,8 @@
    "pyeong": "35",
    "households": 363,
    "monitors": 16,
+   "unitprice": 15000,
+   "price": 240000,
    "lat": 37.4639452,
    "lng": 127.1044786
   },
@@ -1073,6 +1185,8 @@
    "pyeong": "31",
    "households": 114,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.466816,
    "lng": 127.1000393
   },
@@ -1091,6 +1205,8 @@
    "pyeong": "29",
    "households": 58,
    "monitors": 1,
+   "unitprice": 15000,
+   "price": 15000,
    "lat": 37.4664859,
    "lng": 127.1013757
   },
@@ -1109,6 +1225,8 @@
    "pyeong": "24",
    "households": 787,
    "monitors": 31,
+   "unitprice": 15000,
+   "price": 465000,
    "lat": 37.4809091,
    "lng": 127.0901687
   },
@@ -1127,6 +1245,8 @@
    "pyeong": "23",
    "households": 675,
    "monitors": 6,
+   "unitprice": 15000,
+   "price": 90000,
    "lat": 37.488566,
    "lng": 127.1041591
   },
@@ -1145,6 +1265,8 @@
    "pyeong": "10",
    "households": 1508,
    "monitors": 18,
+   "unitprice": 15000,
+   "price": 270000,
    "lat": 37.4875007,
    "lng": 127.1051643
   },
@@ -1163,6 +1285,8 @@
    "pyeong": "26",
    "households": 645,
    "monitors": 8,
+   "unitprice": 15000,
+   "price": 120000,
    "lat": 37.4893292,
    "lng": 127.1008468
   },
@@ -1181,6 +1305,8 @@
    "pyeong": "21",
    "households": 1162,
    "monitors": 15,
+   "unitprice": 15000,
+   "price": 225000,
    "lat": 37.4877905,
    "lng": 127.098367
   },
@@ -1199,6 +1325,8 @@
    "pyeong": "8",
    "households": 2565,
    "monitors": 30,
+   "unitprice": 15000,
+   "price": 450000,
    "lat": 37.4920952,
    "lng": 127.1008767
   },
@@ -1217,6 +1345,8 @@
    "pyeong": "43",
    "households": 130,
    "monitors": 6,
+   "unitprice": 15000,
+   "price": 90000,
    "lat": 37.5277321,
    "lng": 127.0371133
   },
@@ -1235,6 +1365,8 @@
    "pyeong": "37",
    "households": 139,
    "monitors": 5,
+   "unitprice": 15000,
+   "price": 75000,
    "lat": 37.5266381,
    "lng": 127.0373176
   },
@@ -1253,6 +1385,8 @@
    "pyeong": "28",
    "households": 911,
    "monitors": 20,
+   "unitprice": 15000,
+   "price": 300000,
    "lat": 37.5239669,
    "lng": 127.0192746
   },
@@ -1271,6 +1405,8 @@
    "pyeong": "34",
    "households": 515,
    "monitors": 10,
+   "unitprice": 15000,
+   "price": 150000,
    "lat": 37.5313427,
    "lng": 127.0349463
   },
@@ -1289,6 +1425,8 @@
    "pyeong": "33",
    "households": 322,
    "monitors": 9,
+   "unitprice": 15000,
+   "price": 135000,
    "lat": 37.5255358,
    "lng": 127.0205135
   },
@@ -1307,6 +1445,8 @@
    "pyeong": "35",
    "households": 1924,
    "monitors": 12,
+   "unitprice": 15000,
+   "price": 180000,
    "lat": 37.5284222,
    "lng": 127.0241229
   },
@@ -1325,6 +1465,8 @@
    "pyeong": "64",
    "households": 3130,
    "monitors": 17,
+   "unitprice": 15000,
+   "price": 255000,
    "lat": 37.5331502,
    "lng": 127.027503
   },
@@ -1343,6 +1485,8 @@
    "pyeong": "69",
    "households": 90,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.530042,
    "lng": 127.0423104
   },
@@ -1361,6 +1505,8 @@
    "pyeong": "34",
    "households": 825,
    "monitors": 23,
+   "unitprice": 15000,
+   "price": 345000,
    "lat": 37.5310015,
    "lng": 127.036928
   },
@@ -1379,6 +1525,8 @@
    "pyeong": "34",
    "households": 582,
    "monitors": 6,
+   "unitprice": 15000,
+   "price": 90000,
    "lat": 37.5290496,
    "lng": 127.0419777
   },
@@ -1397,6 +1545,8 @@
    "pyeong": "24",
    "households": 840,
    "monitors": 15,
+   "unitprice": 15000,
+   "price": 225000,
    "lat": 37.4985886,
    "lng": 127.0493188
   },
@@ -1415,6 +1565,8 @@
    "pyeong": "19",
    "households": 195,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.498022,
    "lng": 127.0332232
   },
@@ -1433,6 +1585,8 @@
    "pyeong": "15",
    "households": 294,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.5034178,
    "lng": 127.0478321
   },
@@ -1451,6 +1605,8 @@
    "pyeong": "20",
    "households": 254,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.5038082,
    "lng": 127.045287
   },
@@ -1469,6 +1625,8 @@
    "pyeong": "17",
    "households": 360,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4986601,
    "lng": 127.0329497
   },
@@ -1487,6 +1645,8 @@
    "pyeong": "18",
    "households": 341,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.4913785,
    "lng": 127.0325295
   },
@@ -1505,6 +1665,8 @@
    "pyeong": "17",
    "households": 319,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.4924281,
    "lng": 127.0309385
   },
@@ -1523,6 +1685,8 @@
    "pyeong": "10",
    "households": 361,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.5066662,
    "lng": 127.0326678
   },
@@ -1541,6 +1705,8 @@
    "pyeong": "0",
    "households": 129,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.4962412,
    "lng": 127.0463006
   },
@@ -1559,6 +1725,8 @@
    "pyeong": "10",
    "households": 55,
    "monitors": 1,
+   "unitprice": 15000,
+   "price": 15000,
    "lat": 37.5026781,
    "lng": 127.0453351
   },
@@ -1577,6 +1745,8 @@
    "pyeong": "12",
    "households": 58,
    "monitors": 1,
+   "unitprice": 15000,
+   "price": 15000,
    "lat": 37.4947567,
    "lng": 127.0365137
   },
@@ -1595,6 +1765,8 @@
    "pyeong": "12",
    "households": 160,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4987521,
    "lng": 127.0347711
   },
@@ -1613,6 +1785,8 @@
    "pyeong": "0",
    "households": 202,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.491737,
    "lng": 127.0323563
   },
@@ -1631,6 +1805,8 @@
    "pyeong": "24",
    "households": 144,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.5008535,
    "lng": 127.035701
   },
@@ -1649,6 +1825,8 @@
    "pyeong": "25",
    "households": 151,
    "monitors": 5,
+   "unitprice": 15000,
+   "price": 75000,
    "lat": 37.5074196,
    "lng": 127.039127
   },
@@ -1667,6 +1845,8 @@
    "pyeong": "9",
    "households": 40,
    "monitors": 1,
+   "unitprice": 15000,
+   "price": 15000,
    "lat": 37.5006463,
    "lng": 127.0396991
   },
@@ -1685,6 +1865,8 @@
    "pyeong": "31",
    "households": 150,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.4967427,
    "lng": 127.0520538
   },
@@ -1703,6 +1885,8 @@
    "pyeong": "9",
    "households": 130,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.5067636,
    "lng": 127.0331065
   },
@@ -1721,6 +1905,8 @@
    "pyeong": "34",
    "households": 206,
    "monitors": 5,
+   "unitprice": 15000,
+   "price": 75000,
    "lat": 37.5025031,
    "lng": 127.0494416
   },
@@ -1739,6 +1925,8 @@
    "pyeong": "0",
    "households": 325,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.5016297,
    "lng": 127.0356651
   },
@@ -1757,6 +1945,8 @@
    "pyeong": "24",
    "households": 1050,
    "monitors": 18,
+   "unitprice": 15000,
+   "price": 270000,
    "lat": 37.4977927,
    "lng": 127.0504017
   },
@@ -1775,6 +1965,8 @@
    "pyeong": "54",
    "households": 481,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.4995974,
    "lng": 127.0470626
   },
@@ -1793,6 +1985,8 @@
    "pyeong": "0",
    "households": 45,
    "monitors": 1,
+   "unitprice": 15000,
+   "price": 15000,
    "lat": 37.502493,
    "lng": 127.0451469
   },
@@ -1811,6 +2005,8 @@
    "pyeong": "15",
    "households": 333,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4981949,
    "lng": 127.033829
   },
@@ -1829,6 +2025,8 @@
    "pyeong": "0",
    "households": 217,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.5009848,
    "lng": 127.0361635
   },
@@ -1847,6 +2045,8 @@
    "pyeong": "17",
    "households": 216,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4919942,
    "lng": 127.0329713
   },
@@ -1865,6 +2065,8 @@
    "pyeong": "15",
    "households": 88,
    "monitors": 1,
+   "unitprice": 15000,
+   "price": 15000,
    "lat": 37.501979,
    "lng": 127.0442952
   },
@@ -1883,6 +2085,8 @@
    "pyeong": "10",
    "households": 66,
    "monitors": 1,
+   "unitprice": 15000,
+   "price": 15000,
    "lat": 37.5017797,
    "lng": 127.0439828
   },
@@ -1901,6 +2105,8 @@
    "pyeong": "32",
    "households": 411,
    "monitors": 5,
+   "unitprice": 15000,
+   "price": 75000,
    "lat": 37.5026646,
    "lng": 127.047119
   },
@@ -1919,6 +2125,8 @@
    "pyeong": "14",
    "households": 294,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.501979,
    "lng": 127.0442952
   },
@@ -1937,6 +2145,8 @@
    "pyeong": "36",
    "households": 378,
    "monitors": 18,
+   "unitprice": 15000,
+   "price": 270000,
    "lat": 37.4676063,
    "lng": 127.1054557
   },
@@ -1955,6 +2165,8 @@
    "pyeong": "34",
    "households": 850,
    "monitors": 25,
+   "unitprice": 15000,
+   "price": 375000,
    "lat": 37.4893773,
    "lng": 127.0799389
   },
@@ -1973,6 +2185,8 @@
    "pyeong": "26",
    "households": 720,
    "monitors": 12,
+   "unitprice": 15000,
+   "price": 180000,
    "lat": 37.4936296,
    "lng": 127.0897076
   },
@@ -1991,6 +2205,8 @@
    "pyeong": "23",
    "households": 2214,
    "monitors": 24,
+   "unitprice": 15000,
+   "price": 360000,
    "lat": 37.4927536,
    "lng": 127.0909822
   },
@@ -2009,6 +2225,8 @@
    "pyeong": "48",
    "households": 650,
    "monitors": 22,
+   "unitprice": 15000,
+   "price": 330000,
    "lat": 37.4852747,
    "lng": 127.0858714
   },
@@ -2027,6 +2245,8 @@
    "pyeong": "31",
    "households": 402,
    "monitors": 18,
+   "unitprice": 15000,
+   "price": 270000,
    "lat": 37.4728669,
    "lng": 127.0907625
   },
@@ -2045,6 +2265,8 @@
    "pyeong": "14",
    "households": 133,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4747519,
    "lng": 127.107034
   },
@@ -2063,6 +2285,8 @@
    "pyeong": "32",
    "households": 1070,
    "monitors": 45,
+   "unitprice": 15000,
+   "price": 675000,
    "lat": 37.4754939,
    "lng": 127.1097655
   },
@@ -2081,6 +2305,8 @@
    "pyeong": "15",
    "households": 401,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.474873,
    "lng": 127.1035921
   },
@@ -2099,6 +2325,8 @@
    "pyeong": "14",
    "households": 566,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.4744598,
    "lng": 127.103959
   },
@@ -2117,6 +2345,8 @@
    "pyeong": "24",
    "households": 1304,
    "monitors": 51,
+   "unitprice": 15000,
+   "price": 765000,
    "lat": 37.4766651,
    "lng": 127.112801
   },
@@ -2135,6 +2365,8 @@
    "pyeong": "14",
    "households": 468,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.4747692,
    "lng": 127.105032
   },
@@ -2153,6 +2385,8 @@
    "pyeong": "34",
    "households": 106,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.5230053,
    "lng": 127.0586579
   },
@@ -2171,6 +2405,8 @@
    "pyeong": "45",
    "households": 100,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.518112,
    "lng": 127.0439189
   },
@@ -2189,6 +2425,8 @@
    "pyeong": "24",
    "households": 391,
    "monitors": 13,
+   "unitprice": 15000,
+   "price": 195000,
    "lat": 37.5222677,
    "lng": 127.0502628
   },
@@ -2207,6 +2445,8 @@
    "pyeong": "32",
    "households": 158,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.5194303,
    "lng": 127.0478607
   },
@@ -2225,6 +2465,8 @@
    "pyeong": "44",
    "households": 630,
    "monitors": 17,
+   "unitprice": 15000,
+   "price": 255000,
    "lat": 37.5203167,
    "lng": 127.0513
   },
@@ -2243,6 +2485,8 @@
    "pyeong": "12",
    "households": 89,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.5264382,
    "lng": 127.0496794
   },
@@ -2261,6 +2505,8 @@
    "pyeong": "21",
    "households": 708,
    "monitors": 7,
+   "unitprice": 15000,
+   "price": 105000,
    "lat": 37.5236081,
    "lng": 127.0572144
   },
@@ -2279,6 +2525,8 @@
    "pyeong": "43",
    "households": 317,
    "monitors": 9,
+   "unitprice": 15000,
+   "price": 135000,
    "lat": 37.5273484,
    "lng": 127.0533997
   },
@@ -2297,6 +2545,8 @@
    "pyeong": "17",
    "households": 660,
    "monitors": 9,
+   "unitprice": 10000,
+   "price": 90000,
    "lat": 37.6305817,
    "lng": 127.0670266
   },
@@ -2315,6 +2565,8 @@
    "pyeong": "17",
    "households": 840,
    "monitors": 10,
+   "unitprice": 10000,
+   "price": 100000,
    "lat": 37.6273074,
    "lng": 127.0686144
   },
@@ -2333,6 +2585,8 @@
    "pyeong": "30",
    "households": 278,
    "monitors": 12,
+   "unitprice": 10000,
+   "price": 120000,
    "lat": 37.6234539,
    "lng": 127.0857837
   },
@@ -2351,6 +2605,8 @@
    "pyeong": "25",
    "households": 152,
    "monitors": 3,
+   "unitprice": 10000,
+   "price": 30000,
    "lat": 37.6198967,
    "lng": 127.0726607
   },
@@ -2369,6 +2625,8 @@
    "pyeong": "34",
    "households": 190,
    "monitors": 5,
+   "unitprice": 10000,
+   "price": 50000,
    "lat": 37.6268364,
    "lng": 127.0700802
   },
@@ -2387,6 +2645,8 @@
    "pyeong": "42",
    "households": 845,
    "monitors": 23,
+   "unitprice": 10000,
+   "price": 230000,
    "lat": 37.6270854,
    "lng": 127.0810892
   },
@@ -2405,6 +2665,8 @@
    "pyeong": "33",
    "households": 579,
    "monitors": 16,
+   "unitprice": 10000,
+   "price": 160000,
    "lat": 37.6209072,
    "lng": 127.0797595
   },
@@ -2423,6 +2685,8 @@
    "pyeong": "23",
    "households": 237,
    "monitors": 6,
+   "unitprice": 10000,
+   "price": 60000,
    "lat": 37.6260578,
    "lng": 127.0803522
   },
@@ -2441,6 +2705,8 @@
    "pyeong": "19",
    "households": 525,
    "monitors": 7,
+   "unitprice": 10000,
+   "price": 70000,
    "lat": 37.6300742,
    "lng": 127.0720532
   },
@@ -2459,6 +2725,8 @@
    "pyeong": "34",
    "households": 153,
    "monitors": 2,
+   "unitprice": 10000,
+   "price": 20000,
    "lat": 37.6279531,
    "lng": 127.0750999
   },
@@ -2477,6 +2745,8 @@
    "pyeong": "32",
    "households": 494,
    "monitors": 20,
+   "unitprice": 10000,
+   "price": 200000,
    "lat": 37.6266787,
    "lng": 127.0868087
   },
@@ -2495,6 +2765,8 @@
    "pyeong": "25",
    "households": 1676,
    "monitors": 28,
+   "unitprice": 10000,
+   "price": 280000,
    "lat": 37.6235709,
    "lng": 127.0825383
   },
@@ -2513,6 +2785,8 @@
    "pyeong": "32",
    "households": 1601,
    "monitors": 37,
+   "unitprice": 10000,
+   "price": 370000,
    "lat": 37.6290944,
    "lng": 127.0671184
   },
@@ -2531,6 +2805,8 @@
    "pyeong": "33",
    "households": 234,
    "monitors": 4,
+   "unitprice": 10000,
+   "price": 40000,
    "lat": 37.618481,
    "lng": 127.076212
   },
@@ -2549,6 +2825,8 @@
    "pyeong": "7",
    "households": 100,
    "monitors": 2,
+   "unitprice": 10000,
+   "price": 20000,
    "lat": 37.6283927,
    "lng": 127.0757031
   },
@@ -2567,6 +2845,8 @@
    "pyeong": "5",
    "households": 270,
    "monitors": 3,
+   "unitprice": 10000,
+   "price": 30000,
    "lat": 37.619489,
    "lng": 127.0755262
   },
@@ -2585,6 +2865,8 @@
    "pyeong": "6",
    "households": 90,
    "monitors": 1,
+   "unitprice": 10000,
+   "price": 10000,
    "lat": 37.6188991,
    "lng": 127.0776029
   },
@@ -2603,6 +2885,8 @@
    "pyeong": "0",
    "households": 164,
    "monitors": 2,
+   "unitprice": 10000,
+   "price": 20000,
    "lat": 37.6175151,
    "lng": 127.0743905
   },
@@ -2621,6 +2905,8 @@
    "pyeong": "33",
    "households": 810,
    "monitors": 19,
+   "unitprice": 10000,
+   "price": 190000,
    "lat": 37.6652722,
    "lng": 127.0746739
   },
@@ -2639,6 +2925,8 @@
    "pyeong": "32",
    "households": 795,
    "monitors": 15,
+   "unitprice": 10000,
+   "price": 150000,
    "lat": 37.655011,
    "lng": 127.0680069
   },
@@ -2657,6 +2945,8 @@
    "pyeong": "21",
    "households": 602,
    "monitors": 8,
+   "unitprice": 10000,
+   "price": 80000,
    "lat": 37.6632392,
    "lng": 127.079004
   },
@@ -2675,6 +2965,8 @@
    "pyeong": "33",
    "households": 165,
    "monitors": 6,
+   "unitprice": 10000,
+   "price": 60000,
    "lat": 37.6764512,
    "lng": 127.0583172
   },
@@ -2693,6 +2985,8 @@
    "pyeong": "7",
    "households": 434,
    "monitors": 4,
+   "unitprice": 10000,
+   "price": 40000,
    "lat": 37.6660338,
    "lng": 127.0782531
   },
@@ -2711,6 +3005,8 @@
    "pyeong": "25",
    "households": 240,
    "monitors": 5,
+   "unitprice": 10000,
+   "price": 50000,
    "lat": 37.6720399,
    "lng": 127.0813637
   },
@@ -2729,6 +3025,8 @@
    "pyeong": "31",
    "households": 114,
    "monitors": 4,
+   "unitprice": 10000,
+   "price": 40000,
    "lat": 37.6593263,
    "lng": 127.0620158
   },
@@ -2747,6 +3045,8 @@
    "pyeong": "22",
    "households": 2100,
    "monitors": 24,
+   "unitprice": 10000,
+   "price": 240000,
    "lat": 37.6683012,
    "lng": 127.055611
   },
@@ -2765,6 +3065,8 @@
    "pyeong": "32",
    "households": 230,
    "monitors": 9,
+   "unitprice": 10000,
+   "price": 90000,
    "lat": 37.6674144,
    "lng": 127.0687931
   },
@@ -2783,6 +3085,8 @@
    "pyeong": "24",
    "households": 763,
    "monitors": 17,
+   "unitprice": 10000,
+   "price": 170000,
    "lat": 37.6777761,
    "lng": 127.0535853
   },
@@ -2801,6 +3105,8 @@
    "pyeong": "34",
    "households": 600,
    "monitors": 6,
+   "unitprice": 10000,
+   "price": 60000,
    "lat": 37.6461015,
    "lng": 127.060974
   },
@@ -2819,6 +3125,8 @@
    "pyeong": "25",
    "households": 1590,
    "monitors": 21,
+   "unitprice": 10000,
+   "price": 210000,
    "lat": 37.6599378,
    "lng": 127.0716052
   },
@@ -2837,6 +3145,8 @@
    "pyeong": "32",
    "households": 634,
    "monitors": 13,
+   "unitprice": 10000,
+   "price": 130000,
    "lat": 37.6635296,
    "lng": 127.077341
   },
@@ -2855,6 +3165,8 @@
    "pyeong": "32",
    "households": 826,
    "monitors": 16,
+   "unitprice": 10000,
+   "price": 160000,
    "lat": 37.6679175,
    "lng": 127.0812945
   },
@@ -2873,6 +3185,8 @@
    "pyeong": "32",
    "households": 290,
    "monitors": 7,
+   "unitprice": 10000,
+   "price": 70000,
    "lat": 37.6740607,
    "lng": 127.0601336
   },
@@ -2891,6 +3205,8 @@
    "pyeong": "31",
    "households": 385,
    "monitors": 12,
+   "unitprice": 10000,
+   "price": 120000,
    "lat": 37.6674959,
    "lng": 127.0676454
   },
@@ -2909,6 +3225,8 @@
    "pyeong": "31",
    "households": 275,
    "monitors": 12,
+   "unitprice": 10000,
+   "price": 120000,
    "lat": 37.674901,
    "lng": 127.0562689
   },
@@ -2927,6 +3245,8 @@
    "pyeong": "24",
    "households": 1391,
    "monitors": 16,
+   "unitprice": 10000,
+   "price": 160000,
    "lat": 37.6816378,
    "lng": 127.0539686
   },
@@ -2945,6 +3265,8 @@
    "pyeong": "12",
    "households": 900,
    "monitors": 13,
+   "unitprice": 10000,
+   "price": 130000,
    "lat": 37.6829763,
    "lng": 127.0568875
   },
@@ -2963,6 +3285,8 @@
    "pyeong": "24",
    "households": 675,
    "monitors": 4,
+   "unitprice": 10000,
+   "price": 40000,
    "lat": 37.6635395,
    "lng": 127.074681
   },
@@ -2981,6 +3305,8 @@
    "pyeong": "17",
    "households": 1739,
    "monitors": 27,
+   "unitprice": 10000,
+   "price": 270000,
    "lat": 37.6661598,
    "lng": 127.0591196
   },
@@ -2999,6 +3325,8 @@
    "pyeong": "18",
    "households": 939,
    "monitors": 10,
+   "unitprice": 10000,
+   "price": 100000,
    "lat": 37.668575,
    "lng": 127.0611141
   },
@@ -3017,6 +3345,8 @@
    "pyeong": "23",
    "households": 2265,
    "monitors": 23,
+   "unitprice": 10000,
+   "price": 230000,
    "lat": 37.6693868,
    "lng": 127.0580779
   },
@@ -3035,6 +3365,8 @@
    "pyeong": "24",
    "households": 2392,
    "monitors": 32,
+   "unitprice": 10000,
+   "price": 320000,
    "lat": 37.6693821,
    "lng": 127.0521901
   },
@@ -3053,6 +3385,8 @@
    "pyeong": "32",
    "households": 2213,
    "monitors": 28,
+   "unitprice": 10000,
+   "price": 280000,
    "lat": 37.6520039,
    "lng": 127.0579965
   },
@@ -3071,6 +3405,8 @@
    "pyeong": "17",
    "households": 2136,
    "monitors": 27,
+   "unitprice": 10000,
+   "price": 270000,
    "lat": 37.6498809,
    "lng": 127.062237
   },
@@ -3089,6 +3425,8 @@
    "pyeong": "24",
    "households": 2646,
    "monitors": 32,
+   "unitprice": 10000,
+   "price": 320000,
    "lat": 37.6539092,
    "lng": 127.065893
   },
@@ -3107,6 +3445,8 @@
    "pyeong": "18",
    "households": 2634,
    "monitors": 32,
+   "unitprice": 10000,
+   "price": 320000,
    "lat": 37.6599303,
    "lng": 127.0620579
   },
@@ -3125,6 +3465,8 @@
    "pyeong": "31",
    "households": 142,
    "monitors": 3,
+   "unitprice": 10000,
+   "price": 30000,
    "lat": 37.6721642,
    "lng": 127.0517695
   },
@@ -3143,6 +3485,8 @@
    "pyeong": "32",
    "households": 234,
    "monitors": 7,
+   "unitprice": 10000,
+   "price": 70000,
    "lat": 37.6660053,
    "lng": 127.0793574
   },
@@ -3161,6 +3505,8 @@
    "pyeong": "25",
    "households": 215,
    "monitors": 5,
+   "unitprice": 10000,
+   "price": 50000,
    "lat": 37.652453,
    "lng": 127.0700316
   },
@@ -3179,6 +3525,8 @@
    "pyeong": "23",
    "households": 420,
    "monitors": 6,
+   "unitprice": 10000,
+   "price": 60000,
    "lat": 37.6659995,
    "lng": 127.0684337
   },
@@ -3197,6 +3545,8 @@
    "pyeong": "23",
    "households": 305,
    "monitors": 8,
+   "unitprice": 10000,
+   "price": 80000,
    "lat": 37.6545156,
    "lng": 127.0709971
   },
@@ -3215,6 +3565,8 @@
    "pyeong": "30",
    "households": 331,
    "monitors": 13,
+   "unitprice": 10000,
+   "price": 130000,
    "lat": 37.6729269,
    "lng": 127.0530082
   },
@@ -3233,6 +3585,8 @@
    "pyeong": "31",
    "households": 106,
    "monitors": 4,
+   "unitprice": 10000,
+   "price": 40000,
    "lat": 37.6729996,
    "lng": 127.05071
   },
@@ -3251,6 +3605,8 @@
    "pyeong": "22",
    "households": 115,
    "monitors": 5,
+   "unitprice": 10000,
+   "price": 50000,
    "lat": 37.6771274,
    "lng": 127.0514574
   },
@@ -3269,6 +3625,8 @@
    "pyeong": "24",
    "households": 1313,
    "monitors": 14,
+   "unitprice": 10000,
+   "price": 140000,
    "lat": 37.6800016,
    "lng": 127.0538722
   },
@@ -3287,6 +3645,8 @@
    "pyeong": "36",
    "households": 457,
    "monitors": 18,
+   "unitprice": 10000,
+   "price": 180000,
    "lat": 37.6432941,
    "lng": 127.059658
   },
@@ -3305,6 +3665,8 @@
    "pyeong": "19",
    "households": 449,
    "monitors": 4,
+   "unitprice": 10000,
+   "price": 40000,
    "lat": 37.6801699,
    "lng": 127.0558491
   },
@@ -3323,6 +3685,8 @@
    "pyeong": "0",
    "households": 275,
    "monitors": 2,
+   "unitprice": 10000,
+   "price": 20000,
    "lat": 37.6224043,
    "lng": 127.0607914
   },
@@ -3341,6 +3705,8 @@
    "pyeong": "34",
    "households": 504,
    "monitors": 15,
+   "unitprice": 10000,
+   "price": 150000,
    "lat": 37.622023,
    "lng": 127.0535966
   },
@@ -3359,6 +3725,8 @@
    "pyeong": "21",
    "households": 571,
    "monitors": 8,
+   "unitprice": 10000,
+   "price": 80000,
    "lat": 37.6315737,
    "lng": 127.0426624
   },
@@ -3377,6 +3745,8 @@
    "pyeong": "32",
    "households": 326,
    "monitors": 17,
+   "unitprice": 10000,
+   "price": 170000,
    "lat": 37.6408125,
    "lng": 127.0528001
   },
@@ -3395,6 +3765,8 @@
    "pyeong": "32",
    "households": 850,
    "monitors": 36,
+   "unitprice": 10000,
+   "price": 360000,
    "lat": 37.6261102,
    "lng": 127.049816
   },
@@ -3413,6 +3785,8 @@
    "pyeong": "0",
    "households": 138,
    "monitors": 4,
+   "unitprice": 10000,
+   "price": 40000,
    "lat": 37.6158269,
    "lng": 127.0676227
   },
@@ -3431,6 +3805,8 @@
    "pyeong": "32",
    "households": 157,
    "monitors": 7,
+   "unitprice": 10000,
+   "price": 70000,
    "lat": 37.6234704,
    "lng": 127.0589435
   },
@@ -3449,6 +3825,8 @@
    "pyeong": "23",
    "households": 225,
    "monitors": 9,
+   "unitprice": 10000,
+   "price": 90000,
    "lat": 37.6306713,
    "lng": 127.0445161
   },
@@ -3467,6 +3845,8 @@
    "pyeong": "33",
    "households": 171,
    "monitors": 5,
+   "unitprice": 10000,
+   "price": 50000,
    "lat": 37.6210817,
    "lng": 127.0620553
   },
@@ -3485,6 +3865,8 @@
    "pyeong": "25",
    "households": 410,
    "monitors": 6,
+   "unitprice": 10000,
+   "price": 60000,
    "lat": 37.6328716,
    "lng": 127.0443687
   },
@@ -3503,6 +3885,8 @@
    "pyeong": "33",
    "households": 134,
    "monitors": 3,
+   "unitprice": 10000,
+   "price": 30000,
    "lat": 37.6173633,
    "lng": 127.0666724
   },
@@ -3521,6 +3905,8 @@
    "pyeong": "38",
    "households": 344,
    "monitors": 9,
+   "unitprice": 10000,
+   "price": 90000,
    "lat": 37.6329404,
    "lng": 127.0512125
   },
@@ -3539,6 +3925,8 @@
    "pyeong": "32",
    "households": 115,
    "monitors": 4,
+   "unitprice": 10000,
+   "price": 40000,
    "lat": 37.620759,
    "lng": 127.0603216
   },
@@ -3557,6 +3945,8 @@
    "pyeong": "7",
    "households": 1372,
    "monitors": 16,
+   "unitprice": 10000,
+   "price": 160000,
    "lat": 37.6299237,
    "lng": 127.0604
   },
@@ -3575,6 +3965,8 @@
    "pyeong": "15",
    "households": 884,
    "monitors": 10,
+   "unitprice": 10000,
+   "price": 100000,
    "lat": 37.6319168,
    "lng": 127.0595
   },
@@ -3593,6 +3985,8 @@
    "pyeong": "25",
    "households": 296,
    "monitors": 6,
+   "unitprice": 10000,
+   "price": 60000,
    "lat": 37.6177123,
    "lng": 127.060066
   },
@@ -3611,6 +4005,8 @@
    "pyeong": "22",
    "households": 910,
    "monitors": 7,
+   "unitprice": 10000,
+   "price": 70000,
    "lat": 37.6269355,
    "lng": 127.0642787
   },
@@ -3629,6 +4025,8 @@
    "pyeong": "32",
    "households": 274,
    "monitors": 8,
+   "unitprice": 10000,
+   "price": 80000,
    "lat": 37.6231071,
    "lng": 127.0647374
   },
@@ -3647,6 +4045,8 @@
    "pyeong": "25",
    "households": 2002,
    "monitors": 29,
+   "unitprice": 10000,
+   "price": 290000,
    "lat": 37.6285801,
    "lng": 127.0523374
   },
@@ -3665,6 +4065,8 @@
    "pyeong": "10",
    "households": 1147,
    "monitors": 16,
+   "unitprice": 10000,
+   "price": 160000,
    "lat": 37.635223,
    "lng": 127.0517578
   },
@@ -3683,6 +4085,8 @@
    "pyeong": "24",
    "households": 458,
    "monitors": 6,
+   "unitprice": 10000,
+   "price": 60000,
    "lat": 37.6319635,
    "lng": 127.0502086
   },
@@ -3701,6 +4105,8 @@
    "pyeong": "25",
    "households": 520,
    "monitors": 10,
+   "unitprice": 10000,
+   "price": 100000,
    "lat": 37.6319925,
    "lng": 127.0517276
   },
@@ -3719,6 +4125,8 @@
    "pyeong": "33",
    "households": 105,
    "monitors": 3,
+   "unitprice": 10000,
+   "price": 30000,
    "lat": 37.6207258,
    "lng": 127.0619183
   },
@@ -3737,6 +4145,8 @@
    "pyeong": "0",
    "households": 783,
    "monitors": 10,
+   "unitprice": 10000,
+   "price": 100000,
    "lat": 37.6399301,
    "lng": 127.0642714
   },
@@ -3755,6 +4165,8 @@
    "pyeong": "26",
    "households": 203,
    "monitors": 3,
+   "unitprice": 10000,
+   "price": 30000,
    "lat": 37.6589524,
    "lng": 127.0725471
   },
@@ -3773,6 +4185,8 @@
    "pyeong": "26",
    "households": 250,
    "monitors": 6,
+   "unitprice": 10000,
+   "price": 60000,
    "lat": 37.6516148,
    "lng": 127.0719326
   },
@@ -3791,6 +4205,8 @@
    "pyeong": "33",
    "households": 508,
    "monitors": 14,
+   "unitprice": 10000,
+   "price": 140000,
    "lat": 37.6509335,
    "lng": 127.0698631
   },
@@ -3809,6 +4225,8 @@
    "pyeong": "9",
    "households": 468,
    "monitors": 5,
+   "unitprice": 10000,
+   "price": 50000,
    "lat": 37.6509335,
    "lng": 127.0698631
   },
@@ -3827,6 +4245,8 @@
    "pyeong": "32",
    "households": 652,
    "monitors": 14,
+   "unitprice": 10000,
+   "price": 140000,
    "lat": 37.6537351,
    "lng": 127.0725116
   },
@@ -3845,6 +4265,8 @@
    "pyeong": "31",
    "households": 780,
    "monitors": 26,
+   "unitprice": 10000,
+   "price": 260000,
    "lat": 37.6499171,
    "lng": 127.074339
   },
@@ -3863,6 +4285,8 @@
    "pyeong": "15",
    "households": 1979,
    "monitors": 28,
+   "unitprice": 10000,
+   "price": 280000,
    "lat": 37.6434857,
    "lng": 127.0695571
   },
@@ -3881,6 +4305,8 @@
    "pyeong": "32",
    "households": 742,
    "monitors": 25,
+   "unitprice": 10000,
+   "price": 250000,
    "lat": 37.6467114,
    "lng": 127.0658297
   },
@@ -3899,6 +4325,8 @@
    "pyeong": "32",
    "households": 1890,
    "monitors": 46,
+   "unitprice": 10000,
+   "price": 460000,
    "lat": 37.6382862,
    "lng": 127.0627122
   },
@@ -3917,6 +4345,8 @@
    "pyeong": "30",
    "households": 299,
    "monitors": 9,
+   "unitprice": 10000,
+   "price": 90000,
    "lat": 37.6619686,
    "lng": 127.0772264
   },
@@ -3935,6 +4365,8 @@
    "pyeong": "21",
    "households": 3481,
    "monitors": 45,
+   "unitprice": 10000,
+   "price": 450000,
    "lat": 37.6427369,
    "lng": 127.0641728
   },
@@ -3953,6 +4385,8 @@
    "pyeong": "25",
    "households": 478,
    "monitors": 12,
+   "unitprice": 10000,
+   "price": 120000,
    "lat": 37.648532,
    "lng": 127.08414
   },
@@ -3971,6 +4405,8 @@
    "pyeong": "24",
    "households": 167,
    "monitors": 3,
+   "unitprice": 10000,
+   "price": 30000,
    "lat": 37.6616609,
    "lng": 127.0753474
   },
@@ -3989,6 +4425,8 @@
    "pyeong": "12",
    "households": 2619,
    "monitors": 22,
+   "unitprice": 10000,
+   "price": 220000,
    "lat": 37.6462647,
    "lng": 127.0690269
   },
@@ -4007,6 +4445,8 @@
    "pyeong": "33",
    "households": 213,
    "monitors": 5,
+   "unitprice": 10000,
+   "price": 50000,
    "lat": 37.6525915,
    "lng": 127.0729649
   },
@@ -4025,6 +4465,8 @@
    "pyeong": "17",
    "households": 1800,
    "monitors": 20,
+   "unitprice": 10000,
+   "price": 200000,
    "lat": 37.6575776,
    "lng": 127.078009
   },
@@ -4043,6 +4485,8 @@
    "pyeong": "0",
    "households": 1455,
    "monitors": 20,
+   "unitprice": 10000,
+   "price": 200000,
    "lat": 37.6569359,
    "lng": 127.0762093
   },
@@ -4061,6 +4505,8 @@
    "pyeong": "24",
    "households": 690,
    "monitors": 14,
+   "unitprice": 10000,
+   "price": 140000,
    "lat": 37.6558199,
    "lng": 127.0761141
   },
@@ -4079,6 +4525,8 @@
    "pyeong": "18",
    "households": 600,
    "monitors": 8,
+   "unitprice": 10000,
+   "price": 80000,
    "lat": 37.6486487,
    "lng": 127.0783624
   },
@@ -4097,6 +4545,8 @@
    "pyeong": "18",
    "households": 630,
    "monitors": 10,
+   "unitprice": 10000,
+   "price": 100000,
    "lat": 37.6472774,
    "lng": 127.0797436
   },
@@ -4115,6 +4565,8 @@
    "pyeong": "21",
    "households": 696,
    "monitors": 12,
+   "unitprice": 10000,
+   "price": 120000,
    "lat": 37.6461889,
    "lng": 127.0753589
   },
@@ -4133,6 +4585,8 @@
    "pyeong": "35",
    "households": 219,
    "monitors": 8,
+   "unitprice": 10000,
+   "price": 80000,
    "lat": 37.6450084,
    "lng": 127.0678121
   },
@@ -4151,6 +4605,8 @@
    "pyeong": "32",
    "households": 499,
    "monitors": 17,
+   "unitprice": 10000,
+   "price": 170000,
    "lat": 37.659925,
    "lng": 127.0767536
   },
@@ -4169,6 +4625,8 @@
    "pyeong": "32",
    "households": 180,
    "monitors": 5,
+   "unitprice": 10000,
+   "price": 50000,
    "lat": 37.6610005,
    "lng": 127.0796762
   },
@@ -4187,6 +4645,8 @@
    "pyeong": "32",
    "households": 283,
    "monitors": 6,
+   "unitprice": 10000,
+   "price": 60000,
    "lat": 37.6594167,
    "lng": 127.074516
   },
@@ -4205,6 +4665,8 @@
    "pyeong": "32",
    "households": 313,
    "monitors": 11,
+   "unitprice": 10000,
+   "price": 110000,
    "lat": 37.6561922,
    "lng": 127.0739189
   },
@@ -4223,6 +4685,8 @@
    "pyeong": "28",
    "households": 130,
    "monitors": 5,
+   "unitprice": 10000,
+   "price": 50000,
    "lat": 37.6504799,
    "lng": 127.0817659
   },
@@ -4241,6 +4705,8 @@
    "pyeong": "32",
    "households": 453,
    "monitors": 11,
+   "unitprice": 10000,
+   "price": 110000,
    "lat": 37.6452039,
    "lng": 127.0835699
   },
@@ -4259,6 +4725,8 @@
    "pyeong": "21",
    "households": 1880,
    "monitors": 28,
+   "unitprice": 10000,
+   "price": 280000,
    "lat": 37.6334378,
    "lng": 127.0675549
   },
@@ -4277,6 +4745,8 @@
    "pyeong": "32",
    "households": 730,
    "monitors": 25,
+   "unitprice": 10000,
+   "price": 250000,
    "lat": 37.645182,
    "lng": 127.0711396
   },
@@ -4295,6 +4765,8 @@
    "pyeong": "24",
    "households": 288,
    "monitors": 7,
+   "unitprice": 10000,
+   "price": 70000,
    "lat": 37.637618,
    "lng": 127.077198
   },
@@ -4313,6 +4785,8 @@
    "pyeong": "30",
    "households": 660,
    "monitors": 22,
+   "unitprice": 10000,
+   "price": 220000,
    "lat": 37.6381579,
    "lng": 127.0685759
   },
@@ -4331,6 +4805,8 @@
    "pyeong": "32",
    "households": 1476,
    "monitors": 36,
+   "unitprice": 10000,
+   "price": 360000,
    "lat": 37.6362078,
    "lng": 127.0613136
   },
@@ -4349,6 +4825,8 @@
    "pyeong": "32",
    "households": 486,
    "monitors": 4,
+   "unitprice": 10000,
+   "price": 40000,
    "lat": 37.6362078,
    "lng": 127.0613136
   },
@@ -4367,6 +4845,8 @@
    "pyeong": "32",
    "households": 378,
    "monitors": 4,
+   "unitprice": 10000,
+   "price": 40000,
    "lat": 37.6326194,
    "lng": 127.064479
   },
@@ -4385,6 +4865,8 @@
    "pyeong": "34",
    "households": 1260,
    "monitors": 13,
+   "unitprice": 15000,
+   "price": 195000,
    "lat": 37.5022696,
    "lng": 127.0088309
   },
@@ -4403,6 +4885,8 @@
    "pyeong": "74",
    "households": 63,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.4977152,
    "lng": 126.993691
   },
@@ -4421,6 +4905,8 @@
    "pyeong": "28",
    "households": 435,
    "monitors": 5,
+   "unitprice": 15000,
+   "price": 75000,
    "lat": 37.5024176,
    "lng": 127.0071366
   },
@@ -4439,6 +4925,8 @@
    "pyeong": "54",
    "households": 168,
    "monitors": 6,
+   "unitprice": 15000,
+   "price": 90000,
    "lat": 37.5042999,
    "lng": 127.0117387
   },
@@ -4457,6 +4945,8 @@
    "pyeong": "23",
    "households": 237,
    "monitors": 10,
+   "unitprice": 15000,
+   "price": 150000,
    "lat": 37.5038896,
    "lng": 126.9965889
   },
@@ -4475,6 +4965,8 @@
    "pyeong": "35",
    "households": 3410,
    "monitors": 13,
+   "unitprice": 15000,
+   "price": 195000,
    "lat": 37.5077803,
    "lng": 127.0144874
   },
@@ -4493,6 +4985,8 @@
    "pyeong": "33",
    "households": 82,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4777008,
    "lng": 126.982236
   },
@@ -4511,6 +5005,8 @@
    "pyeong": "46",
    "households": 588,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.4776707,
    "lng": 127.0050618
   },
@@ -4529,6 +5025,8 @@
    "pyeong": "33",
    "households": 384,
    "monitors": 5,
+   "unitprice": 15000,
+   "price": 75000,
    "lat": 37.4906486,
    "lng": 126.9838894
   },
@@ -4547,6 +5045,8 @@
    "pyeong": "45",
    "households": 64,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.4784553,
    "lng": 127.0040789
   },
@@ -4565,6 +5065,8 @@
    "pyeong": "7",
    "households": 74,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4842244,
    "lng": 126.9830686
   },
@@ -4583,6 +5085,8 @@
    "pyeong": "11",
    "households": 457,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4860048,
    "lng": 126.9843975
   },
@@ -4601,6 +5105,8 @@
    "pyeong": "32",
    "households": 303,
    "monitors": 16,
+   "unitprice": 15000,
+   "price": 240000,
    "lat": 37.472671,
    "lng": 126.9841977
   },
@@ -4619,6 +5125,8 @@
    "pyeong": "37",
    "households": 344,
    "monitors": 8,
+   "unitprice": 15000,
+   "price": 120000,
    "lat": 37.474828,
    "lng": 126.9913065
   },
@@ -4637,6 +5145,8 @@
    "pyeong": "16",
    "households": 189,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.4859043,
    "lng": 126.9838247
   },
@@ -4655,6 +5165,8 @@
    "pyeong": "32",
    "households": 496,
    "monitors": 8,
+   "unitprice": 15000,
+   "price": 120000,
    "lat": 37.4843355,
    "lng": 126.9984524
   },
@@ -4673,6 +5185,8 @@
    "pyeong": "32",
    "households": 66,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.4810501,
    "lng": 126.9947412
   },
@@ -4691,6 +5205,8 @@
    "pyeong": "34",
    "households": 481,
    "monitors": 17,
+   "unitprice": 15000,
+   "price": 255000,
    "lat": 37.4976246,
    "lng": 126.990016
   },
@@ -4709,6 +5225,8 @@
    "pyeong": "0",
    "households": 91,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.490661,
    "lng": 126.9911393
   },
@@ -4727,6 +5245,8 @@
    "pyeong": "46",
    "households": 138,
    "monitors": 7,
+   "unitprice": 15000,
+   "price": 105000,
    "lat": 37.4916658,
    "lng": 126.984769
   },
@@ -4745,6 +5265,8 @@
    "pyeong": "41",
    "households": 468,
    "monitors": 16,
+   "unitprice": 15000,
+   "price": 240000,
    "lat": 37.4744059,
    "lng": 126.983014
   },
@@ -4763,6 +5285,8 @@
    "pyeong": "33",
    "households": 130,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4865041,
    "lng": 126.9827053
   },
@@ -4781,6 +5305,8 @@
    "pyeong": "33",
    "households": 84,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.4866419,
    "lng": 126.983331
   },
@@ -4799,6 +5325,8 @@
    "pyeong": "34",
    "households": 461,
    "monitors": 16,
+   "unitprice": 15000,
+   "price": 240000,
    "lat": 37.4969966,
    "lng": 126.9847252
   },
@@ -4817,6 +5345,8 @@
    "pyeong": "32",
    "households": 316,
    "monitors": 8,
+   "unitprice": 15000,
+   "price": 120000,
    "lat": 37.4759034,
    "lng": 127.0024681
   },
@@ -4835,6 +5365,8 @@
    "pyeong": "12",
    "households": 60,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4826065,
    "lng": 126.9957672
   },
@@ -4853,6 +5385,8 @@
    "pyeong": "46",
    "households": 123,
    "monitors": 5,
+   "unitprice": 15000,
+   "price": 75000,
    "lat": 37.4918729,
    "lng": 126.9840372
   },
@@ -4871,6 +5405,8 @@
    "pyeong": "9",
    "households": 105,
    "monitors": 1,
+   "unitprice": 15000,
+   "price": 15000,
    "lat": 37.4879113,
    "lng": 127.0138131
   },
@@ -4889,6 +5425,8 @@
    "pyeong": "10",
    "households": 81,
    "monitors": 1,
+   "unitprice": 15000,
+   "price": 15000,
    "lat": 37.489501,
    "lng": 127.0298621
   },
@@ -4907,6 +5445,8 @@
    "pyeong": "56",
    "households": 589,
    "monitors": 5,
+   "unitprice": 15000,
+   "price": 75000,
    "lat": 37.4840899,
    "lng": 127.018219
   },
@@ -4925,6 +5465,8 @@
    "pyeong": "34",
    "households": 42,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4896718,
    "lng": 127.0230165
   },
@@ -4943,6 +5485,8 @@
    "pyeong": "44",
    "households": 56,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.4810402,
    "lng": 127.0111006
   },
@@ -4961,6 +5505,8 @@
    "pyeong": "52",
    "households": 79,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.4922132,
    "lng": 127.0177845
   },
@@ -4979,6 +5525,8 @@
    "pyeong": "26",
    "households": 116,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.4902709,
    "lng": 127.0059604
   },
@@ -4997,6 +5545,8 @@
    "pyeong": "21",
    "households": 126,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.4947251,
    "lng": 127.018293
   },
@@ -5015,6 +5565,8 @@
    "pyeong": "48",
    "households": 154,
    "monitors": 7,
+   "unitprice": 15000,
+   "price": 105000,
    "lat": 37.4812271,
    "lng": 127.0067158
   },
@@ -5033,6 +5585,8 @@
    "pyeong": "44",
    "households": 159,
    "monitors": 8,
+   "unitprice": 15000,
+   "price": 120000,
    "lat": 37.4863595,
    "lng": 127.0093698
   },
@@ -5051,6 +5605,8 @@
    "pyeong": "48",
    "households": 55,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4833675,
    "lng": 127.0142392
   },
@@ -5069,6 +5625,8 @@
    "pyeong": "19",
    "households": 320,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4934782,
    "lng": 127.015454
   },
@@ -5087,6 +5645,8 @@
    "pyeong": "63",
    "households": 83,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.4940346,
    "lng": 127.020825
   },
@@ -5105,6 +5665,8 @@
    "pyeong": "45",
    "households": 155,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4915771,
    "lng": 127.0083435
   },
@@ -5123,6 +5685,8 @@
    "pyeong": "28",
    "households": 117,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4861896,
    "lng": 127.0326405
   },
@@ -5141,6 +5705,8 @@
    "pyeong": "20",
    "households": 244,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4857833,
    "lng": 127.0154487
   },
@@ -5159,6 +5725,8 @@
    "pyeong": "33",
    "households": 280,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4968926,
    "lng": 127.0197225
   },
@@ -5177,6 +5745,8 @@
    "pyeong": "33",
    "households": 158,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.4873362,
    "lng": 127.0144792
   },
@@ -5195,6 +5765,8 @@
    "pyeong": "0",
    "households": 110,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4960317,
    "lng": 127.0201586
   },
@@ -5213,6 +5785,8 @@
    "pyeong": "31",
    "households": 60,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4858718,
    "lng": 127.0258351
   },
@@ -5231,6 +5805,8 @@
    "pyeong": "32",
    "households": 299,
    "monitors": 11,
+   "unitprice": 15000,
+   "price": 165000,
    "lat": 37.4931893,
    "lng": 127.0195059
   },
@@ -5249,6 +5825,8 @@
    "pyeong": "18",
    "households": 400,
    "monitors": 5,
+   "unitprice": 15000,
+   "price": 75000,
    "lat": 37.4939728,
    "lng": 127.0279283
   },
@@ -5267,6 +5845,8 @@
    "pyeong": "0",
    "households": 480,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.4872095,
    "lng": 127.0114685
   },
@@ -5285,6 +5865,8 @@
    "pyeong": "15",
    "households": 132,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4863194,
    "lng": 127.0150061
   },
@@ -5303,6 +5885,8 @@
    "pyeong": "0",
    "households": 174,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.496183,
    "lng": 127.0205002
   },
@@ -5321,6 +5905,8 @@
    "pyeong": "16",
    "households": 352,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.485567,
    "lng": 127.0148417
   },
@@ -5339,6 +5925,8 @@
    "pyeong": "0",
    "households": 47,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4815252,
    "lng": 127.0139995
   },
@@ -5357,6 +5945,8 @@
    "pyeong": "18",
    "households": 462,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.4865404,
    "lng": 127.0129446
   },
@@ -5375,6 +5965,8 @@
    "pyeong": "32",
    "households": 615,
    "monitors": 13,
+   "unitprice": 15000,
+   "price": 195000,
    "lat": 37.4973091,
    "lng": 127.0228821
   },
@@ -5393,6 +5985,8 @@
    "pyeong": "11",
    "households": 170,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4954989,
    "lng": 127.0207313
   },
@@ -5411,6 +6005,8 @@
    "pyeong": "11",
    "households": 176,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4880847,
    "lng": 127.0142926
   },
@@ -5429,6 +6025,8 @@
    "pyeong": "8",
    "households": 156,
    "monitors": 1,
+   "unitprice": 15000,
+   "price": 15000,
    "lat": 37.4856729,
    "lng": 127.0132509
   },
@@ -5447,6 +6045,8 @@
    "pyeong": "14",
    "households": 381,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.4903196,
    "lng": 127.0297806
   },
@@ -5465,6 +6065,8 @@
    "pyeong": "34",
    "households": 194,
    "monitors": 7,
+   "unitprice": 15000,
+   "price": 105000,
    "lat": 37.4826463,
    "lng": 127.0142012
   },
@@ -5483,6 +6085,8 @@
    "pyeong": "31",
    "households": 413,
    "monitors": 14,
+   "unitprice": 15000,
+   "price": 210000,
    "lat": 37.4869538,
    "lng": 127.0253274
   },
@@ -5501,6 +6105,8 @@
    "pyeong": "65",
    "households": 153,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.4908746,
    "lng": 127.0294966
   },
@@ -5519,6 +6125,8 @@
    "pyeong": "33",
    "households": 299,
    "monitors": 8,
+   "unitprice": 15000,
+   "price": 120000,
    "lat": 37.490905,
    "lng": 127.0201276
   },
@@ -5537,6 +6145,8 @@
    "pyeong": "47",
    "households": 68,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.4886887,
    "lng": 127.0053288
   },
@@ -5555,6 +6165,8 @@
    "pyeong": "13",
    "households": 540,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.4919942,
    "lng": 127.0288488
   },
@@ -5573,6 +6185,8 @@
    "pyeong": "15",
    "households": 70,
    "monitors": 1,
+   "unitprice": 15000,
+   "price": 15000,
    "lat": 37.4965629,
    "lng": 127.0136179
   },
@@ -5591,6 +6205,8 @@
    "pyeong": "32",
    "households": 590,
    "monitors": 18,
+   "unitprice": 15000,
+   "price": 270000,
    "lat": 37.4961359,
    "lng": 127.0185812
   },
@@ -5609,6 +6225,8 @@
    "pyeong": "9",
    "households": 269,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4871437,
    "lng": 127.0155949
   },
@@ -5627,6 +6245,8 @@
    "pyeong": "12",
    "households": 136,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4940811,
    "lng": 127.0162235
   },
@@ -5645,6 +6265,8 @@
    "pyeong": "38",
    "households": 264,
    "monitors": 7,
+   "unitprice": 15000,
+   "price": 105000,
    "lat": 37.4880616,
    "lng": 127.0076947
   },
@@ -5663,6 +6285,8 @@
    "pyeong": "25",
    "households": 390,
    "monitors": 7,
+   "unitprice": 15000,
+   "price": 105000,
    "lat": 37.4653464,
    "lng": 127.0362179
   },
@@ -5681,6 +6305,8 @@
    "pyeong": "32",
    "households": 1251,
    "monitors": 32,
+   "unitprice": 15000,
+   "price": 480000,
    "lat": 37.464692,
    "lng": 127.027889
   },
@@ -5699,6 +6325,8 @@
    "pyeong": "35",
    "households": 409,
    "monitors": 11,
+   "unitprice": 15000,
+   "price": 165000,
    "lat": 37.463928,
    "lng": 127.0260701
   },
@@ -5717,6 +6345,8 @@
    "pyeong": "23",
    "households": 509,
    "monitors": 13,
+   "unitprice": 15000,
+   "price": 195000,
    "lat": 37.4625986,
    "lng": 127.0249441
   },
@@ -5735,6 +6365,8 @@
    "pyeong": "47",
    "households": 382,
    "monitors": 11,
+   "unitprice": 15000,
+   "price": 165000,
    "lat": 37.4613949,
    "lng": 127.0261507
   },
@@ -5753,6 +6385,8 @@
    "pyeong": "25",
    "households": 275,
    "monitors": 7,
+   "unitprice": 15000,
+   "price": 105000,
    "lat": 37.4619149,
    "lng": 127.0230875
   },
@@ -5771,6 +6405,8 @@
    "pyeong": "0",
    "households": 237,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.459722,
    "lng": 127.0245981
   },
@@ -5789,6 +6425,8 @@
    "pyeong": "18",
    "households": 98,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.4564594,
    "lng": 127.0162572
   },
@@ -5807,6 +6445,8 @@
    "pyeong": "35",
    "households": 1082,
    "monitors": 29,
+   "unitprice": 15000,
+   "price": 435000,
    "lat": 37.4575219,
    "lng": 127.0181543
   },
@@ -5825,6 +6465,8 @@
    "pyeong": "0",
    "households": 984,
    "monitors": 13,
+   "unitprice": 15000,
+   "price": 195000,
    "lat": 37.470521,
    "lng": 127.0245279
   },
@@ -5843,6 +6485,8 @@
    "pyeong": "35",
    "households": 424,
    "monitors": 11,
+   "unitprice": 15000,
+   "price": 165000,
    "lat": 37.4584843,
    "lng": 127.0237749
   },
@@ -5861,6 +6505,8 @@
    "pyeong": "0",
    "households": 49,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.5129315,
    "lng": 127.0170247
   },
@@ -5879,6 +6525,8 @@
    "pyeong": "52",
    "households": 475,
    "monitors": 6,
+   "unitprice": 15000,
+   "price": 90000,
    "lat": 37.5184062,
    "lng": 127.0139661
   },
@@ -5897,6 +6545,8 @@
    "pyeong": "46",
    "households": 428,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.5186519,
    "lng": 127.0164413
   },
@@ -5915,6 +6565,8 @@
    "pyeong": "23",
    "households": 91,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.5173027,
    "lng": 127.0110745
   },
@@ -5933,6 +6585,8 @@
    "pyeong": "31",
    "households": 83,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.5082229,
    "lng": 127.009179
   },
@@ -5951,6 +6605,8 @@
    "pyeong": "46",
    "households": 320,
    "monitors": 11,
+   "unitprice": 15000,
+   "price": 165000,
    "lat": 37.5121974,
    "lng": 127.0085533
   },
@@ -5969,6 +6625,8 @@
    "pyeong": "34",
    "households": 330,
    "monitors": 12,
+   "unitprice": 15000,
+   "price": 180000,
    "lat": 37.5169968,
    "lng": 127.0136924
   },
@@ -5987,6 +6645,8 @@
    "pyeong": "34",
    "households": 607,
    "monitors": 12,
+   "unitprice": 15000,
+   "price": 180000,
    "lat": 37.5101693,
    "lng": 127.008408
   },
@@ -6005,6 +6665,8 @@
    "pyeong": "33",
    "households": 347,
    "monitors": 10,
+   "unitprice": 15000,
+   "price": 150000,
    "lat": 37.5142848,
    "lng": 127.0084378
   },
@@ -6023,6 +6685,8 @@
    "pyeong": "0",
    "households": 242,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.5141845,
    "lng": 127.0099731
   },
@@ -6041,6 +6705,8 @@
    "pyeong": "11",
    "households": 150,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.51574,
    "lng": 127.0173969
   },
@@ -6059,6 +6725,8 @@
    "pyeong": "33",
    "households": 595,
    "monitors": 4,
+   "unitprice": 15000,
+   "price": 60000,
    "lat": 37.5148668,
    "lng": 127.0074927
   },
@@ -6077,6 +6745,8 @@
    "pyeong": "32",
    "households": 991,
    "monitors": 22,
+   "unitprice": 15000,
+   "price": 330000,
    "lat": 37.5091171,
    "lng": 127.0105503
   },
@@ -6095,6 +6765,8 @@
    "pyeong": "23",
    "households": 166,
    "monitors": 3,
+   "unitprice": 15000,
+   "price": 45000,
    "lat": 37.5157622,
    "lng": 127.0136448
   },
@@ -6113,6 +6785,8 @@
    "pyeong": "32",
    "households": 107,
    "monitors": 5,
+   "unitprice": 15000,
+   "price": 75000,
    "lat": 37.5128085,
    "lng": 127.0166044
   },
@@ -6131,6 +6805,8 @@
    "pyeong": "19",
    "households": 49,
    "monitors": 1,
+   "unitprice": 15000,
+   "price": 15000,
    "lat": 37.506808,
    "lng": 127.0006442
   },
@@ -6149,6 +6825,8 @@
    "pyeong": "0",
    "households": 150,
    "monitors": 5,
+   "unitprice": 15000,
+   "price": 75000,
    "lat": 37.5132929,
    "lng": 127.0079451
   },
@@ -6167,6 +6845,8 @@
    "pyeong": "30",
    "households": 288,
    "monitors": 2,
+   "unitprice": 15000,
+   "price": 30000,
    "lat": 37.5192124,
    "lng": 127.0146681
   },
@@ -6185,6 +6865,8 @@
    "pyeong": "62",
    "households": 423,
    "monitors": 9,
+   "unitprice": 12000,
+   "price": 108000,
    "lat": 37.5177325,
    "lng": 127.1044332
   },
@@ -6203,6 +6885,8 @@
    "pyeong": "32",
    "households": 3402,
    "monitors": 41,
+   "unitprice": 12000,
+   "price": 492000,
    "lat": 37.5190012,
    "lng": 127.0986441
   },
@@ -6221,6 +6905,8 @@
    "pyeong": "64",
    "households": 400,
    "monitors": 7,
+   "unitprice": 12000,
+   "price": 84000,
    "lat": 37.5144273,
    "lng": 127.1006114
   },
@@ -6239,6 +6925,8 @@
    "pyeong": "28",
    "households": 84,
    "monitors": 2,
+   "unitprice": 12000,
+   "price": 24000,
    "lat": 37.5167558,
    "lng": 127.1054457
   },
@@ -6257,6 +6945,8 @@
    "pyeong": "49",
    "households": 120,
    "monitors": 5,
+   "unitprice": 12000,
+   "price": 60000,
    "lat": 37.5184626,
    "lng": 127.103457
   },
@@ -6275,6 +6965,8 @@
    "pyeong": "22",
    "households": 493,
    "monitors": 1,
+   "unitprice": 12000,
+   "price": 12000,
    "lat": 37.5168027,
    "lng": 127.1043832
   },
@@ -6293,6 +6985,8 @@
    "pyeong": "10",
    "households": 190,
    "monitors": 4,
+   "unitprice": 12000,
+   "price": 48000,
    "lat": 37.5108518,
    "lng": 127.0795358
   },
@@ -6311,6 +7005,8 @@
    "pyeong": "32",
    "households": 336,
    "monitors": 12,
+   "unitprice": 12000,
+   "price": 144000,
    "lat": 37.504029,
    "lng": 127.0853495
   },
@@ -6329,6 +7025,8 @@
    "pyeong": "33",
    "households": 3930,
    "monitors": 55,
+   "unitprice": 12000,
+   "price": 660000,
    "lat": 37.5157588,
    "lng": 127.0939386
   },
@@ -6347,6 +7045,8 @@
    "pyeong": "34",
    "households": 2678,
    "monitors": 12,
+   "unitprice": 12000,
+   "price": 144000,
    "lat": 37.5095709,
    "lng": 127.0949953
   },
@@ -6365,6 +7065,8 @@
    "pyeong": "9",
    "households": 298,
    "monitors": 4,
+   "unitprice": 12000,
+   "price": 48000,
    "lat": 37.5097446,
    "lng": 127.0855946
   },
@@ -6383,6 +7085,8 @@
    "pyeong": "31",
    "households": 1842,
    "monitors": 20,
+   "unitprice": 12000,
+   "price": 240000,
    "lat": 37.5066864,
    "lng": 127.0729687
   },
@@ -6401,6 +7105,8 @@
    "pyeong": "38",
    "households": 555,
    "monitors": 17,
+   "unitprice": 12000,
+   "price": 204000,
    "lat": 37.503174,
    "lng": 127.0828612
   },
@@ -6419,6 +7125,8 @@
    "pyeong": "33",
    "households": 3696,
    "monitors": 15,
+   "unitprice": 12000,
+   "price": 180000,
    "lat": 37.5098926,
    "lng": 127.0883234
   },
@@ -6437,6 +7145,8 @@
    "pyeong": "56",
    "households": 70,
    "monitors": 1,
+   "unitprice": 12000,
+   "price": 12000,
    "lat": 37.5047268,
    "lng": 127.0878242
   },
@@ -6455,6 +7165,8 @@
    "pyeong": "8",
    "households": 116,
    "monitors": 2,
+   "unitprice": 12000,
+   "price": 24000,
    "lat": 37.5112016,
    "lng": 127.0793214
   },
@@ -6473,6 +7185,8 @@
    "pyeong": "57",
    "households": 445,
    "monitors": 5,
+   "unitprice": 10000,
+   "price": 50000,
    "lat": 37.5202061,
    "lng": 126.9317999
   },
@@ -6491,6 +7205,8 @@
    "pyeong": "12",
    "households": 102,
    "monitors": 2,
+   "unitprice": 10000,
+   "price": 20000,
    "lat": 37.5293355,
    "lng": 126.9214915
   },
@@ -6509,6 +7225,8 @@
    "pyeong": "22",
    "households": 530,
    "monitors": 5,
+   "unitprice": 10000,
+   "price": 50000,
    "lat": 37.5298309,
    "lng": 126.9192656
   },
@@ -6527,6 +7245,8 @@
    "pyeong": "30",
    "households": 373,
    "monitors": 6,
+   "unitprice": 10000,
+   "price": 60000,
    "lat": 37.5265431,
    "lng": 126.9299916
   },
@@ -6545,6 +7265,8 @@
    "pyeong": "0",
    "households": 744,
    "monitors": 30,
+   "unitprice": 10000,
+   "price": 300000,
    "lat": 37.5204931,
    "lng": 126.9212577
   },
@@ -6563,6 +7285,8 @@
    "pyeong": "60",
    "households": 248,
    "monitors": 3,
+   "unitprice": 10000,
+   "price": 30000,
    "lat": 37.5185953,
    "lng": 126.9396296
   },
@@ -6581,6 +7305,8 @@
    "pyeong": "26",
    "households": 576,
    "monitors": 10,
+   "unitprice": 10000,
+   "price": 100000,
    "lat": 37.522325,
    "lng": 126.9337869
   },
@@ -6599,6 +7325,8 @@
    "pyeong": "78",
    "households": 98,
    "monitors": 3,
+   "unitprice": 10000,
+   "price": 30000,
    "lat": 37.5194537,
    "lng": 126.9386058
   },
@@ -6617,6 +7345,8 @@
    "pyeong": "60",
    "households": 240,
    "monitors": 3,
+   "unitprice": 10000,
+   "price": 30000,
    "lat": 37.5185953,
    "lng": 126.9396296
   },
@@ -6635,6 +7365,8 @@
    "pyeong": "29",
    "households": 312,
    "monitors": 4,
+   "unitprice": 10000,
+   "price": 40000,
    "lat": 37.5261021,
    "lng": 126.9326112
   },
@@ -6653,6 +7385,8 @@
    "pyeong": "29",
    "households": 577,
    "monitors": 15,
+   "unitprice": 10000,
+   "price": 150000,
    "lat": 37.5199758,
    "lng": 126.9247125
   },
@@ -6671,6 +7405,8 @@
    "pyeong": "48",
    "households": 329,
    "monitors": 9,
+   "unitprice": 10000,
+   "price": 90000,
    "lat": 37.5230399,
    "lng": 126.9308262
   },
@@ -6689,6 +7425,8 @@
    "pyeong": "47",
    "households": 1584,
    "monitors": 24,
+   "unitprice": 10000,
+   "price": 240000,
    "lat": 37.5207318,
    "lng": 126.9369717
   },
@@ -6707,6 +7445,8 @@
    "pyeong": "39",
    "households": 360,
    "monitors": 15,
+   "unitprice": 10000,
+   "price": 150000,
    "lat": 37.5189345,
    "lng": 126.9353372
   },
@@ -6725,6 +7465,8 @@
    "pyeong": "56",
    "households": 580,
    "monitors": 3,
+   "unitprice": 10000,
+   "price": 30000,
    "lat": 37.518272,
    "lng": 126.9260954
   },
@@ -6743,6 +7485,8 @@
    "pyeong": "20",
    "households": 427,
    "monitors": 6,
+   "unitprice": 10000,
+   "price": 60000,
    "lat": 37.5309294,
    "lng": 126.9210835
   },
@@ -6761,6 +7505,8 @@
    "pyeong": "48",
    "households": 588,
    "monitors": 19,
+   "unitprice": 10000,
+   "price": 190000,
    "lat": 37.5215706,
    "lng": 126.9323229
   },
@@ -6779,6 +7525,8 @@
    "pyeong": "17",
    "households": 376,
    "monitors": 4,
+   "unitprice": 10000,
+   "price": 40000,
    "lat": 37.5183424,
    "lng": 126.9329476
   },
@@ -6797,6 +7545,8 @@
    "pyeong": "32",
    "households": 1458,
    "monitors": 34,
+   "unitprice": 10000,
+   "price": 340000,
    "lat": 37.5383839,
    "lng": 126.9552549
   },
@@ -6815,6 +7565,8 @@
    "pyeong": "32",
    "households": 760,
    "monitors": 27,
+   "unitprice": 10000,
+   "price": 270000,
    "lat": 37.5250947,
    "lng": 126.9945534
   },
@@ -6833,6 +7585,8 @@
    "pyeong": "33",
    "households": 112,
    "monitors": 3,
+   "unitprice": 10000,
+   "price": 30000,
    "lat": 37.5373992,
    "lng": 126.9673254
   },
@@ -6851,6 +7605,8 @@
    "pyeong": "32",
    "households": 95,
    "monitors": 4,
+   "unitprice": 10000,
+   "price": 40000,
    "lat": 37.5384522,
    "lng": 126.9691754
   },
@@ -6869,6 +7625,8 @@
    "pyeong": "0",
    "households": 60,
    "monitors": 2,
+   "unitprice": 10000,
+   "price": 20000,
    "lat": 37.5388726,
    "lng": 126.9697907
   },
@@ -6887,6 +7645,8 @@
    "pyeong": "8",
    "households": 265,
    "monitors": 2,
+   "unitprice": 10000,
+   "price": 20000,
    "lat": 37.537155,
    "lng": 126.9683624
   },
@@ -6905,6 +7665,8 @@
    "pyeong": "43",
    "households": 418,
    "monitors": 12,
+   "unitprice": 10000,
+   "price": 120000,
    "lat": 37.5380163,
    "lng": 126.9702506
   },
@@ -6923,6 +7685,8 @@
    "pyeong": "24",
    "households": 242,
    "monitors": 8,
+   "unitprice": 10000,
+   "price": 80000,
    "lat": 37.5246394,
    "lng": 127.0003781
   },
@@ -6941,6 +7705,8 @@
    "pyeong": "30",
    "households": 226,
    "monitors": 9,
+   "unitprice": 10000,
+   "price": 90000,
    "lat": 37.5258235,
    "lng": 127.0019692
   },
@@ -6959,6 +7725,8 @@
    "pyeong": "32",
    "households": 1102,
    "monitors": 20,
+   "unitprice": 10000,
+   "price": 200000,
    "lat": 37.5347624,
    "lng": 126.9504284
   },
@@ -6977,6 +7745,8 @@
    "pyeong": "25",
    "households": 289,
    "monitors": 4,
+   "unitprice": 10000,
+   "price": 40000,
    "lat": 37.5357434,
    "lng": 126.9506033
   },
@@ -6995,6 +7765,8 @@
    "pyeong": "33",
    "households": 867,
    "monitors": 8,
+   "unitprice": 10000,
+   "price": 80000,
    "lat": 37.5362392,
    "lng": 126.9664928
   },
@@ -7013,6 +7785,8 @@
    "pyeong": "23",
    "households": 96,
    "monitors": 2,
+   "unitprice": 10000,
+   "price": 20000,
    "lat": 37.5400171,
    "lng": 126.9868242
   },
@@ -7031,6 +7805,8 @@
    "pyeong": "35",
    "households": 559,
    "monitors": 9,
+   "unitprice": 10000,
+   "price": 90000,
    "lat": 37.540384,
    "lng": 126.9701149
   },
@@ -7049,6 +7825,8 @@
    "pyeong": "40",
    "households": 410,
    "monitors": 2,
+   "unitprice": 10000,
+   "price": 20000,
    "lat": 37.5383556,
    "lng": 126.9678941
   },
@@ -7067,6 +7845,8 @@
    "pyeong": "17",
    "households": 111,
    "monitors": 2,
+   "unitprice": 10000,
+   "price": 20000,
    "lat": 37.5389959,
    "lng": 126.9696493
   },
@@ -7085,6 +7865,8 @@
    "pyeong": "13",
    "households": 50,
    "monitors": 1,
+   "unitprice": 10000,
+   "price": 10000,
    "lat": 37.5391106,
    "lng": 126.9698038
   },
@@ -7103,6 +7885,8 @@
    "pyeong": "20",
    "households": 161,
    "monitors": 2,
+   "unitprice": 10000,
+   "price": 20000,
    "lat": 37.5333025,
    "lng": 126.9576499
   },
@@ -7121,6 +7905,8 @@
    "pyeong": "34",
    "households": 300,
    "monitors": 6,
+   "unitprice": 10000,
+   "price": 60000,
    "lat": 37.5339905,
    "lng": 126.9485601
   },
@@ -7139,6 +7925,8 @@
    "pyeong": "65",
    "households": 656,
    "monitors": 2,
+   "unitprice": 10000,
+   "price": 20000,
    "lat": 37.5195637,
    "lng": 126.9706876
   },
@@ -7157,6 +7945,8 @@
    "pyeong": "27",
    "households": 340,
    "monitors": 8,
+   "unitprice": 10000,
+   "price": 80000,
    "lat": 37.5273317,
    "lng": 126.9538338
   },
@@ -7175,6 +7965,8 @@
    "pyeong": "38",
    "households": 638,
    "monitors": 12,
+   "unitprice": 10000,
+   "price": 120000,
    "lat": 37.5247809,
    "lng": 126.9556552
   },
@@ -7193,6 +7985,8 @@
    "pyeong": "33",
    "households": 499,
    "monitors": 11,
+   "unitprice": 10000,
+   "price": 110000,
    "lat": 37.5239778,
    "lng": 126.9580183
   },
@@ -7211,6 +8005,8 @@
    "pyeong": "25",
    "households": 243,
    "monitors": 5,
+   "unitprice": 10000,
+   "price": 50000,
    "lat": 37.5216974,
    "lng": 126.9688234
   },
@@ -7229,6 +8025,8 @@
    "pyeong": "31",
    "households": 516,
    "monitors": 13,
+   "unitprice": 10000,
+   "price": 130000,
    "lat": 37.5231488,
    "lng": 126.9584077
   },
@@ -7247,6 +8045,8 @@
    "pyeong": "34",
    "households": 252,
    "monitors": 6,
+   "unitprice": 10000,
+   "price": 60000,
    "lat": 37.5185476,
    "lng": 126.9757027
   },
@@ -7265,6 +8065,8 @@
    "pyeong": "82",
    "households": 170,
    "monitors": 2,
+   "unitprice": 10000,
+   "price": 20000,
    "lat": 37.5349374,
    "lng": 126.9476248
   },
@@ -7283,6 +8085,8 @@
    "pyeong": "8",
    "households": 182,
    "monitors": 2,
+   "unitprice": 10000,
+   "price": 20000,
    "lat": 37.5419059,
    "lng": 126.9703458
   },
@@ -7301,6 +8105,8 @@
    "pyeong": "0",
    "households": 350,
    "monitors": 2,
+   "unitprice": 10000,
+   "price": 20000,
    "lat": 37.5331066,
    "lng": 126.9749988
   },
@@ -7319,6 +8125,8 @@
    "pyeong": "50",
    "households": 160,
    "monitors": 7,
+   "unitprice": 10000,
+   "price": 70000,
    "lat": 37.5370975,
    "lng": 126.973093
   },
@@ -7337,6 +8145,8 @@
    "pyeong": "25",
    "households": 995,
    "monitors": 8,
+   "unitprice": 10000,
+   "price": 80000,
    "lat": 37.536532,
    "lng": 126.9729276
   },
@@ -7355,6 +8165,8 @@
    "pyeong": "18",
    "households": 187,
    "monitors": 2,
+   "unitprice": 10000,
+   "price": 20000,
    "lat": 37.5302767,
    "lng": 126.9684257
   },
@@ -7373,6 +8185,8 @@
    "pyeong": "20",
    "households": 420,
    "monitors": 4,
+   "unitprice": 10000,
+   "price": 40000,
    "lat": 37.5315734,
    "lng": 126.9691072
   },
@@ -7391,6 +8205,8 @@
    "pyeong": "36",
    "households": 991,
    "monitors": 13,
+   "unitprice": 10000,
+   "price": 130000,
    "lat": 37.5323099,
    "lng": 126.9696419
   },
@@ -7409,6 +8225,8 @@
    "pyeong": "41",
    "households": 56,
    "monitors": 2,
+   "unitprice": 10000,
+   "price": 20000,
    "lat": 37.5333969,
    "lng": 126.9674
   },
@@ -7427,6 +8245,8 @@
    "pyeong": "15",
    "households": 83,
    "monitors": 1,
+   "unitprice": 10000,
+   "price": 10000,
    "lat": 37.5250472,
    "lng": 126.9644672
   },
@@ -7445,6 +8265,8 @@
    "pyeong": "16",
    "households": 176,
    "monitors": 3,
+   "unitprice": 10000,
+   "price": 30000,
    "lat": 37.5321421,
    "lng": 126.9568191
   },
@@ -7463,6 +8285,8 @@
    "pyeong": "20",
    "households": 290,
    "monitors": 4,
+   "unitprice": 10000,
+   "price": 40000,
    "lat": 37.5313839,
    "lng": 126.955346
   },
@@ -7481,6 +8305,8 @@
    "pyeong": "31",
    "households": 144,
    "monitors": 6,
+   "unitprice": 10000,
+   "price": 60000,
    "lat": 37.5252638,
    "lng": 126.9597214
   },
@@ -7499,6 +8325,8 @@
    "pyeong": "0",
    "households": 93,
    "monitors": 1,
+   "unitprice": 10000,
+   "price": 10000,
    "lat": 37.5342707,
    "lng": 127.0086312
   },
@@ -7517,6 +8345,8 @@
    "pyeong": "21",
    "households": 280,
    "monitors": 4,
+   "unitprice": 10000,
+   "price": 40000,
    "lat": 37.5324376,
    "lng": 127.0071458
   },
@@ -7535,6 +8365,8 @@
    "pyeong": "25",
    "households": 199,
    "monitors": 6,
+   "unitprice": 10000,
+   "price": 60000,
    "lat": 37.5403276,
    "lng": 126.9596763
   },
@@ -7553,6 +8385,8 @@
    "pyeong": "0",
    "households": 384,
    "monitors": 14,
+   "unitprice": 10000,
+   "price": 140000,
    "lat": 37.547587,
    "lng": 126.962988
   },
@@ -7571,7 +8405,8 @@
    "pyeong": "62,68",
    "households": 199,
    "monitors": 7,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 105000,
    "size": "25인치",
    "lat": 37.4875435,
    "lng": 126.999246
@@ -7591,7 +8426,8 @@
    "pyeong": "16~32",
    "households": 208,
    "monitors": 2,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 30000,
    "size": "25인치",
    "lat": 37.5181121,
    "lng": 127.0185046
@@ -7611,7 +8447,8 @@
    "pyeong": "12~28",
    "households": 393,
    "monitors": 8,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 80000,
    "size": "25인치",
    "lat": 37.5344869,
    "lng": 127.008195
@@ -7631,7 +8468,8 @@
    "pyeong": "26,34,45",
    "households": 35,
    "monitors": 3,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 30000,
    "size": "25인치",
    "lat": 37.5315849,
    "lng": 127.0070043
@@ -7651,7 +8489,8 @@
    "pyeong": "18~36",
    "households": 610,
    "monitors": 6,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 90000,
    "size": "25인치",
    "lat": 37.486913,
    "lng": 127.0145094
@@ -7671,7 +8510,8 @@
    "pyeong": "평형X",
    "households": 160,
    "monitors": 2,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 30000,
    "size": "25인치",
    "lat": 37.5066005,
    "lng": 127.0338083
@@ -7691,7 +8531,8 @@
    "pyeong": "46~67",
    "households": 218,
    "monitors": 8,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 80000,
    "size": "25인치",
    "lat": 37.5175453,
    "lng": 126.9273174
@@ -7711,7 +8552,8 @@
    "pyeong": "평형X",
    "households": 0,
    "monitors": 2,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 30000,
    "size": "25인치",
    "lat": 37.4986,
    "lng": 127.0308733
@@ -7731,7 +8573,8 @@
    "pyeong": "57",
    "households": 161,
    "monitors": 6,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 90000,
    "size": "25인치",
    "lat": 37.4792504,
    "lng": 127.0071851
@@ -7751,7 +8594,8 @@
    "pyeong": "62~102",
    "households": 645,
    "monitors": 17,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 255000,
    "size": "25인치",
    "lat": 37.4828044,
    "lng": 127.0160719
@@ -7771,7 +8615,8 @@
    "pyeong": "77~127",
    "households": 136,
    "monitors": 3,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 45000,
    "size": "25인치",
    "lat": 37.4828044,
    "lng": 127.0160719
@@ -7791,7 +8636,8 @@
    "pyeong": "15,21",
    "households": 503,
    "monitors": 5,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 75000,
    "size": "25인치",
    "lat": 37.5068487,
    "lng": 127.0594706
@@ -7811,7 +8657,8 @@
    "pyeong": "49,54,58,61,70,72,74",
    "households": 490,
    "monitors": 16,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 240000,
    "size": "25인치",
    "lat": 37.4882256,
    "lng": 127.0511302
@@ -7831,7 +8678,8 @@
    "pyeong": "24,33,35,48,50",
    "households": 834,
    "monitors": 19,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 190000,
    "size": "25인치",
    "lat": 37.5224265,
    "lng": 126.9706914
@@ -7851,7 +8699,8 @@
    "pyeong": "25,38,76,115",
    "households": 528,
    "monitors": 14,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 140000,
    "size": "25인치",
    "lat": 37.5257581,
    "lng": 126.9187147
@@ -7871,7 +8720,8 @@
    "pyeong": "16,25",
    "households": 155,
    "monitors": 2,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 30000,
    "size": "25인치",
    "lat": 37.4940339,
    "lng": 127.0282402
@@ -7891,7 +8741,8 @@
    "pyeong": "27",
    "households": 314,
    "monitors": 8,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 120000,
    "size": "25인치",
    "lat": 37.4882256,
    "lng": 127.0511302
@@ -7911,7 +8762,8 @@
    "pyeong": "30,42,43,54",
    "households": 58,
    "monitors": 7,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 105000,
    "size": "25인치",
    "lat": 37.5165899,
    "lng": 127.0402809
@@ -7931,7 +8783,8 @@
    "pyeong": "48,57",
    "households": 77,
    "monitors": 3,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 45000,
    "size": "25인치",
    "lat": 37.4787795,
    "lng": 127.0077061
@@ -7951,7 +8804,8 @@
    "pyeong": "26~52",
    "households": 476,
    "monitors": 13,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 195000,
    "size": "25인치",
    "lat": 37.4966436,
    "lng": 127.0483433
@@ -7971,7 +8825,8 @@
    "pyeong": "평형X",
    "households": 0,
    "monitors": 2,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 30000,
    "size": "25인치",
    "lat": 37.503206,
    "lng": 127.0493328
@@ -7991,7 +8846,8 @@
    "pyeong": "15",
    "households": 160,
    "monitors": 4,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 60000,
    "size": "25인치",
    "lat": 37.4921576,
    "lng": 127.030983
@@ -8011,7 +8867,8 @@
    "pyeong": "26,33,43",
    "households": 1281,
    "monitors": 22,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 220000,
    "size": "25인치",
    "lat": 37.6189661,
    "lng": 127.0624861
@@ -8031,7 +8888,8 @@
    "pyeong": "22~50",
    "households": 1572,
    "monitors": 25,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 375000,
    "size": "25인치",
    "lat": 37.5094382,
    "lng": 127.0011826
@@ -8051,7 +8909,8 @@
    "pyeong": "27~31",
    "households": 848,
    "monitors": 30,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 450000,
    "size": "25인치",
    "lat": 37.4748734,
    "lng": 127.031323
@@ -8071,7 +8930,8 @@
    "pyeong": "16~35",
    "households": 407,
    "monitors": 13,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 195000,
    "size": "25인치",
    "lat": 37.46233,
    "lng": 127.1020895
@@ -8091,7 +8951,8 @@
    "pyeong": "12~30",
    "households": 180,
    "monitors": 3,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 45000,
    "size": "25인치",
    "lat": 37.5044278,
    "lng": 127.047249
@@ -8111,7 +8972,8 @@
    "pyeong": "22~36",
    "households": 1339,
    "monitors": 36,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 540000,
    "size": "25인치",
    "lat": 37.4711594,
    "lng": 127.0884362
@@ -8131,7 +8993,8 @@
    "pyeong": "33~45",
    "households": 99,
    "monitors": 4,
-   "unit": 12000,
+   "unitprice": 12000,
+   "price": 48000,
    "size": "25인치",
    "lat": 37.5174845,
    "lng": 127.1034449
@@ -8151,7 +9014,8 @@
    "pyeong": "33~55",
    "households": 405,
    "monitors": 0,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 0,
    "size": "25인치",
    "lat": 37.4839674,
    "lng": 127.0560484
@@ -8171,7 +9035,8 @@
    "pyeong": "29~59",
    "households": 678,
    "monitors": 26,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 390000,
    "size": "25인치",
    "lat": 37.4848777,
    "lng": 127.0542279
@@ -8191,7 +9056,8 @@
    "pyeong": "25~75",
    "households": 744,
    "monitors": 22,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 330000,
    "size": "25인치",
    "lat": 37.4838128,
    "lng": 126.9846676
@@ -8211,7 +9077,8 @@
    "pyeong": "70~83",
    "households": 192,
    "monitors": 7,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 105000,
    "size": "25인치",
    "lat": 37.4944065,
    "lng": 126.9915239
@@ -8231,7 +9098,8 @@
    "pyeong": "17~33",
    "households": 326,
    "monitors": 6,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 60000,
    "size": "25인치",
    "lat": 37.5265371,
    "lng": 126.9181067
@@ -8251,7 +9119,8 @@
    "pyeong": "24~34",
    "households": 809,
    "monitors": 32,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 480000,
    "size": "25인치",
    "lat": 37.4668115,
    "lng": 127.1028005
@@ -8271,7 +9140,8 @@
    "pyeong": "23,31",
    "households": 738,
    "monitors": 20,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 300000,
    "size": "25인치",
    "lat": 37.4979675,
    "lng": 127.0474823
@@ -8291,7 +9161,8 @@
    "pyeong": "23~33",
    "households": 233,
    "monitors": 8,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 80000,
    "size": "25인치",
    "lat": 37.6316816,
    "lng": 127.0437559
@@ -8311,7 +9182,8 @@
    "pyeong": "37~57",
    "households": 310,
    "monitors": 8,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 80000,
    "size": "25인치",
    "lat": 37.536532,
    "lng": 126.9729276
@@ -8331,7 +9203,8 @@
    "pyeong": "17~31",
    "households": 1944,
    "monitors": 26,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 260000,
    "size": "25인치",
    "lat": 37.6662042,
    "lng": 127.0555901
@@ -8351,7 +9224,8 @@
    "pyeong": "41~92",
    "households": 406,
    "monitors": 8,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 80000,
    "size": "25인치",
    "lat": 37.5202406,
    "lng": 126.9264067
@@ -8371,7 +9245,8 @@
    "pyeong": "35~39",
    "households": 1020,
    "monitors": 35,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 525000,
    "size": "25인치",
    "lat": 37.4739193,
    "lng": 127.0941233
@@ -8391,7 +9266,8 @@
    "pyeong": "23~41",
    "households": 195,
    "monitors": 10,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 100000,
    "size": "25인치",
    "lat": 37.5365411,
    "lng": 126.9588813
@@ -8411,7 +9287,8 @@
    "pyeong": "29~43",
    "households": 41,
    "monitors": 2,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 30000,
    "size": "25인치",
    "lat": 37.5207561,
    "lng": 127.0461965
@@ -8431,7 +9308,8 @@
    "pyeong": "30,40",
    "households": 476,
    "monitors": 17,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 255000,
    "size": "25인치",
    "lat": 37.5004649,
    "lng": 127.0694618
@@ -8451,7 +9329,8 @@
    "pyeong": "14~32",
    "households": 210,
    "monitors": 4,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 60000,
    "size": "25인치",
    "lat": 37.4663621,
    "lng": 127.1007309
@@ -8471,7 +9350,8 @@
    "pyeong": "23~51",
    "households": 764,
    "monitors": 25,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 375000,
    "size": "25인치",
    "lat": 37.5015668,
    "lng": 127.0179339
@@ -8491,7 +9371,8 @@
    "pyeong": "18",
    "households": 691,
    "monitors": 8,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 80000,
    "size": "25인치",
    "lat": 37.62453,
    "lng": 127.0879092
@@ -8511,7 +9392,8 @@
    "pyeong": "31~39",
    "households": 198,
    "monitors": 7,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 70000,
    "size": "25인치",
    "lat": 37.6249916,
    "lng": 127.0808271
@@ -8531,7 +9413,8 @@
    "pyeong": "23,31,32",
    "households": 88,
    "monitors": 3,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 30000,
    "size": "25인치",
    "lat": 37.6584962,
    "lng": 127.0759543
@@ -8551,7 +9434,8 @@
    "pyeong": "24~142",
    "households": 255,
    "monitors": 7,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 105000,
    "size": "25인치",
    "lat": 37.4769242,
    "lng": 127.0448131
@@ -8571,7 +9455,8 @@
    "pyeong": "26,34",
    "households": 100,
    "monitors": 2,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 20000,
    "size": "25인치",
    "lat": 37.658469,
    "lng": 127.0748421
@@ -8591,7 +9476,8 @@
    "pyeong": "25~48",
    "households": 250,
    "monitors": 6,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 90000,
    "size": "25인치",
    "lat": 37.5109833,
    "lng": 127.006075
@@ -8611,7 +9497,8 @@
    "pyeong": "30,42",
    "households": 364,
    "monitors": 13,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 195000,
    "size": "25인치",
    "lat": 37.4993114,
    "lng": 127.0703387
@@ -8631,7 +9518,8 @@
    "pyeong": "13,16",
    "households": 32,
    "monitors": 2,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 30000,
    "size": "25인치",
    "lat": 37.5006582,
    "lng": 127.0519604
@@ -8651,7 +9539,8 @@
    "pyeong": "25,32",
    "households": 154,
    "monitors": 4,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 40000,
    "size": "25인치",
    "lat": 37.6298367,
    "lng": 127.0449146
@@ -8671,7 +9560,8 @@
    "pyeong": "27,33,43",
    "households": 174,
    "monitors": 4,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 40000,
    "size": "25인치",
    "lat": 37.6603424,
    "lng": 127.0657819
@@ -8691,7 +9581,8 @@
    "pyeong": "25,30",
    "households": 348,
    "monitors": 10,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 100000,
    "size": "25인치",
    "lat": 37.6667842,
    "lng": 127.067298
@@ -8711,7 +9602,8 @@
    "pyeong": "45,53,63",
    "households": 35,
    "monitors": 3,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 45000,
    "size": "25인치",
    "lat": 37.4797956,
    "lng": 126.9955326
@@ -8731,7 +9623,8 @@
    "pyeong": "-",
    "households": 0,
    "monitors": 2,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 30000,
    "size": "25인치",
    "lat": 37.4966558,
    "lng": 127.0524141
@@ -8751,7 +9644,8 @@
    "pyeong": "17,21,25",
    "households": 2433,
    "monitors": 28,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 280000,
    "size": "25인치",
    "lat": 37.643678,
    "lng": 127.0661074
@@ -8771,7 +9665,8 @@
    "pyeong": "(주소오류)",
    "households": 42,
    "monitors": 1,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 15000,
    "size": "25인치",
    "lat": 37.4867119,
    "lng": 127.010808
@@ -8791,7 +9686,8 @@
    "pyeong": "25,33,41,44",
    "households": 123,
    "monitors": 3,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 30000,
    "size": "25인치",
    "lat": 37.5229532,
    "lng": 126.9913398
@@ -8811,7 +9707,8 @@
    "pyeong": "23,32,44,53,56",
    "households": 274,
    "monitors": 8,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 80000,
    "size": "25인치",
    "lat": 37.6718612,
    "lng": 127.056796
@@ -8831,7 +9728,8 @@
    "pyeong": "31,42",
    "households": 146,
    "monitors": 3,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 30000,
    "size": "25인치",
    "lat": 37.5340516,
    "lng": 126.9706383
@@ -8851,7 +9749,8 @@
    "pyeong": "17,26",
    "households": 135,
    "monitors": 2,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 30000,
    "size": "25인치",
    "lat": 37.4667896,
    "lng": 127.1007772
@@ -8871,7 +9770,8 @@
    "pyeong": "23,33,43",
    "households": 363,
    "monitors": 9,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 90000,
    "size": "25인치",
    "lat": 37.6286387,
    "lng": 127.0727465
@@ -8891,7 +9791,8 @@
    "pyeong": "31,46,54,68",
    "households": 1326,
    "monitors": 51,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 510000,
    "size": "25인치",
    "lat": 37.5183121,
    "lng": 126.9872846
@@ -8911,7 +9812,8 @@
    "pyeong": "12,24,25,33,38,48",
    "households": 5563,
    "monitors": 119,
-   "unit": 12000,
+   "unitprice": 12000,
+   "price": 1428000,
    "size": "25인치",
    "lat": 37.5133934,
    "lng": 127.086817
@@ -8931,7 +9833,8 @@
    "pyeong": "48~75",
    "households": 60,
    "monitors": 2,
-   "unit": 12000,
+   "unitprice": 12000,
+   "price": 24000,
    "size": "25인치",
    "lat": 37.515334,
    "lng": 127.0995586
@@ -8951,7 +9854,8 @@
    "pyeong": "40,48",
    "households": 498,
    "monitors": 18,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 180000,
    "size": "25인치",
    "lat": 37.6403888,
    "lng": 127.0751819
@@ -8971,7 +9875,8 @@
    "pyeong": "55~58",
    "households": 98,
    "monitors": 3,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 30000,
    "size": "25인치",
    "lat": 37.5189555,
    "lng": 126.9390436
@@ -8991,7 +9896,8 @@
    "pyeong": "24,33,38,47",
    "households": 596,
    "monitors": 22,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 330000,
    "size": "25인치",
    "lat": 37.5075999,
    "lng": 127.0028246
@@ -9011,7 +9917,8 @@
    "pyeong": "21,23,32,40",
    "households": 130,
    "monitors": 3,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 30000,
    "size": "25인치",
    "lat": 37.6237463,
    "lng": 127.0788245
@@ -9031,7 +9938,8 @@
    "pyeong": "42,47",
    "households": 169,
    "monitors": 19,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 285000,
    "size": "25인치",
    "lat": 37.4697106,
    "lng": 127.1105873
@@ -9051,7 +9959,8 @@
    "pyeong": "31",
    "households": 496,
    "monitors": 17,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 170000,
    "size": "25인치",
    "lat": 37.6715073,
    "lng": 127.0533003
@@ -9071,7 +9980,8 @@
    "pyeong": "31",
    "households": 397,
    "monitors": 16,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 160000,
    "size": "25인치",
    "lat": 37.6728189,
    "lng": 127.0595536
@@ -9091,7 +10001,8 @@
    "pyeong": "20,29",
    "households": 46,
    "monitors": 1,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 15000,
    "size": "25인치",
    "lat": 37.5174724,
    "lng": 127.0440841
@@ -9111,7 +10022,8 @@
    "pyeong": "33,36,45",
    "households": 251,
    "monitors": 6,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 60000,
    "size": "25인치",
    "lat": 37.6566871,
    "lng": 127.0712735
@@ -9131,7 +10043,8 @@
    "pyeong": "6,9,12,14,18",
    "households": 1837,
    "monitors": 34,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 510000,
    "size": "25인치",
    "lat": 37.488672,
    "lng": 127.0764569
@@ -9151,7 +10064,8 @@
    "pyeong": "33,44",
    "households": 368,
    "monitors": 10,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 150000,
    "size": "25인치",
    "lat": 37.5095777,
    "lng": 127.0389463
@@ -9171,7 +10085,8 @@
    "pyeong": "26,33,40,47,52,55",
    "households": 421,
    "monitors": 13,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 195000,
    "size": "25인치",
    "lat": 37.4928414,
    "lng": 127.02517
@@ -9191,7 +10106,8 @@
    "pyeong": "31,38",
    "households": 492,
    "monitors": 19,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 190000,
    "size": "25인치",
    "lat": 37.6520525,
    "lng": 127.0676312
@@ -9211,7 +10127,8 @@
    "pyeong": "34",
    "households": 538,
    "monitors": 18,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 180000,
    "size": "25인치",
    "lat": 37.6597904,
    "lng": 127.057275
@@ -9231,7 +10148,8 @@
    "pyeong": "27,29,32",
    "households": 211,
    "monitors": 12,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 120000,
    "size": "25인치",
    "lat": 37.6486535,
    "lng": 127.084808
@@ -9251,7 +10169,8 @@
    "pyeong": "23,32,44",
    "households": 174,
    "monitors": 5,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 50000,
    "size": "25인치",
    "lat": 37.62299,
    "lng": 127.0713804
@@ -9271,7 +10190,8 @@
    "pyeong": "30,31,32,",
    "households": 199,
    "monitors": 8,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 80000,
    "size": "25인치",
    "lat": 37.6295523,
    "lng": 127.0459795
@@ -9291,7 +10211,8 @@
    "pyeong": "14,15,17,18,19,20,21,23,24,25,27",
    "households": 440,
    "monitors": 4,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 60000,
    "size": "25인치",
    "lat": 37.4846962,
    "lng": 127.0170065
@@ -9311,7 +10232,8 @@
    "pyeong": "26,31,44",
    "households": 1320,
    "monitors": 44,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 440000,
    "size": "25인치",
    "lat": 37.6366152,
    "lng": 127.0656682
@@ -9331,7 +10253,8 @@
    "pyeong": "31,42",
    "households": 126,
    "monitors": 5,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 75000,
    "size": "25인치",
    "lat": 37.485342,
    "lng": 127.0264696
@@ -9351,7 +10274,8 @@
    "pyeong": "34~49",
    "households": 288,
    "monitors": 6,
-   "unit": 12000,
+   "unitprice": 12000,
+   "price": 72000,
    "size": "25인치",
    "lat": 37.5174845,
    "lng": 127.1034449
@@ -9371,7 +10295,8 @@
    "pyeong": "24,35",
    "households": 358,
    "monitors": 10,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 150000,
    "size": "25인치",
    "lat": 37.4594791,
    "lng": 127.0251711
@@ -9391,7 +10316,8 @@
    "pyeong": "16~30",
    "households": 1980,
    "monitors": 41,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 410000,
    "size": "25인치",
    "lat": 37.636219,
    "lng": 127.0639372
@@ -9411,7 +10337,8 @@
    "pyeong": "32",
    "households": 1102,
    "monitors": 5,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 50000,
    "size": "25인치",
    "lat": 37.53571,
    "lng": 126.9520809
@@ -9431,7 +10358,8 @@
    "pyeong": "32",
    "households": 1458,
    "monitors": 6,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 60000,
    "size": "25인치",
    "lat": 37.5396824,
    "lng": 126.9562687
@@ -9451,7 +10379,8 @@
    "pyeong": "21,15",
    "households": 48,
    "monitors": 2,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 30000,
    "size": "25인치",
    "lat": 37.5074127,
    "lng": 127.0381921
@@ -9471,7 +10400,8 @@
    "pyeong": "33,49,51",
    "households": 206,
    "monitors": 5,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 75000,
    "size": "25인치",
    "lat": 37.4860318,
    "lng": 126.9830837
@@ -9491,7 +10421,8 @@
    "pyeong": "48,49,54,56,63,68,78,92",
    "households": 356,
    "monitors": 14,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 140000,
    "size": "25인치",
    "lat": 37.5513775,
    "lng": 126.9736403
@@ -9511,7 +10442,8 @@
    "pyeong": "24,25,29,30,34,36,40,41,44,53,56,57,60,61",
    "households": 69,
    "monitors": 4,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 40000,
    "size": "25인치",
    "lat": 37.5258873,
    "lng": 126.969898
@@ -9531,7 +10463,8 @@
    "pyeong": "32,43",
    "households": 468,
    "monitors": 15,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 150000,
    "size": "25인치",
    "lat": 37.6796412,
    "lng": 127.0567647
@@ -9551,7 +10484,8 @@
    "pyeong": "47,56,62,69,79",
    "households": 202,
    "monitors": 3,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 30000,
    "size": "25인치",
    "lat": 37.518272,
    "lng": 126.9260954
@@ -9571,7 +10505,8 @@
    "pyeong": "42,48",
    "households": 492,
    "monitors": 17,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 170000,
    "size": "25인치",
    "lat": 37.6819565,
    "lng": 127.0564054
@@ -9591,7 +10526,8 @@
    "pyeong": "22,26",
    "households": 597,
    "monitors": 15,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 225000,
    "size": "25인치",
    "lat": 37.4769648,
    "lng": 127.1071081
@@ -9611,7 +10547,8 @@
    "pyeong": "10,13,17,21",
    "households": 1065,
    "monitors": 24,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 360000,
    "size": "25인치",
    "lat": 37.4703975,
    "lng": 127.0908947
@@ -9631,7 +10568,8 @@
    "pyeong": "22,24,29,33,34,44,47,48,49,51,61,65",
    "households": 758,
    "monitors": 29,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 435000,
    "size": "25인치",
    "lat": 37.475582,
    "lng": 126.999769
@@ -9651,7 +10589,8 @@
    "pyeong": "34,39,44,50,51",
    "households": 1129,
    "monitors": 24,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 360000,
    "size": "25인치",
    "lat": 37.4984929,
    "lng": 127.0190605
@@ -9671,7 +10610,8 @@
    "pyeong": "23,32,33,44,46,54",
    "households": 768,
    "monitors": 17,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 255000,
    "size": "25인치",
    "lat": 37.4947317,
    "lng": 127.0545722
@@ -9691,7 +10631,8 @@
    "pyeong": "23,27,28,30,32",
    "households": 532,
    "monitors": 19,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 285000,
    "size": "25인치",
    "lat": 37.4920292,
    "lng": 127.0775192
@@ -9711,7 +10652,8 @@
    "pyeong": "55,61,75,86",
    "households": 117,
    "monitors": 5,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 75000,
    "size": "25인치",
    "lat": 37.4924775,
    "lng": 127.0355718
@@ -9731,7 +10673,8 @@
    "pyeong": "34,43,44",
    "households": 188,
    "monitors": 6,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 60000,
    "size": "25인치",
    "lat": 37.5385969,
    "lng": 126.9703492
@@ -9751,7 +10694,8 @@
    "pyeong": "16,25,30,39,41,42,43,46,47,54,55,56",
    "households": 115,
    "monitors": 3,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 30000,
    "size": "25인치",
    "lat": 37.5385969,
    "lng": 126.9703492
@@ -9771,7 +10715,8 @@
    "pyeong": "20,25",
    "households": 790,
    "monitors": 12,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 180000,
    "size": "25인치",
    "lat": 37.4583766,
    "lng": 127.0222141
@@ -9791,7 +10736,8 @@
    "pyeong": "24,33,39,45",
    "households": 184,
    "monitors": 8,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 120000,
    "size": "25인치",
    "lat": 37.4898522,
    "lng": 127.0783503
@@ -9811,7 +10757,8 @@
    "pyeong": "32",
    "households": 259,
    "monitors": 10,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 100000,
    "size": "25인치",
    "lat": 37.6586435,
    "lng": 127.0635001
@@ -9831,7 +10778,8 @@
    "pyeong": "13,18,23",
    "households": 143,
    "monitors": 3,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 45000,
    "size": "25인치",
    "lat": 37.4890546,
    "lng": 127.0671869
@@ -9851,7 +10799,8 @@
    "pyeong": "22,32",
    "households": 87,
    "monitors": 3,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 30000,
    "size": "25인치",
    "lat": 37.6684783,
    "lng": 127.0778634
@@ -9871,7 +10820,8 @@
    "pyeong": "24,33,34,45,46,51,52,62,64,67,68,71,81,82,95,96",
    "households": 1612,
    "monitors": 43,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 645000,
    "size": "25인치",
    "lat": 37.5060893,
    "lng": 126.9933165
@@ -9891,7 +10841,8 @@
    "pyeong": "28,32,43,47",
    "households": 990,
    "monitors": 22,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 330000,
    "size": "25인치",
    "lat": 37.5004921,
    "lng": 127.021814
@@ -9911,7 +10862,8 @@
    "pyeong": "25,31",
    "households": 930,
    "monitors": 22,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 220000,
    "size": "25인치",
    "lat": 37.4846837,
    "lng": 127.0813262
@@ -9931,7 +10883,8 @@
    "pyeong": "12,14,33,43,44",
    "households": 1144,
    "monitors": 28,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 420000,
    "size": "25인치",
    "lat": 37.5166086,
    "lng": 127.0488346
@@ -9951,7 +10904,8 @@
    "pyeong": "42,68,74",
    "households": 55,
    "monitors": 2,
-   "unit": 12000,
+   "unitprice": 12000,
+   "price": 24000,
    "size": "25인치",
    "lat": 37.5151706,
    "lng": 127.1024929
@@ -9971,7 +10925,8 @@
    "pyeong": "11,15,17,18",
    "households": 340,
    "monitors": 3,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 45000,
    "size": "25인치",
    "lat": 37.5020272,
    "lng": 127.024118
@@ -9991,7 +10946,8 @@
    "pyeong": "32",
    "households": 948,
    "monitors": 33,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 330000,
    "size": "25인치",
    "lat": 37.6487492,
    "lng": 127.0746704
@@ -10011,7 +10967,8 @@
    "pyeong": "25,32,48",
    "households": 600,
    "monitors": 8,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 80000,
    "size": "25인치",
    "lat": 37.6486487,
    "lng": 127.0783624
@@ -10031,7 +10988,8 @@
    "pyeong": "14,18,20,21,23,24,25,28,29",
    "households": 2064,
    "monitors": 22,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 220000,
    "size": "25인치",
    "lat": 37.6469692,
    "lng": 127.0590267
@@ -10051,7 +11009,8 @@
    "pyeong": "24,34,40",
    "households": 309,
    "monitors": 9,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 90000,
    "size": "25인치",
    "lat": 37.5211913,
    "lng": 126.9664644
@@ -10071,7 +11030,8 @@
    "pyeong": "19,23,28,32",
    "households": 3315,
    "monitors": 42,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 420000,
    "size": "25인치",
    "lat": 37.6644978,
    "lng": 127.0644832
@@ -10091,7 +11051,8 @@
    "pyeong": "16,26,33,45,53",
    "households": 6864,
    "monitors": 111,
-   "unit": 12000,
+   "unitprice": 12000,
+   "price": 1332000,
    "size": "25인치",
    "lat": 37.5212331,
    "lng": 127.1086482
@@ -10111,7 +11072,8 @@
    "pyeong": "9,17,20,22",
    "households": 1086,
    "monitors": 14,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 140000,
    "size": "25인치",
    "lat": 37.5355645,
    "lng": 126.9715459
@@ -10131,7 +11093,8 @@
    "pyeong": "23,28,34,40,45,52,59",
    "households": 829,
    "monitors": 29,
-   "unit": 15000,
+   "unitprice": 15000,
+   "price": 435000,
    "size": "25인치",
    "lat": 37.501881,
    "lng": 127.0134114
@@ -10151,7 +11114,8 @@
    "pyeong": "23~25,33,35,41",
    "households": 421,
    "monitors": 4,
-   "unit": 10000,
+   "unitprice": 10000,
+   "price": 40000,
    "size": "25인치",
    "lat": 37.6407272,
    "lng": 127.06816
