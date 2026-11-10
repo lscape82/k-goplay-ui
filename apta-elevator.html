@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>압타바이오 — 엘리베이터 광고 매체 위치 (지역별)</title>
-  <meta name="description" content="압타바이오 엘리베이터 광고 매체(포커스·타운보드) 지역별 위치 지도 — 잠실·서초·양재·노원상계·여의도">
+  <meta name="description" content="압타바이오 엘리베이터 광고 매체(포커스·타운보드) 지역별 위치 지도 — 잠실·서초·양재·노원상계·여의도·강남">
   <style>
     * { box-sizing: border-box; }
     html, body { margin: 0; height: 100%; font-family: "맑은 고딕", "Malgun Gothic", system-ui, sans-serif; color: #172033; }
@@ -40,7 +40,7 @@
     .legend .row[aria-pressed="false"] .dot { background: #c3c9d4 !important; }
     .legend .row[aria-pressed="false"] .chk { background: #cbd2dd; }
     .legend .row[aria-pressed="false"] .chk::after { left: 2px; }
-    .legend .dot { width: 16px; height: 16px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.18); flex: none; }
+    .legend .dot { width: 18px; height: 18px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.18); flex: none; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 11px; line-height: 1; }
     .legend .dot.focus { background: #e53935; }
     .legend .dot.townboard { background: #1f74e6; }
     .legend .tot { margin-top: 7px; padding-top: 7px; border-top: 1px solid #eef1f7; color: #0b3a91; font-weight: 800; }
@@ -48,10 +48,10 @@
     .listtoggle:hover { background: #0a337f; }
 
     /* 핀 */
-    .evpin { width: 20px; height: 20px; border-radius: 50% 50% 50% 0; border: 2px solid #fff; transform: rotate(-45deg); box-shadow: 0 2px 6px rgba(15,23,42,.35); cursor: pointer; }
+    .evpin { width: 22px; height: 22px; border-radius: 50% 50% 50% 0; border: 2px solid #fff; transform: rotate(-45deg); box-shadow: 0 2px 6px rgba(15,23,42,.35); cursor: pointer; }
     .evpin.focus { background: #e53935; } .evpin.townboard { background: #1f74e6; }
     .evpin.sel { box-shadow: 0 0 0 3px #ffd60a, 0 2px 7px rgba(15,23,42,.5); }
-    .evpin i { position: absolute; top: 50%; left: 50%; width: 6px; height: 6px; border-radius: 50%; background: #fff; transform: translate(-50%,-50%) rotate(45deg); }
+    .evpin i { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(45deg); font-style: normal; font-weight: 800; font-size: 12px; line-height: 1; color: #fff; }
 
     /* 팝업 */
     .iw { font-family: inherit; padding: 13px 15px; min-width: 210px; max-width: 290px; background: #fff; border: 1px solid #e5e9f0; border-radius: 12px; box-shadow: 0 8px 26px rgba(15,23,42,.25); }
@@ -113,8 +113,8 @@
         <div class="legend" id="legend" hidden>
           <b>매체 구분</b>
           <span class="hint">클릭하면 켜기 / 끄기</span>
-          <button type="button" class="row" id="btnFocus" data-p="focus" aria-pressed="true"><span class="dot focus"></span>포커스미디어 <span id="lf"></span><span class="chk"></span></button>
-          <button type="button" class="row" id="btnTb" data-p="townboard" aria-pressed="true"><span class="dot townboard"></span>타운보드 <span id="lt"></span><span class="chk"></span></button>
+          <button type="button" class="row" id="btnFocus" data-p="focus" aria-pressed="true"><span class="dot focus">F</span>포커스미디어 <span id="lf"></span><span class="chk"></span></button>
+          <button type="button" class="row" id="btnTb" data-p="townboard" aria-pressed="true"><span class="dot townboard">T</span>타운보드 <span id="lt"></span><span class="chk"></span></button>
           <div class="tot" id="ltot"></div>
           <button type="button" class="listtoggle" id="listtoggle">📋 선택한 단지 리스트 다운로드</button>
         </div>
@@ -148,12 +148,12 @@
       var PSHORT = { focus: "포커스", townboard: "타운보드" };
 
       var data;
-      try { data = await (await fetch("data/apta-elevator.json?v=1")).json(); }
+      try { data = await (await fetch("data/apta-elevator.json?v=2")).json(); }
       catch (e) { document.getElementById("sub").textContent = "데이터 로드 실패"; return; }
       var sites = data.sites || [];
 
       document.getElementById("sub").textContent =
-        "총 " + data.counts.total + "곳 · 포커스미디어 " + data.counts.focus + " · 타운보드 " + data.counts.townboard + " · 5개 지역(잠실·서초·양재·노원상계·여의도) 아파트 엘리베이터 TV";
+        "총 " + data.counts.total + "곳 · 포커스미디어(F) " + data.counts.focus + " · 타운보드(T) " + data.counts.townboard + " · 6개 지역(잠실·서초·양재·노원상계·여의도·강남) 아파트 엘리베이터 TV";
       document.getElementById("lf").textContent = data.counts.focus + "곳";
       document.getElementById("lt").textContent = data.counts.townboard + "곳";
       document.getElementById("ltot").textContent = "합계 " + data.counts.total + "곳";
@@ -187,7 +187,7 @@
 
       function pinHtml(s, sel) {
         var hover = s.name + " · " + PSHORT[s.product] + (s.monitors ? " · 모니터 " + s.monitors + "대" : "");
-        return '<div class="evpin ' + s.product + (sel ? " sel" : "") + '" title="' + esc(hover) + '"><i></i></div>';
+        return '<div class="evpin ' + s.product + (sel ? " sel" : "") + '" title="' + esc(hover) + '"><i>' + (s.product === "focus" ? "F" : "T") + '</i></div>';
       }
       function iwHtml(r) {
         var s = r.site, on = selected.has(r.idx);
