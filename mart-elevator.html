@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>롯데마트·코스트코 인근 엘리베이터 광고 (수도권)</title>
+  <meta name="description" content="수도권 롯데마트·코스트코 인근 아파트 엘리베이터 광고 단지 지도 및 1개월·연간 견적">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+  <style>
+    * { box-sizing: border-box; }
+    html, body { margin: 0; height: 100%; font-family: "Pretendard Variable", Pretendard, -apple-system, system-ui, "맑은 고딕", "Malgun Gothic", sans-serif; color: #172033; -webkit-font-smoothing: antialiased; }
+    #wrap { display: flex; flex-direction: column; height: 100%; }
+    header { padding: 12px 18px; border-bottom: 1px solid #e5e9f0; background: #fff; }
+    header h1 { margin: 0; font-size: 18px; font-weight: 800; color: #0b3a91; }
+    header .sub { margin-top: 3px; font-size: 12.5px; color: #64748b; }
+    #stage { position: relative; flex: 1; min-height: 0; display: flex; }
+    #map { flex: 1; width: 100%; min-height: 0; }
+    #map img { filter: saturate(0.72); }
+    #map .evpin, #map .evpin i, #map .stpin, #map .stpin i { filter: none; }
+
+    #leftcol { position: absolute; z-index: 16; left: 14px; top: 14px; bottom: 14px; width: 340px; max-width: 92vw; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
+    #leftcol > * { pointer-events: auto; }
+
+    .box { flex: none; background: #fff; border: 1px solid #e5e9f0; border-radius: 10px; padding: 10px 12px; box-shadow: 0 2px 10px rgba(15,23,42,.12); }
+    .box b.t { display: block; font-size: 12px; color: #64748b; margin-bottom: 7px; font-weight: 700; }
+    .chips { display: flex; flex-wrap: wrap; gap: 6px; }
+    .rchip { font: inherit; font-size: 12.5px; font-weight: 700; border: 1px solid #dbe1ea; background: #fff; color: #334; border-radius: 999px; padding: 6px 11px; cursor: pointer; }
+    .rchip .n { font-size: 11px; color: #94a3b8; margin-left: 3px; font-weight: 600; }
+    .rchip:hover { background: #f3f6fb; }
+    .rchip[aria-pressed="true"] { background: #0b3a91; color: #fff; border-color: #0b3a91; }
+    .rchip[aria-pressed="true"] .n { color: #cfe0ff; }
+
+    /* 견적 박스 */
+    .estimate { background: linear-gradient(135deg,#0b3a91,#1657c9); color: #fff; border: 0; }
+    .estimate .t { color: #cfe0ff; }
+    .estimate .big { display: flex; gap: 14px; margin-top: 2px; }
+    .estimate .big > div { flex: 1; }
+    .estimate .lbl { font-size: 11px; color: #cfe0ff; font-weight: 700; }
+    .estimate .val { font-size: 19px; font-weight: 800; letter-spacing: -.3px; margin-top: 1px; }
+    .estimate .val small { font-size: 12px; font-weight: 700; color: #cfe0ff; }
+    .estimate .note { margin-top: 7px; font-size: 10.5px; color: #bcd0f5; line-height: 1.5; }
+
+    /* 범례 */
+    .legend { font-size: 13px; }
+    .legend .hint { display: block; font-size: 10.5px; color: #94a3b8; font-weight: 600; margin: -3px 0 4px; }
+    .legend .row { display: flex; align-items: center; gap: 7px; margin: 2px 0; font-weight: 700; width: 100%; background: none; border: 0; padding: 5px 7px; border-radius: 7px; cursor: pointer; font: inherit; color: inherit; text-align: left; }
+    .legend .row:hover { background: #f3f6fb; }
+    .legend .row .chk { margin-left: auto; width: 32px; height: 18px; border-radius: 999px; background: #22a06b; position: relative; flex: none; transition: background .15s; }
+    .legend .row .chk::after { content: ""; position: absolute; top: 2px; left: 16px; width: 14px; height: 14px; border-radius: 50%; background: #fff; box-shadow: 0 1px 2px rgba(0,0,0,.25); transition: left .15s; }
+    .legend .row[aria-pressed="false"] { opacity: .55; }
+    .legend .row[aria-pressed="false"] .chk { background: #cbd2dd; }
+    .legend .row[aria-pressed="false"] .chk::after { left: 2px; }
+    .legend .dot { width: 19px; height: 19px; border-radius: 50%; border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.18); flex: none; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 10px; line-height: 1; }
+    .dot.lotte { background: #da291c; } .dot.costco { background: #005daa; }
+    .dot.focus { background: #bf5b4d; } .dot.townboard { background: #4a6c9b; }
+    .legend .sep { margin: 7px 0 3px; border-top: 1px solid #eef1f7; padding-top: 7px; font-size: 11px; color: #94a3b8; font-weight: 700; }
+    .listtoggle { display: block; width: 100%; margin-top: 9px; background: #0b3a91; color: #fff; border: 0; border-radius: 9px; padding: 11px 13px; font: inherit; font-weight: 800; font-size: 13px; cursor: pointer; box-shadow: 0 2px 10px rgba(11,58,145,.3); text-align: center; }
+    .listtoggle:hover { background: #0a337f; }
+
+    /* 단지 핀 */
+    .evpin { width: 20px; height: 20px; border-radius: 50% 50% 50% 0; border: 2px solid #fff; transform: rotate(-45deg); box-shadow: 0 2px 6px rgba(15,23,42,.4); cursor: pointer; }
+    .evpin.focus { background: #bf5b4d; } .evpin.townboard { background: #4a6c9b; } .evpin.both { background: #7a4f97; }
+    .evpin.sel { box-shadow: 0 0 0 3px #ffd60a, 0 2px 7px rgba(15,23,42,.5); }
+    .evpin i { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(45deg); font-style: normal; font-weight: 800; font-size: 10px; line-height: 1; color: #fff; }
+    /* 점포 핀 (강조) */
+    .stpin { width: 30px; height: 30px; border-radius: 50% 50% 50% 0; border: 3px solid #fff; transform: rotate(-45deg); box-shadow: 0 0 0 1.5px rgba(15,23,42,.3), 0 4px 10px rgba(15,23,42,.5); cursor: pointer; }
+    .stpin.lotte { background: #da291c; } .stpin.costco { background: #005daa; }
+    .stpin i { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(45deg); font-style: normal; font-weight: 800; font-size: 12px; line-height: 1; color: #fff; }
+
+    /* 팝업 */
+    .iw { font-family: inherit; padding: 13px 15px; min-width: 210px; max-width: 300px; background: #fff; border: 1px solid #e5e9f0; border-radius: 12px; box-shadow: 0 8px 26px rgba(15,23,42,.25); }
+    .iw h3 { margin: 0 0 3px; font-size: 14px; font-weight: 800; }
+    .iw .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 2px; }
+    .iw .brand { display: inline-block; font-size: 11px; font-weight: 800; padding: 1px 7px; border-radius: 999px; color: #fff; }
+    .iw .brand.focus { background: #bf5b4d; } .iw .brand.townboard { background: #4a6c9b; }
+    .iw .brand.lotte { background: #da291c; } .iw .brand.costco { background: #005daa; }
+    .iw .rtag { display: inline-block; font-size: 11px; font-weight: 700; padding: 1px 7px; border-radius: 999px; background: #eef2f8; color: #475569; }
+    .iw p { margin: 6px 0 0; font-size: 12.5px; color: #475569; line-height: 1.5; }
+    .iw .facts { margin-top: 6px; font-size: 12.5px; color: #0b3a91; font-weight: 700; }
+    .iw .price { margin-top: 5px; font-size: 13.5px; color: #0f172a; font-weight: 800; }
+    .iw .iwsel { margin-top: 10px; width: 100%; padding: 8px; border: 1px solid #0b3a91; background: #0b3a91; color: #fff; border-radius: 8px; font: inherit; font-weight: 800; font-size: 12.5px; cursor: pointer; }
+    .iw .iwsel.on { background: #fff; color: #0b3a91; }
+
+    /* 목록/다운로드 패널 */
+    .panel { flex: 1 1 auto; min-height: 0; background: #fff; border: 1px solid #e5e9f0; border-radius: 12px; box-shadow: 0 6px 20px rgba(15,23,42,.16); display: none; flex-direction: column; overflow: hidden; }
+    .panel.open { display: flex; }
+    .panel h2 { margin: 0; padding: 13px 15px; font-size: 15px; font-weight: 800; border-bottom: 1px solid #eef1f7; display: flex; align-items: center; gap: 8px; }
+    .panel h2 .cnt { font-size: 12px; color: #0b3a91; font-weight: 800; }
+    .panel .pclose { margin-left: auto; border: 0; background: none; font-size: 22px; cursor: pointer; color: #94a3b8; line-height: 1; padding: 0 2px; }
+    .panel .ptools { padding: 10px 14px; border-bottom: 1px solid #eef1f7; display: flex; flex-direction: column; gap: 8px; }
+    .panel .psearch { width: 100%; padding: 8px 10px; border: 1px solid #dbe1ea; border-radius: 8px; font: inherit; }
+    .panel .prow2 { display: flex; gap: 7px; align-items: center; font-size: 12px; color: #64748b; }
+    .panel .prow2 button { font: inherit; font-size: 12px; border: 1px solid #dbe1ea; background: #fff; border-radius: 7px; padding: 5px 9px; cursor: pointer; }
+    .panel .prow2 button:hover { background: #f3f6fb; }
+    .panel .plist { flex: 1; overflow: auto; padding: 6px 8px; }
+    .panel .pitem { display: flex; align-items: flex-start; gap: 9px; padding: 8px; border-radius: 8px; cursor: pointer; }
+    .panel .pitem:hover { background: #f5f8fc; }
+    .panel .pitem.flash { animation: flashbg 1.4s ease; }
+    @keyframes flashbg { 0% { background: #fff3bf; } 70% { background: #fff3bf; } 100% { background: transparent; } }
+    .panel .pitem input { margin-top: 3px; flex: none; width: 16px; height: 16px; }
+    .panel .pitem .nm { font-size: 13px; font-weight: 700; line-height: 1.35; }
+    .panel .pitem .meta { font-size: 11px; color: #8a94a6; margin-top: 1px; }
+    .panel .pitem .tag { display: inline-block; font-size: 10px; font-weight: 800; color: #fff; border-radius: 999px; padding: 0 6px; margin-right: 4px; vertical-align: 1px; }
+    .tag.focus { background: #bf5b4d; } .tag.townboard { background: #4a6c9b; } .tag.both { background: #7a4f97; }
+    .panel .pitem .rtag { display: inline-block; font-size: 10px; font-weight: 700; color: #475569; background: #eef2f8; border-radius: 999px; padding: 0 6px; margin-right: 4px; vertical-align: 1px; }
+    .panel .pfoot { padding: 11px 14px; border-top: 1px solid #eef1f7; }
+    .panel .dlbtn { width: 100%; padding: 12px; border: 0; border-radius: 9px; background: #0b3a91; color: #fff; font: inherit; font-weight: 800; font-size: 14px; cursor: pointer; }
+    .panel .dlbtn:disabled { background: #c3c9d4; cursor: default; }
+    .panel .dlhint { margin: 7px 0 0; font-size: 11px; color: #94a3b8; text-align: center; }
+
+    #err { display: none; position: absolute; z-index: 20; inset: 60px 14px auto 14px; background: #fff4f4; border: 1px solid #f3c6c6; color: #a3322c; padding: 12px 14px; border-radius: 10px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <div id="wrap">
+    <header>
+      <h1>롯데마트·코스트코 인근 아파트 엘리베이터 광고 <span style="font-size:13px;color:#64748b;font-weight:700">· 수도권</span></h1>
+      <div class="sub" id="sub">불러오는 중…</div>
+    </header>
+    <div id="stage">
+      <div id="map"></div>
+
+      <div id="leftcol">
+        <div class="box estimate" id="estimate" hidden>
+          <b class="t">타겟 커버 견적 <span id="estscope" style="color:#fff">· 전체</span></b>
+          <div class="big">
+            <div><div class="lbl">1개월 단가</div><div class="val" id="vMonth">–</div></div>
+            <div><div class="lbl">연간 운영 견적</div><div class="val" id="vYear">–</div></div>
+          </div>
+          <div class="note" id="estnote"></div>
+        </div>
+
+        <div class="box" id="filterbox" hidden>
+          <b class="t">마트 상권 선택</b>
+          <div class="chips" id="rchips"></div>
+        </div>
+
+        <div class="box legend" id="legend" hidden>
+          <span class="hint">클릭하면 켜기 / 끄기</span>
+          <button type="button" class="row" id="btnLotte" aria-pressed="true"><span class="dot lotte">롯</span>롯데마트 <span id="lL"></span><span class="chk"></span></button>
+          <button type="button" class="row" id="btnCostco" aria-pressed="true"><span class="dot costco">C</span>코스트코 <span id="lC"></span><span class="chk"></span></button>
+          <div class="sep">단지 엘리베이터 매체</div>
+          <button type="button" class="row" id="btnFocus" aria-pressed="true"><span class="dot focus">F</span>포커스미디어 <span id="lf"></span><span class="chk"></span></button>
+          <button type="button" class="row" id="btnTb" aria-pressed="true"><span class="dot townboard">T</span>타운보드 <span id="lt"></span><span class="chk"></span></button>
+          <button type="button" class="row" id="btnRing" aria-pressed="true"><span class="dot" style="background:#9fb4d8">○</span>상권 반경 표시 <span class="chk"></span></button>
+          <button type="button" class="listtoggle" id="listtoggle">📋 단지 리스트 선택·다운로드</button>
+        </div>
+
+        <aside class="panel" id="panel" aria-hidden="true">
+          <h2>인근 단지 리스트 <span class="cnt" id="selcount">0곳 선택</span><button type="button" class="pclose" id="pclose" aria-label="닫기">×</button></h2>
+          <div class="ptools">
+            <input type="search" class="psearch" id="psearch" placeholder="단지명 검색">
+            <div class="prow2">
+              <button type="button" id="selall">보이는 단지 전체선택</button>
+              <button type="button" id="selnone">전체해제</button>
+            </div>
+          </div>
+          <div class="plist" id="plist"></div>
+          <div class="pfoot">
+            <button type="button" class="dlbtn" id="dlbtn" disabled>선택한 단지 다운로드</button>
+            <p class="dlhint">엑셀(Excel)에서 바로 열리는 CSV 파일로 저장됩니다</p>
+          </div>
+        </aside>
+      </div>
+
+      <div id="err">지도를 불러오지 못했습니다. (네이버 지도 인증 도메인 확인 필요)</div>
+    </div>
+  </div>
+
+  <script src="https://oapi.map.naver.com/openapi/v3/maps.js?ncpClientId=1ouo31myef"></script>
+  <script>
+    (async function () {
+      var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
+      var won = function (v) { return Number(v || 0).toLocaleString("ko-KR"); };
+      var eok = function (v) { // 억/만원 요약
+        v = Number(v || 0);
+        if (v >= 100000000) return (v / 100000000).toFixed(v >= 1000000000 ? 0 : 1) + "억";
+        if (v >= 10000) return Math.round(v / 10000).toLocaleString("ko-KR") + "만";
+        return v.toLocaleString("ko-KR");
+      };
+      var BLAB = { lotte: "롯데마트", costco: "코스트코" };
+      var PLAB = { focus: "포커스미디어", townboard: "타운보드" };
+
+      var data;
+      try { data = await (await fetch("data/mart-elevator.json?v=1")).json(); }
+      catch (e) { document.getElementById("sub").textContent = "데이터 로드 실패"; return; }
+      var sm = data.summary, stores = data.stores || [], sites = data.sites || [];
+      var RAD = data.radius || 1000;
+
+      document.getElementById("sub").textContent =
+        "반경 " + (RAD >= 1000 ? (RAD/1000) + "km" : RAD + "m") + " · 점포 " + sm.stores_total + "곳(롯데마트 " + sm.lotte + "·코스트코 " + sm.costco + ") · 인근 단지 " + sm.complexes + "곳 · 모니터 " + won(sm.monitors) + "대";
+      document.getElementById("lL").textContent = sm.lotte + "곳";
+      document.getElementById("lC").textContent = sm.costco + "곳";
+      document.getElementById("lf").textContent = sm.focus + "곳";
+      document.getElementById("lt").textContent = sm.townboard + "곳";
+      ["estimate","filterbox","legend"].forEach(function (id) { document.getElementById(id).hidden = false; });
+
+      if (!(window.naver && naver.maps)) { document.getElementById("err").style.display = "block"; return; }
+
+      var map = new naver.maps.Map("map", { zoom: 10, minZoom: 8, mapTypeControl: false, zoomControl: true, zoomControlOptions: { position: naver.maps.Position.RIGHT_CENTER } });
+      var iw = new naver.maps.InfoWindow({ borderWidth: 0, backgroundColor: "transparent", disableAnchor: false, pixelOffset: new naver.maps.Point(0, -6) });
+      var PIN_ANCHOR = new naver.maps.Point(10, 20);
+      var ST_ANCHOR = new naver.maps.Point(15, 30);
+
+      var brandOn = { lotte: true, costco: true };
+      var mediaOn = { focus: true, townboard: true };
+      var activeScope = "all"; // all | lotte | costco
+
+      // ---- 점포 마커 + 반경원 ----
+      var storeMarkers = [], rings = [], ringsOn = true;
+      stores.forEach(function (st) {
+        var ll = new naver.maps.LatLng(st.lat, st.lng);
+        var m = new naver.maps.Marker({
+          map: map, position: ll, zIndex: 200,
+          title: BLAB[st.brand] + " " + st.name,
+          icon: { content: '<div class="stpin ' + st.brand + '" title="' + esc(BLAB[st.brand] + " " + st.name) + '"><i>' + (st.brand === "lotte" ? "롯" : "C") + '</i></div>', anchor: ST_ANCHOR }
+        });
+        naver.maps.Event.addListener(m, "click", function () {
+          iw.setContent('<div class="iw"><h3>' + esc(BLAB[st.brand] + " " + st.name) + '</h3>' +
+            '<div class="tags"><span class="brand ' + st.brand + '">' + BLAB[st.brand] + '</span></div>' +
+            '<p>' + esc(st.addr) + '</p></div>');
+          iw.open(map, m);
+        });
+        storeMarkers.push({ st: st, marker: m });
+        var c = new naver.maps.Circle({ map: map, center: ll, radius: RAD,
+          strokeColor: st.brand === "lotte" ? "#da291c" : "#005daa", strokeOpacity: 0.35, strokeWeight: 1,
+          fillColor: st.brand === "lotte" ? "#da291c" : "#005daa", fillOpacity: 0.05, clickable: false, zIndex: 1 });
+        rings.push({ st: st, circle: c });
+      });
+
+      // ---- 단지 마커 ----
+      var recs = [], selected = new Set(), openIdx = null;
+      var plist = document.getElementById("plist");
+      function pinHtml(s, sel) {
+        var letter = s.prodkey === "both" ? "FT" : (s.prodkey === "focus" ? "F" : "T");
+        return '<div class="evpin ' + s.prodkey + (sel ? " sel" : "") + '" title="' + esc(s.name) + '"><i>' + letter + '</i></div>';
+      }
+      function iwHtml(r) {
+        var s = r.site, on = selected.has(r.idx);
+        var facts = [];
+        if (s.monitors) facts.push("모니터 " + s.monitors + "대");
+        if (s.households) facts.push(won(s.households) + "세대");
+        var prodtags = s.products.map(function (p) { return '<span class="brand ' + p + '">' + PLAB[p] + '</span>'; }).join("");
+        var priceLine = s.price ? won(s.price) + "원 / 4주" : "";
+        return '<div class="iw"><h3>' + esc(s.name) + '</h3>' +
+          '<div class="tags">' + prodtags + '<span class="rtag">' + esc(s.gu) + '</span></div>' +
+          '<p>' + esc(s.addr) + '<br><span style="color:#64748b">🛒 ' + esc(BLAB[s.storeBrand] + " " + s.storeName) + ' ' + s.storeDist + 'm</span></p>' +
+          (facts.length ? '<div class="facts">' + esc(facts.join(" · ")) + '</div>' : '') +
+          (priceLine ? '<div class="price">' + esc(priceLine) + '</div>' : '') +
+          '<button type="button" class="iwsel' + (on ? " on" : "") + '" onclick="window.__toggleSel(' + r.idx + ')">' + (on ? "✓ 선택됨 (해제)" : "+ 이 단지 선택") + '</button></div>';
+      }
+      sites.forEach(function (s, idx) {
+        var ll = new naver.maps.LatLng(s.lat, s.lng);
+        var m = new naver.maps.Marker({ map: map, position: ll, zIndex: 50,
+          title: s.name + " · " + s.products.map(function (p){return PLAB[p];}).join("+"),
+          icon: { content: pinHtml(s, false), anchor: PIN_ANCHOR } });
+        var item = document.createElement("label");
+        item.className = "pitem"; item.dataset.idx = idx;
+        var letter = s.prodkey === "both" ? "FT" : (s.prodkey === "focus" ? "F" : "T");
+        item.innerHTML = '<input type="checkbox">' +
+          '<span><span class="nm"><span class="tag ' + s.prodkey + '">' + letter + '</span>' +
+          '<span class="rtag">' + esc(s.gu) + '</span>' + esc(s.name) + '</span>' +
+          '<span class="meta">' + esc(s.addr) + (s.monitors ? " · 모니터 " + s.monitors + "대" : "") + (s.price ? ' · <b>' + won(s.price) + '원/4주</b>' : "") + ' · 🛒' + esc(s.storeName) + ' ' + s.storeDist + 'm</span></span>';
+        var cb = item.querySelector("input");
+        cb.addEventListener("change", function () { setSel(idx, cb.checked); });
+        plist.appendChild(item);
+        var r = { idx: idx, site: s, marker: m, cb: cb, el: item };
+        recs.push(r);
+        naver.maps.Event.addListener(m, "click", function () { openIdx = idx; iw.setContent(iwHtml(r)); iw.open(map, m); });
+      });
+      naver.maps.Event.addListener(iw, "close", function () { openIdx = null; });
+
+      // ---- bounds ----
+      var allB = new naver.maps.LatLngBounds(new naver.maps.LatLng(stores[0].lat, stores[0].lng), new naver.maps.LatLng(stores[0].lat, stores[0].lng));
+      stores.forEach(function (st) { allB.extend(new naver.maps.LatLng(st.lat, st.lng)); });
+      recs.forEach(function (r) { allB.extend(r.marker.getPosition()); });
+      map.fitBounds(allB, { top: 40, right: 40, bottom: 40, left: 360 });
+
+      // ---- 견적 계산(현재 필터 반영) ----
+      function recalcEstimate() {
+        var vis = recs.filter(isVisible).map(function (r) { return r.site; });
+        var month = vis.reduce(function (a, s) { return a + (s.price || 0); }, 0);
+        var mon = vis.reduce(function (a, s) { return a + (s.monitors || 0); }, 0);
+        document.getElementById("vMonth").innerHTML = eok(month) + '<small>원</small>';
+        document.getElementById("vYear").innerHTML = eok(month * 12) + '<small>원</small>';
+        document.getElementById("estscope").textContent = "· " + (activeScope === "all" ? "전체" : BLAB[activeScope] + " 상권");
+        document.getElementById("estnote").textContent =
+          "단지 " + vis.length + "곳 · 모니터 " + won(mon) + "대 · 4주 광고료 합계 기준(연간=×12). 실제 단가는 물량·기간에 따라 협의.";
+      }
+
+      function isVisible(r) {
+        var s = r.site;
+        var scopeOk = activeScope === "all" || s.storeBrand === activeScope;
+        var brandNear = brandOn[s.storeBrand];
+        var mediaOk = s.products.some(function (p) { return mediaOn[p]; });
+        return scopeOk && brandNear && mediaOk;
+      }
+      function applyVisibility() {
+        var q = (document.getElementById("psearch").value || "").trim().toLowerCase();
+        recs.forEach(function (r) {
+          var v = isVisible(r);
+          r.marker.setMap(v ? map : null);
+          var ms = !q || r.site.name.toLowerCase().indexOf(q) >= 0;
+          r.el.style.display = (v && ms) ? "" : "none";
+        });
+        // 점포 마커/반경: 상권 스코프 + 브랜드 토글
+        storeMarkers.forEach(function (o) {
+          var show = (activeScope === "all" || activeScope === o.st.brand) && brandOn[o.st.brand];
+          o.marker.setMap(show ? map : null);
+        });
+        rings.forEach(function (o) {
+          var show = ringsOn && (activeScope === "all" || activeScope === o.st.brand) && brandOn[o.st.brand];
+          o.circle.setMap(show ? map : null);
+        });
+        recalcEstimate();
+      }
+
+      // ---- 상권 스코프 칩 ----
+      var rchips = document.getElementById("rchips");
+      [["all","전체",sm.complexes],["lotte","롯데마트 상권",sm.near_lotte],["costco","코스트코 상권",sm.near_costco]].forEach(function (t, i) {
+        var b = document.createElement("button");
+        b.type = "button"; b.className = "rchip"; b.dataset.scope = t[0];
+        b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
+        b.innerHTML = esc(t[1]) + '<span class="n">' + t[2] + '</span>';
+        rchips.appendChild(b);
+      });
+      rchips.addEventListener("click", function (e) {
+        var b = e.target.closest(".rchip"); if (!b) return;
+        activeScope = b.dataset.scope;
+        Array.prototype.forEach.call(rchips.children, function (c) { c.setAttribute("aria-pressed", c === b ? "true" : "false"); });
+        applyVisibility(); iw.close();
+      });
+
+      // ---- 선택 ----
+      function setSel(idx, on) {
+        var r = recs[idx]; if (!r) return;
+        if (on) selected.add(idx); else selected.delete(idx);
+        r.cb.checked = on;
+        r.marker.setIcon({ content: pinHtml(r.site, on), anchor: PIN_ANCHOR });
+        if (openIdx === idx && iw.getMap()) iw.setContent(iwHtml(r));
+        updateCount();
+      }
+      window.__toggleSel = function (idx) {
+        var on = !selected.has(idx);
+        setSel(idx, on); iw.close();
+        if (on) { openPanel(); var r = recs[idx]; if (r) { r.el.scrollIntoView({ block: "center" }); r.el.classList.remove("flash"); void r.el.offsetWidth; r.el.classList.add("flash"); } }
+      };
+      function updateCount() {
+        var rows = recs.filter(function (r) { return selected.has(r.idx); });
+        var n = rows.length;
+        var sp = rows.reduce(function (a, r) { return a + (r.site.price || 0); }, 0);
+        document.getElementById("selcount").textContent = n ? (n + "곳 · 월 " + eok(sp) + "원") : "0곳 선택";
+        var b = document.getElementById("dlbtn");
+        b.disabled = n === 0;
+        b.textContent = n === 0 ? "선택한 단지 다운로드" : ("선택한 " + n + "곳 다운로드");
+      }
+
+      document.getElementById("psearch").addEventListener("input", applyVisibility);
+      document.getElementById("selall").addEventListener("click", function () { recs.forEach(function (r) { if (r.el.style.display !== "none") setSel(r.idx, true); }); });
+      document.getElementById("selnone").addEventListener("click", function () { Array.from(selected).forEach(function (idx) { setSel(idx, false); }); });
+
+      // ---- 패널 ----
+      var panel = document.getElementById("panel");
+      function openPanel() { panel.classList.add("open"); panel.setAttribute("aria-hidden", "false"); }
+      function closePanel() { panel.classList.remove("open"); panel.setAttribute("aria-hidden", "true"); }
+      document.getElementById("listtoggle").addEventListener("click", openPanel);
+      document.getElementById("pclose").addEventListener("click", closePanel);
+
+      // ---- 토글 ----
+      function wireToggle(id, fn) {
+        var btn = document.getElementById(id);
+        btn.addEventListener("click", function () {
+          var on = btn.getAttribute("aria-pressed") !== "true";
+          btn.setAttribute("aria-pressed", on ? "true" : "false");
+          fn(on); applyVisibility(); if (!on) iw.close();
+        });
+      }
+      wireToggle("btnLotte", function (on) { brandOn.lotte = on; });
+      wireToggle("btnCostco", function (on) { brandOn.costco = on; });
+      wireToggle("btnFocus", function (on) { mediaOn.focus = on; });
+      wireToggle("btnTb", function (on) { mediaOn.townboard = on; });
+      wireToggle("btnRing", function (on) { ringsOn = on; });
+
+      // ---- 다운로드 ----
+      function csvCell(v) { v = String(v == null ? "" : v); return /[",\n\r]/.test(v) ? '"' + v.replace(/"/g, '""') + '"' : v; }
+      document.getElementById("dlbtn").addEventListener("click", function () {
+        var rows = recs.filter(function (r) { return selected.has(r.idx); });
+        if (!rows.length) return;
+        var head = ["시도", "구", "단지명", "매체", "주소", "세대수", "모니터수", "4주 금액(원)", "인근매장", "매장거리(m)"];
+        var lines = [head.map(csvCell).join(",")];
+        var sumMon = 0, sumAmt = 0;
+        rows.forEach(function (r) {
+          var s = r.site; sumMon += (s.monitors || 0); sumAmt += (s.price || 0);
+          lines.push([s.sido, s.gu, s.name, s.products.map(function(p){return PLAB[p];}).join("+"), s.addr || "", s.households || "", s.monitors || "", s.price || "", BLAB[s.storeBrand] + " " + s.storeName, s.storeDist].map(csvCell).join(","));
+        });
+        lines.push(["합계", "", rows.length + "곳", "", "", "", sumMon, sumAmt, "월 광고료", ""].map(csvCell).join(","));
+        lines.push(["연간(×12)", "", "", "", "", "", "", sumAmt * 12, "", ""].map(csvCell).join(","));
+        var csv = "﻿" + lines.join("\r\n");
+        var blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+        var a = document.createElement("a");
+        a.href = URL.createObjectURL(blob);
+        a.download = "마트인근_엘리베이터_단지_" + rows.length + "곳.csv";
+        document.body.appendChild(a); a.click(); document.body.removeChild(a);
+        setTimeout(function () { URL.revokeObjectURL(a.href); }, 1000);
+      });
+
+      applyVisibility();
+      updateCount();
+    })();
+  </script>
+</body>
+</html>
