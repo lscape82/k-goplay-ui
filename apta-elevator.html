@@ -5,9 +5,10 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>압타바이오 — 엘리베이터 광고 매체 위치 (지역별)</title>
   <meta name="description" content="압타바이오 엘리베이터 광고 매체(포커스·타운보드) 지역별 위치 지도 — 잠실·서초·양재·노원상계·여의도·강남">
+  <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
   <style>
     * { box-sizing: border-box; }
-    html, body { margin: 0; height: 100%; font-family: "맑은 고딕", "Malgun Gothic", system-ui, sans-serif; color: #172033; }
+    html, body { margin: 0; height: 100%; font-family: "Pretendard Variable", Pretendard, -apple-system, system-ui, "맑은 고딕", "Malgun Gothic", sans-serif; color: #172033; -webkit-font-smoothing: antialiased; }
     #wrap { display: flex; flex-direction: column; height: 100%; }
     header { padding: 12px 18px; border-bottom: 1px solid #e5e9f0; background: #fff; }
     header h1 { margin: 0; font-size: 18px; font-weight: 800; color: #0b3a91; }
@@ -148,7 +149,7 @@
       var PSHORT = { focus: "포커스", townboard: "타운보드" };
 
       var data;
-      try { data = await (await fetch("data/apta-elevator.json?v=3")).json(); }
+      try { data = await (await fetch("data/apta-elevator.json?v=4")).json(); }
       catch (e) { document.getElementById("sub").textContent = "데이터 로드 실패"; return; }
       var sites = data.sites || [];
 
