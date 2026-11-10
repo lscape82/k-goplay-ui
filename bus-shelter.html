@@ -61,6 +61,8 @@
     .evpin.infeasible { background: #9aa3b0 !important; }
     .evpin.sel { box-shadow: 0 0 0 3px #ffd60a, 0 2px 7px rgba(15,23,42,.5); }
     .evpin i { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(45deg); font-style: normal; font-weight: 800; font-size: 13px; line-height: 1; color: #fff; }
+    /* 주변 버스정류장 참조 점 */
+    .busstop { width: 9px; height: 9px; border-radius: 50%; background: #7f93a8; border: 1.5px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.12); opacity: .85; }
 
     /* 팝업 */
     .iw { font-family: inherit; padding: 13px 15px; min-width: 220px; max-width: 300px; background: #fff; border: 1px solid #e5e9f0; border-radius: 12px; box-shadow: 0 8px 26px rgba(15,23,42,.25); }
@@ -133,6 +135,7 @@
           <button type="button" class="row" id="btnAir" data-c="airport" aria-pressed="true"><span class="dot airport">공</span>공항쉘터 <span id="lf"></span><span class="chk"></span></button>
           <button type="button" class="row" id="btnNor" data-c="normal" aria-pressed="true"><span class="dot normal">일</span>일반쉘터 <span id="lt"></span><span class="chk"></span></button>
           <button type="button" class="row" id="btnFeas" aria-pressed="false" style="margin-top:4px"><span class="dot" style="background:#9aa3b0">✕</span>행사기간 불가 숨기기 <span class="chk"></span></button>
+          <button type="button" class="row" id="btnStops" aria-pressed="true"><span class="dot" style="background:#7f93a8;box-shadow:none"></span>주변 버스정류장 <span id="lstop"></span><span class="chk"></span></button>
           <div class="grayrow"><span class="dot">✕</span>회색 = 행사기간(12/17~20) 집행 불가</div>
           <div class="tot" id="ltot"></div>
           <button type="button" class="listtoggle" id="listtoggle">📋 지점 리스트 선택하기</button>
@@ -167,10 +170,12 @@
       var CLETTER = { airport: "공", normal: "일" };
 
       var data;
-      try { data = await (await fetch("data/bus-shelter.json?v=2")).json(); }
+      try { data = await (await fetch("data/bus-shelter.json?v=3")).json(); }
       catch (e) { document.getElementById("sub").textContent = "데이터 로드 실패"; return; }
       var sites = data.sites || [];
       var ev = data.event || {};
+      var stopData = [];
+      try { stopData = (await (await fetch("data/bus-shelter-stops.json?v=1")).json()).stops || []; } catch (e) {}
 
       document.getElementById("sub").textContent =
         "총 " + data.counts.total + "곳 · 공항쉘터 " + data.counts.airport + " · 일반쉘터 " + data.counts.normal + " · 안국·종로·광화문 일대";
@@ -204,6 +209,24 @@
       var map = new naver.maps.Map("map", { zoom: 14, minZoom: 11, mapTypeControl: false, zoomControl: true, zoomControlOptions: { position: naver.maps.Position.RIGHT_CENTER } });
       var iw = new naver.maps.InfoWindow({ borderWidth: 0, backgroundColor: "transparent", disableAnchor: false, pixelOffset: new naver.maps.Point(0, -6) });
       var PIN_ANCHOR = new naver.maps.Point(10, 20);
+
+      // 주변 버스정류장(참조) 점 — 쉘터보다 아래(zIndex 낮게)
+      var STOP_ANCHOR = new naver.maps.Point(6, 6);
+      var stopMarkers = [];
+      stopData.forEach(function (st) {
+        var m = new naver.maps.Marker({
+          map: map, position: new naver.maps.LatLng(st.lat, st.lng),
+          icon: { content: '<div class="busstop" title="' + esc(st.name) + '"></div>', anchor: STOP_ANCHOR },
+          zIndex: 5, clickable: false
+        });
+        stopMarkers.push(m);
+      });
+      document.getElementById("lstop").textContent = stopData.length + "개";
+      document.getElementById("btnStops").addEventListener("click", function () {
+        var btn = this, on = btn.getAttribute("aria-pressed") !== "true";
+        btn.setAttribute("aria-pressed", on ? "true" : "false");
+        stopMarkers.forEach(function (m) { m.setMap(on ? map : null); });
+      });
 
       var recs = [];
       var selected = new Set();
@@ -242,7 +265,7 @@
           '<div class="tags"><span class="brand ' + s.category + '">' + CLABEL[s.category] + '</span>' +
           (s.direction ? '<span class="rtag">' + esc(s.direction) + '</span>' : '') +
           '<span class="rtag">' + esc(s.gu) + '</span></div>' +
-          '<p>' + esc(s.addr) + '</p>' +
+          '<p>' + esc(s.addr) + (s.stopName ? ' <span style="color:#64748b">· 🚏 ' + esc(s.stopName) + '</span>' : '') + '</p>' +
           (facts.length ? '<div class="facts">' + esc(facts.join(" · ")) + '</div>' : '') +
           (priceLine ? '<div class="price">' + esc(priceLine) + '</div>' : '') +
           '<div class="avail"><span class="k">광고 시작 가능일</span><br>' + esc(availLine(s)) + '</div>' +
