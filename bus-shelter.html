@@ -19,6 +19,9 @@
     header .evbar .gydot { width: 11px; height: 11px; border-radius: 50%; background: #9aa3b0; border: 1px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.15); }
     #stage { position: relative; flex: 1; min-height: 0; display: flex; }
     #map { flex: 1; width: 100%; min-height: 0; }
+    /* 지도 채도만 살짝 낮춤(밝기 유지 — 하얘지지 않게) → 아이콘 대비 ↑ */
+    #map img { filter: saturate(0.82); }
+    #map .evpin, #map .evpin i, #map .busstop { filter: none; }
 
     #leftcol { position: absolute; z-index: 16; left: 14px; top: 14px; bottom: 14px; width: 338px; max-width: 90vw; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
     #leftcol > * { pointer-events: auto; }
@@ -59,8 +62,8 @@
     .evpin.sel { box-shadow: 0 0 0 3px #ffd60a, 0 2px 7px rgba(15,23,42,.5); }
     .evpin i { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(45deg); font-style: normal; font-weight: 800; font-size: 13px; line-height: 1; color: #fff; }
     /* 주변 버스정류장 참조 점 */
-    .busstop { width: 11px; height: 11px; display: flex; align-items: center; justify-content: center; }
-    .busstop svg { width: 11px; height: 11px; display: block; filter: drop-shadow(0 0 0.5px rgba(255,255,255,.9)); }
+    .busstop { width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; }
+    .busstop svg { width: 14px; height: 14px; display: block; filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff); }
 
     /* 팝업 */
     .iw { position: relative; font-family: inherit; padding: 13px 15px; min-width: 220px; max-width: 300px; background: #fff; border: 1px solid #e5e9f0; border-radius: 12px; box-shadow: 0 8px 26px rgba(15,23,42,.25); }
@@ -137,7 +140,7 @@
           <button type="button" class="row" id="btnAir" data-c="airport" aria-pressed="true"><span class="dot airport">공</span>공항쉘터 <span id="lf"></span><span class="chk"></span></button>
           <button type="button" class="row" id="btnNor" data-c="normal" aria-pressed="true"><span class="dot normal">일</span>일반쉘터 <span id="lt"></span><span class="chk"></span></button>
           <button type="button" class="row" id="btnFeas" aria-pressed="false" style="margin-top:4px"><span class="dot" style="background:#9aa3b0">✕</span>행사기간 불가 숨기기 <span class="chk"></span></button>
-          <button type="button" class="row" id="btnStops" aria-pressed="true"><span class="dot" style="background:none;box-shadow:none;display:inline-flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="#aab3c0" xmlns="http://www.w3.org/2000/svg"><path d="M5 4.3C6.6 3.7 9 3.4 12 3.4s5.4.3 7 .9c1.3.5 2 1.4 2 2.7v8.8c0 .8-.4 1.5-1 1.9V19a1.2 1.2 0 0 1-2.4 0v-.9H6.4V19A1.2 1.2 0 0 1 4 19v-1.3c-.6-.4-1-1.1-1-1.9V7c0-1.3.7-2.2 2-2.7Zm.6 3.4v4.2h5.1V7.2H6.7c-.7 0-1.1.2-1.1.5Zm7.1-.5v4.7h5.1V7.7c0-.3-.4-.5-1.1-.5h-4ZM7.3 15.6a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Zm9.4 0a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Z"/></svg></span>주변 버스정류장 <span id="lstop"></span><span class="chk"></span></button>
+          <button type="button" class="row" id="btnStops" aria-pressed="true"><span class="dot" style="background:none;box-shadow:none;display:inline-flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="#333e52" xmlns="http://www.w3.org/2000/svg"><path d="M5 4.3C6.6 3.7 9 3.4 12 3.4s5.4.3 7 .9c1.3.5 2 1.4 2 2.7v8.8c0 .8-.4 1.5-1 1.9V19a1.2 1.2 0 0 1-2.4 0v-.9H6.4V19A1.2 1.2 0 0 1 4 19v-1.3c-.6-.4-1-1.1-1-1.9V7c0-1.3.7-2.2 2-2.7Zm.6 3.4v4.2h5.1V7.2H6.7c-.7 0-1.1.2-1.1.5Zm7.1-.5v4.7h5.1V7.7c0-.3-.4-.5-1.1-.5h-4ZM7.3 15.6a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Zm9.4 0a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Z"/></svg></span>주변 버스정류장 <span id="lstop"></span><span class="chk"></span></button>
           <div class="grayrow"><span class="dot">✕</span>회색 = 행사기간(12/17~20) 집행 불가</div>
           <div class="tot" id="ltot"></div>
           <button type="button" class="listtoggle" id="listtoggle">📋 지점 리스트 선택하기</button>
@@ -176,8 +179,27 @@
       catch (e) { document.getElementById("sub").textContent = "데이터 로드 실패"; return; }
       var sites = data.sites || [];
       var ev = data.event || {};
+      // 행사기간(12/17~20) 집행 불가 지점은 제외
+      sites = sites.filter(function (s) { return s.feasible; });
+      data.counts = {
+        total: sites.length,
+        airport: sites.filter(function (s) { return s.category === "airport"; }).length,
+        normal: sites.filter(function (s) { return s.category === "normal"; }).length,
+        feasible: sites.length, infeasible: 0
+      };
       var stopData = [];
       try { stopData = (await (await fetch("data/bus-shelter-stops.json?v=1")).json()).stops || []; } catch (e) {}
+      // 참조 정류장: 쉘터 반경 180m 안쪽만 표시(멀거나 엉뚱한 위치 정리)
+      function distM(aLat, aLng, bLat, bLng) {
+        var R = 6371000, toR = Math.PI / 180;
+        var dLat = (bLat - aLat) * toR, dLng = (bLng - aLng) * toR;
+        var x = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(aLat * toR) * Math.cos(bLat * toR) * Math.sin(dLng / 2) * Math.sin(dLng / 2);
+        return 2 * R * Math.asin(Math.min(1, Math.sqrt(x)));
+      }
+      stopData = stopData.filter(function (st) {
+        return sites.some(function (s) { return distM(st.lat, st.lng, s.lat, s.lng) <= 180; });
+      });
 
       document.getElementById("sub").textContent =
         "총 " + data.counts.total + "곳 · 공항쉘터 " + data.counts.airport + " · 일반쉘터 " + data.counts.normal + " · 안국·종로·광화문 일대";
@@ -185,12 +207,15 @@
       evbar.hidden = false;
       evbar.innerHTML = '🗓 <span>' + esc(ev.label || "행사") + '</span>' +
         '<span class="g">· ' + esc(ev.minRun || "") + '</span>' +
-        '<span class="gy"><span class="gydot"></span>회색 ' + data.counts.infeasible + '곳 = 행사기간 집행 불가</span>';
+        '<span class="gy">· 행사기간 집행 가능 지점만 표시</span>';
       document.getElementById("lf").textContent = data.counts.airport + "곳";
       document.getElementById("lt").textContent = data.counts.normal + "곳";
-      document.getElementById("ltot").textContent = "합계 " + data.counts.total + "곳 (집행가능 " + data.counts.feasible + " · 불가 " + data.counts.infeasible + ")";
+      document.getElementById("ltot").textContent = "합계 " + data.counts.total + "곳 (행사기간 집행 가능)";
       document.getElementById("regionbox").hidden = false;
       document.getElementById("legend").hidden = false;
+      // 행사기간 불가 관련 UI 제거(이제 전부 집행 가능)
+      var _bf = document.getElementById("btnFeas"); if (_bf) _bf.style.display = "none";
+      var _gr = document.querySelector(".legend .grayrow"); if (_gr) _gr.style.display = "none";
 
       // 지역(자치구) 칩
       var areas = {};
@@ -214,7 +239,7 @@
 
       // 주변 버스정류장(참조) — 버스 모양 아이콘, 쉘터보다 아래(zIndex 낮게)
       var STOP_ANCHOR = new naver.maps.Point(5.5, 5.5);
-      var BUS_SVG = '<svg viewBox="0 0 24 24" fill="#aab3c0" xmlns="http://www.w3.org/2000/svg"><path d="M5 4.3C6.6 3.7 9 3.4 12 3.4s5.4.3 7 .9c1.3.5 2 1.4 2 2.7v8.8c0 .8-.4 1.5-1 1.9V19a1.2 1.2 0 0 1-2.4 0v-.9H6.4V19A1.2 1.2 0 0 1 4 19v-1.3c-.6-.4-1-1.1-1-1.9V7c0-1.3.7-2.2 2-2.7Zm.6 3.4v4.2h5.1V7.2H6.7c-.7 0-1.1.2-1.1.5Zm7.1-.5v4.7h5.1V7.7c0-.3-.4-.5-1.1-.5h-4ZM7.3 15.6a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Zm9.4 0a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Z"/></svg>';
+      var BUS_SVG = '<svg viewBox="0 0 24 24" fill="#333e52" xmlns="http://www.w3.org/2000/svg"><path d="M5 4.3C6.6 3.7 9 3.4 12 3.4s5.4.3 7 .9c1.3.5 2 1.4 2 2.7v8.8c0 .8-.4 1.5-1 1.9V19a1.2 1.2 0 0 1-2.4 0v-.9H6.4V19A1.2 1.2 0 0 1 4 19v-1.3c-.6-.4-1-1.1-1-1.9V7c0-1.3.7-2.2 2-2.7Zm.6 3.4v4.2h5.1V7.2H6.7c-.7 0-1.1.2-1.1.5Zm7.1-.5v4.7h5.1V7.7c0-.3-.4-.5-1.1-.5h-4ZM7.3 15.6a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Zm9.4 0a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Z"/></svg>';
       var stopMarkers = [];
       stopData.forEach(function (st) {
         var m = new naver.maps.Marker({
