@@ -54,12 +54,15 @@
     .dot.lotte { background: #e4002b; border-radius: 50%; } .dot.costco { background: #005daa; border-radius: 5px; }
     .dot.focus { background: #bf5b4d; } .dot.townboard { background: #4a6c9b; }
     .legend .sep { margin: 7px 0 3px; border-top: 1px solid #eef1f7; padding-top: 7px; font-size: 11px; color: #94a3b8; font-weight: 700; }
+    .legend .pkgnote { margin: 2px 2px 4px; padding: 7px 9px; background: #fff8e6; border: 1px solid #f3dd9a; border-radius: 8px; font-size: 11px; line-height: 1.55; color: #6b5600; font-weight: 600; }
+    .legend .pkgnote b { color: #8a6d00; }
     .listtoggle { display: block; width: 100%; margin-top: 9px; background: #0b3a91; color: #fff; border: 0; border-radius: 9px; padding: 11px 13px; font: inherit; font-weight: 800; font-size: 13px; cursor: pointer; box-shadow: 0 2px 10px rgba(11,58,145,.3); text-align: center; }
     .listtoggle:hover { background: #0a337f; }
 
     /* 단지 핀 */
     .evpin { width: 20px; height: 20px; border-radius: 50% 50% 50% 0; border: 2px solid #fff; transform: rotate(-45deg); box-shadow: 0 2px 6px rgba(15,23,42,.4); cursor: pointer; }
     .evpin.focus { background: #bf5b4d; } .evpin.townboard { background: #4a6c9b; } .evpin.both { background: #7a4f97; }
+    .evpin.pkg { box-shadow: 0 0 0 2px #f0a500, 0 2px 6px rgba(15,23,42,.45); }
     .evpin.sel { box-shadow: 0 0 0 3px #ffd60a, 0 2px 7px rgba(15,23,42,.5); }
     .evpin i { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(45deg); font-style: normal; font-weight: 800; font-size: 10px; line-height: 1; color: #fff; }
     /* 점포 핀 (강조) — 브랜드 로고 스타일 */
@@ -149,7 +152,8 @@
           <div class="sep">단지 엘리베이터 매체</div>
           <button type="button" class="row" id="btnFocus" aria-pressed="true"><span class="dot focus">F</span>포커스미디어 <span id="lf"></span><span class="chk"></span></button>
           <button type="button" class="row" id="btnTb" aria-pressed="true"><span class="dot townboard">T</span>타운보드 <span id="lt"></span><span class="chk"></span></button>
-          <button type="button" class="row" id="btnRing" aria-pressed="true"><span class="dot" style="background:#9fb4d8">○</span>상권 반경 표시 <span class="chk"></span></button>
+          <div class="pkgnote">※ <b>강남구·서초구</b>는 타운보드가 <b>구단위 패키지</b> 집행만 가능 → 마트 반경과 무관하게 <b>해당 구 전체 단지</b> 표시 <span id="lpkg"></span>. 지도에서 <span style="display:inline-block;width:10px;height:10px;border-radius:50%;background:#4a6c9b;box-shadow:0 0 0 2px #f0a500;vertical-align:-1px"></span> 금색 테두리 핀.</div>
+          <button type="button" class="row" id="btnRing" aria-pressed="true"><span class="dot" style="background:#9fb4d8">○</span>상권 반경 1km(1,000m) 표시 <span class="chk"></span></button>
           <button type="button" class="listtoggle" id="listtoggle">📋 단지 리스트 선택·다운로드</button>
         </div>
 
@@ -189,17 +193,18 @@
       var PLAB = { focus: "포커스미디어", townboard: "타운보드" };
 
       var data;
-      try { data = await (await fetch("data/mart-elevator.json?v=1")).json(); }
+      try { data = await (await fetch("data/mart-elevator.json?v=2")).json(); }
       catch (e) { document.getElementById("sub").textContent = "데이터 로드 실패"; return; }
       var sm = data.summary, stores = data.stores || [], sites = data.sites || [];
       var RAD = data.radius || 1000;
 
       document.getElementById("sub").textContent =
-        "반경 " + (RAD >= 1000 ? (RAD/1000) + "km" : RAD + "m") + " · 점포 " + sm.stores_total + "곳(롯데마트 " + sm.lotte + "·코스트코 " + sm.costco + ") · 인근 단지 " + sm.complexes + "곳 · 모니터 " + won(sm.monitors) + "대";
+        "각 매장 반경 " + won(RAD) + "m(" + (RAD/1000) + "km) · 점포 " + sm.stores_total + "곳(롯데마트 " + sm.lotte + "·코스트코 " + sm.costco + ") · 단지 " + sm.complexes + "곳(마트인근 " + (sm.complexes - sm.tb_pkg) + "+강남·서초 타운보드 " + sm.tb_pkg + ") · 모니터 " + won(sm.monitors) + "대";
       document.getElementById("lL").textContent = sm.lotte + "곳";
       document.getElementById("lC").textContent = sm.costco + "곳";
       document.getElementById("lf").textContent = sm.focus + "곳";
       document.getElementById("lt").textContent = sm.townboard + "곳";
+      var lpkgEl = document.getElementById("lpkg"); if (lpkgEl) lpkgEl.textContent = "(" + sm.tb_pkg + "곳)";
       ["estimate","filterbox","legend"].forEach(function (id) { document.getElementById(id).hidden = false; });
 
       if (!(window.naver && naver.maps)) { document.getElementById("err").style.display = "block"; return; }
@@ -245,7 +250,7 @@
       var plist = document.getElementById("plist");
       function pinHtml(s, sel) {
         var letter = s.prodkey === "both" ? "FT" : (s.prodkey === "focus" ? "F" : "T");
-        return '<div class="evpin ' + s.prodkey + (sel ? " sel" : "") + '" title="' + esc(s.name) + '"><i>' + letter + '</i></div>';
+        return '<div class="evpin ' + s.prodkey + (s.pkg ? " pkg" : "") + (sel ? " sel" : "") + '" title="' + esc(s.name) + '"><i>' + letter + '</i></div>';
       }
       function iwHtml(r) {
         var s = r.site, on = selected.has(r.idx);
@@ -254,9 +259,12 @@
         if (s.households) facts.push(won(s.households) + "세대");
         var prodtags = s.products.map(function (p) { return '<span class="brand ' + p + '">' + PLAB[p] + '</span>'; }).join("");
         var priceLine = s.price ? won(s.price) + "원 / 4주" : "";
+        var storeline = s.pkg
+          ? '📦 ' + esc(s.storeName) + ' (타운보드 구단위 패키지)'
+          : '🛒 ' + esc(BLAB[s.storeBrand] + " " + s.storeName) + ' ' + s.storeDist + 'm';
         return '<div class="iw"><h3>' + esc(s.name) + '</h3>' +
-          '<div class="tags">' + prodtags + '<span class="rtag">' + esc(s.gu) + '</span></div>' +
-          '<p>' + esc(s.addr) + '<br><span style="color:#64748b">🛒 ' + esc(BLAB[s.storeBrand] + " " + s.storeName) + ' ' + s.storeDist + 'm</span></p>' +
+          '<div class="tags">' + prodtags + '<span class="rtag">' + esc(s.gu) + '</span>' + (s.pkg ? '<span class="rtag" style="background:#fff4d6;color:#8a6d00">구패키지</span>' : '') + '</div>' +
+          '<p>' + esc(s.addr) + '<br><span style="color:#64748b">' + storeline + '</span></p>' +
           (facts.length ? '<div class="facts">' + esc(facts.join(" · ")) + '</div>' : '') +
           (priceLine ? '<div class="price">' + esc(priceLine) + '</div>' : '') +
           '<button type="button" class="iwsel' + (on ? " on" : "") + '" onclick="window.__toggleSel(' + r.idx + ')">' + (on ? "✓ 선택됨 (해제)" : "+ 이 단지 선택") + '</button></div>';
@@ -297,13 +305,16 @@
         document.getElementById("vYear").innerHTML = eok(month * 12) + '<small>원</small>';
         document.getElementById("estscope").textContent = "· " + (activeScope === "all" ? "전체" : BLAB[activeScope] + " 상권");
         document.getElementById("estnote").textContent =
-          "단지 " + vis.length + "곳 · 모니터 " + won(mon) + "대 · 4주 광고료 합계 기준(연간=×12). 실제 단가는 물량·기간에 따라 협의.";
+          "단지 " + vis.length + "곳 · 모니터 " + won(mon) + "대 · 매장 반경 " + won(RAD) + "m 기준 · 4주 광고료 합계(연간=×12). 실제 단가는 물량·기간에 따라 협의.";
       }
 
       function isVisible(r) {
         var s = r.site;
-        var scopeOk = activeScope === "all" || s.storeBrand === activeScope;
-        var brandNear = brandOn[s.storeBrand];
+        var scopeOk;
+        if (activeScope === "all") scopeOk = true;
+        else if (activeScope === "pkg") scopeOk = !!s.pkg;
+        else scopeOk = !s.pkg && s.storeBrand === activeScope;
+        var brandNear = s.pkg ? true : brandOn[s.storeBrand];
         var mediaOk = s.products.some(function (p) { return mediaOn[p]; });
         return scopeOk && brandNear && mediaOk;
       }
@@ -329,7 +340,7 @@
 
       // ---- 상권 스코프 칩 ----
       var rchips = document.getElementById("rchips");
-      [["all","전체",sm.complexes],["lotte","롯데마트 상권",sm.near_lotte],["costco","코스트코 상권",sm.near_costco]].forEach(function (t, i) {
+      [["all","전체",sm.complexes],["lotte","롯데마트 상권",sm.near_lotte],["costco","코스트코 상권",sm.near_costco],["pkg","강남·서초 타운보드",sm.tb_pkg]].forEach(function (t, i) {
         var b = document.createElement("button");
         b.type = "button"; b.className = "rchip"; b.dataset.scope = t[0];
         b.setAttribute("aria-pressed", i === 0 ? "true" : "false");
