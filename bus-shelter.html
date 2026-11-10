@@ -19,8 +19,8 @@
     header .evbar .gydot { width: 11px; height: 11px; border-radius: 50%; background: #9aa3b0; border: 1px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.15); }
     #stage { position: relative; flex: 1; min-height: 0; display: flex; }
     #map { flex: 1; width: 100%; min-height: 0; }
-    /* 지도 채도만 살짝 낮춤(밝기 유지 — 하얘지지 않게) → 아이콘 대비 ↑ */
-    #map img { filter: saturate(0.82); }
+    /* 지도 채도 낮춤(밝기 유지 — 하얘지지 않게) → 지하철 노선색 등 흐리게, 핀 대비 ↑ */
+    #map img { filter: saturate(0.5); }
     #map .evpin, #map .evpin i, #map .busstop { filter: none; }
 
     #leftcol { position: absolute; z-index: 16; left: 14px; top: 14px; bottom: 14px; width: 338px; max-width: 90vw; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
