@@ -62,13 +62,15 @@
     .evpin.focus { background: #bf5b4d; } .evpin.townboard { background: #4a6c9b; } .evpin.both { background: #7a4f97; }
     .evpin.sel { box-shadow: 0 0 0 3px #ffd60a, 0 2px 7px rgba(15,23,42,.5); }
     .evpin i { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(45deg); font-style: normal; font-weight: 800; font-size: 10px; line-height: 1; color: #fff; }
-    /* 점포 핀 (강조) — 브랜드별 형태·색 구분 */
-    .stpin { width: 32px; height: 32px; border: 3px solid #fff; box-shadow: 0 0 0 1.5px rgba(15,23,42,.3), 0 4px 10px rgba(15,23,42,.5); cursor: pointer; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; }
-    .stpin i { font-style: normal; line-height: 1; }
-    /* 롯데마트: 빨간 원형 */
-    .stpin.lotte { background: #da291c; border-radius: 50%; font-size: 13px; }
-    /* 코스트코: 파란 사각형(회전 다이아 아님, 라운드 사각) */
-    .stpin.costco { background: #005daa; border-radius: 6px; font-size: 14px; }
+    /* 점포 핀 (강조) — 브랜드 로고 스타일 */
+    .stpin { border: 3px solid #fff; box-shadow: 0 0 0 1.5px rgba(15,23,42,.28), 0 4px 10px rgba(15,23,42,.5); cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    /* 롯데마트: 빨간 원형 + ℓ 엠블럼 */
+    .stpin.lotte { width: 32px; height: 32px; background: #e4002b; border-radius: 50%; }
+    .stpin.lotte .em { color: #fff; font-family: Georgia, "Times New Roman", serif; font-style: italic; font-weight: 700; font-size: 19px; line-height: 1; margin-top: -1px; }
+    /* 코스트코: 흰 배지 + 빨강 COSTCO + 파란 바 */
+    .stpin.costco { background: #fff; border-radius: 7px; padding: 3px 6px 4px; flex-direction: column; gap: 2px; }
+    .stpin.costco .c1 { color: #e4002b; font-weight: 800; font-style: italic; font-size: 11px; letter-spacing: -.4px; line-height: 1; }
+    .stpin.costco .c2 { width: 100%; height: 2px; background: #005daa; border-radius: 1px; }
 
     /* 팝업 */
     .iw { font-family: inherit; padding: 13px 15px; min-width: 210px; max-width: 300px; background: #fff; border: 1px solid #e5e9f0; border-radius: 12px; box-shadow: 0 8px 26px rgba(15,23,42,.25); }
@@ -140,8 +142,8 @@
 
         <div class="box legend" id="legend" hidden>
           <span class="hint">클릭하면 켜기 / 끄기</span>
-          <button type="button" class="row" id="btnLotte" aria-pressed="true"><span class="dot lotte">롯</span>롯데마트 <span id="lL"></span><span class="chk"></span></button>
-          <button type="button" class="row" id="btnCostco" aria-pressed="true"><span class="dot costco">C</span>코스트코 <span id="lC"></span><span class="chk"></span></button>
+          <button type="button" class="row" id="btnLotte" aria-pressed="true"><span class="dot lotte" style="font-family:Georgia,serif;font-style:italic;font-weight:700;font-size:12px">&#8467;</span>롯데마트 <span id="lL"></span><span class="chk"></span></button>
+          <button type="button" class="row" id="btnCostco" aria-pressed="true"><span class="dot costco" style="background:#fff;color:#e4002b;font-style:italic;font-weight:800;font-size:9px;border:1.5px solid #005daa;box-shadow:none">C</span>코스트코 <span id="lC"></span><span class="chk"></span></button>
           <div class="sep">단지 엘리베이터 매체</div>
           <button type="button" class="row" id="btnFocus" aria-pressed="true"><span class="dot focus">F</span>포커스미디어 <span id="lf"></span><span class="chk"></span></button>
           <button type="button" class="row" id="btnTb" aria-pressed="true"><span class="dot townboard">T</span>타운보드 <span id="lt"></span><span class="chk"></span></button>
@@ -205,6 +207,11 @@
       var PIN_ANCHOR = new naver.maps.Point(10, 20);
       var ST_ANCHOR = new naver.maps.Point(16, 16);
 
+      var STICON = {
+        lotte: '<span class="em">ℓ</span>',
+        costco: '<span class="c1">COSTCO</span><span class="c2"></span>'
+      };
+      var ST_ANCHOR_B = { lotte: new naver.maps.Point(16, 16), costco: new naver.maps.Point(29, 16) };
       var brandOn = { lotte: true, costco: true };
       var mediaOn = { focus: true, townboard: true };
       var activeScope = "all"; // all | lotte | costco
@@ -216,7 +223,7 @@
         var m = new naver.maps.Marker({
           map: map, position: ll, zIndex: 200,
           title: BLAB[st.brand] + " " + st.name,
-          icon: { content: '<div class="stpin ' + st.brand + '" title="' + esc(BLAB[st.brand] + " " + st.name) + '"><i>' + (st.brand === "lotte" ? "롯" : "C") + '</i></div>', anchor: ST_ANCHOR }
+          icon: { content: '<div class="stpin ' + st.brand + '" title="' + esc(BLAB[st.brand] + " " + st.name) + '">' + STICON[st.brand] + '</div>', anchor: ST_ANCHOR_B[st.brand] }
         });
         naver.maps.Event.addListener(m, "click", function () {
           iw.setContent('<div class="iw"><h3>' + esc(BLAB[st.brand] + " " + st.name) + '</h3>' +
