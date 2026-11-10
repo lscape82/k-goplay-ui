@@ -79,7 +79,9 @@
     .iw .evbadge { margin-top: 7px; display: inline-block; font-size: 12px; font-weight: 800; padding: 4px 9px; border-radius: 999px; }
     .iw .evbadge.ok { background: #e7f6ec; color: #1a7f3c; }
     .iw .evbadge.no { background: #f1f3f6; color: #7a8698; }
-    .iw .iwsel { margin-top: 10px; width: 100%; padding: 8px; border: 1px solid #0b3a91; background: #0b3a91; color: #fff; border-radius: 8px; font: inherit; font-weight: 800; font-size: 12.5px; cursor: pointer; }
+    .iw .iwrv { margin-top: 8px; display: flex; align-items: center; justify-content: center; gap: 6px; width: 100%; padding: 8px; border: 1px solid #cbd5e3; background: #f7f9fc; color: #334; border-radius: 8px; font: inherit; font-weight: 700; font-size: 12.5px; cursor: pointer; text-decoration: none; box-sizing: border-box; }
+    .iw .iwrv:hover { background: #eef2f8; border-color: #b3c0d4; }
+    .iw .iwsel { margin-top: 8px; width: 100%; padding: 8px; border: 1px solid #0b3a91; background: #0b3a91; color: #fff; border-radius: 8px; font: inherit; font-weight: 800; font-size: 12.5px; cursor: pointer; }
     .iw .iwsel.on { background: #fff; color: #0b3a91; }
 
     /* 목록/다운로드 패널 */
@@ -271,6 +273,7 @@
           (priceLine ? '<div class="price">' + esc(priceLine) + '</div>' : '') +
           '<div class="avail"><span class="k">광고 시작 가능일</span><br>' + esc(availLine(s)) + '</div>' +
           evbadge +
+          '<a class="iwrv" href="https://map.kakao.com/link/roadview/' + s.lat + ',' + s.lng + '" target="_blank" rel="noopener">🛣 거리뷰로 현장 보기</a>' +
           '<button type="button" class="iwsel' + (on ? " on" : "") + '" onclick="window.__toggleSel(' + r.idx + ')">' + (on ? "✓ 선택됨 (해제)" : "+ 이 지점 선택") + '</button></div>';
       }
 
