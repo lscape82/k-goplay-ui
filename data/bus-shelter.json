@@ -1,0 +1,455 @@
+{
+ "title": "버스 쉘터 매체 위치 (안국·종로·광화문)",
+ "event": {
+  "label": "행사 12/17~20",
+  "start": "2026-12-17",
+  "end": "2026-12-20",
+  "minRun": "최소 15일 또는 1개월",
+  "note": "광고 시작 가능일이 12/17 이후인 매체는 행사기간 집행 불가(회색)"
+ },
+ "counts": {
+  "total": 16,
+  "airport": 11,
+  "normal": 5,
+  "feasible": 15,
+  "infeasible": 1
+ },
+ "sites": [
+  {
+   "id": "01-120_1",
+   "category": "normal",
+   "name": "광화문",
+   "gu": "종로구",
+   "dong": "세종로",
+   "grade": "SA-V",
+   "face": "2면",
+   "addr": "서울 종로구 세종로",
+   "target": "",
+   "price": 1000000,
+   "light": "조명",
+   "avail": "2026-12-01",
+   "availkey": 20261201,
+   "direction": "가로변",
+   "faces": [
+    {
+     "face": "2면",
+     "avail": "2026-12-01"
+    }
+   ],
+   "lat": 37.580285,
+   "lng": 126.976757,
+   "feasible": true
+  },
+  {
+   "id": "01-125_1",
+   "category": "normal",
+   "name": "광화문",
+   "gu": "종로구",
+   "dong": "신문로1가",
+   "grade": "SA+",
+   "face": "3, 4면",
+   "addr": "서울 종로구 신문로1가",
+   "target": "",
+   "price": 4000000,
+   "light": "조명",
+   "avail": "2026-12-01",
+   "availkey": 20261201,
+   "direction": "가로변",
+   "faces": [
+    {
+     "face": "3, 4면",
+     "avail": "2026-12-01"
+    }
+   ],
+   "lat": 37.5704913,
+   "lng": 126.9761886,
+   "feasible": true
+  },
+  {
+   "id": "01-177_1",
+   "category": "normal",
+   "name": "청계5가.광장시장",
+   "gu": "종로구",
+   "dong": "예지동",
+   "grade": "A",
+   "face": "1, 2면",
+   "addr": "서울 종로구 예지동",
+   "target": "",
+   "price": 1000000,
+   "light": "조명",
+   "avail": "즉시 가능",
+   "availkey": 20261110,
+   "direction": "가로변",
+   "faces": [
+    {
+     "face": "1, 2면",
+     "avail": "즉시 가능"
+    }
+   ],
+   "lat": 37.569619,
+   "lng": 126.998276,
+   "feasible": true
+  },
+  {
+   "id": "02-137_2",
+   "category": "normal",
+   "name": "서울신문사",
+   "gu": "중구",
+   "dong": "태평로1가",
+   "grade": "SA+",
+   "face": "1, 2면",
+   "addr": "서울특별시 중구 세종대로",
+   "target": "",
+   "price": 4000000,
+   "light": "조명",
+   "avail": "2026-11-24",
+   "availkey": 20261124,
+   "direction": "가로변",
+   "faces": [
+    {
+     "face": "1, 2면",
+     "avail": "2026-11-24"
+    }
+   ],
+   "lat": 37.567685,
+   "lng": 126.977248,
+   "feasible": true
+  },
+  {
+   "id": "02-240_1",
+   "category": "normal",
+   "name": "청계3가.관수교",
+   "gu": "중구",
+   "dong": "입정동",
+   "grade": "SA-V",
+   "face": "3, 4면",
+   "addr": "서울 중구 입정동 277",
+   "target": "",
+   "price": 2000000,
+   "light": "조명",
+   "avail": "즉시 가능",
+   "availkey": 20261110,
+   "direction": "가로변",
+   "faces": [
+    {
+     "face": "3, 4면",
+     "avail": "즉시 가능"
+    }
+   ],
+   "lat": 37.5679974,
+   "lng": 126.9931076,
+   "feasible": true
+  },
+  {
+   "id": "01-763",
+   "category": "airport",
+   "name": "종로1가",
+   "gu": "종로구",
+   "dong": "",
+   "grade": "SA",
+   "face": "1,2면, 3,4면",
+   "addr": "종로1가 24",
+   "target": "종로1가 농협지점 앞",
+   "price": 2000000,
+   "light": "",
+   "direction": "공항",
+   "faces": [
+    {
+     "face": "1,2면",
+     "avail": "즉시 가능"
+    },
+    {
+     "face": "3,4면",
+     "avail": "2026-12-01"
+    }
+   ],
+   "avail": "즉시 가능",
+   "availkey": 20261110,
+   "lat": 37.570464,
+   "lng": 126.9798514,
+   "feasible": true
+  },
+  {
+   "id": "01-912",
+   "category": "airport",
+   "name": "종각역_4번출구",
+   "gu": "종로구",
+   "dong": "",
+   "grade": "A",
+   "face": "1,2면, 3,4면",
+   "addr": "종각역 4번출구",
+   "target": "종각역 4번출구",
+   "price": 1600000,
+   "light": "",
+   "direction": "투어",
+   "faces": [
+    {
+     "face": "1,2면",
+     "avail": "2027-01-01"
+    },
+    {
+     "face": "3,4면",
+     "avail": "2026-12-01"
+    }
+   ],
+   "avail": "2026-12-01",
+   "availkey": 20261201,
+   "lat": 37.57001,
+   "lng": 126.98299,
+   "feasible": true
+  },
+  {
+   "id": "01-683",
+   "category": "airport",
+   "name": "종로2가 YMCA",
+   "gu": "종로구",
+   "dong": "",
+   "grade": "SA",
+   "face": "1,2면, 3,4면",
+   "addr": "종로2가 69",
+   "target": "YMCA",
+   "price": 2000000,
+   "light": "",
+   "direction": "공항",
+   "faces": [
+    {
+     "face": "1,2면",
+     "avail": "즉시 가능"
+    },
+    {
+     "face": "3,4면",
+     "avail": "즉시 가능"
+    }
+   ],
+   "avail": "즉시 가능",
+   "availkey": 20261110,
+   "lat": 37.5699635,
+   "lng": 126.9873675,
+   "feasible": true
+  },
+  {
+   "id": "01-913",
+   "category": "airport",
+   "name": "종로_YBM어학원",
+   "gu": "종로구",
+   "dong": "",
+   "grade": "SA",
+   "face": "1,2면, 3,4면",
+   "addr": "종로3가(YBM)",
+   "target": "종로2가 사거리 YBM 앞",
+   "price": 2000000,
+   "light": "",
+   "direction": "투어",
+   "faces": [
+    {
+     "face": "1,2면",
+     "avail": "즉시 가능"
+    },
+    {
+     "face": "3,4면",
+     "avail": "즉시 가능"
+    }
+   ],
+   "avail": "즉시 가능",
+   "availkey": 20261110,
+   "lat": 37.57039,
+   "lng": 126.992321,
+   "feasible": true
+  },
+  {
+   "id": "01-767",
+   "category": "airport",
+   "name": "종로3가",
+   "gu": "종로구",
+   "dong": "",
+   "grade": "A",
+   "face": "1,2면, 3,4면",
+   "addr": "종로3가 31-1앞",
+   "target": "종로타운",
+   "price": 1600000,
+   "light": "",
+   "direction": "공항",
+   "faces": [
+    {
+     "face": "1,2면",
+     "avail": "즉시 가능"
+    },
+    {
+     "face": "3,4면",
+     "avail": "즉시 가능"
+    }
+   ],
+   "avail": "즉시 가능",
+   "availkey": 20261110,
+   "lat": 37.5707559,
+   "lng": 126.9930177,
+   "feasible": true
+  },
+  {
+   "id": "01-914",
+   "category": "airport",
+   "name": "종로3가역_세운상가",
+   "gu": "종로구",
+   "dong": "",
+   "grade": "A",
+   "face": "1,2면, 3,4면",
+   "addr": "종로3가 55-6",
+   "target": "종로3가 12번 출구",
+   "price": 1600000,
+   "light": "",
+   "direction": "투어",
+   "faces": [
+    {
+     "face": "1,2면",
+     "avail": "즉시 가능"
+    },
+    {
+     "face": "3,4면",
+     "avail": "참여 불가"
+    }
+   ],
+   "avail": "즉시 가능",
+   "availkey": 20261110,
+   "lat": 37.5704348,
+   "lng": 126.9951117,
+   "feasible": true
+  },
+  {
+   "id": "01-762",
+   "category": "airport",
+   "name": "광화문",
+   "gu": "종로구",
+   "dong": "",
+   "grade": "SA",
+   "face": "1,2면, 3,4면",
+   "addr": "신문로1가 9-4",
+   "target": "포시즌호텔",
+   "price": 2000000,
+   "light": "",
+   "direction": "공항",
+   "faces": [
+    {
+     "face": "1,2면",
+     "avail": "2027-01-01"
+    },
+    {
+     "face": "3,4면",
+     "avail": "2027-01-01"
+    }
+   ],
+   "avail": "2027-01-01",
+   "availkey": 20270101,
+   "lat": 37.5704897,
+   "lng": 126.9755514,
+   "feasible": false
+  },
+  {
+   "id": "02-137",
+   "category": "airport",
+   "name": "청계광장_파이낸스센터",
+   "gu": "중구",
+   "dong": "",
+   "grade": "SA+",
+   "face": "1,2면, 3,4면",
+   "addr": "태평로1가 63-17",
+   "target": "광화문 사거리 청계광장",
+   "price": 3000000,
+   "light": "",
+   "direction": "투어",
+   "faces": [
+    {
+     "face": "1,2면",
+     "avail": "2027-01-01"
+    },
+    {
+     "face": "3,4면",
+     "avail": "2026-12-01"
+    }
+   ],
+   "avail": "2026-12-01",
+   "availkey": 20261201,
+   "lat": 37.568874,
+   "lng": 126.9771761,
+   "feasible": true
+  },
+  {
+   "id": "02-706",
+   "category": "airport",
+   "name": "시청.서울신문사",
+   "gu": "중구",
+   "dong": "",
+   "grade": "SA+",
+   "face": "1,2면, 3,4면",
+   "addr": "세종대로 136",
+   "target": "서울파이낸스센터",
+   "price": 3000000,
+   "light": "",
+   "direction": "도심",
+   "faces": [
+    {
+     "face": "1,2면",
+     "avail": "즉시 가능"
+    },
+    {
+     "face": "3,4면",
+     "avail": "즉시 가능"
+    }
+   ],
+   "avail": "즉시 가능",
+   "availkey": 20261110,
+   "lat": 37.5684246,
+   "lng": 126.9782701,
+   "feasible": true
+  },
+  {
+   "id": "01-779",
+   "category": "airport",
+   "name": "안국역",
+   "gu": "종로구",
+   "dong": "",
+   "grade": "A",
+   "face": "1,2면",
+   "addr": "안국동 155",
+   "target": "하나은행",
+   "price": 1600000,
+   "light": "",
+   "direction": "공항",
+   "faces": [
+    {
+     "face": "1,2면",
+     "avail": "2026-12-02"
+    }
+   ],
+   "avail": "2026-12-02",
+   "availkey": 20261202,
+   "lat": 37.5764865,
+   "lng": 126.9848031,
+   "feasible": true
+  },
+  {
+   "id": "01-781",
+   "category": "airport",
+   "name": "창덕궁",
+   "gu": "종로구",
+   "dong": "",
+   "grade": "A",
+   "face": "1,2면",
+   "addr": "원서동 219",
+   "target": "공간스페이스",
+   "price": 1600000,
+   "light": "",
+   "direction": "공항",
+   "faces": [
+    {
+     "face": "1,2면",
+     "avail": "2026-12-13"
+    }
+   ],
+   "avail": "2026-12-13",
+   "availkey": 20261213,
+   "lat": 37.5777382,
+   "lng": 126.9883511,
+   "feasible": true
+  }
+ ]
+}
