@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>압타바이오 — 엘리베이터 광고 매체 위치 (지역별)</title>
-  <meta name="description" content="압타바이오 엘리베이터 광고 매체(포커스·타운보드) 지역별 위치 지도 — 잠실·서초·양재·노원상계·여의도·강남">
+  <meta name="description" content="압타바이오 엘리베이터 광고 매체 지역별 위치 지도 — 잠실·서초·양재·노원상계·여의도·강남·용산">
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
   <style>
     * { box-sizing: border-box; }
@@ -114,8 +114,8 @@
         <div class="legend" id="legend" hidden>
           <b>매체 구분</b>
           <span class="hint">클릭하면 켜기 / 끄기</span>
-          <button type="button" class="row" id="btnFocus" data-p="focus" aria-pressed="true"><span class="dot focus">F</span>포커스미디어 <span id="lf"></span><span class="chk"></span></button>
-          <button type="button" class="row" id="btnTb" data-p="townboard" aria-pressed="true"><span class="dot townboard">T</span>타운보드 <span id="lt"></span><span class="chk"></span></button>
+          <button type="button" class="row" id="btnFocus" data-p="focus" aria-pressed="true"><span class="dot focus">F</span>매체 F <span id="lf"></span><span class="chk"></span></button>
+          <button type="button" class="row" id="btnTb" data-p="townboard" aria-pressed="true"><span class="dot townboard">T</span>매체 T <span id="lt"></span><span class="chk"></span></button>
           <div class="tot" id="ltot"></div>
           <button type="button" class="listtoggle" id="listtoggle">📋 선택한 단지 리스트 다운로드</button>
         </div>
@@ -145,16 +145,16 @@
   <script>
     (async function () {
       var esc = function (s) { return String(s == null ? "" : s).replace(/[&<>"]/g, function (c) { return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c]; }); };
-      var PLABEL = { focus: "포커스미디어", townboard: "타운보드" };
-      var PSHORT = { focus: "포커스", townboard: "타운보드" };
+      var PLABEL = { focus: "매체 F", townboard: "매체 T" };
+      var PSHORT = { focus: "매체 F", townboard: "매체 T" };
 
       var data;
-      try { data = await (await fetch("data/apta-elevator.json?v=4")).json(); }
+      try { data = await (await fetch("data/apta-elevator.json?v=5")).json(); }
       catch (e) { document.getElementById("sub").textContent = "데이터 로드 실패"; return; }
       var sites = data.sites || [];
 
       document.getElementById("sub").textContent =
-        "총 " + data.counts.total + "곳 · 포커스미디어(F) " + data.counts.focus + " · 타운보드(T) " + data.counts.townboard + " · 6개 지역(잠실·서초·양재·노원상계·여의도·강남) 아파트 엘리베이터 TV";
+        "총 " + data.counts.total + "곳 · 매체 F " + data.counts.focus + " · 매체 T " + data.counts.townboard + " · 7개 지역(잠실·서초·양재·노원상계·여의도·강남·용산) 아파트 엘리베이터 TV";
       document.getElementById("lf").textContent = data.counts.focus + "곳";
       document.getElementById("lt").textContent = data.counts.townboard + "곳";
       document.getElementById("ltot").textContent = "합계 " + data.counts.total + "곳";
@@ -220,7 +220,7 @@
         var item = document.createElement("label");
         item.className = "pitem"; item.dataset.idx = idx;
         item.innerHTML = '<input type="checkbox">' +
-          '<span><span class="nm"><span class="tag ' + s.product + '">' + PSHORT[s.product].slice(0, 2) + '</span>' +
+          '<span><span class="nm"><span class="tag ' + s.product + '">' + (s.product === "focus" ? "F" : "T") + '</span>' +
           '<span class="rtag">' + esc(s.regionLabel) + '</span>' + esc(s.name) + '</span>' +
           '<span class="meta">' + esc(s.addr) + (s.monitors ? " · 모니터 " + s.monitors + "대" : "") + '</span></span>';
         var cb = item.querySelector("input");
