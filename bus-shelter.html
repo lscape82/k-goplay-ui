@@ -19,9 +19,6 @@
     header .evbar .gydot { width: 11px; height: 11px; border-radius: 50%; background: #9aa3b0; border: 1px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.15); }
     #stage { position: relative; flex: 1; min-height: 0; display: flex; }
     #map { flex: 1; width: 100%; min-height: 0; }
-    /* 지도 타일만 흐리게(채도↓·밝게) — 핀/라벨 대비 강조 */
-    #map img { filter: saturate(0.55) brightness(1.12) contrast(0.95); }
-    #map .evpin, #map .evpin i { filter: none; }
 
     #leftcol { position: absolute; z-index: 16; left: 14px; top: 14px; bottom: 14px; width: 338px; max-width: 90vw; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
     #leftcol > * { pointer-events: auto; }
@@ -62,12 +59,14 @@
     .evpin.sel { box-shadow: 0 0 0 3px #ffd60a, 0 2px 7px rgba(15,23,42,.5); }
     .evpin i { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%) rotate(45deg); font-style: normal; font-weight: 800; font-size: 13px; line-height: 1; color: #fff; }
     /* 주변 버스정류장 참조 점 */
-    .busstop { width: 17px; height: 17px; display: flex; align-items: center; justify-content: center; }
-    .busstop svg { width: 16px; height: 16px; display: block; filter: drop-shadow(0 0 1px #fff) drop-shadow(0 0 1px #fff) drop-shadow(0 0 2px #fff); }
+    .busstop { width: 14px; height: 14px; display: flex; align-items: center; justify-content: center; }
+    .busstop svg { width: 14px; height: 14px; display: block; filter: drop-shadow(0 0 0.6px rgba(255,255,255,.95)); }
 
     /* 팝업 */
-    .iw { font-family: inherit; padding: 13px 15px; min-width: 220px; max-width: 300px; background: #fff; border: 1px solid #e5e9f0; border-radius: 12px; box-shadow: 0 8px 26px rgba(15,23,42,.25); }
-    .iw h3 { margin: 0 0 4px; font-size: 14px; font-weight: 800; }
+    .iw { position: relative; font-family: inherit; padding: 13px 15px; min-width: 220px; max-width: 300px; background: #fff; border: 1px solid #e5e9f0; border-radius: 12px; box-shadow: 0 8px 26px rgba(15,23,42,.25); }
+    .iw .iwx { position: absolute; top: 7px; right: 8px; width: 26px; height: 26px; border: 0; background: #f1f3f6; color: #64748b; border-radius: 50%; font-size: 15px; line-height: 1; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+    .iw .iwx:hover { background: #e2e6ec; color: #334; }
+    .iw h3 { margin: 0 24px 4px 0; font-size: 14px; font-weight: 800; }
     .iw .tags { display: flex; flex-wrap: wrap; gap: 5px; margin-bottom: 2px; }
     .iw .brand { display: inline-block; font-size: 11px; font-weight: 800; padding: 1px 7px; border-radius: 999px; color: #fff; }
     .iw .brand.airport { background: #2f8f83; } .iw .brand.normal { background: #c98a2b; }
@@ -136,7 +135,7 @@
           <button type="button" class="row" id="btnAir" data-c="airport" aria-pressed="true"><span class="dot airport">공</span>공항쉘터 <span id="lf"></span><span class="chk"></span></button>
           <button type="button" class="row" id="btnNor" data-c="normal" aria-pressed="true"><span class="dot normal">일</span>일반쉘터 <span id="lt"></span><span class="chk"></span></button>
           <button type="button" class="row" id="btnFeas" aria-pressed="false" style="margin-top:4px"><span class="dot" style="background:#9aa3b0">✕</span>행사기간 불가 숨기기 <span class="chk"></span></button>
-          <button type="button" class="row" id="btnStops" aria-pressed="true"><span class="dot" style="background:none;box-shadow:none;display:inline-flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="17" height="17" fill="#5b6b82" xmlns="http://www.w3.org/2000/svg"><path d="M5 4.3C6.6 3.7 9 3.4 12 3.4s5.4.3 7 .9c1.3.5 2 1.4 2 2.7v8.8c0 .8-.4 1.5-1 1.9V19a1.2 1.2 0 0 1-2.4 0v-.9H6.4V19A1.2 1.2 0 0 1 4 19v-1.3c-.6-.4-1-1.1-1-1.9V7c0-1.3.7-2.2 2-2.7Zm.6 3.4v4.2h5.1V7.2H6.7c-.7 0-1.1.2-1.1.5Zm7.1-.5v4.7h5.1V7.7c0-.3-.4-.5-1.1-.5h-4ZM7.3 15.6a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Zm9.4 0a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Z"/></svg></span>주변 버스정류장 <span id="lstop"></span><span class="chk"></span></button>
+          <button type="button" class="row" id="btnStops" aria-pressed="true"><span class="dot" style="background:none;box-shadow:none;display:inline-flex;align-items:center;justify-content:center"><svg viewBox="0 0 24 24" width="16" height="16" fill="#5b6b82" xmlns="http://www.w3.org/2000/svg"><path d="M5 4.3C6.6 3.7 9 3.4 12 3.4s5.4.3 7 .9c1.3.5 2 1.4 2 2.7v8.8c0 .8-.4 1.5-1 1.9V19a1.2 1.2 0 0 1-2.4 0v-.9H6.4V19A1.2 1.2 0 0 1 4 19v-1.3c-.6-.4-1-1.1-1-1.9V7c0-1.3.7-2.2 2-2.7Zm.6 3.4v4.2h5.1V7.2H6.7c-.7 0-1.1.2-1.1.5Zm7.1-.5v4.7h5.1V7.7c0-.3-.4-.5-1.1-.5h-4ZM7.3 15.6a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Zm9.4 0a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Z"/></svg></span>주변 버스정류장 <span id="lstop"></span><span class="chk"></span></button>
           <div class="grayrow"><span class="dot">✕</span>회색 = 행사기간(12/17~20) 집행 불가</div>
           <div class="tot" id="ltot"></div>
           <button type="button" class="listtoggle" id="listtoggle">📋 지점 리스트 선택하기</button>
@@ -212,7 +211,7 @@
       var PIN_ANCHOR = new naver.maps.Point(10, 20);
 
       // 주변 버스정류장(참조) — 버스 모양 아이콘, 쉘터보다 아래(zIndex 낮게)
-      var STOP_ANCHOR = new naver.maps.Point(8, 8);
+      var STOP_ANCHOR = new naver.maps.Point(7, 7);
       var BUS_SVG = '<svg viewBox="0 0 24 24" fill="#5b6b82" xmlns="http://www.w3.org/2000/svg"><path d="M5 4.3C6.6 3.7 9 3.4 12 3.4s5.4.3 7 .9c1.3.5 2 1.4 2 2.7v8.8c0 .8-.4 1.5-1 1.9V19a1.2 1.2 0 0 1-2.4 0v-.9H6.4V19A1.2 1.2 0 0 1 4 19v-1.3c-.6-.4-1-1.1-1-1.9V7c0-1.3.7-2.2 2-2.7Zm.6 3.4v4.2h5.1V7.2H6.7c-.7 0-1.1.2-1.1.5Zm7.1-.5v4.7h5.1V7.7c0-.3-.4-.5-1.1-.5h-4ZM7.3 15.6a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Zm9.4 0a1.3 1.3 0 1 0 0-2.6 1.3 1.3 0 0 0 0 2.6Z"/></svg>';
       var stopMarkers = [];
       stopData.forEach(function (st) {
@@ -263,7 +262,7 @@
         var evbadge = s.feasible
           ? '<span class="evbadge ok">✓ 행사기간(12/17~20) 집행 가능</span>'
           : '<span class="evbadge no">✕ 행사기간 집행 불가</span>';
-        return '<div class="iw"><h3>' + esc(s.name) + '</h3>' +
+        return '<div class="iw"><button type="button" class="iwx" aria-label="닫기" onclick="window.__closeIw()">✕</button><h3>' + esc(s.name) + '</h3>' +
           '<div class="tags"><span class="brand ' + s.category + '">' + CLABEL[s.category] + '</span>' +
           (s.direction ? '<span class="rtag">' + esc(s.direction) + '</span>' : '') +
           '<span class="rtag">' + esc(s.gu) + '</span></div>' +
@@ -343,6 +342,7 @@
         if (openIdx === idx && iw.getMap()) iw.setContent(iwHtml(r));
         updateCount();
       }
+      window.__closeIw = function () { iw.close(); openIdx = null; };
       window.__toggleSel = function (idx) {
         var on = !selected.has(idx);
         setSel(idx, on); iw.close();
