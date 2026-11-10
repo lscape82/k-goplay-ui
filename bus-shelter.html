@@ -294,7 +294,7 @@
           (facts.length ? '<div class="facts">' + esc(facts.join(" · ")) + '</div>' : '') +
           (priceLine ? '<div class="price">' + esc(priceLine) + '</div>' : '') +
           '<div class="avail"><span class="k">광고 시작 가능일</span><br>' + esc(availLine(s)) + '</div>' +
-          '<a class="iwrv" href="https://map.naver.com/p/?c=18,0,0,0,dh&p=' + s.lng + ',' + s.lat + ',0,0,0,Float" target="_blank" rel="noopener">🛣 거리뷰로 현장 보기</a>' +
+          '<a class="iwrv" href="https://map.kakao.com/link/roadview/' + s.lat + ',' + s.lng + '" target="_blank" rel="noopener">🛣 거리뷰로 현장 보기</a>' +
           '<button type="button" class="iwsel' + (on ? " on" : "") + '" onclick="window.__toggleSel(' + r.idx + ')">' + (on ? "✓ 선택됨 (해제)" : "+ 이 지점 선택") + '</button></div>';
       }
 
