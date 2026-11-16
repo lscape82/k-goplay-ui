@@ -44,16 +44,18 @@
     .estimate .val small { font-size: 12px; font-weight: 700; color: #cfe0ff; }
     .estimate .note { margin-top: 7px; font-size: 10.5px; color: #bcd0f5; line-height: 1.5; }
 
-    .disc { background: #fff8e6; border: 1.5px solid #f3c969; }
-    .disc .dt { display: block; font-size: 12px; font-weight: 800; color: #8a6d00; margin-bottom: 4px; }
-    .disc .dl { font-size: 11px; color: #6b5600; line-height: 1.6; font-weight: 600; }
-    .disc .dl b { color: #8a6d00; }
+    .disc { background: #fffaf0; border: 2.5px solid #fdb913; box-shadow: 0 2px 10px rgba(253,185,19,.3); padding: 0; overflow: hidden; }
+    .disc .dt { display: block; font-size: 13px; font-weight: 900; color: #fff; background: #fdb913; padding: 7px 12px; margin: 0; letter-spacing: -.3px; }
+    .disc .dl { font-size: 12px; color: #6b5600; line-height: 1.7; font-weight: 600; padding: 9px 12px 11px; }
+    .disc .dl b { color: #b5720b; font-weight: 800; }
+    .disc .dl .hi { display: inline-block; background: #fff3d1; color: #8a5300; font-weight: 800; padding: 1px 5px; border-radius: 4px; }
 
     /* 범례 */
     .legend { font-size: 13px; }
     .legend .row { display: flex; align-items: center; gap: 7px; margin: 3px 0; font-weight: 700; }
     .legend .dot { width: 19px; height: 19px; border-radius: 50% 50% 50% 0; transform: rotate(-45deg); border: 2px solid #fff; box-shadow: 0 0 0 1px rgba(0,0,0,.15); flex: none; }
     .legend .dot.A { background: #0e8a7a; } .legend .dot.B { background: #e08a1e; }
+    .legend .twodot { display: inline-flex; gap: 3px; flex: none; }
     .legend .sq { width: 17px; height: 17px; border-radius: 4px; flex: none; display: flex; align-items: center; justify-content: center; color: #fff; font-weight: 800; font-size: 9px; }
     .legend .sq.lotte { background: #e4002b; } .legend .sq.costco { background: #fff; color: #e4002b; border: 1.5px solid #005daa; font-style: italic; }
     .legend .mut { font-size: 11px; color: #94a3b8; font-weight: 600; margin-left: auto; }
@@ -122,29 +124,29 @@
           <b class="t">선택 예산안 견적 <span id="estscope" style="color:#fff"></span></b>
           <div class="big">
             <div><div class="lbl">월 광고료</div><div class="val" id="vMonth">–</div></div>
-            <div><div class="lbl">연간 운영 견적</div><div class="val" id="vYear">–</div></div>
+            <div><div class="lbl">연간 광고료</div><div class="val" id="vYear">–</div></div>
           </div>
           <div class="note" id="estnote"></div>
         </div>
 
         <div class="box disc" id="disc" hidden>
           <span class="dt">💬 할인 · 협의 안내</span>
-          <div class="dl">표기 금액은 <b>정가</b>(4주 기준)입니다.<br><b>기본 할인</b> : 6개월 <b>15%</b> · 12개월 이상 <b>20%</b><br>다량·장기 집행 및 <b>매체사(브랜드) 협의</b>를 통해 더 저렴하게 진행할 수 있습니다.</div>
+          <div class="dl">표기 금액은 <b>정가</b>(4주 기준)입니다.<br><b>기본 할인</b> : 6개월 <b>15%</b> · 12개월 이상 <b>20%</b><br><span class="hi">다량·장기 집행 및 매체사(브랜드) 협의로 더 저렴하게 진행 가능</span><br>집행 범위·예산을 알려주시면 단지 구성·단가를 맞춰 드립니다.</div>
         </div>
 
         <div class="box legend" id="legend" hidden>
-          <div class="row"><span class="dot A"></span>안 A 단지 (1,000만) <span class="mut" id="lA"></span></div>
-          <div class="row" id="rowB"><span class="dot B"></span>안 B 확장 단지 <span class="mut" id="lB"></span></div>
+          <div class="row"><span class="dot A"></span>A안 단지 (1,000만원) <span class="mut" id="lA"></span></div>
+          <div class="row" id="rowB"><span class="twodot"><span class="dot A"></span><span class="dot B"></span></span>B안 단지 (1,500만원) <span class="mut" id="lB"></span></div>
           <div class="hr"></div>
           <div class="row"><span class="sq lotte"><span style="color:#e4002b;background:#fff;border-radius:50%;width:9px;height:9px;display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-style:italic">ℓ</span></span>롯데마트</div>
           <div class="row"><span class="sq costco">C</span>코스트코 <span class="mut">상권 겹침 점포</span></div>
-          <button type="button" class="listtoggle" id="listtoggle">📋 단지 리스트 · CSV 다운로드</button>
+          <button type="button" class="listtoggle" id="listtoggle">📋 단지 리스트 · 엑셀 다운로드</button>
         </div>
 
         <aside class="panel" id="panel">
           <h2 id="paneltitle">단지 리스트 <button type="button" class="pclose" id="pclose">×</button></h2>
           <div class="plist" id="plist"></div>
-          <div class="pfoot"><button type="button" class="dlbtn" id="dlbtn">현재 예산안 단지 CSV 다운로드</button></div>
+          <div class="pfoot"><button type="button" class="dlbtn" id="dlbtn">현재 예산안 단지 엑셀 다운로드</button></div>
         </aside>
       </div>
       <div id="err">지도를 불러오지 못했습니다. (네이버 지도 인증 도메인 확인 필요)</div>
@@ -171,7 +173,7 @@
       document.getElementById("psA").textContent = A.count + "곳 · 모니터 " + won(A.monitors) + "대";
       document.getElementById("psB").textContent = B.count + "곳 · 모니터 " + won(B.monitors) + "대";
       document.getElementById("lA").textContent = A.count + "곳";
-      document.getElementById("lB").textContent = "+" + (B.count - A.count) + "곳";
+      document.getElementById("lB").textContent = B.count + "곳 (A+" + (B.count - A.count) + ")";
       ["planbox","estimate","disc","legend"].forEach(function (id) { document.getElementById(id).hidden = false; });
 
       if (!(window.naver && naver.maps)) { document.getElementById("err").style.display = "block"; return; }
