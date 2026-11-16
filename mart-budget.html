@@ -21,18 +21,20 @@
     #leftcol { position: absolute; z-index: 16; left: 14px; top: 14px; bottom: 14px; width: 344px; max-width: 92vw; display: flex; flex-direction: column; gap: 10px; pointer-events: none; }
     #leftcol > * { pointer-events: auto; }
     .box { flex: none; background: #fff; border: 1px solid #e5e9f0; border-radius: 10px; padding: 11px 13px; box-shadow: 0 2px 10px rgba(15,23,42,.12); }
-    .box b.t { display: block; font-size: 12px; color: #64748b; margin-bottom: 7px; font-weight: 700; }
+    .box b.t { display: block; font-size: 13px; color: #1f2937; margin-bottom: 8px; font-weight: 800; letter-spacing: -.2px; }
 
     /* 플랜 토글 */
     .plans { display: flex; gap: 8px; }
-    .plan { flex: 1; border: 1.5px solid #dbe1ea; background: #fff; border-radius: 10px; padding: 9px 10px; cursor: pointer; text-align: left; font: inherit; }
-    .plan .pn { font-size: 12px; font-weight: 700; color: #64748b; }
-    .plan .pb { font-size: 17px; font-weight: 800; letter-spacing: -.4px; margin-top: 1px; }
-    .plan .ps { font-size: 11px; color: #94a3b8; margin-top: 1px; }
-    .plan.A[aria-pressed="true"] { border-color: #0e8a7a; background: #e7f6f3; }
-    .plan.A[aria-pressed="true"] .pb { color: #0e8a7a; }
-    .plan.B[aria-pressed="true"] { border-color: #c9790f; background: #fdf0dd; }
+    .plan { flex: 1; border: 2px solid #dbe1ea; background: #fff; border-radius: 10px; padding: 9px 10px; cursor: pointer; text-align: left; font: inherit; }
+    .plan .pn { display: inline-block; font-size: 13px; font-weight: 800; color: #fff; padding: 1px 9px; border-radius: 6px; letter-spacing: -.2px; }
+    .plan.A .pn { background: #0e8a7a; } .plan.B .pn { background: #e08a1e; }
+    .plan .pb { display: block; font-size: 18px; font-weight: 800; letter-spacing: -.4px; margin-top: 4px; color: #334155; }
+    .plan .ps { display: block; font-size: 11px; color: #94a3b8; margin-top: 1px; }
+    .plan.A[aria-pressed="true"] { border-color: #0e8a7a; background: #e7f6f3; box-shadow: 0 0 0 1px #0e8a7a inset; }
+    .plan.A[aria-pressed="true"] .pb { color: #0b6b5f; }
+    .plan.B[aria-pressed="true"] { border-color: #c9790f; background: #fdf0dd; box-shadow: 0 0 0 1px #c9790f inset; }
     .plan.B[aria-pressed="true"] .pb { color: #b36a0a; }
+    .plan[aria-pressed="false"] { opacity: .72; }
 
     /* 견적 */
     .estimate { background: linear-gradient(135deg,#0b3a91,#1657c9); color: #fff; border: 0; }
@@ -185,15 +187,23 @@
       // 점포 로고 마커 + 겹침 반경
       var STICON = { lotte: '<span class="lmk"></span><span class="ltx">LOTTE&nbsp;MART</span>', costco: '<span class="c1">COSTCO</span><span class="c2"></span>' };
       var ANC = { lotte: new naver.maps.Point(36, 12), costco: new naver.maps.Point(26, 13) };
+      var strecs = [];
       stores.forEach(function (st) {
         var ll = new naver.maps.LatLng(st.lat, st.lng);
-        var m = new naver.maps.Marker({ map: map, position: ll, zIndex: 200,
+        var m = new naver.maps.Marker({ position: ll, zIndex: 200,
           icon: { content: '<div class="stpin ' + st.brand + '">' + STICON[st.brand] + '</div>', anchor: ANC[st.brand] } });
         naver.maps.Event.addListener(m, "click", function () {
           iw.setContent('<div class="iw"><button class="iwx" onclick="window.__closeIw()">✕</button><h3>' + esc(BLAB[st.brand] + " " + st.name) + '</h3><p>' + esc(st.addr) + '</p></div>'); iw.open(map, m);
         });
-        new naver.maps.Circle({ map: map, center: ll, radius: OVL, strokeColor: st.brand === "lotte" ? "#e4002b" : "#005daa", strokeOpacity: 0.3, strokeWeight: 1, fillColor: st.brand === "lotte" ? "#e4002b" : "#005daa", fillOpacity: 0.045, clickable: false, zIndex: 1 });
+        var circle = new naver.maps.Circle({ center: ll, radius: OVL, strokeColor: st.brand === "lotte" ? "#e4002b" : "#005daa", strokeOpacity: 0.3, strokeWeight: 1, fillColor: st.brand === "lotte" ? "#e4002b" : "#005daa", fillOpacity: 0.045, clickable: false, zIndex: 1 });
+        strecs.push({ store: st, marker: m, circle: circle, ll: ll });
       });
+      // 현재 안에 핀이 있는 지역의 매장만 표시
+      function storeVisible(st) {
+        return recs.some(function (r) {
+          return visible(r) && (st.brand === "lotte" ? r.site.nL === st.name : r.site.nC === st.name);
+        });
+      }
 
       // 단지 마커
       var recs = [];
@@ -216,6 +226,7 @@
       function visible(r) { return activePlan === "B" || r.site.plan === "A"; }
       function apply() {
         recs.forEach(function (r) { r.marker.setMap(visible(r) ? map : null); });
+        strecs.forEach(function (sr) { var on = storeVisible(sr.store); sr.marker.setMap(on ? map : null); sr.circle.setMap(on ? map : null); });
         var P = activePlan === "A" ? A : B;
         document.getElementById("estscope").textContent = "· 안 " + activePlan + " (월 " + (activePlan === "A" ? "1,000만" : "1,500만") + "원)";
         document.getElementById("vMonth").innerHTML = eok(P.month) + '<small>원</small>';
@@ -232,7 +243,7 @@
         if (!vis.length) return;
         var b = new naver.maps.LatLngBounds(vis[0].marker.getPosition(), vis[0].marker.getPosition());
         vis.forEach(function (r) { b.extend(r.marker.getPosition()); });
-        stores.forEach(function (s) { b.extend(new naver.maps.LatLng(s.lat, s.lng)); });
+        strecs.forEach(function (sr) { if (storeVisible(sr.store)) b.extend(sr.ll); });
         map.fitBounds(b, { top: 40, right: 40, bottom: 40, left: 366 });
       }
       document.getElementById("planA").addEventListener("click", function () { activePlan = "A"; iw.close(); apply(); });
