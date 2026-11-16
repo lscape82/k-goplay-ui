@@ -37,8 +37,9 @@
     .plan[aria-pressed="false"] { opacity: .72; }
 
     /* 견적 */
-    .estimate { background: linear-gradient(135deg,#0b3a91,#1657c9); color: #fff; border: 0; }
-    .estimate .t { color: #cfe0ff; }
+    .estimate { background: #123a6e; color: #fff; border: 0; }
+    .estimate b.t { color: #fff; font-weight: 800; font-size: 12.5px; }
+    .estimate b.t #estscope { color: #cfe0ff; font-weight: 700; }
     .estimate .big { display: flex; gap: 14px; margin-top: 2px; }
     .estimate .big > div { flex: 1; }
     .estimate .lbl { font-size: 11px; color: #cfe0ff; font-weight: 700; }
@@ -46,11 +47,17 @@
     .estimate .val small { font-size: 12px; font-weight: 700; color: #cfe0ff; }
     .estimate .note { margin-top: 7px; font-size: 10.5px; color: #bcd0f5; line-height: 1.5; }
 
-    .disc { background: #fffdf7; border: 1px solid #ecd9a8; border-left: 4px solid #e0a019; }
-    .disc .dt { display: block; font-size: 12px; font-weight: 800; color: #b5720b; margin-bottom: 5px; letter-spacing: -.2px; }
-    .disc .dl { font-size: 11.5px; color: #6b5600; line-height: 1.7; font-weight: 600; }
-    .disc .dl b { color: #b5720b; font-weight: 800; }
-    .disc .dl .hi { display: inline-block; background: #fbedcb; color: #8a5300; font-weight: 800; padding: 1px 5px; border-radius: 4px; }
+    .disc { background: #f7f9fc; border: 1px solid #e5e9f0; border-left: 4px solid #123a6e; }
+    .disc .dt { display: block; font-size: 12px; font-weight: 800; color: #123a6e; margin-bottom: 5px; letter-spacing: -.2px; }
+    .disc .dl { font-size: 11.5px; color: #475569; line-height: 1.7; font-weight: 600; }
+    .disc .dl b { color: #1f2937; font-weight: 800; }
+    .disc .dl .hi { display: inline-block; background: #eceff4; color: #1f2937; font-weight: 800; padding: 1px 6px; border-radius: 4px; }
+
+    /* 겹침 지역 */
+    .zones .zrow { display: flex; align-items: baseline; gap: 6px; padding: 4px 0; border-top: 1px solid #eef1f5; }
+    .zones .zrow:first-of-type { border-top: 0; }
+    .zones .zarea { font-size: 12px; font-weight: 800; color: #123a6e; flex: none; }
+    .zones .zbr { font-size: 11px; color: #64748b; font-weight: 600; }
 
     /* 범례 */
     .legend { font-size: 13px; }
@@ -131,6 +138,11 @@
           <div class="note" id="estnote"></div>
         </div>
 
+        <div class="box zones" id="zones" hidden>
+          <b class="t">겹침 지역 · 지점 (롯데마트·코스트코)</b>
+          <div id="zonelist"></div>
+        </div>
+
         <div class="box disc" id="disc" hidden>
           <span class="dt">💬 할인 · 협의 안내</span>
           <div class="dl">표기 금액은 <b>정가</b>(4주 기준)입니다.<br><b>기본 할인</b> : 6개월 <b>15%</b> · 12개월 이상 <b>20%</b><br><span class="hi">다량·장기 집행 할인 협의 가능</span><br>집행 범위·예산을 알려주시면 단지 구성·단가를 맞춰 드립니다.</div>
@@ -176,7 +188,12 @@
       document.getElementById("psB").textContent = B.count + "곳 · 모니터 " + won(B.monitors) + "대";
       document.getElementById("lA").textContent = A.count + "곳";
       document.getElementById("lB").textContent = B.count + "곳 (A+" + (B.count - A.count) + ")";
-      ["planbox","estimate","disc","legend"].forEach(function (id) { document.getElementById(id).hidden = false; });
+      ["planbox","estimate","zones","disc","legend"].forEach(function (id) { document.getElementById(id).hidden = false; });
+      var ZONES = [
+        { nC: "양평점", area: "서울 영등포구 양평", br: "롯데마트 서울양평점 · 코스트코 양평점" },
+        { nC: "송도점", area: "인천 연수구 송도", br: "롯데마트 송도점 · 코스트코 송도점" },
+        { nC: "청라점", area: "인천 서구 청라", br: "롯데마트 청라점 · 코스트코 청라점" }
+      ];
 
       if (!(window.naver && naver.maps)) { document.getElementById("err").style.display = "block"; return; }
       var map = new naver.maps.Map("map", { zoom: 11, minZoom: 8, mapTypeControl: false, zoomControl: true, zoomControlOptions: { position: naver.maps.Position.RIGHT_CENTER } });
@@ -233,6 +250,11 @@
         document.getElementById("vYear").innerHTML = eok(P.year) + '<small>원</small>';
         document.getElementById("estnote").textContent = "단지 " + P.count + "곳 · 모니터 " + won(P.monitors) + "대 · " + won(P.households) + "세대 · 4주 광고료 합계(연간=×12). 상권 겹침(롯데·코스트코 모두 인근) 단지만.";
         document.getElementById("rowB").style.opacity = activePlan === "B" ? "1" : ".45";
+        document.getElementById("zonelist").innerHTML = ZONES.filter(function (z) {
+          return recs.some(function (r) { return visible(r) && r.site.nC === z.nC; });
+        }).map(function (z) {
+          return '<div class="zrow"><span class="zarea">' + z.area + '</span><span class="zbr">' + z.br + '</span></div>';
+        }).join("");
         document.getElementById("planA").setAttribute("aria-pressed", activePlan === "A");
         document.getElementById("planB").setAttribute("aria-pressed", activePlan === "B");
         renderList();
