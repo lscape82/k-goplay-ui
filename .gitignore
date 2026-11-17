@@ -31,3 +31,7 @@ data/*.bak-*
 data/*.bak
 *.bak-preSt
 data/_highway_tmp.json
+data/_jaseng_pricing_internal.json
+data/_jaseng_ratecard_internal.json
+견적_자생*.xlsx
+region_lib.py

@@ -107,13 +107,25 @@
     .panel .ph .pm b { color:var(--navy); font-weight:800; }
     .panel .plist { flex:1; overflow:auto; padding:6px 8px; }
     .panel .gr { font-size:11px; font-weight:800; color:var(--mut); padding:7px 6px 3px; }
-    .rrow { display:flex; align-items:center; gap:8px; padding:6px 7px; border-radius:7px; }
+    .rrow { display:block; padding:7px 8px; border-radius:7px; cursor:pointer; border:1px solid transparent; }
     .rrow:hover { background:#f6f8fc; }
+    .rrow.sel { background:#fff7ec; border-color:#f0d3a2; }
+    .rrow .r1 { display:flex; align-items:center; gap:7px; }
     .rrow .rg { font-size:9.5px; font-weight:800; color:#fff; border-radius:4px; padding:1px 5px; flex:none; }
     .rg.SSA { background:#16215b; } .rg.SA { background:#3a4a86; } .rg.A { background:#6b79a8; } .rg.B { background:#9aa4c0; } .rg.etc { background:#b08968; }
-    .rrow .rl { font-size:13px; font-weight:800; color:#172033; flex:none; min-width:42px; }
-    .rrow .ro { font-size:11px; color:#94a3b8; font-weight:600; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+    .rrow .rl { font-size:13px; font-weight:800; color:#172033; flex:none; min-width:40px; }
+    .rrow .rtype { font-size:10px; color:#94a3b8; font-weight:700; flex:none; }
     .rrow .rq { margin-left:auto; font-size:11.5px; color:var(--navy); font-weight:800; flex:none; }
+    .rrow .r2 { margin-top:3px; font-size:11px; color:#64748b; font-weight:600; line-height:1.45; }
+    .rrow .r2 .sep { color:#cbd5e1; margin:0 4px; }
+    .panel .phint { margin:7px 8px 5px; font-size:11.5px; color:var(--navy); font-weight:700; background:#eef1fb; border:1px solid #d7deef; border-radius:8px; padding:8px 10px; display:flex; align-items:center; gap:6px; }
+    .panel .phint b { font-weight:800; }
+    .panel .pnote { margin:0 8px 6px; font-size:11px; color:#92400e; font-weight:600; background:#fffbeb; border:1px solid #fce4b6; border-radius:8px; padding:7px 9px; line-height:1.5; }
+    .panel .pnote b { font-weight:800; }
+    .rrow .rgo { margin-left:7px; flex:none; color:#c67d16; font-weight:800; font-size:11px; white-space:nowrap; }
+    .rrow.sel .rgo { color:#a8630f; }
+    .jpin.act { background:#fff; border-color:var(--navy); box-shadow:0 0 0 2px #fff, 0 0 0 4px var(--navy), 0 3px 10px rgba(15,23,42,.45); padding:4px 11px 4px 8px; }
+    .jpin.act b { color:var(--navy); font-size:12.5px; }
 
     #err { display:none; position:absolute; z-index:20; inset:60px 14px auto 14px; background:#fff4f4; border:1px solid #f3c6c6; color:#a3322c; padding:12px 14px; border-radius:10px; font-size:13px; }
 
@@ -157,8 +169,8 @@
         </div>
 
         <div class="box next" id="nextbox" hidden>
-          <span class="nt">🚌 서울 경유 노선 선별 완료</span>
-          <div class="nl">서울 5개 분원 인근 경유 <b>버스광고 노선</b>을 반영했습니다. 핀의 <b>숫자</b>·클릭 시 <b>노선 목록</b>을 확인하세요. <span style="color:#94a3b8">경기·인천·지방은 노선 데이터 확보 후 추가.</span></div>
+          <span class="nt">🚌 버스광고 노선 — 지도에 경로 표시</span>
+          <div class="nl">분원 핀 클릭 → <b>노선 목록</b>, 노선 선택 시 <b>지도에 경로·운행정보</b>가 표시됩니다.<br><span style="display:inline-block;margin-top:5px;color:#92400e;font-weight:700">⚠️ 전 지역 공통 — 확정 예약 시점에 <b>광고 가능 버스 수량·노선 확인 필수</b> (차량 현황에 따라 변동).</span></div>
           <div class="rsum" id="rsum" style="display:none">
             <div class="c"><div class="k">서울 경유 노선</div><div class="v" id="rLines">–</div></div>
             <div class="c"><div class="k">광고버스</div><div class="v" id="rQty">–</div></div>
@@ -196,13 +208,18 @@
       var RB = (R && R.branches) || {};
       B.forEach(function(b){ if (RB[b.name]) b.routes = RB[b.name]; });
 
+      var GEO = null;
+      try { GEO = await (await fetch("data/jaseng-routes-geo.json?v=1")).json(); } catch (e) {}
+      var GR = (GEO && GEO.routes) || {};
+
       if (!window.naver || !naver.maps) { document.getElementById("err").style.display="block"; return; }
 
       var won = function(v){ return Number(v||0).toLocaleString("ko-KR"); };
-      var GORD = { SSA:0, SA:1, A:2, B:3, "심야":4 };
+      var GORD = { SSA:0, SA:1, S:1.5, A:2, B:3, "심야":4 };
       var gord = function(g){ return GORD.hasOwnProperty(g) ? GORD[g] : 9; };
-      var glab = function(g){ return g==="심야" ? "심야버스" : g+"급"; };
+      var glab = function(g){ return g==="심야" ? "심야버스" : g==="후보" ? "분원 인근 노선 (광고 가능 여부 확인 전)" : g==="매체" ? "매체사 보유 노선" : g+"급"; };
       var gclass = function(g){ return (g==="SSA"||g==="SA"||g==="A"||g==="B") ? g : "etc"; };
+      var gbadge = function(g){ return g==="매체" ? "보유" : g; };
 
       var map = new naver.maps.Map("map", {
         center: new naver.maps.LatLng(36.7, 127.6), zoom: 7,
@@ -215,8 +232,10 @@
         var cls = b.region==="capital" ? "cap" : "loc";
         var lab = b.region==="capital" ? "수도권" : "지방";
         var r = b.routes;
+        var rfacts = r ? (r.candidate ? ('분원 인근 통과 '+r.count+'개 · 확인 전')
+              : ('경유 노선 '+r.count+'개'+(r.qty?(' · 광고버스 '+won(r.qty)+'대'):''))) : '';
         var rhtml = r
-          ? '<div class="rfacts">경유 노선 '+r.count+'개 · 광고버스 '+won(r.qty)+'대</div>'
+          ? '<div class="rfacts">'+rfacts+'</div>'
             + '<button class="rbtn" onclick="window.__openPanel(\''+esc(b.name)+'\')">노선 목록 보기 →</button>'
           : (b.region==="capital" ? '<p style="color:#94a3b8">노선 데이터 추후 추가 예정</p>' : '');
         var html = '<div class="iw"><button class="iwx" onclick="window.__closeIW()">×</button>'
@@ -238,35 +257,112 @@
           icon: { content: content, anchor: new naver.maps.Point(30, 13) }, zIndex: hasr?140:(b.region==="capital"?120:100)
         });
         naver.maps.Event.addListener(mk, "click", function(){ openIW(b, mk); });
-        markers.push({ b:b, mk:mk });
+        markers.push({ b:b, mk:mk, base:content, baseZ:(hasr?140:(b.region==="capital"?120:100)) });
       });
 
+      // 노선 경로선 관리
+      var routeLines = [];
+      function clearLines(){ routeLines.forEach(function(x){ x.poly.setMap(null); }); routeLines = []; }
+      function routeBounds(nums){
+        var bnds = new naver.maps.LatLngBounds(); var any=false; var set={};
+        nums.forEach(function(n){ set[n]=1; });
+        routeLines.forEach(function(x){ if(set[x.num]&&x.coords) x.coords.forEach(function(c){ bnds.extend(new naver.maps.LatLng(c[0],c[1])); any=true; }); });
+        return any?bnds:null;
+      }
+      function drawBranchRoutes(b){
+        clearLines();
+        b.routes.lines.forEach(function(l){
+          var g = GR[l.rid] || GR[l.line]; if(!g||!g.coords||!g.coords.length) return;
+          var path = g.coords.map(function(c){ return new naver.maps.LatLng(c[0],c[1]); });
+          var poly = new naver.maps.Polyline({ map:map, path:path, strokeColor:"#16215b", strokeOpacity:0.30, strokeWeight:3, strokeLineCap:"round", strokeLineJoin:"round", zIndex:5, clickable:true });
+          naver.maps.Event.addListener(poly, "click", function(){ selectRoute(l.line); });
+          routeLines.push({ num:l.line, poly:poly, coords:g.coords });
+        });
+      }
+      function highlightRoute(num){
+        routeLines.forEach(function(x){
+          var on = x.num===num;
+          x.poly.setOptions({ strokeColor: on?"#c67d16":"#16215b", strokeOpacity: on?0.95:0.13, strokeWeight: on?5:2, zIndex: on?100:3 });
+        });
+      }
+      function shorten(s){ s=String(s||"").replace(/(기점|종점|차고지|행)$/,""); return s.length>9?s.slice(0,9)+"…":s; }
+
+      var actMk=null;
+      function setActiveBranch(name){
+        var m = markers.filter(function(x){ return x.b.name===name; })[0];
+        if(actMk && actMk!==m){ actMk.mk.setIcon({content:actMk.base, anchor:new naver.maps.Point(30,13)}); actMk.mk.setZIndex(actMk.baseZ); }
+        if(!m) return;
+        var b=m.b, cls=b.region==="capital"?"":"loc";
+        var hc='<div class="jpin '+cls+' act"><span class="jd" style="background:#16215b"></span><b>자생 '+esc(b.name)+'</b></div>';
+        m.mk.setIcon({content:hc, anchor:new naver.maps.Point(34,13)});
+        m.mk.setZIndex(320); actMk=m;
+      }
+      function clearActiveBranch(){ if(actMk){ actMk.mk.setIcon({content:actMk.base, anchor:new naver.maps.Point(30,13)}); actMk.mk.setZIndex(actMk.baseZ); actMk=null; } }
+
       // 노선 패널
+      function selectRoute(num){
+        highlightRoute(num);
+        Array.prototype.forEach.call(document.querySelectorAll("#plist .rrow"), function(el){
+          var on = el.getAttribute("data-num")===num;
+          el.classList.toggle("sel", on);
+          if(on) el.scrollIntoView({ block:"nearest" });
+        });
+        var bnds = routeBounds([num]);
+        if(bnds) map.fitBounds(bnds, { top:70, right:330, bottom:50, left:360 });
+      }
+
       function openPanel(name){
         var b = B.filter(function(x){ return x.name===name; })[0];
         if (!b || !b.routes) return;
         var r = b.routes;
+        iw.close();
         document.getElementById("ptName").textContent = b.name;
-        var gparts = Object.keys(r.grades).sort(function(a,c){return gord(a)-gord(c);})
-          .map(function(g){ return '<b>'+esc(g)+'</b> '+r.grades[g]; }).join(" · ");
-        document.getElementById("pMeta").innerHTML = '경유 노선 <b>'+r.count+'개</b> · 광고버스 <b>'+won(r.qty)+'대</b><br>'+gparts;
+        var gparts = Object.keys(r.grades).filter(function(g){return g!=="매체"&&g!=="후보";})
+          .sort(function(a,c){return gord(a)-gord(c);})
+          .map(function(g){ return '<b>'+esc(g)+'급</b> '+r.grades[g]; }).join(" · ");
+        if (r.candidate) {
+          document.getElementById("pMeta").innerHTML = '분원 인근 통과 노선 <b>'+r.count+'개</b> <span style="color:#b45309;font-weight:700">· 광고 가능 노선은 확인 전</span>';
+        } else if (r.vendor) {
+          document.getElementById("pMeta").innerHTML = '매체사 보유 경유 노선 <b>'+r.count+'개</b>'
+            + (r.qty ? ' · 광고버스 <b>'+won(r.qty)+'대</b>' : ' <span style="color:#b45309;font-weight:700">· 가능 대수는 확정 시 확인</span>')
+            + (gparts ? '<br>'+gparts : '');
+        } else {
+          document.getElementById("pMeta").innerHTML = '경유 노선 <b>'+r.count+'개</b> · 광고버스 <b>'+won(r.qty)+'대</b><br>'+gparts;
+        }
         var byg = {};
         r.lines.forEach(function(l){ (byg[l.grade]=byg[l.grade]||[]).push(l); });
-        var h = "";
+        var h = '<div class="phint">👆 <b>버스 번호</b>를 누르면 지도에 <b>경로</b>가 표시됩니다</div>';
+        h += '<div class="pnote">⚠️ <b>확정 예약 시점에 광고 가능 버스 수량·노선 확인 필수</b> — 노선은 차량 현황에 따라 변동될 수 있습니다.</div>';
         Object.keys(byg).sort(function(a,c){return gord(a)-gord(c);}).forEach(function(g){
           h += '<div class="gr">'+esc(glab(g))+' ('+byg[g].length+')</div>';
           byg[g].forEach(function(l){
-            h += '<div class="rrow"><span class="rg '+gclass(g)+'">'+esc(g)+'</span>'
+            var gg = GR[l.rid] || GR[l.line] || {};
+            var route = gg.start ? (esc(shorten(gg.start))+' ↔ '+esc(shorten(gg.end))) : '';
+            var times = gg.firstBus ? (esc(gg.firstBus)+'~'+esc(gg.lastBus)) : '';
+            var term  = gg.term ? ('배차 '+esc(gg.term)+'분') : '';
+            var stc   = gg.stopCount ? (gg.stopCount+'정류소') : '';
+            var meta2 = [route, times, term, stc].filter(Boolean).join('<span class="sep">·</span>');
+            h += '<div class="rrow" data-num="'+esc(l.line)+'">'
+               + '<div class="r1"><span class="rg '+gclass(g)+'">'+esc(gbadge(g))+'</span>'
                + '<span class="rl">'+esc(l.line)+'</span>'
-               + '<span class="ro">'+esc(l.op)+'</span>'
-               + '<span class="rq">'+(l.qty?won(l.qty)+'대':'')+'</span></div>';
+               + (gg.typeLabel?'<span class="rtype">'+esc(gg.typeLabel)+'</span>':'')
+               + '<span class="rq">'+(l.qty?won(l.qty)+'대':'')+'</span><span class="rgo">경로 ▸</span></div>'
+               + (meta2?'<div class="r2">'+meta2+'</div>':'')
+               + '</div>';
           });
         });
         document.getElementById("plist").innerHTML = h;
+        Array.prototype.forEach.call(document.querySelectorAll("#plist .rrow"), function(el){
+          el.addEventListener("click", function(){ selectRoute(el.getAttribute("data-num")); });
+        });
         document.getElementById("panel").classList.add("open");
+        drawBranchRoutes(b);
+        setActiveBranch(name);
+        var bnds = routeBounds(r.lines.map(function(l){ return l.line; }));
+        if(bnds) map.fitBounds(bnds, { top:70, right:330, bottom:50, left:360 });
       }
       window.__openPanel = function(n){ openPanel(n); };
-      document.getElementById("pclose").addEventListener("click", function(){ document.getElementById("panel").classList.remove("open"); });
+      document.getElementById("pclose").addEventListener("click", function(){ document.getElementById("panel").classList.remove("open"); clearLines(); clearActiveBranch(); });
 
       var scope = "cap"; // cap | all
 

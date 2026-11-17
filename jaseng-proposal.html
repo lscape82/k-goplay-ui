@@ -1,0 +1,391 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>자생한방병원 버스광고 제안 — 연간 운영안 · 선정 근거 · 견적</title>
+<meta name="description" content="자생한방병원 전국 20개 분원 버스광고 제안. A안 서울 1순위 중심 / B안 전국구 분산. 연 2억 예산 기준 연간 운영안·선정 근거·견적.">
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<style>
+*{box-sizing:border-box}
+:root{--navy:#16215b;--navy2:#2b3b7a;--amber:#c67d16;--ink:#1f2937;--mut:#64748b;--line:#e5e9f0;--soft:#f6f8fc;--bg:#f1f4f9}
+html,body{margin:0;font-family:"Pretendard Variable",Pretendard,-apple-system,system-ui,"맑은 고딕","Malgun Gothic",sans-serif;color:#172033;background:var(--bg);-webkit-font-smoothing:antialiased;line-height:1.6}
+h1,h2,h3,h4{margin:0;letter-spacing:-.4px;color:#111a2e}
+.num{font-variant-numeric:tabular-nums}
+a{color:var(--navy)}
+
+/* header + tabs */
+header{position:sticky;top:0;z-index:50;background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:14px;padding:9px 18px;flex-wrap:wrap}
+.logo{font-size:19px;font-weight:800;letter-spacing:-.5px;color:var(--navy);flex:none}
+.logo .h{color:#3a4a86}
+.htxt b{display:block;font-size:14.5px;font-weight:800;color:#172033;letter-spacing:-.3px}
+.htxt small{display:block;font-size:11.5px;color:var(--mut)}
+.tabs{margin-left:auto;display:flex;gap:2px;overflow-x:auto}
+.tabs button{border:0;background:none;padding:9px 13px;border-radius:999px;font:inherit;font-size:13.5px;font-weight:700;color:var(--mut);white-space:nowrap;cursor:pointer}
+.tabs button:hover{color:var(--navy);background:var(--soft)}
+.tabs button[aria-current="true"]{color:#fff;background:var(--navy)}
+
+.wrap{max-width:1080px;margin:0 auto;padding:34px 20px 72px}
+section.view[hidden]{display:none}
+.eyebrow{font-size:12px;font-weight:800;letter-spacing:.12em;color:var(--amber);text-transform:uppercase}
+.lead{color:#34425a;font-size:16px;margin:10px 0 0;max-width:760px}
+h2.big{font-size:30px;font-weight:800;line-height:1.2;margin-top:8px}
+.sec{margin-top:34px}
+.sec>h3{font-size:21px;font-weight:800;margin-bottom:4px}
+.sec>.sdesc{color:var(--mut);font-size:14px;margin-bottom:14px}
+
+/* cards + stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:22px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:14px;padding:15px 16px}
+.stat .k{font-size:12px;color:var(--mut);font-weight:700}
+.stat .v{font-size:26px;font-weight:800;color:var(--navy);letter-spacing:-.5px;margin-top:2px}
+.stat .v small{font-size:14px;font-weight:700;margin-left:2px}
+.stat .p{font-size:12px;color:var(--mut);margin-top:2px}
+.card{background:#fff;border:1px solid var(--line);border-radius:14px;padding:20px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
+
+/* AB toggle */
+.abtog{display:inline-flex;gap:4px;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px;margin-bottom:16px}
+.abtog button{border:0;background:none;padding:8px 18px;border-radius:999px;font:inherit;font-weight:800;font-size:14px;color:var(--mut);cursor:pointer}
+.abtog button[aria-pressed="true"]{background:var(--navy);color:#fff}
+
+/* table */
+.tblw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
+table{border-collapse:collapse;width:100%;min-width:620px;font-size:14px}
+th{text-align:left;font-size:12px;font-weight:800;color:#fff;background:var(--navy);padding:11px 12px;white-space:nowrap}
+td{padding:10px 12px;border-bottom:1px solid #eef1f7;vertical-align:middle}
+tr:last-child td{border-bottom:0}
+td.r,th.r{text-align:right}
+td.c,th.c{text-align:center}
+td.b{font-weight:800;color:#111a2e}
+tr.area td{background:var(--soft);font-weight:800;color:var(--navy);font-size:12.5px}
+tr.sum td{background:#111a2e;color:#fff;font-weight:800;font-size:14.5px}
+tr.sum td .amber{color:#ffcf8a}
+.badge{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;background:#eef1fb;color:var(--navy);margin-right:3px}
+.badge.g{background:#fdf0dd;color:#9a5a08}
+
+/* month strip */
+.cal{display:grid;grid-template-columns:120px repeat(12,1fr);gap:4px;font-size:11px;min-width:620px}
+.cal .hd{font-weight:800;color:var(--mut);text-align:center;padding:4px 0}
+.cal .nm{font-weight:700;color:#111a2e;display:flex;align-items:center;font-size:12.5px}
+.cal .on{background:var(--navy);border-radius:5px;height:18px}
+.cal .on.loc{background:var(--amber)}
+
+/* criteria */
+.crit{display:grid;gap:10px}
+.crit .row{display:grid;grid-template-columns:40px 1fr;gap:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
+.crit .no{width:34px;height:34px;border-radius:50%;background:#eef1fb;color:var(--navy);font-weight:800;display:grid;place-items:center}
+.crit .row.g .no{background:#fdf0dd;color:#9a5a08}
+.crit h4{font-size:15.5px;margin-bottom:3px}
+.crit p{margin:0;font-size:13.5px;color:#44546e}
+.note{background:#fffbeb;border:1px solid #fce4b6;border-radius:10px;padding:12px 14px;font-size:13px;color:#92400e;font-weight:600;line-height:1.6}
+.note b{font-weight:800}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+.chip{font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px;background:var(--soft);border:1px solid var(--line);color:#44546e}
+
+/* map cta */
+.mapcta{display:flex;align-items:center;gap:20px;flex-wrap:wrap;background:linear-gradient(135deg,#16215b,#2b3b7a);color:#fff;border-radius:16px;padding:26px 28px}
+.mapcta h3{color:#fff;font-size:22px}
+.mapcta p{margin:8px 0 0;color:#c9d2ee;font-size:14px;max-width:460px}
+.btn{display:inline-flex;align-items:center;gap:8px;background:var(--amber);color:#fff;border:0;border-radius:999px;padding:12px 22px;font:inherit;font-weight:800;font-size:15px;cursor:pointer;text-decoration:none}
+.btn.gh{background:#fff;color:var(--navy)}
+.foot{margin-top:40px;border-top:1px solid var(--line);padding-top:18px;color:var(--mut);font-size:12.5px}
+ul.why{margin:6px 0 0;padding-left:18px}
+ul.why li{margin:4px 0;font-size:13.5px}
+ul.why li::marker{color:var(--amber)}
+
+@media(max-width:820px){
+ .stats{grid-template-columns:1fr 1fr}
+ .grid2,.grid3{grid-template-columns:1fr}
+ h2.big{font-size:24px}
+}
+</style>
+</head>
+<body>
+<header>
+  <span class="logo">광고<span class="h">플레이</span></span>
+  <span class="htxt"><b>자생한방병원 버스광고 제안</b><small>전국 20개 분원 · 연 2억 예산 · A/B 2안</small></span>
+  <nav class="tabs" aria-label="제안 섹션">
+    <button data-v="intro" aria-current="true">개요</button>
+    <button data-v="plan">연간 운영안</button>
+    <button data-v="why">선정 근거</button>
+    <button data-v="quote">견적·조건</button>
+    <button data-v="rates">지역별 단가</button>
+    <button data-v="map">노선 지도</button>
+  </nav>
+</header>
+
+<div class="wrap">
+
+<!-- 개요 -->
+<section class="view" id="v-intro">
+  <div class="eyebrow">자생한방병원 · 전국 버스광고 제안</div>
+  <h2 class="big">전국 20개 분원, 생활 동선을 달리는 버스로<br>자생한방병원을 각인시킵니다</h2>
+  <p class="lead">척추·관절 비수술 치료에 최적인 매체는 <b>분원 생활권을 반복 노출하는 버스</b>입니다. 각 분원 인근을 경유하는 실제 노선을 좌표 기반으로 선별하고, 연 2억 예산에 맞춰 <b>A안(서울 1순위 중심)</b>과 <b>B안(전국구 분산)</b> 두 가지로 제안합니다.</p>
+  <div class="stats">
+    <div class="stat"><div class="k">전국 분원</div><div class="v">20<small>개</small></div><div class="p">수도권 11 · 지방 9</div></div>
+    <div class="stat"><div class="k">선별 경유 노선</div><div class="v">400<small>+</small></div><div class="p">분원 인근 좌표 기반</div></div>
+    <div class="stat"><div class="k">연간 예산</div><div class="v">2<small>억원</small></div><div class="p">VAT·제작비 별도</div></div>
+    <div class="stat"><div class="k">제안 안</div><div class="v">2<small>안</small></div><div class="p">서울 중심 / 전국 분산</div></div>
+  </div>
+  <div class="sec grid2">
+    <div class="card">
+      <span class="badge">A안</span><h3 style="display:inline;margin-left:4px">서울 1순위 중심</h3>
+      <p style="color:#44546e;font-size:14px;margin:10px 0 0">서울 전 분원(강남 본원=등급믹스 규정)에 집중하고, 경기·인천 중 접근성·타깃이 높은 분원을 선별 추가해 <b>수도권 밀도를 극대화</b>합니다.</p>
+      <div class="chips"><span class="chip">서울 5분원</span><span class="chip">+ 분당·일산·부천·인천</span><span class="chip">19대 · 1.95억</span></div>
+    </div>
+    <div class="card">
+      <span class="badge g">B안</span><h3 style="display:inline;margin-left:4px">전국구 분산</h3>
+      <p style="color:#44546e;font-size:14px;margin:10px 0 0">경기 거점에 지방 광역시 분원을 더해 <b>전국 브랜드 노출</b>과 분원 균형을 잡습니다.</p>
+      <div class="chips"><span class="chip">경기 4분원</span><span class="chip">+ 대구·부산·대전·광주·울산·창원</span><span class="chip">26대 · 1.97억</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- 연간 운영안 -->
+<section class="view" id="v-plan" hidden>
+  <div class="eyebrow">연간 운영안</div>
+  <h2 class="big">12개월 연속 집행 기준 분원별 배분</h2>
+  <p class="lead">아래는 연 2억 예산을 최적 노선에 배분한 운영안입니다. 집행 기간·대수는 조정 가능하며, 실제 노선은 분원 인근 경유 노선 중에서 선별합니다.</p>
+  <div class="abtog" role="group" aria-label="안 선택">
+    <button data-ab="A" aria-pressed="true">A안 · 서울 중심</button>
+    <button data-ab="B" aria-pressed="false">B안 · 전국 분산</button>
+  </div>
+  <div id="planBody"></div>
+  <div class="sec">
+    <h3>월별 집행 (12개월 연속)</h3>
+    <div class="sdesc">상시 노출 기준입니다. 성수기(신학기·환절기 등) 집중 플라이트로 재배분도 가능합니다.</div>
+    <div class="tblw" style="padding:14px"><div id="calBody"></div></div>
+  </div>
+</section>
+
+<!-- 선정 근거 -->
+<section class="view" id="v-why" hidden>
+  <div class="eyebrow">선정 근거</div>
+  <h2 class="big">누구에게, 왜 이 노선인가</h2>
+  <p class="lead">자생한방병원은 척추·관절 비수술 치료 특화 병원입니다. 매체는 <b>주 이용층의 생활 동선</b>과 <b>실제 내원 가능권</b>을 기준으로 고릅니다.</p>
+
+  <div class="sec grid2">
+    <div class="card">
+      <h3 style="font-size:17px">① 타깃 — 누구에게 보일 것인가</h3>
+      <ul class="why">
+        <li><b>주 이용층</b> : 척추·관절 질환은 중장년·고령층 비중이 높고, 교통사고·근골격계 통증(활동 연령)도 핵심 — 중장년 거주·생활 밀집 지역 우선.</li>
+        <li><b>접근 동선</b> : 버스는 "집 ↔ 주요도로 ↔ 병원" 생활 동선을 하루 18시간·왕복 8~9회 반복 노출 — 실제 내원 가능권 노선을 1순위로.</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="font-size:17px">③ A/B안 전략 차이</h3>
+      <ul class="why">
+        <li><b>A안 · 서울 1순위</b> : 서울 전 분원 집중(강남 본원=등급믹스 규정) + 경기·인천 선별 추가. 수도권 밀도 극대화.</li>
+        <li><b>B안 · 전국구 분산</b> : 경기 거점 + 지방 광역시 분원 분산. 전국 노출·분원 균형.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="sec">
+    <h3>② 매체 선정 4대 기준 (가중 적용)</h3>
+    <div class="crit">
+      <div class="row"><div class="no">1</div><div><h4>분원 접근성</h4><p>분원 반경 통과 노선만 후보 — 정류장 이름 키워드가 아니라 <b>GPS 좌표로 선별</b>. 실제 내원 생활권을 커버합니다.</p></div></div>
+      <div class="row"><div class="no">2</div><div><h4>타깃 밀집</h4><p>중장년 주거·생활 밀집, 주요 간선도로를 경유하는 노선에 가중.</p></div></div>
+      <div class="row"><div class="no">3</div><div><h4>노출 효율</h4><p>왕복 운행·운행대수·정류소수가 많은 노선 우선(일 18시간·왕복 8~9회).</p></div></div>
+      <div class="row g"><div class="no">4</div><div><h4>등급·예산 효율</h4><p>등급(서울 SSA~B, 대구 상품 S/A 등) 대비 단가 효율을 따져 예산 내 최적 조합을 구성.</p></div></div>
+    </div>
+  </div>
+
+  <div class="sec">
+    <div class="note">⚠️ <b>확정 예약 시점에 광고 가능 버스 수량·노선 확인 필수</b> — 노선·대수는 차량 운행 현황에 따라 변동될 수 있습니다. 안산·인천·천안·청주는 매체사 단가 미제공분으로 추정단가(별도 협의)입니다.</div>
+  </div>
+</section>
+
+<!-- 견적·조건 -->
+<section class="view" id="v-quote" hidden>
+  <div class="eyebrow">견적 · 조건</div>
+  <h2 class="big">연 2억 예산 기준 A / B 견적</h2>
+  <p class="lead">아래 금액은 시내버스 외부 부착광고(바디=차도면+인도면) 기준, VAT·제작비 별도입니다. 서울버스TV(별도 매체)는 제외했습니다.</p>
+  <div class="stats" style="grid-template-columns:1fr 1fr">
+    <div class="stat"><div class="k">A안 · 서울 중심</div><div class="v">1.95<small>억</small></div><div class="p">19대 · 잔여 500만</div></div>
+    <div class="stat"><div class="k">B안 · 전국 분산</div><div class="v">1.97<small>억</small></div><div class="p">26대 · 잔여 296만</div></div>
+  </div>
+  <div class="abtog" role="group" aria-label="안 선택" style="margin-top:20px">
+    <button data-ab2="A" aria-pressed="true">A안 견적</button>
+    <button data-ab2="B" aria-pressed="false">B안 견적</button>
+  </div>
+  <div id="quoteBody"></div>
+  <div class="sec grid2">
+    <div class="card">
+      <h3 style="font-size:16px">단가 기준</h3>
+      <ul class="why">
+        <li>서울 외부 부착광고 등급별 : SSA 170 · SA 150 · A 120 · B 90만/월</li>
+        <li>지방·경기 매체사 단가 : 분원별 상이(표 참조)</li>
+        <li>VAT·제작비 별도 · 서울버스TV(별도 매체) 제외</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="font-size:16px">집행 조건</h3>
+      <ul class="why">
+        <li>기준 집행기간 12개월(조정 가능)</li>
+        <li>강남 본원 = 골드 패키지(SA+A+B) 등급믹스 규정 준수</li>
+        <li>대전 등 일부 지역 6개월+ 제작비 무료 지원</li>
+      </ul>
+    </div>
+  </div>
+  <div class="sec"><div class="note">⚠️ <b>확정 예약 시점에 광고 가능 버스 수량·노선 확인 필수</b> — 노선·대수는 차량 운행 현황에 따라 변동될 수 있습니다. 상기 금액은 최적 노선으로 예산 내 제안한 안이며, 세부 경유노선·운행시간은 노선 지도에서 확인하실 수 있습니다.</div></div>
+</section>
+
+<!-- 지역별 단가 -->
+<section class="view" id="v-rates" hidden>
+  <div class="eyebrow">지역별 단가</div>
+  <h2 class="big">지역별 버스 외부광고 비용</h2>
+  <p class="lead">매체사 공개 단가 기준(월 1대, VAT·제작비 별도)입니다. 자생 분원이 있는 지역 중심으로 정리했으며, 실제 집행은 분원 인근 경유 노선에서 선별합니다.</p>
+
+  <div class="sec">
+    <h3>서울</h3>
+    <div class="sdesc">서울 시내버스 외부 부착광고 — 강남권은 등급(SSA/SA)으로 구분. ※ 서울버스TV(별도 매체)는 제외.</div>
+    <div class="tblw"><table><thead><tr><th>등급</th><th>구간</th><th class="r">월 단가(1대)</th><th>비고</th></tr></thead><tbody>
+      <tr><td class="b">SSA</td><td>강남대로·강남역·테헤란로 축</td><td class="r b">170만원</td><td style="color:#64748b;font-size:12px">최상위</td></tr>
+      <tr><td class="b">SA</td><td>강남구 外·송파·건대·청량리 등</td><td class="r b">150만원</td><td style="color:#64748b;font-size:12px">상위</td></tr>
+      <tr><td class="b">A</td><td>서울 전역</td><td class="r b">120만원</td><td style="color:#64748b;font-size:12px"></td></tr>
+      <tr><td class="b">B</td><td>서울 전역</td><td class="r b">90만원</td><td style="color:#64748b;font-size:12px">제작·부착 8만</td></tr>
+    </tbody></table></div>
+  </div>
+
+  <div class="sec">
+    <h3>수도권 (경기·인천)</h3>
+    <div class="tblw"><table><thead><tr><th>지역</th><th>매체</th><th class="r">월 단가(1대)</th><th>비고</th></tr></thead><tbody>
+      <tr><td class="b">일산·고양</td><td>광역 / 시내 / 마을</td><td class="r b">80 / 60 / 50만원</td><td style="color:#64748b;font-size:12px">매체 종류별</td></tr>
+      <tr><td class="b">분당·성남</td><td>시내버스</td><td class="r b">35~60만원</td><td style="color:#64748b;font-size:12px">노선별 상이</td></tr>
+      <tr><td class="b">부천</td><td>시내버스</td><td class="r b">40~50만원</td><td style="color:#64748b;font-size:12px"></td></tr>
+      <tr><td class="b">수원·안산·인천</td><td>시내버스</td><td class="r b">별도 협의</td><td style="color:#64748b;font-size:12px">추정·확인 필요</td></tr>
+    </tbody></table></div>
+  </div>
+
+  <div class="sec">
+    <h3>영남</h3>
+    <div class="tblw"><table><thead><tr><th>지역</th><th>매체</th><th class="r">월 단가(1대)</th><th>비고</th></tr></thead><tbody>
+      <tr><td class="b">부산</td><td>일반노선 / 해운대노선</td><td class="r b">78 / 90만원</td><td style="color:#64748b;font-size:12px">제작 6만 · 분배 일반8:해운대2</td></tr>
+      <tr><td class="b">대구</td><td>간선·지선·순환·급행</td><td class="r b">75만원</td><td style="color:#64748b;font-size:12px">제작 7만 · 상품 S/A/B</td></tr>
+      <tr><td class="b">울산</td><td>확대형(차도+인도) / 전체set</td><td class="r b">65 / 75만원</td><td style="color:#64748b;font-size:12px">후면 15만 · 제작 7만</td></tr>
+      <tr><td class="b">창원</td><td>차도+인도</td><td class="r b">60만원</td><td style="color:#64748b;font-size:12px">후면 15만 · 제작 10만</td></tr>
+    </tbody></table></div>
+  </div>
+
+  <div class="sec">
+    <h3>충청·호남</h3>
+    <div class="tblw"><table><thead><tr><th>지역</th><th>매체</th><th class="r">월 단가(1대)</th><th>비고</th></tr></thead><tbody>
+      <tr><td class="b">대전</td><td>간선/지선 (차도+인도) / 후면</td><td class="r b">68 / 23만원</td><td style="color:#64748b;font-size:12px">제작 6만 · 6개월+ 제작무료</td></tr>
+      <tr><td class="b">광주</td><td>도로+인도+하차문 / +후면</td><td class="r b">70 / 110만원</td><td style="color:#64748b;font-size:12px">제작 15만</td></tr>
+      <tr><td class="b">천안·청주</td><td>시내버스</td><td class="r b">별도 협의</td><td style="color:#64748b;font-size:12px">추정·확인 필요</td></tr>
+    </tbody></table></div>
+  </div>
+
+  <div class="sec"><div class="note">· 모든 단가 VAT·제작비 별도, 월 1대 기준입니다.  · 대수·기간·면 구성에 따라 협의 할인 가능.  · 수원·안산·인천·천안·청주는 매체사 단가 미제공분(추정·별도 협의).  · 운수회사·매체사명은 광고주 화면 비노출 원칙입니다.</div></div>
+</section>
+
+<!-- 노선 지도 -->
+<section class="view" id="v-map" hidden>
+  <div class="eyebrow">노선 지도</div>
+  <h2 class="big">분원별 경유 노선을 지도에서 확인</h2>
+  <p class="lead">전국 20개 분원과 각 분원 인근을 경유하는 버스 노선을 지도에 선으로 표시합니다. 버스 번호를 누르면 경로·기점/종점·운행시간·정류소수가 나타납니다.</p>
+  <div class="sec mapcta">
+    <div>
+      <h3>자생한방병원 전국 분원 노선 지도</h3>
+      <p>네이버 지도 위에 분원 핀과 경유 노선을 표시합니다. 수도권 중심 / 전국구 토글로 두 시나리오를 비교할 수 있습니다.</p>
+    </div>
+    <a class="btn gh" href="jaseng-branches.html" target="_blank" rel="noopener">노선 지도 열기 ↗</a>
+  </div>
+  <div class="sec grid3">
+    <div class="card"><div class="k" style="font-size:12px;color:var(--mut);font-weight:700">경유 노선</div><div class="v" style="font-size:24px;font-weight:800;color:var(--navy)">400+</div><div class="p" style="font-size:12px;color:var(--mut)">분원 인근 좌표 기반 선별</div></div>
+    <div class="card"><div class="k" style="font-size:12px;color:var(--mut);font-weight:700">표시 정보</div><div style="font-size:14px;font-weight:700;margin-top:4px">경로선 · 기점↔종점<br>운행시간 · 정류소수</div></div>
+    <div class="card"><div class="k" style="font-size:12px;color:var(--mut);font-weight:700">비공개</div><div style="font-size:14px;font-weight:700;margin-top:4px">운수회사·매체사·단가는<br>광고주 화면 비노출</div></div>
+  </div>
+</section>
+
+<div class="foot">광고플레이(주) · 자생한방병원 버스광고 제안 · 본 제안의 노선·대수·금액은 확정 예약 시점에 가능 차량 현황에 따라 변동될 수 있습니다.</div>
+</div>
+
+<script>
+'use strict';
+var won = function(n){ return n.toLocaleString('ko-KR'); };
+// 분원 인근 경유노선 수
+var NR = {강남:42,목동:46,보라매:25,잠실:28,노원:17,분당:11,일산:8,부천:9,수원:15,인천:30,대구:25,부산:21,해운대:6,대전:13,광주:13,울산:46,창원:38};
+// 연 금액(원) = 월단가*대수*12
+var M=12;
+var PLAN = {
+ A:[
+  {b:'강남',area:'서울',med:'SA 1 · A 2 · B 1',rate:'150·120·90만',qty:4,amt:57600000,memo:'본원·골드 패키지(등급믹스 규정)'},
+  {b:'목동',area:'서울',med:'A 1 · B 1',rate:'120·90만',qty:2,amt:25200000,memo:'서남권'},
+  {b:'보라매',area:'서울',med:'A 1 · B 1',rate:'120·90만',qty:2,amt:25200000,memo:'동작·관악'},
+  {b:'잠실',area:'서울',med:'A 1 · B 1',rate:'120·90만',qty:2,amt:25200000,memo:'송파·강동'},
+  {b:'노원',area:'서울',med:'B 1',rate:'90만',qty:1,amt:10800000,memo:'동북권'},
+  {b:'분당',area:'경기',med:'시내버스',rate:'50만',qty:3,amt:18000000,memo:'매체사 제안가'},
+  {b:'일산',area:'경기',med:'시내버스',rate:'60만',qty:2,amt:14400000,memo:'판매가·시내'},
+  {b:'부천',area:'경기',med:'시내버스',rate:'45만',qty:1,amt:5400000,memo:'매체사 제안가'},
+  {b:'인천',area:'인천',med:'시내버스',rate:'55만',qty:2,amt:13200000,memo:'추정·별도협의'}
+ ],
+ B:[
+  {b:'분당',area:'경기',med:'시내버스',rate:'50만',qty:3,amt:18000000,memo:'매체사 제안가'},
+  {b:'일산',area:'경기',med:'시내버스',rate:'60만',qty:3,amt:21600000,memo:'판매가·시내'},
+  {b:'부천',area:'경기',med:'시내버스',rate:'45만',qty:3,amt:16200000,memo:'매체사 제안가'},
+  {b:'수원',area:'경기',med:'시내버스',rate:'60만',qty:3,amt:21600000,memo:'판매가·시내'},
+  {b:'대구',area:'대구',med:'간선/지선(S·A)',rate:'75만',qty:3,amt:27000000,memo:'상품등급 S/A'},
+  {b:'부산',area:'부산',med:'일반노선',rate:'78만',qty:2,amt:18720000,memo:'일반노선'},
+  {b:'해운대',area:'부산',med:'해운대노선',rate:'90만',qty:1,amt:10800000,memo:'해운대 급지'},
+  {b:'대전',area:'대전',med:'간선/지선',rate:'68만',qty:2,amt:16320000,memo:'6개월+ 제작무료'},
+  {b:'광주',area:'광주',med:'도로+인도+하차문',rate:'70만',qty:2,amt:16800000,memo:'풀세트 110만 선택가'},
+  {b:'울산',area:'울산',med:'확대형',rate:'65만',qty:2,amt:15600000,memo:'확대형(차도+인도)'},
+  {b:'창원',area:'경남',med:'차도+인도',rate:'60만',qty:2,amt:14400000,memo:'차도+인도'}
+ ]
+};
+var BUDGET=200000000;
+
+function renderPlan(ab){
+  var rows=PLAN[ab], tot=0, tq=0, h='<div class="tblw"><table><thead><tr><th>분원</th><th>지역</th><th>매체·등급</th><th class="c">대수</th><th class="c">개월</th><th class="r">월 단가</th><th class="r">연 집행금액</th><th>비고</th></tr></thead><tbody>';
+  rows.forEach(function(r){
+    tot+=r.amt; tq+=r.qty;
+    h+='<tr><td class="b">자생 '+r.b+'</td><td>'+r.area+'</td><td>'+r.med+' <span style="color:#94a3b8;font-size:11.5px">· 인근 '+(NR[r.b]||'')+'노선 중</span></td><td class="c b">'+r.qty+'</td><td class="c">'+M+'</td><td class="r">'+r.rate+'</td><td class="r b">'+won(r.amt)+'원</td><td style="color:#64748b;font-size:12px">'+r.memo+'</td></tr>';
+  });
+  h+='<tr class="sum"><td>합계</td><td></td><td></td><td class="c">'+tq+'대</td><td class="c">'+M+'</td><td></td><td class="r"><span class="amber">'+won(tot)+'원</span></td><td>예산 '+won(BUDGET)+' · 잔여 '+won(BUDGET-tot)+'</td></tr>';
+  h+='</tbody></table></div>';
+  document.getElementById('planBody').innerHTML=h;
+  // 캘린더
+  var c='<div class="cal"><div class="nm"></div>';
+  for(var m=1;m<=12;m++) c+='<div class="hd">'+m+'월</div>';
+  rows.forEach(function(r){
+    c+='<div class="nm">자생 '+r.b+' <span style="color:#94a3b8;font-weight:700;margin-left:4px">'+r.qty+'대</span></div>';
+    for(var m=1;m<=12;m++) c+='<div class="on'+(r.area==='서울'||r.area==='경기'||r.area==='인천'?'':' loc')+'"></div>';
+  });
+  c+='</div>';
+  document.getElementById('calBody').innerHTML=c;
+}
+function renderQuote(ab){
+  var rows=PLAN[ab], tot=0, tq=0, h='<div class="tblw"><table><thead><tr><th>분원</th><th>매체·등급</th><th class="r">월 단가</th><th class="c">대수</th><th class="c">개월</th><th class="r">연 집행금액</th></tr></thead><tbody>';
+  rows.forEach(function(r){ tot+=r.amt; tq+=r.qty;
+    h+='<tr><td class="b">자생 '+r.b+'</td><td>'+r.med+'</td><td class="r">'+r.rate+'</td><td class="c b">'+r.qty+'</td><td class="c">'+M+'</td><td class="r b">'+won(r.amt)+'원</td></tr>';
+  });
+  h+='<tr class="sum"><td>합계</td><td></td><td></td><td class="c">'+tq+'대</td><td class="c">'+M+'</td><td class="r"><span class="amber">'+won(tot)+'원</span></td></tr>';
+  h+='<tr style="background:#f6f8fc"><td colspan="5" style="text-align:right;font-weight:700;color:#475569">연 예산 대비 잔여</td><td class="r b" style="color:#c67d16">'+won(BUDGET-tot)+'원</td></tr>';
+  h+='</tbody></table></div>';
+  document.getElementById('quoteBody').innerHTML=h;
+}
+
+// 탭
+var tabs=document.querySelectorAll('.tabs button');
+tabs.forEach(function(t){ t.addEventListener('click',function(){
+  tabs.forEach(function(x){x.setAttribute('aria-current', x===t?'true':'false');});
+  document.querySelectorAll('.view').forEach(function(v){ v.hidden = (v.id!=='v-'+t.dataset.v); });
+  window.scrollTo(0,0);
+});});
+// AB 토글
+document.querySelectorAll('[data-ab]').forEach(function(b){ b.addEventListener('click',function(){
+  document.querySelectorAll('[data-ab]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+  renderPlan(b.dataset.ab);
+});});
+document.querySelectorAll('[data-ab2]').forEach(function(b){ b.addEventListener('click',function(){
+  document.querySelectorAll('[data-ab2]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
+  renderQuote(b.dataset.ab2);
+});});
+renderPlan('A'); renderQuote('A');
+</script>
+</body>
+</html>
