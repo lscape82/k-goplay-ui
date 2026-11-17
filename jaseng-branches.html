@@ -313,9 +313,9 @@
         routeLines.forEach(function(x){
           var sel = selNum && x.num===selNum;
           var rec = !!RECSET[x.num], o;
-          if(sel) o = { strokeColor:"#c67d16", strokeOpacity:0.98, strokeWeight:6, zIndex:120 };
-          else if(selNum) o = { strokeColor:"#16215b", strokeOpacity: rec?0.32:0.07, strokeWeight: rec?3:2, zIndex: rec?12:3 };
-          else o = { strokeColor:"#16215b", strokeOpacity: rec?0.92:0.11, strokeWeight: rec?4:2, zIndex: rec?20:3 };
+          if(sel) o = { strokeColor:"#c67d16", strokeOpacity:0.98, strokeWeight:4.5, zIndex:120 };
+          else if(selNum) o = { strokeColor:"#16215b", strokeOpacity: rec?0.3:0.06, strokeWeight: rec?2:1.4, zIndex: rec?12:3 };
+          else o = { strokeColor:"#16215b", strokeOpacity: rec?0.82:0.1, strokeWeight: rec?2.5:1.4, zIndex: rec?20:3 };
           x.poly.setOptions(o);
         });
       }
