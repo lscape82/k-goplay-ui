@@ -129,9 +129,21 @@ ul.why li::marker{color:var(--amber)}
 .cmp .pro{color:#2b4a3a}.cmp .con{color:#5c3a30}
 .cmp .fit{margin-top:auto;font-size:12.5px;color:var(--navy);font-weight:700;background:var(--soft);border-radius:8px;padding:8px 10px}
 
+/* 수행사례 */
+.casegrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:16px}
+.casecard{background:#fff;border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.casecard .ph{aspect-ratio:4/3;background:#e9eef4;overflow:hidden}
+.casecard .ph img{width:100%;height:100%;object-fit:cover;display:block}
+.casecard .bd{padding:13px 15px;display:flex;flex-direction:column;gap:2px}
+.casecard .br{font-size:15px;font-weight:800;color:#111a2e}
+.casecard .cat{font-size:12px;color:var(--mut);font-weight:700}
+.casecard .md{font-size:13px;font-weight:800;color:var(--navy);margin-top:4px}
+.casecard .nt{font-size:12.5px;color:#64748b}
+.casecard.txt .ph{display:flex;align-items:center;justify-content:center;color:#9aa7b8;font-weight:800;font-size:13px}
+
 @media(max-width:820px){
  .stats{grid-template-columns:1fr 1fr}
- .grid2,.grid3,.recwrap{grid-template-columns:1fr}
+ .grid2,.grid3,.recwrap,.casegrid{grid-template-columns:1fr}
  h2.big{font-size:24px}
 }
 </style>
@@ -147,6 +159,7 @@ ul.why li::marker{color:var(--amber)}
     <button data-v="intro" aria-current="true">개요</button>
     <button data-v="plan">운영안·견적</button>
     <button data-v="why">선정 근거</button>
+    <button data-v="cases">수행사례</button>
   </nav>
 </header>
 
@@ -324,6 +337,15 @@ ul.why li::marker{color:var(--amber)}
   </div>
 </section>
 
+<!-- 수행사례 -->
+<section class="view" id="v-cases" hidden>
+  <div class="eyebrow">수행사례</div>
+  <h2 class="big">실제 집행한 버스 외부광고</h2>
+  <p class="lead">광고플레이가 집행·관리한 시내버스 외부광고 현장 사례입니다. 게첨(부착) 후 현장 사진 보고서로 집행을 검증합니다.</p>
+  <div class="sec"><div class="casegrid" id="caseBody"></div></div>
+  <div class="sec"><div class="note">· 모든 사례는 실제 집행·게첨 현장 사진입니다.  · 자생한방병원도 집행 후 동일하게 <b>현장 부착 사진 보고서</b>를 제공합니다.  · 브랜드명은 집행 확인용이며 계약·금액은 비공개입니다.</div></div>
+</section>
+
 <div class="foot">자생한방병원 버스광고 제안 · 광고플레이(주) · 본 제안의 노선·대수·금액은 확정 예약 시점에 가능 차량 현황에 따라 변동될 수 있습니다.</div>
 </div>
 
@@ -472,6 +494,23 @@ function renderRec(){
   document.getElementById('recBody').innerHTML=h;
 }
 
+var CASES=[
+ {img:'coolphase',br:'쿨페이즈 (Coolfase)',cat:'에스테틱 쿨링 기기',md:'대구 시내버스 외부광고',nt:'시내버스 15대 · 후면+측면 래핑 · 월 단위 연속'},
+ {img:'coolsonic',br:'쿨소닉 (CoolSoniq)',cat:'에스테틱 초음파 기기',md:'대구·부산 시내버스 외부광고',nt:'시내버스 15대 · 후면+측면 래핑'},
+ {img:'kakao',br:'카카오 — 프로젝트 단골',cat:'지역상권 활성화 캠페인',md:'문경 시내버스 외부광고',nt:'공주·충주·문경 지역 버스 외부 래핑'},
+ {img:'pixar',br:'픽사 (PIXAR)',cat:'모던 특별전 · 스토어링크',md:'광역버스 외부광고',nt:'버스 바디 래핑'},
+ {img:'nurse',br:'대한간호조무사협회',cat:'협회 홍보',md:'수원 AK플라자 대형 LED',nt:'대형 LED 영상 집행'},
+ {img:null,br:'맘스피자',cat:'프랜차이즈',md:'버스·건물·택시 래핑',nt:'성수·홍대·압구정 등 멀티 매체'}
+];
+function renderCases(){
+  var h='';
+  CASES.forEach(function(c){
+    var ph = c.img ? '<div class="ph"><img src="assets/jaseng-cases/'+c.img+'.jpg" alt="'+c.br+' 집행 현장" loading="lazy"></div>'
+                   : '<div class="ph">현장 사진 준비 중</div>';
+    h+='<div class="casecard'+(c.img?'':' txt')+'">'+ph+'<div class="bd"><span class="br">'+c.br+'</span><span class="cat">'+c.cat+'</span><span class="md">'+c.md+'</span><span class="nt">'+c.nt+'</span></div></div>';
+  });
+  document.getElementById('caseBody').innerHTML=h;
+}
 var tabs=document.querySelectorAll('.tabs button');
 function activateTab(v){
   tabs.forEach(function(x){x.setAttribute('aria-current', x.dataset.v===v?'true':'false');});
@@ -485,8 +524,8 @@ document.querySelectorAll('[data-ab]').forEach(function(b){ b.addEventListener('
 });});
 document.getElementById('home').addEventListener('click',function(){ window.location.href='jaseng-branches.html'; });
 
-renderRates(); renderRec(); renderPlan('A');
-(function(){ var hs=(location.hash||'').replace('#',''); var ok=['intro','plan','why'];
+renderRates(); renderRec(); renderCases(); renderPlan('A');
+(function(){ var hs=(location.hash||'').replace('#',''); var ok=['intro','plan','why','cases'];
   activateTab(ok.indexOf(hs)>=0?hs:'intro'); })();
 </script>
 </body>
