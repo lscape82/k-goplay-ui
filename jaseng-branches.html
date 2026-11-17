@@ -120,14 +120,14 @@
     .rg.SSA { background:#16215b; } .rg.SA { background:#3a4a86; } .rg.A { background:#6b79a8; } .rg.B { background:#9aa4c0; } .rg.etc { background:#b08968; }
     .rrow .rl { font-size:13px; font-weight:800; color:#172033; flex:none; min-width:40px; }
     .rrow .rtype { font-size:10px; color:#94a3b8; font-weight:700; flex:none; }
-    .rrow .rq { margin-left:auto; font-size:11.5px; color:var(--navy); font-weight:800; flex:none; }
+    .rrow .rq { margin-left:4px; font-size:11.5px; color:var(--navy); font-weight:800; flex:none; }
     .rrow .r2 { margin-top:3px; font-size:11px; color:#64748b; font-weight:600; line-height:1.45; }
     .rrow .r2 .sep { color:#cbd5e1; margin:0 4px; }
     .panel .phint { margin:7px 8px 5px; font-size:11.5px; color:var(--navy); font-weight:700; background:#eef1fb; border:1px solid #d7deef; border-radius:8px; padding:8px 10px; display:flex; align-items:center; gap:6px; }
     .panel .phint b { font-weight:800; }
     .panel .pnote { margin:0 8px 6px; font-size:11px; color:#92400e; font-weight:600; background:#fffbeb; border:1px solid #fce4b6; border-radius:8px; padding:7px 9px; line-height:1.5; }
     .panel .pnote b { font-weight:800; }
-    .rrow .rgo { margin-left:7px; flex:none; color:#c67d16; font-weight:800; font-size:11px; white-space:nowrap; }
+    .rrow .rgo { margin-left:auto; flex:none; color:#c67d16; font-weight:800; font-size:11px; white-space:nowrap; background:#fdf3e3; border:1px solid #f0d3a2; border-radius:6px; padding:2px 7px; }
     .rrow.sel .rgo { color:#a8630f; }
     .jpin.act { background:#fff; color:var(--navy); border-color:var(--navy); box-shadow:0 0 0 2px #fff, 0 0 0 4px var(--navy), 0 3px 10px rgba(15,23,42,.45); }
     .jpin.act .jq, .jpin.act .jci, .jpin.act .jci i { color:var(--navy); }
@@ -370,16 +370,19 @@
           var term  = gg.term ? ('배차 '+esc(gg.term)+'분') : '';
           var stc   = gg.stopCount ? (gg.stopCount+'정류소') : '';
           var meta2 = [route, times, term, stc].filter(Boolean).join('<span class="sep">·</span>');
+          var showG = (g==="SSA"||g==="SA"||g==="S"||g==="A"||g==="B"||g==="심야");
+          var gb = showG ? '<span class="rg '+gclass(g)+'">'+esc(g)+'</span>' : '';
           return '<div class="rrow'+(it.rec?' rec':' dim')+'" data-num="'+esc(l.line)+'">'
-            + '<div class="r1">'+(it.rec?'<span class="recb">추천</span>':'')+'<span class="rg '+gclass(g)+'">'+esc(gbadge(g))+'</span>'
+            + '<div class="r1">'
             + '<span class="rl">'+esc(l.line)+'</span>'
+            + gb
             + (gg.typeLabel?'<span class="rtype">'+esc(gg.typeLabel)+'</span>':'')
-            + '<span class="rq">'+(l.qty?won(l.qty)+'대':'')+'</span><span class="rgo">경로 ▸</span></div>'
+            + (l.qty?'<span class="rq">'+won(l.qty)+'대</span>':'')
+            + '<span class="rgo">경로 ▸</span></div>'
             + (meta2?'<div class="r2">'+meta2+'</div>':'')
             + '</div>';
         }
-        var h = '<div class="phint">👆 <b>버스 번호</b>를 누르면 지도에서 <b>진한 선</b>으로 강조됩니다</div>';
-        h += '<div class="pnote">⚠️ <b>확정 예약 시점에 광고 가능 버스 수량·노선 확인 필수</b> — 노선은 차량 현황에 따라 변동될 수 있습니다.</div>';
+        var h = '<div class="phint">👆 <b>경로</b>를 누르면 지도에서 해당 노선을 확인할 수 있습니다</div>';
         h += '<div class="gr rec">★ 추천 노선 ('+N+')</div>';
         scored.slice(0,N).forEach(function(it){ h += rowHtml(it); });
         if(scored.length>N){
