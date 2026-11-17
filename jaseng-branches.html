@@ -70,7 +70,8 @@
     .jpin { display:flex; align-items:center; gap:5px; background:var(--navy); color:#fff; border-radius:8px; padding:4px 9px; box-shadow:0 2px 8px rgba(15,23,42,.42); cursor:pointer; white-space:nowrap; border:1.5px solid #fff; position:relative; }
     .jpin.loc { background:var(--amber); }
     .jpin .jname { display:inline-flex; align-items:baseline; gap:2px; }
-    .jpin .jname .jq { font-size:11px; font-weight:700; letter-spacing:-.3px; }
+    .jpin .jcis { font-size:10px; font-weight:800; letter-spacing:-.3px; opacity:.9; }
+    .jpin .jname .jq { font-size:11.5px; font-weight:800; letter-spacing:-.3px; }
     .jpin .jci { font-size:12.5px; font-weight:900; letter-spacing:-.4px; }
     .jpin .jci i { font-style:normal; font-weight:600; font-size:10px; letter-spacing:-.3px; margin-left:.5px; }
     .jpin .fs { font-size:10px; margin-left:1px; }
@@ -258,10 +259,10 @@
         var hasr = !!b.routes;
         var cnt = hasr ? '<em class="cnt">'+b.routes.count+'</em>' : '';
         var content = '<div class="jpin '+cls+(hasr?' hasr':'')+'">'
-          + '<span class="jname"><b class="jq">'+esc(b.name)+'</b><span class="jci">자생<i>한방병원</i></span></span>'
+          + '<span class="jname"><span class="jcis">자생</span><b class="jq">'+esc(b.name)+'</b></span>'
           + (b.flagship?'<span class="fs">★</span>':'')+cnt
           + '</div>';
-        var pw = 24 + (b.name.length*11) + 68 + (hasr?30:0) + (b.flagship?14:0);
+        var pw = 22 + 24 + (b.name.length*12) + (hasr?28:0) + (b.flagship?12:0);
         var ax = pw/2, ay = 34;
         var mk = new naver.maps.Marker({
           position: new naver.maps.LatLng(b.lat, b.lng), map: null,
