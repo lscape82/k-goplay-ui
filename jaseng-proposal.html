@@ -105,7 +105,7 @@ ul.why li::marker{color:var(--amber)}
 <body>
 <header>
   <span class="logo">광고<span class="h">플레이</span></span>
-  <span class="htxt"><b>자생한방병원 버스광고 제안</b><small>전국 20개 분원 · 연 2억 예산 · A/B 2안</small></span>
+  <span class="htxt"><b>자생한방병원 버스광고 제안</b><small>전국 20개 분원 · 연 2억 예산 · A/B/C 3안</small></span>
   <nav class="tabs" aria-label="제안 섹션">
     <button data-v="intro" aria-current="true">개요</button>
     <button data-v="plan">연간 운영안</button>
@@ -127,18 +127,23 @@ ul.why li::marker{color:var(--amber)}
     <div class="stat"><div class="k">전국 분원</div><div class="v">20<small>개</small></div><div class="p">수도권 11 · 지방 9</div></div>
     <div class="stat"><div class="k">선별 경유 노선</div><div class="v">400<small>+</small></div><div class="p">분원 인근 좌표 기반</div></div>
     <div class="stat"><div class="k">연간 예산</div><div class="v">2<small>억원</small></div><div class="p">VAT·제작비 별도</div></div>
-    <div class="stat"><div class="k">제안 안</div><div class="v">2<small>안</small></div><div class="p">서울 중심 / 전국 분산</div></div>
+    <div class="stat"><div class="k">제안 안</div><div class="v">3<small>안</small></div><div class="p">서울중심 / 전국분산 / 순환</div></div>
   </div>
-  <div class="sec grid2">
+  <div class="sec grid3">
     <div class="card">
       <span class="badge">A안</span><h3 style="display:inline;margin-left:4px">서울 1순위 중심</h3>
       <p style="color:#44546e;font-size:14px;margin:10px 0 0">서울 전 분원(강남 본원=등급믹스 규정)에 집중하고, 경기·인천 중 접근성·타깃이 높은 분원을 선별 추가해 <b>수도권 밀도를 극대화</b>합니다.</p>
-      <div class="chips"><span class="chip">서울 5분원</span><span class="chip">+ 분당·일산·부천·인천</span><span class="chip">19대 · 1.95억</span></div>
+      <div class="chips"><span class="chip">서울 5분원 + 경기·인천</span><span class="chip">19대 · 1.95억</span></div>
     </div>
     <div class="card">
       <span class="badge g">B안</span><h3 style="display:inline;margin-left:4px">전국구 분산</h3>
       <p style="color:#44546e;font-size:14px;margin:10px 0 0">경기 거점에 지방 광역시 분원을 더해 <b>전국 브랜드 노출</b>과 분원 균형을 잡습니다.</p>
-      <div class="chips"><span class="chip">경기 4분원</span><span class="chip">+ 대구·부산·대전·광주·울산·창원</span><span class="chip">26대 · 1.97억</span></div>
+      <div class="chips"><span class="chip">경기 + 지방 광역시</span><span class="chip">26대 · 1.97억</span></div>
+    </div>
+    <div class="card" style="border-color:var(--navy);box-shadow:0 0 0 1px var(--navy) inset">
+      <span class="badge" style="background:var(--navy);color:#fff">C안 추천</span><h3 style="display:inline;margin-left:4px">서울 고정 + 순환</h3>
+      <p style="color:#44546e;font-size:14px;margin:10px 0 0">서울은 12개월 고정, 지방·경기는 <b>3개월씩 분기 순환(플라이팅)</b>. 같은 예산으로 <b>연간 집행 지점을 2배 이상</b>으로 늘립니다.</p>
+      <div class="chips"><span class="chip">서울 9대 상시</span><span class="chip">연 53개 집행 지점 · 1.99억</span></div>
     </div>
   </div>
 </section>
@@ -151,6 +156,7 @@ ul.why li::marker{color:var(--amber)}
   <div class="abtog" role="group" aria-label="안 선택">
     <button data-ab="A" aria-pressed="true">A안 · 서울 중심</button>
     <button data-ab="B" aria-pressed="false">B안 · 전국 분산</button>
+    <button data-ab="C" aria-pressed="false">C안 · 서울고정+순환</button>
   </div>
   <div id="planBody"></div>
   <div class="sec">
@@ -210,6 +216,7 @@ ul.why li::marker{color:var(--amber)}
   <div class="abtog" role="group" aria-label="안 선택" style="margin-top:20px">
     <button data-ab2="A" aria-pressed="true">A안 견적</button>
     <button data-ab2="B" aria-pressed="false">B안 견적</button>
+    <button data-ab2="C" aria-pressed="false">C안 견적</button>
   </div>
   <div id="quoteBody"></div>
   <div class="sec grid2">
@@ -338,8 +345,26 @@ var PLAN = {
  ]
 };
 var BUDGET=200000000;
+var R={분당:500000,일산:600000,부천:450000,수원:600000,대구:750000,부산:780000,해운대:900000,대전:680000,광주:700000,울산:650000,창원:600000};
+// C안: 서울 12개월 고정 + 지방·경기 3개월 순환
+var CPLAN={
+ seoul:[
+  {b:'강남',med:'SA 1 · A 2 · B 1',rate:'150·120·90만',qty:4,amt:57600000,memo:'본원·골드 패키지'},
+  {b:'목동',med:'A 1 · B 1',rate:'120·90만',qty:2,amt:25200000,memo:'서남권'},
+  {b:'보라매',med:'B 1',rate:'90만',qty:1,amt:10800000,memo:'동작·관악'},
+  {b:'잠실',med:'B 1',rate:'90만',qty:1,amt:10800000,memo:'송파·강동'},
+  {b:'노원',med:'B 1',rate:'90만',qty:1,amt:10800000,memo:'동북권'}
+ ],
+ quarters:[
+  {q:'1Q',mo:'1~3월',rows:[['분당','경기',4],['일산','경기',3],['부천','경기',3],['수원','경기',3]]},
+  {q:'2Q',mo:'4~6월',rows:[['대구','대구',3],['부산','부산',3],['대전','대전',3],['광주','광주',1]]},
+  {q:'3Q',mo:'7~9월',rows:[['광주','광주',2],['울산','울산',3],['창원','경남',3],['해운대','부산',1],['부천','경기',2]]},
+  {q:'4Q',mo:'10~12월',rows:[['대구','대구',2],['부산','부산',2],['대전','대전',2],['수원','경기',2],['일산','경기',2]]}
+ ]
+};
 
 function renderPlan(ab){
+  if(ab==='C'){ return renderPlanC(); }
   var rows=PLAN[ab], tot=0, tq=0, h='<div class="tblw"><table><thead><tr><th>분원</th><th>지역</th><th>매체·등급</th><th class="c">대수</th><th class="c">개월</th><th class="r">월 단가</th><th class="r">연 집행금액</th><th>비고</th></tr></thead><tbody>';
   rows.forEach(function(r){
     tot+=r.amt; tq+=r.qty;
@@ -359,12 +384,53 @@ function renderPlan(ab){
   document.getElementById('calBody').innerHTML=c;
 }
 function renderQuote(ab){
+  if(ab==='C'){ return renderQuoteC(); }
   var rows=PLAN[ab], tot=0, tq=0, h='<div class="tblw"><table><thead><tr><th>분원</th><th>매체·등급</th><th class="r">월 단가</th><th class="c">대수</th><th class="c">개월</th><th class="r">연 집행금액</th></tr></thead><tbody>';
   rows.forEach(function(r){ tot+=r.amt; tq+=r.qty;
     h+='<tr><td class="b">자생 '+r.b+'</td><td>'+r.med+'</td><td class="r">'+r.rate+'</td><td class="c b">'+r.qty+'</td><td class="c">'+M+'</td><td class="r b">'+won(r.amt)+'원</td></tr>';
   });
   h+='<tr class="sum"><td>합계</td><td></td><td></td><td class="c">'+tq+'대</td><td class="c">'+M+'</td><td class="r"><span class="amber">'+won(tot)+'원</span></td></tr>';
   h+='<tr style="background:#f6f8fc"><td colspan="5" style="text-align:right;font-weight:700;color:#475569">연 예산 대비 잔여</td><td class="r b" style="color:#c67d16">'+won(BUDGET-tot)+'원</td></tr>';
+  h+='</tbody></table></div>';
+  document.getElementById('quoteBody').innerHTML=h;
+}
+
+function renderPlanC(){
+  var s=CPLAN.seoul, stot=0, sq=0;
+  var h='<div style="margin-bottom:12px;font-size:14px;color:#34425a"><b>서울 5분원 12개월 고정</b> + 지방·경기 <b>3개월 순환(플라이팅)</b> — 같은 예산으로 연간 집행 지점을 2배 이상 늘립니다.</div>';
+  h+='<div class="tblw"><table><thead><tr><th>서울 고정 (12개월)</th><th>등급</th><th class="c">대수</th><th class="r">월 단가</th><th class="r">연 집행금액</th></tr></thead><tbody>';
+  s.forEach(function(r){ stot+=r.amt; sq+=r.qty;
+    h+='<tr><td class="b">자생 '+r.b+'</td><td>'+r.med+'</td><td class="c b">'+r.qty+'</td><td class="r">'+r.rate+'</td><td class="r b">'+won(r.amt)+'원</td></tr>'; });
+  h+='<tr class="sum"><td>서울 소계</td><td>12개월</td><td class="c">'+sq+'대</td><td></td><td class="r"><span class="amber">'+won(stot)+'원</span></td></tr></tbody></table></div>';
+  var qtot=0, qplace=0;
+  h+='<div class="tblw" style="margin-top:14px"><table><thead><tr><th>분기 순환 (각 3개월)</th><th>지역</th><th class="c">대수</th><th class="r">월 단가</th><th class="r">3개월 금액</th></tr></thead><tbody>';
+  CPLAN.quarters.forEach(function(q){
+    var qsum=0,qq=0;
+    h+='<tr class="area"><td colspan="5">'+q.q+' ('+q.mo+')</td></tr>';
+    q.rows.forEach(function(row){ var b=row[0],area=row[1],qty=row[2],rate=R[b],amt=rate*qty*3; qsum+=amt; qq+=qty; qtot+=amt; qplace+=qty;
+      h+='<tr><td class="b">자생 '+b+'</td><td>'+area+'</td><td class="c b">'+qty+'</td><td class="r">'+(rate/10000)+'만</td><td class="r b">'+won(amt)+'원</td></tr>'; });
+    h+='<tr><td colspan="2" style="text-align:right;color:#64748b;font-weight:700">'+q.q+' 소계</td><td class="c" style="font-weight:700">'+qq+'대</td><td></td><td class="r" style="font-weight:800">'+won(qsum)+'원</td></tr>';
+  });
+  h+='<tr class="sum"><td>순환 소계</td><td>3개월×4분기</td><td class="c">'+qplace+'건</td><td></td><td class="r"><span class="amber">'+won(qtot)+'원</span></td></tr></tbody></table></div>';
+  var gt=stot+qtot;
+  h+='<div class="tblw" style="margin-top:14px"><table><tbody><tr class="sum"><td>총 합계</td><td class="c">서울 '+sq+'대 + 순환 '+qplace+'건 = 연 '+(sq+qplace)+'개 집행 지점</td><td class="r"><span class="amber">'+won(gt)+'원</span></td><td>예산 '+won(BUDGET)+' · 잔여 '+won(BUDGET-gt)+'</td></tr></tbody></table></div>';
+  document.getElementById('planBody').innerHTML=h;
+  var c='<div class="cal"><div class="nm"></div>';
+  for(var m=1;m<=12;m++) c+='<div class="hd">'+m+'월</div>';
+  CPLAN.seoul.forEach(function(r){ c+='<div class="nm">자생 '+r.b+' <span style="color:#94a3b8;font-weight:700;margin-left:4px">'+r.qty+'대</span></div>'; for(var m=1;m<=12;m++) c+='<div class="on"></div>'; });
+  CPLAN.quarters.forEach(function(q,qi){ var start=qi*3+1; q.rows.forEach(function(row){ var b=row[0],qty=row[2]; c+='<div class="nm">자생 '+b+' <span style="color:#94a3b8;font-weight:700;margin-left:4px">'+qty+'대</span></div>'; for(var m=1;m<=12;m++){ var on=(m>=start&&m<start+3); c+='<div class="'+(on?'on loc':'')+'"></div>'; } }); });
+  c+='</div>';
+  document.getElementById('calBody').innerHTML=c;
+}
+function renderQuoteC(){
+  var stot=0,sq=0; CPLAN.seoul.forEach(function(r){stot+=r.amt;sq+=r.qty;});
+  var qtot=0,qp=0; CPLAN.quarters.forEach(function(q){q.rows.forEach(function(row){qtot+=R[row[0]]*row[2]*3;qp+=row[2];});});
+  var gt=stot+qtot;
+  var h='<div class="tblw"><table><thead><tr><th>구분</th><th class="c">집행</th><th class="c">지점/대수</th><th class="r">금액</th></tr></thead><tbody>';
+  h+='<tr><td class="b">서울 고정</td><td class="c">12개월</td><td class="c b">'+sq+'대</td><td class="r b">'+won(stot)+'원</td></tr>';
+  h+='<tr><td class="b">지방·경기 순환</td><td class="c">3개월 × 4분기</td><td class="c b">'+qp+'건</td><td class="r b">'+won(qtot)+'원</td></tr>';
+  h+='<tr class="sum"><td>총 합계</td><td class="c">연 '+(sq+qp)+'개 지점</td><td class="c"></td><td class="r"><span class="amber">'+won(gt)+'원</span></td></tr>';
+  h+='<tr style="background:#f6f8fc"><td colspan="3" style="text-align:right;font-weight:700;color:#475569">연 예산 대비 잔여</td><td class="r b" style="color:#c67d16">'+won(BUDGET-gt)+'원</td></tr>';
   h+='</tbody></table></div>';
   document.getElementById('quoteBody').innerHTML=h;
 }
