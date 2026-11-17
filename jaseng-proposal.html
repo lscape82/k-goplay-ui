@@ -3,6 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>자생한방병원 버스광고 제안 — 연간 운영안 · 선정 근거 · 견적</title>
 <meta name="description" content="자생한방병원 전국 20개 분원 버스광고 제안. A안 서울 1순위 중심 / B안 전국구 분산. 연 2억 예산 기준 연간 운영안·선정 근거·견적.">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
@@ -437,11 +440,15 @@ function renderQuoteC(){
 
 // 탭
 var tabs=document.querySelectorAll('.tabs button');
-tabs.forEach(function(t){ t.addEventListener('click',function(){
-  tabs.forEach(function(x){x.setAttribute('aria-current', x===t?'true':'false');});
-  document.querySelectorAll('.view').forEach(function(v){ v.hidden = (v.id!=='v-'+t.dataset.v); });
+function activateTab(v){
+  if(v==='map'){ window.location.href='jaseng-branches.html'; return; }
+  tabs.forEach(function(x){x.setAttribute('aria-current', x.dataset.v===v?'true':'false');});
+  document.querySelectorAll('.view').forEach(function(view){ view.hidden = (view.id!=='v-'+v); });
   window.scrollTo(0,0);
-});});
+}
+tabs.forEach(function(t){ t.addEventListener('click',function(){ activateTab(t.dataset.v); });});
+(function(){ var hs=(location.hash||'').replace('#',''); var ok=['intro','plan','why','quote','rates'];
+  activateTab(ok.indexOf(hs)>=0?hs:'intro'); })();
 // AB 토글
 document.querySelectorAll('[data-ab]').forEach(function(b){ b.addEventListener('click',function(){
   document.querySelectorAll('[data-ab]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});

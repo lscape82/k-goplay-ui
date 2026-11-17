@@ -3,6 +3,9 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
   <title>자생한방병원 전국 분원 — 버스광고 노선 선별 지도</title>
   <meta name="description" content="자생한방병원 전국 20개 분원 위치 지도. 수도권 중심·전국구 두 시나리오로 버스광고 노선을 선별하기 위한 1단계 분원 지도.">
   <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
@@ -11,11 +14,17 @@
     html, body { margin: 0; height: 100%; font-family: "Pretendard Variable", Pretendard, -apple-system, system-ui, "맑은 고딕", "Malgun Gothic", sans-serif; color: #172033; -webkit-font-smoothing: antialiased; }
     :root { --navy:#16215b; --navy2:#2b3b7a; --amber:#c67d16; --ink:#1f2937; --mut:#64748b; }
     #wrap { display: flex; flex-direction: column; height: 100%; }
-    header { padding: 11px 18px; border-bottom: 1px solid #e5e9f0; background: #fff; display:flex; align-items:center; gap:12px; }
+    header { padding: 9px 18px; border-bottom: 1px solid #e5e9f0; background: #fff; display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
+    header .home { display:flex; align-items:center; gap:11px; background:none; border:0; padding:0; cursor:pointer; text-align:left; flex:none; }
     header .logo { font-size:19px; font-weight:800; letter-spacing:-.5px; color:var(--navy); flex:none; }
     header .logo .h { color:#3a4a86; font-weight:800; }
-    header .ttl h1 { margin:0; font-size:16px; font-weight:800; color:#172033; letter-spacing:-.3px; }
-    header .ttl .sub { margin-top:2px; font-size:12px; color:var(--mut); }
+    header .ttl { display:flex; flex-direction:column; }
+    header .ttl .h1 { font-size:15px; font-weight:800; color:#172033; letter-spacing:-.3px; }
+    header .ttl .sub { font-size:11.5px; color:var(--mut); margin-top:1px; }
+    header .tabs { margin-left:auto; display:flex; gap:2px; overflow-x:auto; }
+    header .tabs a { padding:8px 12px; border-radius:999px; font-size:13.5px; font-weight:700; color:var(--mut); white-space:nowrap; text-decoration:none; cursor:pointer; }
+    header .tabs a:hover { color:var(--navy); background:#eef1fb; }
+    header .tabs a.cur { color:#fff; background:var(--navy); }
     #stage { position: relative; flex: 1; min-height: 0; display: flex; }
     #map { flex: 1; width: 100%; min-height: 0; }
     #map img { filter: saturate(0.74); }
@@ -142,11 +151,21 @@
 <body>
   <div id="wrap">
     <header>
-      <div class="logo">자생<span class="h">한방병원</span></div>
-      <div class="ttl">
-        <h1>전국 분원 — 버스광고 노선 선별 지도</h1>
-        <div class="sub" id="sub">불러오는 중…</div>
-      </div>
+      <button class="home" id="home" type="button" aria-label="처음 화면으로">
+        <span class="logo">자생<span class="h">한방병원</span></span>
+        <span class="ttl">
+          <span class="h1">전국 분원 버스광고 노선 지도</span>
+          <span class="sub" id="sub">불러오는 중…</span>
+        </span>
+      </button>
+      <nav class="tabs" aria-label="제안 섹션">
+        <a href="jaseng-proposal.html#intro">개요</a>
+        <a href="jaseng-proposal.html#plan">연간 운영안</a>
+        <a href="jaseng-proposal.html#why">선정 근거</a>
+        <a href="jaseng-proposal.html#quote">견적·조건</a>
+        <a href="jaseng-proposal.html#rates">지역별 단가</a>
+        <a class="cur" aria-current="true">노선 지도</a>
+      </nav>
     </header>
     <div id="stage">
       <div id="map"></div>
@@ -154,10 +173,10 @@
         <div class="box" id="scopebox" hidden>
           <b class="t">집행 범위 (견적 시나리오)</b>
           <div class="scope">
-            <button type="button" class="sc" id="scCap" aria-pressed="true">
+            <button type="button" class="sc" id="scCap" aria-pressed="false">
               <span class="sn">① 수도권 중심</span><span class="sct" id="nCap">–</span><span class="sc2">서울·경기·인천 분원</span>
             </button>
-            <button type="button" class="sc" id="scAll" aria-pressed="false">
+            <button type="button" class="sc" id="scAll" aria-pressed="true">
               <span class="sn">② 전국구</span><span class="sct" id="nAll">–</span><span class="sc2">전 분원 분산</span>
             </button>
           </div>
@@ -402,7 +421,7 @@
       window.__openPanel = function(n){ openPanel(n); };
       document.getElementById("pclose").addEventListener("click", function(){ document.getElementById("panel").classList.remove("open"); clearLines(); clearActiveBranch(); });
 
-      var scope = "cap"; // cap | all
+      var scope = "all"; // cap | all — 첫 화면은 전국구 기본
 
       function visible(b){ return scope==="all" || b.region==="capital"; }
 
@@ -453,14 +472,22 @@
             var name = el.getAttribute("data-n");
             var m = markers.filter(function(x){ return x.b.name===name; })[0];
             if(!m) return;
-            map.setCenter(m.mk.getPosition()); map.setZoom(Math.max(map.getZoom(),13));
-            openIW(m.b, m.mk);
+            if(m.b.routes){ openPanel(name); }
+            else { map.setCenter(m.mk.getPosition()); map.setZoom(Math.max(map.getZoom(),13)); openIW(m.b, m.mk); }
           });
         });
       }
 
       document.getElementById("scCap").addEventListener("click", function(){ scope="cap"; apply(); });
       document.getElementById("scAll").addEventListener("click", function(){ scope="all"; apply(); });
+
+      // 제목(좌측 상단) 클릭 → 초기화
+      function resetView(){
+        document.getElementById("panel").classList.remove("open");
+        clearLines(); clearActiveBranch(); iw.close();
+        scope = "all"; apply();
+      }
+      document.getElementById("home").addEventListener("click", resetView);
 
       // 카운트 세팅
       var capTotal = B.filter(function(b){return b.region==="capital";}).length;
