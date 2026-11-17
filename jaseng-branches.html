@@ -67,11 +67,15 @@
     .bi .star { color:var(--amber); font-size:11px; }
 
     /* 지도 핀 */
-    .jpin { display:flex; align-items:center; gap:5px; background:var(--navy); color:#fff; border-radius:999px; padding:3px 9px 3px 7px; box-shadow:0 2px 7px rgba(15,23,42,.4); cursor:pointer; white-space:nowrap; border:1.5px solid #fff; }
+    .jpin { display:flex; align-items:center; gap:5px; background:var(--navy); color:#fff; border-radius:8px; padding:4px 9px; box-shadow:0 2px 8px rgba(15,23,42,.42); cursor:pointer; white-space:nowrap; border:1.5px solid #fff; position:relative; }
     .jpin.loc { background:var(--amber); }
-    .jpin .jd { width:7px; height:7px; border-radius:50%; background:#fff; flex:none; }
-    .jpin b { font-size:12px; font-weight:800; letter-spacing:-.3px; }
+    .jpin .jname { display:inline-flex; align-items:baseline; gap:2px; }
+    .jpin .jname .jq { font-size:11px; font-weight:700; letter-spacing:-.3px; }
+    .jpin .jci { font-size:12.5px; font-weight:900; letter-spacing:-.4px; }
+    .jpin .jci i { font-style:normal; font-weight:600; font-size:10px; letter-spacing:-.3px; margin-left:.5px; }
     .jpin .fs { font-size:10px; margin-left:1px; }
+    .jpin::after { content:""; position:absolute; left:50%; bottom:-6px; transform:translateX(-50%); border-left:6px solid transparent; border-right:6px solid transparent; border-top:6px solid var(--navy); }
+    .jpin.loc::after { border-top-color:var(--amber); }
 
     /* 팝업 */
     .iw { position: relative; font-family: inherit; padding: 13px 15px; min-width: 210px; max-width: 290px; background: #fff; border: 1px solid #e5e9f0; border-radius: 12px; box-shadow: 0 8px 26px rgba(15,23,42,.25); }
@@ -124,8 +128,10 @@
     .panel .pnote b { font-weight:800; }
     .rrow .rgo { margin-left:7px; flex:none; color:#c67d16; font-weight:800; font-size:11px; white-space:nowrap; }
     .rrow.sel .rgo { color:#a8630f; }
-    .jpin.act { background:#fff; border-color:var(--navy); box-shadow:0 0 0 2px #fff, 0 0 0 4px var(--navy), 0 3px 10px rgba(15,23,42,.45); padding:4px 11px 4px 8px; }
-    .jpin.act b { color:var(--navy); font-size:12.5px; }
+    .jpin.act { background:#fff; color:var(--navy); border-color:var(--navy); box-shadow:0 0 0 2px #fff, 0 0 0 4px var(--navy), 0 3px 10px rgba(15,23,42,.45); }
+    .jpin.act .jq, .jpin.act .jci, .jpin.act .jci i { color:var(--navy); }
+    .jpin.act::after { border-top-color:#fff; }
+    .jpin.act .cnt { background:var(--navy); color:#fff; }
 
     #err { display:none; position:absolute; z-index:20; inset:60px 14px auto 14px; background:#fff4f4; border:1px solid #f3c6c6; color:#a3322c; padding:12px 14px; border-radius:10px; font-size:13px; }
 
@@ -251,13 +257,18 @@
         var cls = b.region==="capital" ? "" : "loc";
         var hasr = !!b.routes;
         var cnt = hasr ? '<em class="cnt">'+b.routes.count+'</em>' : '';
-        var content = '<div class="jpin '+cls+(hasr?' hasr':'')+'"><span class="jd"></span><b>'+esc(b.name)+'</b>'+(b.flagship?'<span class="fs">★</span>':'')+cnt+'</div>';
+        var content = '<div class="jpin '+cls+(hasr?' hasr':'')+'">'
+          + '<span class="jname"><b class="jq">'+esc(b.name)+'</b><span class="jci">자생<i>한방병원</i></span></span>'
+          + (b.flagship?'<span class="fs">★</span>':'')+cnt
+          + '</div>';
+        var pw = 24 + (b.name.length*11) + 68 + (hasr?30:0) + (b.flagship?14:0);
+        var ax = pw/2, ay = 34;
         var mk = new naver.maps.Marker({
           position: new naver.maps.LatLng(b.lat, b.lng), map: null,
-          icon: { content: content, anchor: new naver.maps.Point(30, 13) }, zIndex: hasr?140:(b.region==="capital"?120:100)
+          icon: { content: content, anchor: new naver.maps.Point(ax, ay) }, zIndex: hasr?140:(b.region==="capital"?120:100)
         });
-        naver.maps.Event.addListener(mk, "click", function(){ openIW(b, mk); });
-        markers.push({ b:b, mk:mk, base:content, baseZ:(hasr?140:(b.region==="capital"?120:100)) });
+        naver.maps.Event.addListener(mk, "click", function(){ if(b.routes){ openPanel(b.name); } else { openIW(b, mk); } });
+        markers.push({ b:b, mk:mk, base:content, baseZ:(hasr?140:(b.region==="capital"?120:100)), ax:ax, ay:ay });
       });
 
       // 노선 경로선 관리
@@ -269,35 +280,51 @@
         routeLines.forEach(function(x){ if(set[x.num]&&x.coords) x.coords.forEach(function(c){ bnds.extend(new naver.maps.LatLng(c[0],c[1])); any=true; }); });
         return any?bnds:null;
       }
+      // 추천 점수(등급·대수·커버리지)
+      var GW = { SSA:6, SA:5, S:5, A:4, B:3, "매체":3, "심야":2, "후보":1 };
+      function recoScore(l, gg){
+        var s = (GW[l.grade]||2)*100;
+        s += Math.min(l.qty||0, 60)*1.2;
+        s += Math.min((gg&&gg.stopCount)||0, 120)*0.3;
+        return s;
+      }
+      var RECSET = {};   // num -> true (추천 노선)
+      function applyLineStyles(selNum){
+        routeLines.forEach(function(x){
+          var sel = selNum && x.num===selNum;
+          var rec = !!RECSET[x.num], o;
+          if(sel) o = { strokeColor:"#c67d16", strokeOpacity:0.98, strokeWeight:6, zIndex:120 };
+          else if(selNum) o = { strokeColor:"#16215b", strokeOpacity: rec?0.32:0.07, strokeWeight: rec?3:2, zIndex: rec?12:3 };
+          else o = { strokeColor:"#16215b", strokeOpacity: rec?0.92:0.11, strokeWeight: rec?4:2, zIndex: rec?20:3 };
+          x.poly.setOptions(o);
+        });
+      }
       function drawBranchRoutes(b){
         clearLines();
         b.routes.lines.forEach(function(l){
           var g = GR[l.rid] || GR[l.line]; if(!g||!g.coords||!g.coords.length) return;
           var path = g.coords.map(function(c){ return new naver.maps.LatLng(c[0],c[1]); });
-          var poly = new naver.maps.Polyline({ map:map, path:path, strokeColor:"#16215b", strokeOpacity:0.30, strokeWeight:3, strokeLineCap:"round", strokeLineJoin:"round", zIndex:5, clickable:true });
+          var poly = new naver.maps.Polyline({ map:map, path:path, strokeColor:"#16215b", strokeOpacity:0.11, strokeWeight:2, strokeLineCap:"round", strokeLineJoin:"round", zIndex:5, clickable:true });
           naver.maps.Event.addListener(poly, "click", function(){ selectRoute(l.line); });
           routeLines.push({ num:l.line, poly:poly, coords:g.coords });
         });
+        applyLineStyles(null);
       }
-      function highlightRoute(num){
-        routeLines.forEach(function(x){
-          var on = x.num===num;
-          x.poly.setOptions({ strokeColor: on?"#c67d16":"#16215b", strokeOpacity: on?0.95:0.13, strokeWeight: on?5:2, zIndex: on?100:3 });
-        });
-      }
+      function highlightRoute(num){ applyLineStyles(num); }
       function shorten(s){ s=String(s||"").replace(/(기점|종점|차고지|행)$/,""); return s.length>9?s.slice(0,9)+"…":s; }
 
       var actMk=null;
       function setActiveBranch(name){
         var m = markers.filter(function(x){ return x.b.name===name; })[0];
-        if(actMk && actMk!==m){ actMk.mk.setIcon({content:actMk.base, anchor:new naver.maps.Point(30,13)}); actMk.mk.setZIndex(actMk.baseZ); }
+        if(actMk && actMk!==m){ actMk.mk.setIcon({content:actMk.base, anchor:new naver.maps.Point(actMk.ax,actMk.ay)}); actMk.mk.setZIndex(actMk.baseZ); }
         if(!m) return;
         var b=m.b, cls=b.region==="capital"?"":"loc";
-        var hc='<div class="jpin '+cls+' act"><span class="jd" style="background:#16215b"></span><b>자생 '+esc(b.name)+'</b></div>';
-        m.mk.setIcon({content:hc, anchor:new naver.maps.Point(34,13)});
+        var hc='<div class="jpin '+cls+' act hasr"><span class="jname"><b class="jq">'+esc(b.name)+'</b><span class="jci">자생<i>한방병원</i></span></span></div>';
+        var pw2 = 24 + (b.name.length*11) + 68 + (b.flagship?14:0);
+        m.mk.setIcon({content:hc, anchor:new naver.maps.Point(pw2/2, 34)});
         m.mk.setZIndex(320); actMk=m;
       }
-      function clearActiveBranch(){ if(actMk){ actMk.mk.setIcon({content:actMk.base, anchor:new naver.maps.Point(30,13)}); actMk.mk.setZIndex(actMk.baseZ); actMk=null; } }
+      function clearActiveBranch(){ if(actMk){ actMk.mk.setIcon({content:actMk.base, anchor:new naver.maps.Point(actMk.ax,actMk.ay)}); actMk.mk.setZIndex(actMk.baseZ); actMk=null; } }
 
       // 노선 패널
       function selectRoute(num){
@@ -329,28 +356,35 @@
         } else {
           document.getElementById("pMeta").innerHTML = '경유 노선 <b>'+r.count+'개</b> · 광고버스 <b>'+won(r.qty)+'대</b><br>'+gparts;
         }
-        var byg = {};
-        r.lines.forEach(function(l){ (byg[l.grade]=byg[l.grade]||[]).push(l); });
-        var h = '<div class="phint">👆 <b>버스 번호</b>를 누르면 지도에 <b>경로</b>가 표시됩니다</div>';
+        // 추천 점수 산정·정렬
+        var scored = r.lines.map(function(l){ var gg = GR[l.rid]||GR[l.line]||{}; return { l:l, gg:gg, s:recoScore(l, gg) }; });
+        scored.sort(function(a,c){ return c.s - a.s; });
+        var N = Math.max(3, Math.round(scored.length*0.35)); if(N>10) N=10; if(N>scored.length) N=scored.length;
+        RECSET = {};
+        scored.forEach(function(it, i){ it.rec = i < N; if(it.rec) RECSET[it.l.line]=true; });
+        function rowHtml(it){
+          var l=it.l, gg=it.gg, g=l.grade;
+          var route = gg.start ? (esc(shorten(gg.start))+' ↔ '+esc(shorten(gg.end))) : '';
+          var times = gg.firstBus ? (esc(gg.firstBus)+'~'+esc(gg.lastBus)) : '';
+          var term  = gg.term ? ('배차 '+esc(gg.term)+'분') : '';
+          var stc   = gg.stopCount ? (gg.stopCount+'정류소') : '';
+          var meta2 = [route, times, term, stc].filter(Boolean).join('<span class="sep">·</span>');
+          return '<div class="rrow'+(it.rec?' rec':' dim')+'" data-num="'+esc(l.line)+'">'
+            + '<div class="r1">'+(it.rec?'<span class="recb">추천</span>':'')+'<span class="rg '+gclass(g)+'">'+esc(gbadge(g))+'</span>'
+            + '<span class="rl">'+esc(l.line)+'</span>'
+            + (gg.typeLabel?'<span class="rtype">'+esc(gg.typeLabel)+'</span>':'')
+            + '<span class="rq">'+(l.qty?won(l.qty)+'대':'')+'</span><span class="rgo">경로 ▸</span></div>'
+            + (meta2?'<div class="r2">'+meta2+'</div>':'')
+            + '</div>';
+        }
+        var h = '<div class="phint">👆 <b>버스 번호</b>를 누르면 지도에서 <b>진한 선</b>으로 강조됩니다</div>';
         h += '<div class="pnote">⚠️ <b>확정 예약 시점에 광고 가능 버스 수량·노선 확인 필수</b> — 노선은 차량 현황에 따라 변동될 수 있습니다.</div>';
-        Object.keys(byg).sort(function(a,c){return gord(a)-gord(c);}).forEach(function(g){
-          h += '<div class="gr">'+esc(glab(g))+' ('+byg[g].length+')</div>';
-          byg[g].forEach(function(l){
-            var gg = GR[l.rid] || GR[l.line] || {};
-            var route = gg.start ? (esc(shorten(gg.start))+' ↔ '+esc(shorten(gg.end))) : '';
-            var times = gg.firstBus ? (esc(gg.firstBus)+'~'+esc(gg.lastBus)) : '';
-            var term  = gg.term ? ('배차 '+esc(gg.term)+'분') : '';
-            var stc   = gg.stopCount ? (gg.stopCount+'정류소') : '';
-            var meta2 = [route, times, term, stc].filter(Boolean).join('<span class="sep">·</span>');
-            h += '<div class="rrow" data-num="'+esc(l.line)+'">'
-               + '<div class="r1"><span class="rg '+gclass(g)+'">'+esc(gbadge(g))+'</span>'
-               + '<span class="rl">'+esc(l.line)+'</span>'
-               + (gg.typeLabel?'<span class="rtype">'+esc(gg.typeLabel)+'</span>':'')
-               + '<span class="rq">'+(l.qty?won(l.qty)+'대':'')+'</span><span class="rgo">경로 ▸</span></div>'
-               + (meta2?'<div class="r2">'+meta2+'</div>':'')
-               + '</div>';
-          });
-        });
+        h += '<div class="gr rec">★ 추천 노선 ('+N+')</div>';
+        scored.slice(0,N).forEach(function(it){ h += rowHtml(it); });
+        if(scored.length>N){
+          h += '<div class="gr">그 외 경유 노선 ('+(scored.length-N)+')</div>';
+          scored.slice(N).forEach(function(it){ h += rowHtml(it); });
+        }
         document.getElementById("plist").innerHTML = h;
         Array.prototype.forEach.call(document.querySelectorAll("#plist .rrow"), function(el){
           el.addEventListener("click", function(){ selectRoute(el.getAttribute("data-num")); });
