@@ -235,33 +235,40 @@ ul.why li::marker{color:var(--amber)}
     <div class="sdesc">버스 외부광고는 차량 면별로 집행합니다. 면이 클수록 노출·단가가 높습니다. <b>아래 그림·규격은 서울 시내버스 기준</b>이며, 지역·차종에 따라 면 구성·규격이 다릅니다.</div>
     <div class="grid2">
       <div class="card">
-        <svg viewBox="0 0 460 190" style="width:100%;height:auto" role="img" aria-label="서울 시내버스 광고면 안내">
-          <text x="24" y="22" fill="#16215b" font-size="12.5" font-weight="800" font-family="Pretendard,sans-serif">서울 시내버스 (측면도)</text>
-          <!-- 버스 외형: 앞(좌) → 뒤(우) -->
-          <path d="M44 44 L428 44 Q440 44 440 58 L440 120 Q440 128 432 128 L30 128 Q24 128 24 120 L24 74 Q24 60 36 52 L44 44 Z" fill="#fff" stroke="#16215b" stroke-width="2.5"/>
-          <!-- 앞유리(좌측 운전석) -->
-          <path d="M44 48 L62 48 L62 72 L28 72 L28 74 Q28 60 38 54 Z" fill="#eef1fb" stroke="#c7d2ea" stroke-width="1"/>
-          <text x="40" y="66" fill="#8ea2c7" font-size="9.5" font-weight="800" font-family="Pretendard,sans-serif">앞</text>
-          <!-- 창문 -->
-          <rect x="72" y="52" width="44" height="22" rx="3" fill="#dbe4f6"/>
-          <rect x="124" y="52" width="44" height="22" rx="3" fill="#dbe4f6"/>
-          <rect x="176" y="52" width="44" height="22" rx="3" fill="#dbe4f6"/>
-          <rect x="228" y="52" width="44" height="22" rx="3" fill="#dbe4f6"/>
-          <rect x="280" y="52" width="44" height="22" rx="3" fill="#dbe4f6"/>
-          <rect x="332" y="52" width="44" height="22" rx="3" fill="#dbe4f6"/>
-          <rect x="388" y="52" width="40" height="22" rx="3" fill="#dbe4f6"/>
+        <svg viewBox="0 0 470 210" style="width:100%;height:auto" role="img" aria-label="서울 시내버스 광고면 안내(측면·후면)">
+          <!-- ===== 측면도 ===== -->
+          <text x="20" y="20" fill="#16215b" font-size="12.5" font-weight="800" font-family="Pretendard,sans-serif">측면도 (차도면·인도면)</text>
+          <path d="M40 42 L300 42 Q312 42 312 56 L312 120 Q312 128 304 128 L26 128 Q20 128 20 120 L20 70 Q20 56 32 48 L40 42 Z" fill="#fff" stroke="#16215b" stroke-width="2.5"/>
+          <path d="M40 46 L56 46 L56 68 L24 68 L24 70 Q24 57 34 50 Z" fill="#eef1fb" stroke="#c7d2ea" stroke-width="1"/>
+          <text x="36" y="63" fill="#8ea2c7" font-size="9" font-weight="800" font-family="Pretendard,sans-serif">앞</text>
+          <rect x="64" y="50" width="40" height="20" rx="3" fill="#dbe4f6"/>
+          <rect x="110" y="50" width="40" height="20" rx="3" fill="#dbe4f6"/>
+          <rect x="156" y="50" width="40" height="20" rx="3" fill="#dbe4f6"/>
+          <rect x="202" y="50" width="40" height="20" rx="3" fill="#dbe4f6"/>
+          <rect x="248" y="50" width="40" height="20" rx="3" fill="#dbe4f6"/>
           <!-- 차도면(메인) -->
-          <rect x="66" y="84" width="300" height="36" rx="4" fill="#c67d16"/>
-          <text x="216" y="107" text-anchor="middle" fill="#fff" font-size="15" font-weight="800" font-family="Pretendard,sans-serif">차도면 (메인)</text>
-          <!-- 후면: 차량 맨 뒤 끝 -->
-          <rect x="374" y="84" width="56" height="36" rx="4" fill="#16215b"/>
-          <text x="402" y="100" text-anchor="middle" fill="#fff" font-size="11" font-weight="800" font-family="Pretendard,sans-serif">후면</text>
-          <text x="402" y="113" text-anchor="middle" fill="#aeb9e0" font-size="8" font-weight="700" font-family="Pretendard,sans-serif">(뒤)</text>
-          <!-- 바퀴 -->
-          <circle cx="110" cy="128" r="16" fill="#2b3b7a"/><circle cx="110" cy="128" r="6.5" fill="#fff"/>
-          <circle cx="356" cy="128" r="16" fill="#2b3b7a"/><circle cx="356" cy="128" r="6.5" fill="#fff"/>
-          <text x="230" y="160" text-anchor="middle" fill="#64748b" font-size="12" font-weight="700" font-family="Pretendard,sans-serif">앞(좌)→뒤(우) · 반대쪽=인도면 · 후면은 차량 맨 뒤</text>
-          <text x="230" y="178" text-anchor="middle" fill="#94a3b8" font-size="10.5" font-weight="700" font-family="Pretendard,sans-serif">※ 서울 시내버스 기준 — 지역·차종에 따라 상이</text>
+          <rect x="60" y="80" width="236" height="34" rx="4" fill="#c67d16"/>
+          <text x="178" y="102" text-anchor="middle" fill="#fff" font-size="14" font-weight="800" font-family="Pretendard,sans-serif">차도면 (메인)</text>
+          <circle cx="86" cy="128" r="15" fill="#2b3b7a"/><circle cx="86" cy="128" r="6" fill="#fff"/>
+          <circle cx="248" cy="128" r="15" fill="#2b3b7a"/><circle cx="248" cy="128" r="6" fill="#fff"/>
+          <text x="166" y="150" text-anchor="middle" fill="#64748b" font-size="11" font-weight="700" font-family="Pretendard,sans-serif">앞(좌)→뒤(우) · 반대쪽 면 = 인도면</text>
+          <!-- 구분선 -->
+          <line x1="336" y1="30" x2="336" y2="160" stroke="#e5e9f0" stroke-width="1.5"/>
+          <!-- ===== 후면도 ===== -->
+          <text x="356" y="20" fill="#16215b" font-size="12.5" font-weight="800" font-family="Pretendard,sans-serif">후면도 (뒷면)</text>
+          <rect x="360" y="40" width="92" height="96" rx="10" fill="#fff" stroke="#16215b" stroke-width="2.5"/>
+          <!-- 후면 광고(상단 가로 띠) -->
+          <rect x="366" y="48" width="80" height="16" rx="3" fill="#16215b"/>
+          <text x="406" y="60" text-anchor="middle" fill="#fff" font-size="11" font-weight="800" font-family="Pretendard,sans-serif">후면</text>
+          <!-- 뒷유리 -->
+          <rect x="372" y="70" width="68" height="34" rx="3" fill="#dbe4f6"/>
+          <!-- 번호판·미등 -->
+          <rect x="394" y="110" width="24" height="11" rx="2" fill="#eef1fb" stroke="#c7d2ea" stroke-width="1"/>
+          <rect x="368" y="110" width="12" height="8" rx="2" fill="#f2b8b8"/>
+          <rect x="432" y="110" width="12" height="8" rx="2" fill="#f2b8b8"/>
+          <text x="406" y="150" text-anchor="middle" fill="#64748b" font-size="11" font-weight="700" font-family="Pretendard,sans-serif">차량 뒷면 가로 띠</text>
+          <!-- 공통 -->
+          <text x="235" y="184" text-anchor="middle" fill="#94a3b8" font-size="10.5" font-weight="700" font-family="Pretendard,sans-serif">※ 서울 시내버스 기준 — 지역·차종에 따라 상이</text>
         </svg>
       </div>
       <div class="card" style="padding:0;overflow:hidden">
