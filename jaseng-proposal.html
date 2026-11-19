@@ -48,9 +48,10 @@ h2.big{font-size:30px;font-weight:800;line-height:1.2;margin-top:8px}
 .grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
 .grid3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:14px}
 
-.abtog{display:inline-flex;gap:4px;background:var(--soft);border:1px solid var(--line);border-radius:999px;padding:4px;margin-bottom:16px}
-.abtog button{border:0;background:none;padding:8px 18px;border-radius:999px;font:inherit;font-weight:800;font-size:14px;color:var(--mut);cursor:pointer}
-.abtog button[aria-pressed="true"]{background:var(--navy);color:#fff}
+.abtog{display:inline-flex;gap:6px;background:#e7ecf4;border:1px solid #cfd8e6;border-radius:999px;padding:5px;margin-bottom:16px}
+.abtog button{border:1px solid #d4dcea;background:#fff;padding:9px 18px;border-radius:999px;font:inherit;font-weight:800;font-size:14px;color:#2b3b5e;cursor:pointer;box-shadow:0 1px 2px rgba(16,33,91,.06)}
+.abtog button:hover{border-color:var(--navy2);color:var(--navy)}
+.abtog button[aria-pressed="true"]{background:var(--navy);color:#fff;border-color:var(--navy);box-shadow:0 2px 8px rgba(22,33,91,.22)}
 
 .tblw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
 table{border-collapse:collapse;width:100%;min-width:620px;font-size:14px}
@@ -62,7 +63,8 @@ td.r,th.r{text-align:right}
 td.c,th.c{text-align:center}
 td.b{font-weight:800;color:#111a2e}
 td.rmemo{color:#64748b;font-size:12px}
-tr.area td{background:var(--soft);font-weight:800;color:var(--navy);font-size:12.5px}
+tbody tr:nth-child(even):not(.area):not(.sum) td{background:#f7f9fc}
+tr.area td{background:#eaeff7;font-weight:800;color:var(--navy);font-size:12.5px}
 tr.sum td{background:#111a2e;color:#fff;font-weight:800;font-size:14.5px}
 tr.sum td .amber{color:#ffcf8a}
 .badge{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;background:#eef1fb;color:var(--navy);margin-right:3px}
@@ -159,7 +161,6 @@ ul.why li::marker{color:var(--amber)}
     <button data-v="intro" aria-current="true">개요</button>
     <button data-v="plan">운영안·견적</button>
     <button data-v="why">선정 근거</button>
-    <button data-v="cases">수행사례</button>
   </nav>
 </header>
 
@@ -337,15 +338,6 @@ ul.why li::marker{color:var(--amber)}
   </div>
 </section>
 
-<!-- 수행사례 -->
-<section class="view" id="v-cases" hidden>
-  <div class="eyebrow">수행사례</div>
-  <h2 class="big">실제 집행한 버스 외부광고</h2>
-  <p class="lead">광고플레이가 집행·관리한 시내버스 외부광고 현장 사례입니다. 게첨(부착) 후 현장 사진 보고서로 집행을 검증합니다.</p>
-  <div class="sec"><div class="casegrid" id="caseBody"></div></div>
-  <div class="sec"><div class="note">· 모든 사례는 실제 집행·게첨 현장 사진입니다.  · 자생한방병원도 집행 후 동일하게 <b>현장 부착 사진 보고서</b>를 제공합니다.  · 브랜드명은 집행 확인용이며 계약·금액은 비공개입니다.</div></div>
-</section>
-
 <div class="foot">자생한방병원 버스광고 제안 · 광고플레이(주) · 본 제안의 노선·대수·금액은 확정 예약 시점에 가능 차량 현황에 따라 변동될 수 있습니다.</div>
 </div>
 
@@ -414,12 +406,20 @@ var REC={
  청주:[['111','동부종점↔증평'],['211','북부차고지↔미동산'],['407','청주공항↔신탄진']]
 };
 
+/* 제작·부착비(1회/대, 원) — 광고료와 별도. null=별도 협의 */
+var FEE={강남:80000,목동:80000,보라매:80000,잠실:80000,노원:80000,분당:null,일산:null,부천:null,수원:null,인천:null,대구:70000,부산:60000,해운대:60000,대전:60000,광주:150000,울산:70000,창원:100000,안산:null,천안:null,청주:null};
+function feeCell(b,qty){
+  var u=FEE[b];
+  if(u==null) return '<td class="r rmemo">별도 협의</td>';
+  return '<td class="r">'+won(u*qty)+'원<span style="color:#94a3b8;font-size:11px;display:block">'+(u/10000)+'만/대</span></td>';
+}
 function costTable(rows){
-  var tot=0,tq=0,h='<div class="tblw"><table><thead><tr><th>분원</th><th>지역</th><th>매체·등급</th><th class="c">대수</th><th class="c">개월</th><th class="r">월 단가</th><th class="r">연 집행금액</th><th>비고</th></tr></thead><tbody>';
-  rows.forEach(function(r){ tot+=r.amt; tq+=r.qty;
-    h+='<tr><td class="b">자생 '+r.b+'</td><td>'+r.area+'</td><td>'+r.med+' <span style="color:#94a3b8;font-size:11.5px">· 인근 '+(NR[r.b]||'')+'노선 中</span></td><td class="c b">'+r.qty+'</td><td class="c">'+M+'</td><td class="r">'+r.rate+'</td><td class="r b">'+won(r.amt)+'원</td><td class="rmemo">'+r.memo+'</td></tr>';
+  var tot=0,tq=0,fsum=0,h='<div class="tblw"><table><thead><tr><th>분원</th><th>지역</th><th>매체·등급</th><th class="c">대수</th><th class="c">개월</th><th class="r">월 단가</th><th class="r">제작·부착비<small style="font-weight:600;opacity:.8">(별도)</small></th><th class="r">연 집행금액</th><th>비고</th></tr></thead><tbody>';
+  rows.forEach(function(r){ tot+=r.amt; tq+=r.qty; if(FEE[r.b]!=null) fsum+=FEE[r.b]*r.qty;
+    h+='<tr><td class="b">자생 '+r.b+'</td><td>'+r.area+'</td><td>'+r.med+' <span style="color:#94a3b8;font-size:11.5px">· 인근 '+(NR[r.b]||'')+'노선 中</span></td><td class="c b">'+r.qty+'</td><td class="c">'+M+'</td><td class="r">'+r.rate+'</td>'+feeCell(r.b,r.qty)+'<td class="r b">'+won(r.amt)+'원</td><td class="rmemo">'+r.memo+'</td></tr>';
   });
-  h+='<tr class="sum"><td>합계</td><td></td><td></td><td class="c">'+tq+'대</td><td class="c">'+M+'</td><td></td><td class="r"><span class="amber">'+won(tot)+'원</span></td><td>잔여 '+won(BUDGET-tot)+'</td></tr></tbody></table></div>';
+  h+='<tr class="sum"><td>합계</td><td></td><td></td><td class="c">'+tq+'대</td><td class="c">'+M+'</td><td></td><td class="r">+'+won(fsum)+'원</td><td class="r"><span class="amber">'+won(tot)+'원</span></td><td>잔여 '+won(BUDGET-tot)+'</td></tr></tbody></table></div>';
+  h+='<div style="margin-top:8px;font-size:12px;color:#64748b">※ 모든 금액은 <b>부가세(VAT) 별도</b>이며, <b>제작·부착비는 광고료와 별도</b>(1회성)입니다. 경기·인천 등 일부 지역 제작비는 매체사 협의. 노선·대수·금액은 확정 예약 시 가능 차량 현황에 따라 변동됩니다.</div>';
   return h;
 }
 function calStrip(items){ // items: {b, area, start, len, qty}
@@ -445,18 +445,21 @@ function renderPlan(ab){
 function renderC(){
   var stot=0,sq=0,h='';
   h+='<div style="margin-bottom:12px;font-size:14px;color:#34425a"><b>서울 5분원 12개월 고정</b> + 지방·경기 <b>분기 순환(플라이팅)</b> — 지점별 우선순위·집행 월을 배정합니다.</div>';
-  h+='<div class="tblw"><table><thead><tr><th>서울 고정</th><th>등급</th><th class="c">대수</th><th class="c">개월</th><th class="r">연 집행금액</th></tr></thead><tbody>';
-  C_SEOUL.forEach(function(r){ stot+=r.amt; sq+=r.qty;
-    h+='<tr><td class="b">자생 '+r.b+'</td><td>'+r.med+'</td><td class="c b">'+r.qty+'</td><td class="c">12</td><td class="r b">'+won(r.amt)+'원</td></tr>'; });
-  h+='<tr class="sum"><td>서울 소계</td><td></td><td class="c">'+sq+'대</td><td class="c">12</td><td class="r"><span class="amber">'+won(stot)+'원</span></td></tr></tbody></table></div>';
+  var sfee=0;
+  h+='<div class="tblw"><table><thead><tr><th>서울 고정</th><th>등급</th><th class="c">대수</th><th class="c">개월</th><th class="r">제작·부착비<small style="font-weight:600;opacity:.8">(별도)</small></th><th class="r">연 집행금액</th></tr></thead><tbody>';
+  C_SEOUL.forEach(function(r){ stot+=r.amt; sq+=r.qty; if(FEE[r.b]!=null) sfee+=FEE[r.b]*r.qty;
+    h+='<tr><td class="b">자생 '+r.b+'</td><td>'+r.med+'</td><td class="c b">'+r.qty+'</td><td class="c">12</td>'+feeCell(r.b,r.qty)+'<td class="r b">'+won(r.amt)+'원</td></tr>'; });
+  h+='<tr class="sum"><td>서울 소계</td><td></td><td class="c">'+sq+'대</td><td class="c">12</td><td class="r">+'+won(sfee)+'원</td><td class="r"><span class="amber">'+won(stot)+'원</span></td></tr></tbody></table></div>';
   var qtot=0;
-  h+='<div class="tblw" style="margin-top:14px"><table><thead><tr><th class="c">우선</th><th>분원</th><th>지역</th><th class="c">집행 월</th><th class="c">개월</th><th class="c">대수</th><th class="r">월 단가</th><th class="r">집행금액</th></tr></thead><tbody>';
-  C_ROT.forEach(function(r){ var amt=r.rate*r.qty*r.len; qtot+=amt;
-    h+='<tr><td class="c b">'+r.pri+'</td><td class="b">자생 '+r.b+'</td><td>'+r.area+'</td><td class="c b" style="color:var(--amber)">'+r.mo+'</td><td class="c">'+r.len+'개월</td><td class="c">'+r.qty+'</td><td class="r">'+(r.rate/10000)+'만</td><td class="r b">'+won(amt)+'원</td></tr>';
+  var rfee=0;
+  h+='<div class="tblw" style="margin-top:14px"><table><thead><tr><th class="c">우선</th><th>분원</th><th>지역</th><th class="c">집행 월</th><th class="c">개월</th><th class="c">대수</th><th class="r">월 단가</th><th class="r">제작·부착비<small style="font-weight:600;opacity:.8">(별도)</small></th><th class="r">집행금액</th></tr></thead><tbody>';
+  C_ROT.forEach(function(r){ var amt=r.rate*r.qty*r.len; qtot+=amt; if(FEE[r.b]!=null) rfee+=FEE[r.b]*r.qty;
+    h+='<tr><td class="c b">'+r.pri+'</td><td class="b">자생 '+r.b+'</td><td>'+r.area+'</td><td class="c b" style="color:var(--amber)">'+r.mo+'</td><td class="c">'+r.len+'개월</td><td class="c">'+r.qty+'</td><td class="r">'+(r.rate/10000)+'만</td>'+feeCell(r.b,r.qty)+'<td class="r b">'+won(amt)+'원</td></tr>';
   });
-  h+='<tr class="sum"><td></td><td>순환 소계</td><td></td><td class="c">'+C_ROT.length+'개 분원</td><td></td><td></td><td></td><td class="r"><span class="amber">'+won(qtot)+'원</span></td></tr></tbody></table></div>';
+  h+='<tr class="sum"><td></td><td>순환 소계</td><td></td><td class="c">'+C_ROT.length+'개 분원</td><td></td><td></td><td></td><td class="r">+'+won(rfee)+'원</td><td class="r"><span class="amber">'+won(qtot)+'원</span></td></tr></tbody></table></div>';
   var gt=stot+qtot;
   h+='<div class="tblw" style="margin-top:14px"><table><tbody><tr class="sum"><td>총 합계</td><td class="c">서울 '+sq+'대 상시 + 순환 '+C_ROT.length+'개 분원 = 연 '+(C_SEOUL.length+C_ROT.length)+'개 분원</td><td class="r"><span class="amber">'+won(gt)+'원</span></td><td>잔여 '+won(BUDGET-gt)+'</td></tr></tbody></table></div>';
+  h+='<div style="margin-top:8px;font-size:12px;color:#64748b">※ 모든 금액은 <b>부가세(VAT) 별도</b>이며, <b>제작·부착비는 광고료와 별도</b>(1회성)입니다. 경기·인천 등 일부 지역 제작비는 매체사 협의. 노선·대수·금액은 확정 예약 시 변동될 수 있습니다.</div>';
   document.getElementById('planBody').innerHTML=h;
   document.getElementById('calDesc').textContent='서울은 1~12월 상시, 지방·경기는 우선순위에 따라 분기별로 순환 집행합니다.';
   var items=C_SEOUL.map(function(r){return {b:r.b,area:'서울',start:1,len:12,qty:r.qty};}).concat(C_ROT.map(function(r){return {b:r.b,area:r.area,start:r.start,len:r.len,qty:r.qty};}));
@@ -481,7 +484,8 @@ function renderRates(){
     +tbl([['부산','일반노선','78만원','6만원','분배 일반8:해운대2',2],['','해운대노선','90만원','6만원',''],['대구','간선·지선·순환·급행','75만원','7만원','상품등급 S/A/B'],['울산','확대형(차도+인도)','65만원','7만원','',3],['','전체 set','75만원','8만원',''],['','후면','15만원','3만원',''],['창원','차도+인도','60만원','10만원','',2],['','후면','15만원','2만원','']])+'</div>';
   var chung='<div class="sec" style="margin-top:14px"><div class="sdesc" style="font-weight:800;color:#111a2e;font-size:15px">충청·호남</div>'
     +tbl([['대전','간선/지선(차도+인도)','68만원','6만원','6개월+ 제작무료',2],['','후면','23만원','4만원',''],['광주','도로+인도+하차문','70만원','15만원','',2],['','+후면(풀세트)','110만원','20만원',''],['천안·청주','시내버스','별도 협의','—','매체사 단가 미제공']])+'</div>';
-  document.getElementById('ratesBody').innerHTML=seoul+sudo+youngnam+chung;
+  var vnote='<div class="note" style="margin-top:14px">※ 모든 단가는 <b>부가세(VAT) 별도</b>, <b>월 단가(1대)</b> 기준입니다. <b>제작·부착비는 광고료와 별도</b>(1회성)이며, \'별도\'는 매체사 협의 항목입니다. 서울버스TV는 제외, 서울 시내버스 외부광고 기준입니다.</div>';
+  document.getElementById('ratesBody').innerHTML=seoul+sudo+youngnam+chung+vnote;
 }
 function renderRec(){
   var order=['강남','목동','보라매','잠실','노원','분당','일산','부천','수원','인천','대구','부산','해운대','울산','대전','광주','창원','안산','천안','청주'];
@@ -525,7 +529,7 @@ document.querySelectorAll('[data-ab]').forEach(function(b){ b.addEventListener('
 });});
 document.getElementById('home').addEventListener('click',function(){ window.location.href='jaseng-branches.html'; });
 
-renderRates(); renderRec(); renderCases(); renderPlan('A');
+renderRates(); renderRec(); renderPlan('A');
 (function(){ var hs=(location.hash||'').replace('#',''); var ok=['intro','plan','why','cases'];
   activateTab(ok.indexOf(hs)>=0?hs:'intro'); })();
 </script>
