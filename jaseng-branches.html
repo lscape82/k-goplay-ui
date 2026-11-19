@@ -231,12 +231,12 @@
       var B = data.branches || [];
 
       var R = null;
-      try { R = await (await fetch("data/jaseng-routes.json?v=1")).json(); } catch (e) {}
+      try { R = await (await fetch("data/jaseng-routes.json?v=2")).json(); } catch (e) {}
       var RB = (R && R.branches) || {};
       B.forEach(function(b){ if (RB[b.name]) b.routes = RB[b.name]; });
 
       var GEO = null;
-      try { GEO = await (await fetch("data/jaseng-routes-geo.json?v=1")).json(); } catch (e) {}
+      try { GEO = await (await fetch("data/jaseng-routes-geo.json?v=2")).json(); } catch (e) {}
       var GR = (GEO && GEO.routes) || {};
 
       if (!window.naver || !naver.maps) { document.getElementById("err").style.display="block"; return; }
