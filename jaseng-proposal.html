@@ -55,9 +55,13 @@ h2.big{font-size:30px;font-weight:800;line-height:1.2;margin-top:8px}
 
 .tblw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
 table{border-collapse:collapse;width:100%;min-width:620px;font-size:14px}
-table.rt{table-layout:fixed;min-width:680px}
+table.rt{table-layout:auto;min-width:0;width:100%}
+.rt td.r,.rt th.r,.rt td:first-child{white-space:nowrap}
+.abgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;align-items:start}
+.abgrid .rtt{font-weight:800;color:#111a2e;font-size:15px;margin-bottom:6px}
+@media(max-width:860px){.abgrid{grid-template-columns:1fr}}
 th{text-align:left;font-size:12px;font-weight:800;color:#fff;background:var(--navy);padding:11px 12px;white-space:nowrap}
-td{padding:10px 12px;border-bottom:1px solid #eef1f7;vertical-align:middle}
+td{padding:10px 12px;border-bottom:1px solid #eef1f7;vertical-align:middle;word-break:keep-all}
 tr:last-child td{border-bottom:0}
 td.r,th.r{text-align:right}
 td.c,th.c{text-align:center}
@@ -158,17 +162,17 @@ ul.why li::marker{color:var(--amber)}
   </button>
   <nav class="tabs" aria-label="제안 섹션">
     <a href="jaseng-branches.html">노선 지도</a>
-    <button data-v="intro" aria-current="true">개요</button>
-    <button data-v="plan">운영안·견적</button>
+    <button data-v="plan" aria-current="true">운영안·견적</button>
     <button data-v="why">선정 근거</button>
+    <button data-v="rates">지역별 단가표</button>
   </nav>
 </header>
 
 <div class="wrap">
 
-<!-- 개요 (+ 지역별 단가) -->
-<section class="view" id="v-intro">
-  <div class="eyebrow">개요</div>
+<!-- 운영안·견적 (개요+견적 통합) -->
+<section class="view" id="v-plan">
+  <div class="eyebrow">운영안 · 견적</div>
   <h2 class="big">전국 20개 분원, 생활 동선을 달리는 버스로<br>자생한방병원을 각인시킵니다</h2>
   <p class="lead">척추·관절 비수술 치료에 최적인 매체는 <b>분원 생활권을 반복 노출하는 버스</b>입니다. 각 분원 인근을 경유하는 실제 노선을 좌표 기반으로 선별하고, 연 2억 예산에 맞춰 <b>A·B·C 세 가지</b>로 제안합니다.</p>
   <div class="stats">
@@ -270,22 +274,14 @@ ul.why li::marker{color:var(--amber)}
         </tbody></table></div>
       </div>
     </div>
-    <div class="sdesc" style="margin-top:8px">· 기본 집행 단위 = <b>바디(차도면+인도면)</b>. 후면·하차문 등은 면 추가 시 별도 단가(개요 단가표 참조).  · <b>규격은 서울 기준</b>이며 <b>지역·차종(일반·저상·중형)에 따라 상이</b>합니다(예: 천안 차도면 대형 370×100/중형 300×100, 인도면 270×50).  · 정확한 규격·제작 사양은 <b>배차(차량) 확정 후 제작가이드로 제공</b>됩니다.</div>
+    <div class="sdesc" style="margin-top:8px">· 기본 집행 단위 = <b>바디(차도면+인도면)</b>. 후면·하차문 등은 면 추가 시 별도 단가(지역별 단가표 탭 참조).  · <b>규격은 서울 기준</b>이며 <b>지역·차종(일반·저상·중형)에 따라 상이</b>합니다(예: 천안 차도면 대형 370×100/중형 300×100, 인도면 270×50).  · 정확한 규격·제작 사양은 <b>배차(차량) 확정 후 제작가이드로 제공</b>됩니다.</div>
   </div>
 
-  <div class="sec">
-    <h3>지역별 버스 외부광고 비용</h3>
-    <div class="sdesc">매체사 공개 단가 기준(월 1대, VAT 별도, 제작·부착비 별도 표기). 자생 분원이 있는 지역 중심. ※ 서울버스TV(별도 매체) 제외.</div>
-    <div id="ratesBody"></div>
-    <div class="note" style="margin-top:14px">· 모든 단가 VAT 별도, 월 1대 기준이며 제작·부착비는 별도 표기(면 구성별).  · 대수·기간·면 구성에 따라 협의 할인 가능.  · <b>수원·안산·인천·천안·청주</b>는 매체사 단가 미제공분으로 별도 협의가 필요합니다(제공 시 즉시 반영).  · 운수회사·매체사명은 광고주 화면 비노출.</div>
+  <div class="sec" style="border-top:2px solid var(--line);padding-top:30px;margin-top:42px">
+    <div class="eyebrow">예산 배분 · 견적</div>
+    <h2 class="big" style="font-size:26px;margin-top:6px">연 2억 예산 배분과 집행 일정</h2>
+    <p class="lead">최적 노선에 예산을 배분한 운영안이자 견적입니다. 시내버스 외부 부착광고(바디) 기준, VAT·제작비 별도. 대수·기간은 조정 가능합니다. <b>지역별 상세 단가는 상단 「지역별 단가표」 탭</b> 참고.</p>
   </div>
-</section>
-
-<!-- 운영안·견적 -->
-<section class="view" id="v-plan" hidden>
-  <div class="eyebrow">운영안 · 견적</div>
-  <h2 class="big">연 2억 예산 배분과 집행 일정</h2>
-  <p class="lead">최적 노선에 예산을 배분한 운영안이자 견적입니다. 시내버스 외부 부착광고(바디) 기준, VAT·제작비 별도. 대수·기간은 조정 가능합니다.</p>
   <div class="abtog" role="group" aria-label="안 선택">
     <button data-ab="A" aria-pressed="true">A안 · 서울 중심</button>
     <button data-ab="B" aria-pressed="false">B안 · 전국 분산</button>
@@ -301,7 +297,7 @@ ul.why li::marker{color:var(--amber)}
     <div class="card"><h3 style="font-size:16px">단가 기준</h3>
       <ul class="why">
         <li>서울 외부 부착광고 등급별 : SSA 170 · SA 150 · A 120 · B 90만/월</li>
-        <li>지방·경기 매체사 단가 : 분원별 상이(개요 탭 단가표 참조)</li>
+        <li>지방·경기 매체사 단가 : 분원별 상이(지역별 단가표 탭 참조)</li>
         <li>VAT·제작비 별도 · 서울버스TV(별도 매체) 제외</li>
       </ul></div>
     <div class="card"><h3 style="font-size:16px">집행 조건</h3>
@@ -347,6 +343,15 @@ ul.why li::marker{color:var(--amber)}
     <div class="sdesc">위 기준으로 산출한 분원별 우선 노선입니다. <span style="color:#e11d2a;font-weight:800">★</span>=최우선. 전체 노선·경로는 노선 지도에서 확인하실 수 있습니다.</div>
     <div class="recwrap" id="recBody"></div>
   </div>
+</section>
+
+<!-- 지역별 단가표 -->
+<section class="view" id="v-rates" hidden>
+  <div class="eyebrow">지역별 단가표</div>
+  <h2 class="big">지역별 버스 외부광고 비용</h2>
+  <p class="lead">자생 분원이 있는 지역의 매체사 공개 단가입니다(월 1대 · VAT 별도 · 제작·부착비 별도). 운영안(A/B/C)의 금액이 산출된 근거 자료입니다.</p>
+  <div class="note" style="margin-top:16px">💡 <b>같은 지역이 여러 줄로 보이는 이유</b> — 한 지역에도 <b>버스 종류(시내·지선·광역·공공)·면 구성(차도/인도/후면)·집행 기간</b>에 따라 단가가 다릅니다. 모순이 아니라 <b>선택지</b>이며, <b>분원별 실제 제안 단가는 운영안(A/B/C)에 반영</b>돼 있습니다. 최종 단가·노선은 확정 예약 시 확정됩니다.</div>
+  <div class="sec" style="margin-top:18px"><div id="ratesBody"></div></div>
 </section>
 
 <div class="foot">자생한방병원 버스광고 제안 · 광고플레이(주) · 본 제안의 노선·대수·금액은 확정 예약 시점에 가능 차량 현황에 따라 변동될 수 있습니다.</div>
@@ -478,7 +483,7 @@ function renderC(){
 }
 function renderRates(){
   function tbl(rows){
-    var h='<div class="tblw"><table class="rt"><colgroup><col style="width:108px"><col><col style="width:118px"><col style="width:100px"><col style="width:150px"></colgroup><thead><tr><th>지역</th><th>매체(면)</th><th class="r">월 단가(1대)</th><th class="r">제작·부착비</th><th>비고</th></tr></thead><tbody>';
+    var h='<div class="tblw"><table class="rt"><thead><tr><th>지역</th><th>매체(면)</th><th class="r">월 단가(1대)</th><th class="r">제작·부착비</th><th>비고</th></tr></thead><tbody>';
     rows.forEach(function(r){
       var first=r[0]!=='';
       h+='<tr>';
@@ -487,11 +492,13 @@ function renderRates(){
     });
     h+='</tbody></table></div>'; return h;
   }
-  var seoul='<div class="sec" style="margin-top:14px"><div class="sdesc" style="font-weight:800;color:#111a2e;font-size:15px">서울 A권역 (등급별)</div>'
+  var seoulA='<div><div class="rtt">서울 A권역 (등급별)</div>'
     +tbl([['SSA','강남대로·강남역·테헤란로 축','170만원','8만원','최상위'],['SA','강남구 外·송파·건대·청량리 등','150만원','8만원','상위'],['A','서울 전역','120만원','8만원',''],['B','서울 전역','90만원','8만원','']])+'</div>';
-  var seoulB='<div class="sec" style="margin-top:14px"><div class="sdesc" style="font-weight:800;color:#111a2e;font-size:15px">서울 B권역 (등급 없음 · 노선 선택형)</div>'
-    +tbl([['B권역','바디(차도+인도+후면) · 1~5개월','80만원','8만원+부착3만','15개 자치구·77노선·1,066대',3],['','6~11개월','75만원','6개월 1회 무료','약 6% 할인'],['','12개월 이상','70만원','12개월 2회 무료','약 13% 할인']])
-    +'<div class="note" style="margin-top:8px">· B권역은 <b>패키지 없이 원하는 노선만</b> 선택, <b>등급 차등 없이 대당 80만원</b>(VAT 별도)입니다. · <b>타깃 벨트</b>: 틴에이지(노원·양천·강서)·대학생(성북·관악·광진·동작·동대문)·사회초년생(강서·관악·동작·영등포)·직장인(구로·금천·영등포)·실버(강북·도봉·노원·중랑·은평). · 자생 <b>노원·목동(양천)·보라매(동작·관악)</b> 분원 생활권과 일치.</div></div>';
+  var seoulBtbl='<div><div class="rtt">서울 B권역 (등급 없음 · 노선 선택형)</div>'
+    +tbl([['B권역','바디 · 1~5개월','80만원','8만원','부착 3만 별도',3],['','바디 · 6~11개월','75만원','8만원','약 6% 할인'],['','바디 · 12개월 이상','70만원','8만원','약 13% 할인']])+'</div>';
+  var seoulNote='<div class="note" style="margin-top:10px">· 서울 B권역은 <b>패키지 없이 원하는 노선만</b> 선택, <b>등급 차등 없이 대당 80만원</b>(VAT 별도)입니다. · <b>타깃 벨트</b>: 틴에이지(노원·양천·강서)·대학생(성북·관악·광진·동작·동대문)·사회초년생(강서·관악·동작·영등포)·직장인(구로·금천·영등포)·실버(강북·도봉·노원·중랑·은평). · 자생 <b>노원·목동(양천)·보라매(동작·관악)</b> 분원 생활권과 일치.</div>';
+  var seoul='<div class="sec" style="margin-top:14px"><div class="abgrid">'+seoulA+seoulBtbl+'</div>'+seoulNote+'</div>';
+  var seoulB='';
   var sudo='<div class="sec" style="margin-top:14px"><div class="sdesc" style="font-weight:800;color:#111a2e;font-size:15px">수도권 (경기·인천)</div>'
     +tbl([['일산·고양','광역버스','80만원','별도','',3],['','시내버스','60만원','별도',''],['','마을버스','50만원','별도',''],['분당·성남','시내버스','35~60만원','별도','노선별 상이'],['부천','시내버스','40~50만원','별도',''],
       ['수원·화성·군포','바디(차도+인도)','52만원','8만원','남부 경기권',2],['','후면','12만원','2만원',''],
@@ -557,8 +564,8 @@ document.querySelectorAll('[data-ab]').forEach(function(b){ b.addEventListener('
 document.getElementById('home').addEventListener('click',function(){ window.location.href='jaseng-branches.html'; });
 
 renderRates(); renderRec(); renderPlan('A');
-(function(){ var hs=(location.hash||'').replace('#',''); var ok=['intro','plan','why','cases'];
-  activateTab(ok.indexOf(hs)>=0?hs:'intro'); })();
+(function(){ var hs=(location.hash||'').replace('#',''); var ok=['plan','why','rates'];
+  activateTab(ok.indexOf(hs)>=0?hs:'plan'); })();
 </script>
 </body>
 </html>
