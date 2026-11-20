@@ -7,7 +7,7 @@
 <meta http-equiv="Pragma" content="no-cache">
 <meta http-equiv="Expires" content="0">
 <title>자생한방병원 버스광고 제안 — 운영안 · 견적 · 선정 근거</title>
-<meta name="description" content="자생한방병원 전국 20개 분원 버스광고 제안. A안 서울 1순위 / B안 전국 분산 / C안 서울 고정+순환. 연 2억 예산.">
+<meta name="description" content="자생한방병원 전국 20개 분원 버스광고 제안. A안 서울 집중(프리미엄) / B안 전국 분산(골드) / C안 서울 고정+지방 순환. 연 2억 예산.">
 <link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
 <style>
 *{box-sizing:border-box}
@@ -111,6 +111,8 @@ tr.sum td .amber{color:var(--amber)}
 .crit h4{font-size:15.5px;margin-bottom:3px}
 .crit p{margin:0;font-size:13.5px;color:#44546e}
 .note{background:#fff4e6;border:1px solid #f1cf9b;border-radius:10px;padding:12px 14px;font-size:13px;color:#8a5214;font-weight:600;line-height:1.6}
+.pkgbar{background:#eef4fb;border:1px solid #cfe0f3;border-left:4px solid var(--navy);border-radius:8px;padding:10px 13px;font-size:12.5px;color:#334b6b;line-height:1.65;margin-bottom:12px}
+.pkgbar b{color:var(--navy)}
 .note b{font-weight:800}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .chip{font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px;background:var(--soft);border:1px solid var(--line);color:#44546e}
@@ -127,6 +129,7 @@ tr.sum td .amber{color:var(--amber)}
 .reccard .rhub b{color:#111a2e}
 .recrow{display:flex;align-items:baseline;gap:8px;padding:5px 0;border-top:1px solid #f1f4f9;font-size:13px}
 .recrow .rnum{font-weight:800;color:var(--navy);min-width:48px}
+.recrow .grd{font-size:10.5px;font-weight:800;color:#2563eb;background:#eaf1fb;border:1px solid #d4e4f7;border-radius:5px;padding:1px 6px;margin-right:4px;flex:none}
 .recrow .rnum .st{color:#e11d2a;margin-left:2px;font-size:11px}
 .recrow .rseg{color:#64748b;font-size:12px}
 a.recrow.reclink{text-decoration:none;color:inherit;cursor:pointer}
@@ -224,27 +227,27 @@ ul.why li::marker{color:var(--amber)}
     <div class="stat"><div class="k">전국 분원</div><div class="v">20<small>개</small></div><div class="p">수도권 11 · 지방 9</div></div>
     <div class="stat"><div class="k">선별 경유 노선</div><div class="v">400<small>+</small></div><div class="p">20개 분원 합산 · 좌표 기반</div></div>
     <div class="stat"><div class="k">연간 예산</div><div class="v">2<small>억원</small></div><div class="p">VAT 별도 · 제작비 포함</div></div>
-    <div class="stat"><div class="k">제안 안</div><div class="v">3<small>안</small></div><div class="p">서울중심 / 전국분산 / 순환</div></div>
+    <div class="stat"><div class="k">제안 안</div><div class="v">3<small>안</small></div><div class="p">서울중심 / 전국분산 / 서울고정+지방순환</div></div>
   </div>
   <div class="sec">
     <h3>A·B·C 세 가지 안</h3>
     <div class="sdesc">예산은 같고 전략이 다릅니다. 집객 범위와 노출 밀도 중 무엇을 우선하느냐로 선택합니다.</div>
     <div class="grid3">
-      <div class="cmp" data-plan="A" onclick="pickPlan('A')"><span class="tag">A안</span><h4>서울 1순위 중심</h4>
-        <div class="chips" style="margin:2px 0 6px"><span class="chip">(고정) 서울 5분원 + 경기·인천</span><span class="chip">19대 · 1.96억</span></div>
-        <div class="blk"><span class="lb">특징</span>서울 5분원 집중(강남 본원=등급믹스) + 경기·인천 선별 추가. 12개월 연속 19대.</div>
-        <div class="blk pro"><span class="lb">장점</span>수도권 인구밀집·핵심 상권을 연중 반복 노출 → 브랜드 인지 극대화. 본원(강남) 프리미엄 상징성.</div>
-        <div class="blk con"><span class="lb">단점</span>지방 분원 노출 없음(지방 집객 효과 ✕). 서울 단가가 높아 총 대수(19대)가 적음.</div>
-        <div class="fit">추천 — 수도권 집객·서울 브랜딩이 최우선일 때</div></div>
-      <div class="cmp" data-plan="B" onclick="pickPlan('B')"><span class="tag">B안</span><h4>전국구 분산</h4>
-        <div class="chips" style="margin:2px 0 6px"><span class="chip">(고정) 서울 + 경기 + 지방 광역시</span><span class="chip">24대 · 1.92억</span></div>
-        <div class="blk"><span class="lb">특징</span>서울 3대(강남 본원 2 + 목동 1) + 경기 거점 + 지방 광역시(대구·부산·대전·광주·울산·창원). 12개월 연속 24대.</div>
-        <div class="blk pro"><span class="lb">장점</span>서울 본원부터 전국 광역시까지 고르게 노출 → 지방 집객 지원·분원 간 형평. 전국 커버리지 최대.</div>
-        <div class="blk con"><span class="lb">단점</span>분원당 대수가 적어(1~3대) 개별 임팩트는 약함. 서울 밀집도는 A안보다 낮음.</div>
+      <div class="cmp" data-plan="A" onclick="pickPlan('A')"><span class="tag">A안</span><h4>서울 집중 · 프리미엄</h4>
+        <div class="chips" style="margin:2px 0 6px"><span class="chip">프리미엄 패키지(강남 SSA 중심)</span><span class="chip">15대 · 1.97억</span></div>
+        <div class="blk"><span class="lb">특징</span>서울 5분원 집중 — 강남대로·테헤란로(SSA) 프리미엄 패키지 + 분당·인천 보강. 12개월 연속 15대.</div>
+        <div class="blk pro"><span class="lb">장점</span>강남 핵심축(SSA)을 연중 반복 노출 → 본원 프리미엄 상징성·수도권 브랜드 인지 극대화.</div>
+        <div class="blk con"><span class="lb">단점</span>지방 분원 노출은 최소(분당·인천만). 서울 단가가 높아 총 대수(15대)가 적음.</div>
+        <div class="fit">추천 — 수도권 집객·강남 브랜딩이 최우선일 때</div></div>
+      <div class="cmp" data-plan="B" onclick="pickPlan('B')"><span class="tag">B안</span><h4>전국구 분산 · 골드</h4>
+        <div class="chips" style="margin:2px 0 6px"><span class="chip">골드 패키지(서울 균형 + 전국 거점)</span><span class="chip">17대 · 1.96억</span></div>
+        <div class="blk"><span class="lb">특징</span>서울 8대(골드 패키지 · 강남 SSA 1대 포함) + 전국 거점(수원·대구·부산·대전·광주·울산). 12개월 연속 17대.</div>
+        <div class="blk pro"><span class="lb">장점</span>서울 강남권부터 전국 광역시까지 고르게 노출 → 지방 집객 지원·분원 간 형평. 전국 커버리지 최대.</div>
+        <div class="blk con"><span class="lb">단점</span>분원당 대수가 적어(1~2대) 개별 임팩트는 약함. 서울 밀집도는 A안보다 낮음.</div>
         <div class="fit">추천 — 전국 분원 균형·지방 집객이 목표일 때</div></div>
-      <div class="cmp rec" data-plan="C" onclick="pickPlan('C')"><span class="tagrow"><span class="tag">C안</span><span class="rectag">★ 추천</span></span><h4>서울 고정 + 순환</h4>
-        <div class="chips" style="margin:2px 0 6px"><span class="chip">(고정) 서울 + (순환) 경기·지방</span><span class="chip">연 16개 분원 · 1.95억</span></div>
-        <div class="blk"><span class="lb">특징</span>서울 5분원 12개월 상시(고정) + 지방·경기 분기 순환(플라이팅). 연 16개 분원 집행.</div>
+      <div class="cmp rec" data-plan="C" onclick="pickPlan('C')"><span class="tagrow"><span class="tag">C안</span><span class="rectag">★ 추천</span></span><h4>서울 고정 + 지방 순환</h4>
+        <div class="chips" style="margin:2px 0 6px"><span class="chip">(고정) 서울 골드 + (순환) 경기·지방</span><span class="chip">연 16개 분원 · 1.98억</span></div>
+        <div class="blk"><span class="lb">특징</span>서울 5분원 12개월 상시(골드 고정) + 지방·경기 분기 순환(플라이팅). 연 16개 분원 집행.</div>
         <div class="blk pro"><span class="lb">장점</span>서울 상시 유지 + 같은 예산으로 집행 분원 2배 확대. 지방도 분기별로 순차 커버 → 예산 효율 최고.</div>
         <div class="blk con"><span class="lb">단점</span>지방 분원은 연중 3~6개월만 노출(상시 아님). 분기 전환 등 운영 관리가 다소 복잡.</div>
         <div class="fit">추천 — 예산 효율 극대화, 서울 유지 + 전국 순차 노출</div></div>
@@ -313,7 +316,7 @@ ul.why li::marker{color:var(--amber)}
   <div class="abtog" role="group" aria-label="안 선택">
     <button data-ab="A" aria-pressed="true">A안 · 서울 중심</button>
     <button data-ab="B" aria-pressed="false">B안 · 전국 분산</button>
-    <button data-ab="C" aria-pressed="false">C안 · 서울고정+순환</button>
+    <button data-ab="C" aria-pressed="false">C안 · 서울고정+지방순환</button>
   </div>
   <div id="planBody"></div>
   <div class="sec">
@@ -465,39 +468,37 @@ function execCell(amt,b,qty,rs){ // 집행금액 = 광고료 + 제작비(1회)
   if(FEE[b]==null) return '<td class="r b"'+rsa+'>'+manWon(amt)+'<span style="color:#94a3b8;font-size:11px;display:block">+제작 별도</span></td>';
   return '<td class="r b"'+rsa+'>'+manWon(amt+FEE[b]*qty)+'</td>';
 }
+/* 등급=노선 지역축(SSA 강남대로·테헤란로 / SA 강남구·송파 등 / A·B 강남 외). A안=프리미엄 패키지, B안=골드 패키지(서울 전체 비율 준수) */
 var PLAN={
- A:[{b:'강남',area:'서울',med:'SA 1 · A 2 · B 1',rate:'150·120·90만',qty:4,amt:57600000,memo:'골드 패키지(등급믹스)'},
-  {b:'목동',area:'서울',med:'A 1 · B 1',rate:'120·90만',qty:2,amt:25200000,memo:'—'},
-  {b:'보라매',area:'서울',med:'A 1 · B 1',rate:'120·90만',qty:2,amt:25200000,memo:'—'},
-  {b:'잠실',area:'서울',med:'A 1 · B 1',rate:'120·90만',qty:2,amt:25200000,memo:'—'},
-  {b:'노원',area:'서울',med:'B 1',rate:'90만',qty:1,amt:10800000,memo:'—'},
-  {b:'분당',area:'경기',med:'시내버스',rate:'50만',qty:3,amt:18000000,memo:'제안 단가'},
-  {b:'일산',area:'경기',med:'시내버스',rate:'60만',qty:2,amt:14400000,memo:'판매가·시내'},
-  {b:'부천',area:'경기',med:'시내버스',rate:'45만',qty:1,amt:5400000,memo:'제안 단가'},
-  {b:'인천',area:'인천',med:'시내버스 외부(일반)',rate:'60만',qty:2,amt:14400000,memo:'최소 5대·제작 1회 무료'}],
- B:[{b:'강남',area:'서울',med:'A 1 · B 1',rate:'120·90만',qty:2,amt:25200000,memo:'골드 패키지'},
-  {b:'목동',area:'서울',med:'B 1',rate:'90만',qty:1,amt:10800000,memo:'—'},
-  {b:'분당',area:'경기',med:'시내버스',rate:'50만',qty:3,amt:18000000,memo:'제안 단가'},
-  {b:'일산',area:'경기',med:'시내버스',rate:'60만',qty:2,amt:14400000,memo:'판매가·시내'},
-  {b:'부천',area:'경기',med:'시내버스',rate:'45만',qty:2,amt:10800000,memo:'제안 단가'},
-  {b:'수원',area:'경기',med:'시내버스 바디',rate:'52만',qty:2,amt:12480000,memo:'—'},
-  {b:'대구',area:'대구',med:'간선/지선(S·A)',rate:'75만',qty:2,amt:18000000,memo:'상품등급 S/A'},
-  {b:'부산',area:'부산',med:'일반노선',rate:'78만',qty:2,amt:18720000,memo:'일반노선'},
-  {b:'대전',area:'대전',med:'간선/지선',rate:'68만',qty:2,amt:16320000,memo:'6개월+ 제작무료'},
-  {b:'광주',area:'광주',med:'도로+인도+하차문',rate:'70만',qty:2,amt:16800000,memo:'풀세트 110만 선택가'},
-  {b:'울산',area:'울산',med:'확대형',rate:'65만',qty:2,amt:15600000,memo:'확대형(차도+인도)'},
-  {b:'창원',area:'경남',med:'차도+인도',rate:'60만',qty:2,amt:14400000,memo:'차도+인도'}]
+ A:[{b:'강남',area:'서울',med:'SSA 2',rate:'170만',qty:2,amt:40800000,memo:'프리미엄 · 강남대로·테헤란로(SSA)'},
+  {b:'잠실',area:'서울',med:'SA 2',rate:'150만',qty:2,amt:36000000,memo:'강남권(송파·SA)'},
+  {b:'목동',area:'서울',med:'A 3',rate:'120만',qty:3,amt:43200000,memo:'강남 외(A)·볼륨 효율'},
+  {b:'보라매',area:'서울',med:'A 2',rate:'120만',qty:2,amt:28800000,memo:'강남 외(A)'},
+  {b:'노원',area:'서울',med:'B 2',rate:'90만',qty:2,amt:21600000,memo:'강남 외(B)·최저단가 볼륨'},
+  {b:'분당',area:'경기',med:'시내버스',rate:'50만',qty:3,amt:18000000,memo:'수도권 확장(등급 외)'},
+  {b:'인천',area:'인천',med:'시내버스',rate:'60만',qty:1,amt:7200000,memo:'수도권 확장(등급 외)'}],
+ B:[{b:'강남',area:'서울',med:'SSA 1',rate:'170만',qty:1,amt:20400000,memo:'골드 · 강남대로(SSA, 핵심 1대)'},
+  {b:'잠실',area:'서울',med:'SA 2',rate:'150만',qty:2,amt:36000000,memo:'강남권(송파·SA)'},
+  {b:'목동',area:'서울',med:'A 2',rate:'120만',qty:2,amt:28800000,memo:'강남 외(A)'},
+  {b:'보라매',area:'서울',med:'A 1',rate:'120만',qty:1,amt:14400000,memo:'강남 외(A)'},
+  {b:'노원',area:'서울',med:'B 2',rate:'90만',qty:2,amt:21600000,memo:'강남 외(B)·볼륨'},
+  {b:'수원',area:'경기',med:'시내버스',rate:'52만',qty:2,amt:12480000,memo:'남부 경기'},
+  {b:'대구',area:'대구',med:'시내버스',rate:'75만',qty:2,amt:18000000,memo:'영남 거점'},
+  {b:'부산',area:'부산',med:'시내버스',rate:'78만',qty:2,amt:18720000,memo:'영남 거점'},
+  {b:'대전',area:'대전',med:'시내버스',rate:'68만',qty:1,amt:8160000,memo:'충청 거점'},
+  {b:'광주',area:'광주',med:'시내버스',rate:'70만',qty:1,amt:8400000,memo:'호남 거점'},
+  {b:'울산',area:'울산',med:'시내버스',rate:'65만',qty:1,amt:7800000,memo:'영남 거점'}]
 };
-var C_SEOUL=[{b:'강남',med:'SA 1 · A 2 · B 1',qty:4,amt:57600000},{b:'목동',med:'A 1 · B 1',qty:2,amt:25200000},{b:'보라매',med:'B 1',qty:1,amt:10800000},{b:'잠실',med:'B 1',qty:1,amt:10800000},{b:'노원',med:'B 1',qty:1,amt:10800000}];
+var C_SEOUL=[{b:'강남',med:'SSA 1',qty:1,amt:20400000},{b:'잠실',med:'SA 2',qty:2,amt:36000000},{b:'목동',med:'A 2',qty:2,amt:28800000},{b:'보라매',med:'A 1',qty:1,amt:14400000},{b:'노원',med:'B 2',qty:2,amt:21600000}];
 var C_ROT=[
  {pri:1,b:'분당',area:'경기',start:1,len:6,mo:'1~6월',qty:3,rate:500000},
  {pri:2,b:'일산',area:'경기',start:1,len:6,mo:'1~6월',qty:3,rate:600000},
  {pri:3,b:'부천',area:'경기',start:7,len:6,mo:'7~12월',qty:3,rate:450000},
  {pri:4,b:'수원',area:'경기',start:7,len:6,mo:'7~12월',qty:3,rate:520000},
  {pri:5,b:'대구',area:'대구',start:1,len:3,mo:'1~3월',qty:3,rate:750000},
- {pri:6,b:'부산',area:'부산',start:4,len:3,mo:'4~6월',qty:3,rate:780000},
- {pri:7,b:'대전',area:'대전',start:4,len:3,mo:'4~6월',qty:3,rate:680000},
- {pri:8,b:'광주',area:'광주',start:7,len:3,mo:'7~9월',qty:3,rate:700000},
+ {pri:6,b:'부산',area:'부산',start:4,len:3,mo:'4~6월',qty:2,rate:780000},
+ {pri:7,b:'대전',area:'대전',start:4,len:3,mo:'4~6월',qty:2,rate:680000},
+ {pri:8,b:'광주',area:'광주',start:7,len:3,mo:'7~9월',qty:2,rate:700000},
  {pri:9,b:'울산',area:'울산',start:7,len:3,mo:'7~9월',qty:3,rate:650000},
  {pri:10,b:'창원',area:'경남',start:10,len:3,mo:'10~12월',qty:3,rate:600000},
  {pri:11,b:'해운대',area:'부산',start:10,len:3,mo:'10~12월',qty:2,rate:900000}
@@ -525,6 +526,11 @@ var REC={
  천안:[['6','고속터미널↔종합터미널'],['10','천안시청 순환'],['21','백석농공단지↔복지관']],
  청주:[['111','동부종점↔증평'],['211','북부차고지↔미동산'],['407','청주공항↔신탄진']]
 };
+/* 견적 등급매칭 추천 노선(분원 배정 등급의 상위 노선) — 견적 추천노선 칼럼용 */
+var REC_GRADE={강남:[['360'],['140'],['146']],잠실:[['461'],['303'],['302']],목동:[['5712'],['2015'],['6211']],보라매:[['152'],['150'],['163']],노원:[['1132'],['1137'],['1142']]};
+function planRoutes(b,med){ return (isGraded(med)&&REC_GRADE[b])?REC_GRADE[b].slice(0,3):recRoutes(b); }
+/* 분원별 추천노선 탭 showcase용 등급 라벨(노선 지역축 기준) */
+var REC_G={강남:{'360':'SSA','146':'SSA','140':'SSA'},목동:{'643':'SSA','640':'SSA','6716':'SA'},보라매:{'360':'SSA','461':'SA','640':'SSA'},잠실:{'360':'SSA','301':'SSA','402':'SSA'},노원:{'146':'SSA','111':'A','105':'A'}};
 
 /* 제작·부착비(1회/대, 원) — 광고료와 별도. null=별도 협의 */
 var FEE={강남:80000,목동:80000,보라매:80000,잠실:80000,노원:80000,분당:80000,일산:80000,부천:80000,수원:80000,인천:85000,대구:70000,부산:60000,해운대:60000,대전:60000,광주:150000,울산:70000,창원:100000,안산:null,천안:null,청주:null};
@@ -536,7 +542,7 @@ function feeCell(b,qty,rs){
 function costTable(rows){
   var tot=0,tq=0,fsum=0,h='<div class="tblw"><table class="qt"><thead><tr><th>분원</th><th>지역</th><th>주요 거점</th><th class="c">대수</th><th class="r">등급별 단가 × 수량</th><th class="c">개월</th><th class="r">광고료</th><th class="r">제작비<small style="font-weight:600;opacity:.8">(1회)</small></th><th class="r">집행금액</th><th class="r">추천 노선</th><th>비고</th></tr></thead><tbody>';
   rows.forEach(function(r){ tot+=r.amt; tq+=r.qty; fsum+=feeAmt(r.b,r.qty);
-    var rts=recRoutes(r.b), n=Math.max(1,rts.length);
+    var rts=planRoutes(r.b,r.med), n=Math.max(1,rts.length);
     h+='<tr class="grp"><td class="b" rowspan="'+n+'">자생 '+r.b+'</td><td rowspan="'+n+'">'+r.area+'</td><td rowspan="'+n+'">'+hubCell(r.b)+'</td><td class="c b" rowspan="'+n+'">'+r.qty+'</td><td class="r" rowspan="'+n+'">'+lineItems(r.med,r.rate,r.qty)+'</td><td class="c" rowspan="'+n+'">'+M+'</td><td class="r" rowspan="'+n+'">'+manWon(r.amt)+'</td>'+feeCell(r.b,r.qty,n)+execCell(r.amt,r.b,r.qty,n)+routeCell(r.b,rts[0])+'<td class="rmemo" rowspan="'+n+'">'+(r.memo||'—')+'</td></tr>';
     for(var i=1;i<n;i++){ h+='<tr>'+routeCell(r.b,rts[i])+'</tr>'; }
   });
@@ -571,7 +577,11 @@ function renderPlan(ab){
   if(ab==='C'){ return renderC(); }
   var rows=PLAN[ab];
   var buses=0,routes=0; rows.forEach(function(r){buses+=r.qty;routes+=(NR[r.b]||0);});
-  document.getElementById('planBody').innerHTML=kpiStrip(buses,buses*12,rows.length,routes)+costTable(rows);
+  var pkg=ab==='A'
+   ? '<div class="pkgbar"><b>프리미엄 패키지 · 강남 집중</b> — 강남대로·테헤란로(<b>SSA</b>)를 핵심으로 서울 전체를 하나로 묶은 등급믹스입니다. 서울버스TV 규정 비율(<b>SSA 10~20% · SA · A · B</b>)을 준수합니다. <b>비용 효율</b>: 허용 구간 내에서 <b>A·B 등급으로 볼륨</b>을 확보해 노출을 극대화하고, SSA·SA로 강남 핵심 노출을 보장합니다. <b>장기·대량(연 2억) 집행 시 등급 비율은 협의로 상향 여지</b>가 있습니다.'
+   : '<div class="pkgbar"><b>골드 패키지 · 강남+전국 균형</b> — 강남권(<b>SSA·SA</b>)과 전국 거점을 균형 배분한 등급믹스입니다. 규정 비율(<b>SA 10~30% · A 30~60% · B 10~30%</b>)을 준수합니다. <b>비용 효율</b>: A·B 볼륨에 SSA 핵심 1대를 더해 효율과 상징성을 동시에 확보합니다. <b>장기·대량 집행 시 비율 협의 여지</b>가 있습니다.';
+  pkg+='<div style="font-size:11.5px;color:#7a8aa3;margin:-6px 2px 12px">※ 견적의 추천 노선은 해당 등급에 맞춘 노선입니다. 더 상위(SSA 등) 노선 후보는 <b>상단 「분원별 추천 노선」 탭</b>에 등급과 함께 정리돼 있습니다.</div>';
+  document.getElementById('planBody').innerHTML=kpiStrip(buses,buses*12,rows.length,routes)+pkg+costTable(rows);
   document.getElementById('calDesc').textContent='12개월 연속 집행 기준입니다. 성수기 집중 플라이트로 재배분도 가능합니다.';
   document.getElementById('calBody').innerHTML=calStrip(rows.map(function(r){return {b:r.b,area:r.area,start:1,len:12,qty:r.qty};}));
 }
@@ -579,11 +589,12 @@ function renderC(){
   var stot=0,sq=0,h='';
   var cbuses=0,cbm=0,croutes=0; C_SEOUL.forEach(function(r){cbuses+=r.qty;cbm+=r.qty*12;croutes+=(NR[r.b]||0);}); C_ROT.forEach(function(r){cbuses+=r.qty;cbm+=r.qty*r.len;croutes+=(NR[r.b]||0);});
   h+=kpiStrip(cbuses,cbm,C_SEOUL.length+C_ROT.length,croutes);
-  h+='<div style="margin-bottom:12px;font-size:14px;color:#34425a"><b>서울 5분원 12개월 고정</b> + 지방·경기 <b>분기 순환(플라이팅)</b> — 지점별 우선순위·집행 월을 배정합니다.</div>';
+  h+='<div class="pkgbar"><b>서울 고정(골드 패키지) + 지방 순환</b> — 서울 5분원은 강남권(<b>SSA·SA</b>)+강남 외(A·B) 골드 비율로 <b>12개월 상시</b>, 지방·경기는 우선순위에 따라 <b>분기 순환(플라이팅)</b>합니다. <b>비용 효율</b>: 서울은 상시 각인, 지방은 집중 기간에 몰아 노출. <b>장기·대량 집행 시 비율 협의 여지</b>.</div>';
+  h+='<div style="font-size:11.5px;color:#7a8aa3;margin:-6px 2px 12px">※ 견적의 추천 노선은 해당 등급에 맞춘 노선입니다. 더 상위(SSA 등) 노선 후보는 <b>상단 「분원별 추천 노선」 탭</b>에 등급과 함께 정리돼 있습니다.</div>';
   var sfee=0;
   h+='<div class="tblw"><table class="qt"><thead><tr><th class="c">우선순위</th><th>서울 고정</th><th>주요 거점</th><th class="c">대수</th><th class="r">등급별 단가 × 수량</th><th class="c">개월</th><th class="r">광고료</th><th class="r">제작비<small style="font-weight:600;opacity:.8">(1회)</small></th><th class="r">집행금액</th><th class="r">추천 노선</th><th>비고</th></tr></thead><tbody>';
   C_SEOUL.forEach(function(r,i){ stot+=r.amt; sq+=r.qty; sfee+=feeAmt(r.b,r.qty);
-    var rts=recRoutes(r.b), n=Math.max(1,rts.length);
+    var rts=planRoutes(r.b,r.med), n=Math.max(1,rts.length);
     h+='<tr class="grp"><td class="c b" rowspan="'+n+'">'+(i+1)+'</td><td class="b" rowspan="'+n+'">자생 '+r.b+'</td><td rowspan="'+n+'">'+hubCell(r.b)+'</td><td class="c b" rowspan="'+n+'">'+r.qty+'</td><td class="r" rowspan="'+n+'">'+lineItems(r.med,seoulRateStr(r.med),r.qty)+'</td><td class="c" rowspan="'+n+'">12</td><td class="r" rowspan="'+n+'">'+manWon(r.amt)+'</td>'+feeCell(r.b,r.qty,n)+execCell(r.amt,r.b,r.qty,n)+routeCell(r.b,rts[0])+'<td class="rmemo" rowspan="'+n+'">—</td></tr>';
     for(var k=1;k<n;k++){ h+='<tr>'+routeCell(r.b,rts[k])+'</tr>'; } });
   h+='<tr class="sum"><td></td><td>서울 소계</td><td></td><td class="c">'+sq+'대</td><td></td><td class="c">12</td><td class="r">'+manWon(stot)+'</td><td class="r">+'+manWon(sfee)+'</td><td class="r"><span class="amber">'+manWon(stot+sfee)+'</span></td><td></td><td></td></tr></tbody></table></div>';
@@ -650,7 +661,7 @@ function renderRec(){
   order.forEach(function(b){ var rs=REC[b]; if(!rs) return;
     h+='<div class="reccard"><div class="rh"><b>자생 '+b+'</b><span class="ar">인근 '+(NR[b]||'')+'노선 中 상위</span></div>';
     h+='<div class="rhub">📍 주요 거점 <b>'+(HUB[b]||'')+'</b>'+(HUB_LINK[b]?' <span class="hublink">🔗 '+HUB_LINK[b]+' 동시 경유</span>':'')+'</div>';
-    rs.forEach(function(r,i){ h+='<a class="recrow reclink" href="jaseng-branches.html?b='+encodeURIComponent(b)+'&r='+encodeURIComponent(r[0])+'" title="지도에서 '+r[0]+'번 노선 보기"><span class="rnum">'+r[0]+(i===0?'<span class="st">★</span>':'')+'</span><span class="rseg">'+r[1]+'</span>'+((ROUTE_LINK[b]&&ROUTE_LINK[b][r[0]])?'<span class="hublink" style="margin:0 6px;flex:none">🔗 '+ROUTE_LINK[b][r[0]]+' 동시 경유</span>':'')+'<span class="rgo">지도 ▸</span></a>'; });
+    rs.forEach(function(r,i){ var g=(REC_G[b]&&REC_G[b][r[0]]); h+='<a class="recrow reclink" href="jaseng-branches.html?b='+encodeURIComponent(b)+'&r='+encodeURIComponent(r[0])+'" title="지도에서 '+r[0]+'번 노선 보기"><span class="rnum">'+r[0]+(i===0?'<span class="st">★</span>':'')+'</span>'+(g?'<span class="grd">'+g+'</span>':'')+'<span class="rseg">'+r[1]+'</span>'+((ROUTE_LINK[b]&&ROUTE_LINK[b][r[0]])?'<span class="hublink" style="margin:0 6px;flex:none">🔗 '+ROUTE_LINK[b][r[0]]+' 동시 경유</span>':'')+'<span class="rgo">지도 ▸</span></a>'; });
     h+='</div>';
   });
   document.getElementById('recBody').innerHTML=h;
