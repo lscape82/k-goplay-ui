@@ -77,7 +77,7 @@ h2.big{font-size:30px;font-weight:800;line-height:1.2;margin-top:8px}
 
 .tblw{overflow-x:auto;border:1px solid var(--line);border-radius:12px;background:#fff}
 table{border-collapse:collapse;width:100%;min-width:620px;font-size:14px}
-table.rt{table-layout:auto;min-width:0;width:100%}
+table.rt{table-layout:fixed;min-width:0;width:100%}
 .rt td.r,.rt th.r,.rt td:first-child{white-space:nowrap}
 .abgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;align-items:start}
 .abgrid .rtt{font-weight:800;color:#111a2e;font-size:15px;margin-bottom:6px}
@@ -627,7 +627,7 @@ function renderC(){
 }
 function renderRates(){
   function tbl(rows){
-    var h='<div class="tblw"><table class="rt"><thead><tr><th>지역</th><th>매체(면)</th><th class="r">월 단가(1대)</th><th class="r">제작·부착비</th><th>비고</th></tr></thead><tbody>';
+    var h='<div class="tblw"><table class="rt"><colgroup><col style="width:13%"><col style="width:36%"><col style="width:16%"><col style="width:14%"><col style="width:21%"></colgroup><thead><tr><th>지역</th><th>매체(면)</th><th class="r">월 단가(1대)</th><th class="r">제작·부착비</th><th>비고</th></tr></thead><tbody>';
     rows.forEach(function(r){
       var first=r[0]!=='';
       h+='<tr>';
