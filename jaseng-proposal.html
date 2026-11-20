@@ -45,7 +45,7 @@ h2.big{font-size:30px;font-weight:800;line-height:1.2;margin-top:8px}
 .stat .v small{font-size:14px;font-weight:700;margin-left:2px}
 .stat .p{font-size:12px;color:var(--mut);margin-top:2px}
 .kpi{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:2px 0 4px}
-.kpi .ki{background:#eef2fa;border:1px solid #dde4f1;color:#1e3a5f;border-radius:12px;padding:13px 15px}
+.kpi .ki{background:#fff;border:1px solid #d7dfee;color:#1e3a5f;border-radius:12px;padding:13px 15px;box-shadow:0 1px 3px rgba(22,33,91,.05)}
 .kpi .kk{font-size:11.5px;color:#64748b;font-weight:700}
 .kpi .kv{font-size:23px;font-weight:800;letter-spacing:-.5px;margin-top:3px;color:#1e3a5f}
 .kpi .kv small{font-size:12px;font-weight:700;margin-left:2px;color:#64748b}
@@ -82,7 +82,7 @@ table.rt{table-layout:auto;min-width:0;width:100%}
 .abgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;align-items:start}
 .abgrid .rtt{font-weight:800;color:#111a2e;font-size:15px;margin-bottom:6px}
 @media(max-width:860px){.abgrid{grid-template-columns:1fr}}
-th{text-align:left;font-size:12px;font-weight:800;color:#fff;background:var(--navy);padding:11px 12px;white-space:nowrap}
+th{text-align:left;font-size:12px;font-weight:800;color:#fff;background:#334661;padding:11px 12px;white-space:nowrap}
 td{padding:10px 12px;border-bottom:1px solid #eef1f7;vertical-align:middle;word-break:keep-all}
 tr:last-child td{border-bottom:0}
 td.r,th.r{text-align:right}
@@ -91,7 +91,7 @@ td.b{font-weight:800;color:#111a2e}
 td.rmemo{color:#64748b;font-size:12px}
 tbody tr:nth-child(even):not(.area):not(.sum) td{background:#fbfcfd}
 tr.area td{background:#eaeff7;font-weight:800;color:var(--navy);font-size:12.5px}
-tr.sum td{background:#2b3b5e;color:#fff;font-weight:800;font-size:14.5px}
+tr.sum td{background:#334661;color:#fff;font-weight:800;font-size:14.5px}
 tr.sum td .amber{color:#ffcf8a}
 .badge{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;background:#eef1fb;color:var(--navy);margin-right:3px}
 .badge.g{background:#fdf0dd;color:#9a5a08}
@@ -152,7 +152,7 @@ ul.why li::marker{color:var(--amber)}
 
 /* 안별 장단점 비교 */
 .cmp{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:9px}
-.cmp.rec{border-color:var(--navy);box-shadow:0 0 0 1px var(--navy) inset}
+.cmp.sel{border-color:var(--navy);box-shadow:0 0 0 1px var(--navy) inset}
 .cmp .tag{align-self:flex-start;font-size:11px;font-weight:800;padding:3px 10px;border-radius:999px;background:#eef1fb;color:var(--navy)}
 .cmp.rec .tag{background:var(--navy);color:#fff}
 .cmp h4{font-size:17px}
@@ -212,19 +212,19 @@ ul.why li::marker{color:var(--amber)}
     <h3>A·B·C 세 가지 안</h3>
     <div class="sdesc">예산은 같고 전략이 다릅니다. 집객 범위와 노출 밀도 중 무엇을 우선하느냐로 선택합니다.</div>
     <div class="grid3">
-      <div class="cmp"><span class="tag">A안</span><h4>서울 1순위 중심</h4>
+      <div class="cmp" data-plan="A"><span class="tag">A안</span><h4>서울 1순위 중심</h4>
         <div class="chips" style="margin:2px 0 6px"><span class="chip">서울 5분원+경기·인천</span><span class="chip">19대 · 1.96억</span></div>
         <div class="blk"><span class="lb">특징</span>서울 5분원 집중(강남 본원=등급믹스) + 경기·인천 선별 추가. 12개월 연속 19대.</div>
         <div class="blk pro"><span class="lb">장점</span>수도권 인구밀집·핵심 상권을 연중 반복 노출 → 브랜드 인지 극대화. 본원(강남) 프리미엄 상징성.</div>
         <div class="blk con"><span class="lb">단점</span>지방 분원 노출 없음(지방 집객 효과 ✕). 서울 단가가 높아 총 대수(19대)가 적음.</div>
         <div class="fit">추천 — 수도권 집객·서울 브랜딩이 최우선일 때</div></div>
-      <div class="cmp"><span class="tag">B안</span><h4>전국구 분산</h4>
+      <div class="cmp" data-plan="B"><span class="tag">B안</span><h4>전국구 분산</h4>
         <div class="chips" style="margin:2px 0 6px"><span class="chip">경기+지방 광역시</span><span class="chip">26대 · 1.94억</span></div>
         <div class="blk"><span class="lb">특징</span>경기 거점 + 지방 광역시(대구·부산·대전·광주·울산·창원) 분산. 12개월 연속 26대.</div>
         <div class="blk pro"><span class="lb">장점</span>전국 분원을 고르게 노출 → 지방 분원 집객 지원, 분원 간 형평. 가장 많은 대수(26대).</div>
         <div class="blk con"><span class="lb">단점</span>분원당 대수가 적어(2~3대) 개별 임팩트는 약함. 서울 핵심 상권 밀도가 낮음.</div>
         <div class="fit">추천 — 전국 분원 균형·지방 집객이 목표일 때</div></div>
-      <div class="cmp rec"><span class="tag">C안 추천</span><h4>서울 고정 + 순환</h4>
+      <div class="cmp rec" data-plan="C"><span class="tag">C안 추천</span><h4>서울 고정 + 순환</h4>
         <div class="chips" style="margin:2px 0 6px"><span class="chip">서울 9대 상시</span><span class="chip">연 16개 분원 · 1.95억</span></div>
         <div class="blk"><span class="lb">특징</span>서울 5분원 12개월 상시 + 지방·경기 분기 순환(플라이팅). 연 16개 분원 집행.</div>
         <div class="blk pro"><span class="lb">장점</span>서울 상시 유지 + 같은 예산으로 집행 분원 2배 확대. 지방도 분기별로 순차 커버 → 예산 효율 최고.</div>
@@ -609,13 +609,14 @@ function activateTab(v){
   window.scrollTo(0,0);
 }
 tabs.forEach(function(t){ t.addEventListener('click',function(){ activateTab(t.dataset.v); });});
+function syncCmp(ab){ document.querySelectorAll('.cmp[data-plan]').forEach(function(c){ c.classList.toggle('sel', c.getAttribute('data-plan')===ab); }); }
 document.querySelectorAll('[data-ab]').forEach(function(b){ b.addEventListener('click',function(){
   document.querySelectorAll('[data-ab]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
-  renderPlan(b.dataset.ab);
+  renderPlan(b.dataset.ab); syncCmp(b.dataset.ab);
 });});
 document.getElementById('home').addEventListener('click',function(){ window.location.href='jaseng-branches.html'; });
 
-renderRates(); renderRec(); renderPlan('A');
+renderRates(); renderRec(); renderPlan('A'); syncCmp('A');
 // 규격 블록을 '지역별 단가표' 탭 하단으로 이동
 (function(){ var sh=document.getElementById('specHold'); var rt=document.getElementById('v-rates'); if(sh&&rt){ sh.className='sec'; sh.removeAttribute('hidden'); rt.appendChild(sh); } })();
 (function(){ var hs=(location.hash||'').replace('#',''); var ok=['plan','why','rates'];
