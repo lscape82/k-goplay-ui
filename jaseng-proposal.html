@@ -123,6 +123,8 @@ tr.sum td .amber{color:#ffcf8a}
 .reccard .rh{display:flex;align-items:center;justify-content:space-between;margin-bottom:8px}
 .reccard .rh b{font-size:15px;color:#111a2e}
 .reccard .rh .ar{font-size:11.5px;color:var(--mut);font-weight:700}
+.reccard .rhub{font-size:12px;color:#44546e;margin:-2px 0 8px;padding-bottom:7px;border-bottom:1px solid #f1f4f9}
+.reccard .rhub b{color:#111a2e}
 .recrow{display:flex;align-items:baseline;gap:8px;padding:5px 0;border-top:1px solid #f1f4f9;font-size:13px}
 .recrow .rnum{font-weight:800;color:var(--navy);min-width:48px}
 .recrow .rnum .st{color:#e11d2a;margin-left:2px;font-size:11px}
@@ -589,6 +591,7 @@ function renderRec(){
   var h='';
   order.forEach(function(b){ var rs=REC[b]; if(!rs) return;
     h+='<div class="reccard"><div class="rh"><b>자생 '+b+'</b><span class="ar">인근 '+(NR[b]||'')+'노선 中 상위</span></div>';
+    h+='<div class="rhub">📍 주요 거점 <b>'+(HUB[b]||'')+'</b>'+(HUB_LINK[b]?' <span class="hublink">🔗 '+HUB_LINK[b]+' 동시 경유</span>':'')+'</div>';
     rs.forEach(function(r,i){ h+='<a class="recrow reclink" href="jaseng-branches.html?b='+encodeURIComponent(b)+'&r='+encodeURIComponent(r[0])+'" title="지도에서 '+r[0]+'번 노선 보기"><span class="rnum">'+r[0]+(i===0?'<span class="st">★</span>':'')+'</span><span class="rseg">'+r[1]+'</span><span class="rgo">지도 ▸</span></a>'; });
     h+='</div>';
   });
