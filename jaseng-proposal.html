@@ -638,12 +638,12 @@ function renderRates(){
   }
   var seoulA='<div><div class="rtt">서울 A권역 (등급별)</div>'
     +tbl([['SSA','강남대로·강남역·테헤란로 축','170만원','8만원','최상위(강남 핵심축)'],['SA','강남구 나머지(압구정·청담·대치·개포·수서)+송파·신촌홍대·청량리·건대','150만원','8만원','상위'],['A','강남 외 지역','120만원','8만원',''],['B','강남 외 지역','90만원','8만원','']])
-    +'<div class="note" style="margin-top:8px;font-size:12px">· <b>SSA는 강남대로·강남역·테헤란로 축 노선만</b> 해당합니다 — <b>강남구를 경유한다고 모두 SSA가 아닙니다.</b> SA 이하부터 강남/비강남 노선이 혼합됩니다.</div></div>';
+    +'<div class="note" style="margin-top:8px;font-size:12px">· <b>서울 A권역</b>은 노선 지역축 기준 <b>등급별 단가</b>입니다. <b>SSA는 강남대로·강남역·테헤란로 축 노선만</b> 해당하며, <b>강남구를 경유한다고 모두 SSA가 아닙니다.</b> SA 이하부터 강남/비강남 노선이 혼합됩니다.</div></div>';
   var seoulBtbl='<div><div class="rtt">서울 B권역 (등급 없음 · 노선 선택형)</div>'
     +tbl([['B권역','바디(차도·인도·사랑·후면 다면 세트)','80만원','8만원','장기 집행 시 할인 — 6개월+ 75만원 · 12개월+ 70만원']])+'</div>';
   var seoulNote='<div class="note" style="margin-top:10px">· 서울 B권역은 <b>패키지 없이 원하는 노선만</b> 선택, <b>등급 차등 없이 대당 80만원</b>(1개월 기준·VAT 별도)이며 <b>장기 집행 시 할인</b>됩니다. · <b>1대 = 차도·인도·사랑·후면 다면 한 세트</b>(A권역과 동일). · <b>타깃 벨트</b>: 틴에이지(노원·양천·강서)·대학생(성북·관악·광진·동작·동대문)·사회초년생(강서·관악·동작·영등포)·직장인(구로·금천·영등포)·실버(강북·도봉·노원·중랑·은평). · 자생 <b>노원·목동(양천)·보라매(동작·관악)</b> 분원 생활권과 일치.</div>';
   var seoulFeeNote='<div class="note" style="margin-top:10px"><b>B권역 제작비 규정</b>(계약 기간별 상이) — 출력비 8만원 + 부착비 3만원/대.<br>· <b>1~5개월</b>: 기본 <b>8만원/대</b>(최초 부착 1회 무료) · 소재 교체 시 11만원/대<br>· <b>6~11개월</b>: 제작(출력·부착) <b>1회 무료</b> · 이후 소재 교체 시 11만원/대<br>· <b>12개월 이상</b>: 제작 <b>2회 무료</b> · 3회차 교체부터 11만원/대</div>';
-  var seoul='<div class="sec" style="margin-top:14px"><div class="abgrid">'+seoulA+seoulBtbl+'</div>'+seoulNote+seoulFeeNote+'</div>';
+  var seoul='<div class="sec" style="margin-top:14px"><div class="abgrid">'+seoulA+'<div>'+seoulBtbl+seoulNote+seoulFeeNote+'</div></div></div>';
   var seoulB='';
   var sudo='<div class="sec" style="margin-top:14px"><div class="sdesc" style="font-weight:800;color:#111a2e;font-size:15px">수도권 (경기·인천)</div>'
     +tbl([['일산·고양','광역버스','80만원','8만원','',3],['','시내버스','60만원','8만원',''],['','마을버스','50만원','8만원',''],['분당·성남','시내버스','35~60만원','8만원','노선별 상이'],['부천','시내버스','40~50만원','8만원',''],
