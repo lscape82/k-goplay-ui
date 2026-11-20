@@ -90,7 +90,8 @@ td.c,th.c{text-align:center}
 td.b{font-weight:800;color:#111a2e}
 td.rmemo{color:#64748b;font-size:12px}
 .hublink{display:inline-block;margin-top:3px;font-size:10.5px;font-weight:800;color:#b45309;background:#fff7ed;border:1px solid #fcd9a8;border-radius:6px;padding:1px 6px;white-space:nowrap}
-table:not(.qt) tbody tr:nth-child(even):not(.area):not(.sum) td{background:#fbfcfd}
+table:not(.qt):not(.rt) tbody tr:nth-child(even):not(.area):not(.sum) td{background:#fbfcfd}
+table.rt tr.galt td{background:#fbfcfd}
 tr.area td{background:#eaeff7;font-weight:800;color:var(--navy);font-size:12.5px}
 tr.sum td{background:var(--sky);color:var(--navy);font-weight:800;font-size:14.5px}
 tr.sum td .amber{color:var(--amber)}
@@ -538,7 +539,7 @@ var REC={
 };
 /* 견적 등급매칭 추천 노선(분원 배정 등급의 상위 노선) — 견적 추천노선 칼럼용 */
 var REC_GRADE={강남:[['360'],['140'],['146']],잠실:[['461'],['303'],['302']],목동:[['5712'],['2015'],['6211']],보라매:[['152'],['150'],['163']],노원:[['1132'],['1137'],['1142']]};
-function planRoutes(b,med){ return (isGraded(med)&&REC_GRADE[b])?REC_GRADE[b].slice(0,3):recRoutes(b); }
+function planRoutes(b,med,qty){ var a=(isGraded(med)&&REC_GRADE[b])?REC_GRADE[b]:(REC[b]||[]); return a.slice(0,Math.max(1,qty||3)); }
 /* 분원별 추천노선 탭 showcase용 등급 라벨(노선 지역축 기준) */
 var REC_G={강남:{'360':'SSA','146':'SSA','140':'SSA'},목동:{'643':'SSA','640':'SSA','6716':'SA'},보라매:{'360':'SSA','461':'SA','640':'SSA'},잠실:{'360':'SSA','301':'SSA','402':'SSA'},노원:{'146':'SSA','111':'A','105':'A'}};
 
@@ -552,7 +553,7 @@ function feeCell(b,qty,rs){
 function costTable(rows){
   var tot=0,tq=0,fsum=0,h='<div class="tblw"><table class="qt"><thead><tr><th>분원</th><th>지역</th><th>주요 거점</th><th class="c">대수</th><th class="r">등급별 단가 × 수량</th><th class="c">개월</th><th class="r">광고료</th><th class="r">제작비<small style="font-weight:600;opacity:.8">(1회)</small></th><th class="r">집행금액</th><th class="r">추천 노선</th><th>비고</th></tr></thead><tbody>';
   rows.forEach(function(r,gi){ tot+=r.amt; tq+=r.qty; fsum+=feeAmt(r.b,r.qty);
-    var rts=planRoutes(r.b,r.med), n=Math.max(1,rts.length), alt=gi%2?' galt':'';
+    var rts=planRoutes(r.b,r.med,r.qty), n=Math.max(1,rts.length), alt=gi%2?' galt':'';
     h+='<tr class="grp'+alt+'"><td class="b" rowspan="'+n+'">자생 '+r.b+'</td><td rowspan="'+n+'">'+r.area+'</td><td class="hubc" rowspan="'+n+'">'+hubCell(r.b)+'</td><td class="c b" rowspan="'+n+'">'+r.qty+'</td><td class="r li" rowspan="'+n+'">'+lineItems(r.med,r.rate,r.qty)+'</td><td class="c" rowspan="'+n+'">'+M+'</td><td class="r" rowspan="'+n+'">'+manWon(r.amt)+'</td>'+feeCell(r.b,r.qty,n)+execCell(r.amt,r.b,r.qty,n)+routeCell(r.b,rts[0])+'<td class="rmemo" rowspan="'+n+'">'+(r.memo||'—')+'</td></tr>';
     for(var i=1;i<n;i++){ h+='<tr'+(alt?' class="galt"':'')+'>'+routeCell(r.b,rts[i])+'</tr>'; }
   });
@@ -604,7 +605,7 @@ function renderC(){
   var sfee=0;
   h+='<div class="tblw"><table class="qt"><thead><tr><th class="c">우선순위</th><th>서울 고정</th><th>주요 거점</th><th class="c">대수</th><th class="r">등급별 단가 × 수량</th><th class="c">개월</th><th class="r">광고료</th><th class="r">제작비<small style="font-weight:600;opacity:.8">(1회)</small></th><th class="r">집행금액</th><th class="r">추천 노선</th><th>비고</th></tr></thead><tbody>';
   C_SEOUL.forEach(function(r,i){ stot+=r.amt; sq+=r.qty; sfee+=feeAmt(r.b,r.qty);
-    var rts=planRoutes(r.b,r.med), n=Math.max(1,rts.length), alt=i%2?' galt':'';
+    var rts=planRoutes(r.b,r.med,r.qty), n=Math.max(1,rts.length), alt=i%2?' galt':'';
     h+='<tr class="grp'+alt+'"><td class="c b" rowspan="'+n+'">'+(i+1)+'</td><td class="b" rowspan="'+n+'">자생 '+r.b+'</td><td class="hubc" rowspan="'+n+'">'+hubCell(r.b)+'</td><td class="c b" rowspan="'+n+'">'+r.qty+'</td><td class="r li" rowspan="'+n+'">'+lineItems(r.med,seoulRateStr(r.med),r.qty)+'</td><td class="c" rowspan="'+n+'">12</td><td class="r" rowspan="'+n+'">'+manWon(r.amt)+'</td>'+feeCell(r.b,r.qty,n)+execCell(r.amt,r.b,r.qty,n)+routeCell(r.b,rts[0])+'<td class="rmemo" rowspan="'+n+'">—</td></tr>';
     for(var k=1;k<n;k++){ h+='<tr'+(alt?' class="galt"':'')+'>'+routeCell(r.b,rts[k])+'</tr>'; } });
   h+='<tr class="sum"><td></td><td>서울 소계</td><td></td><td class="c">'+sq+'대</td><td></td><td class="c">12</td><td class="r">'+manWon(stot)+'</td><td class="r">+'+manWon(sfee)+'</td><td class="r"><span class="amber">'+manWon(stot+sfee)+'</span></td><td></td><td></td></tr></tbody></table></div>';
@@ -612,7 +613,7 @@ function renderC(){
   var rfee=0;
   h+='<div class="tblw" style="margin-top:14px"><table class="qt"><thead><tr><th class="c">우선순위</th><th>분원</th><th>지역</th><th>주요 거점</th><th class="c">집행 월</th><th class="c">대수</th><th class="r">단가 × 수량</th><th class="c">개월</th><th class="r">광고료</th><th class="r">제작비<small style="font-weight:600;opacity:.8">(1회)</small></th><th class="r">집행금액</th><th class="r">추천 노선</th><th>비고</th></tr></thead><tbody>';
   C_ROT.forEach(function(r,gi){ var amt=r.rate*r.qty*r.len; qtot+=amt; rfee+=feeAmt(r.b,r.qty);
-    var rts=recRoutes(r.b), n=Math.max(1,rts.length), alt=gi%2?' galt':'';
+    var rts=planRoutes(r.b,'',r.qty), n=Math.max(1,rts.length), alt=gi%2?' galt':'';
     h+='<tr class="grp'+alt+'"><td class="c b" rowspan="'+n+'">'+r.pri+'</td><td class="b" rowspan="'+n+'">자생 '+r.b+'</td><td rowspan="'+n+'">'+r.area+'</td><td class="hubc" rowspan="'+n+'">'+hubCell(r.b)+'</td><td class="c b" rowspan="'+n+'" style="color:var(--amber)">'+r.mo+'</td><td class="c" rowspan="'+n+'">'+r.qty+'</td><td class="r li" rowspan="'+n+'">'+lineItems('',(r.rate/10000)+'만',r.qty)+'</td><td class="c" rowspan="'+n+'">'+r.len+'개월</td><td class="r" rowspan="'+n+'">'+manWon(amt)+'</td>'+feeCell(r.b,r.qty,n)+execCell(amt,r.b,r.qty,n)+routeCell(r.b,rts[0])+'<td class="rmemo" rowspan="'+n+'">—</td></tr>';
     for(var k=1;k<n;k++){ h+='<tr'+(alt?' class="galt"':'')+'>'+routeCell(r.b,rts[k])+'</tr>'; }
   });
@@ -628,11 +629,25 @@ function renderC(){
 function renderRates(){
   function tbl(rows){
     var h='<div class="tblw"><table class="rt"><colgroup><col style="width:13%"><col style="width:36%"><col style="width:16%"><col style="width:14%"><col style="width:21%"></colgroup><thead><tr><th>지역</th><th>매체(면)</th><th class="r">월 단가(1대)</th><th class="r">제작·부착비</th><th>비고</th></tr></thead><tbody>';
+    var gi=-1;
     rows.forEach(function(r){
       var first=r[0]!=='';
-      h+='<tr>';
+      if(first) gi++;
+      h+='<tr'+(gi%2?' class="galt"':'')+'>';
       if(first){ var rs=r[5]||1; h+='<td class="b" '+(rs>1?'rowspan="'+rs+'"':'')+'>'+r[0]+'</td>'; }
       h+='<td>'+r[1]+'</td><td class="r b">'+r[2]+'</td><td class="r">'+r[3]+'</td><td class="rmemo">'+(r[4]||'—')+'</td></tr>';
+    });
+    h+='</tbody></table></div>'; return h;
+  }
+  function tbl6(rows){
+    var h='<div class="tblw"><table class="rt"><colgroup><col style="width:11%"><col style="width:31%"><col style="width:18%"><col style="width:13%"><col style="width:12%"><col style="width:15%"></colgroup><thead><tr><th>버스 종류</th><th>지역(등급·주요 경유지)</th><th>매체(면)</th><th class="r">월 단가(1대)</th><th class="r">제작·부착비</th><th>비고</th></tr></thead><tbody>';
+    var gi=-1;
+    rows.forEach(function(r){
+      var first=r[0]!=='';
+      if(first) gi++;
+      h+='<tr'+(gi%2?' class="galt"':'')+'>';
+      if(first){ var rs=r[6]||1; h+='<td class="b" '+(rs>1?'rowspan="'+rs+'"':'')+'>'+r[0]+'</td>'; }
+      h+='<td>'+r[1]+'</td><td>'+r[2]+'</td><td class="r b">'+r[3]+'</td><td class="r">'+r[4]+'</td><td class="rmemo">'+(r[5]||'—')+'</td></tr>';
     });
     h+='</tbody></table></div>'; return h;
   }
@@ -649,17 +664,17 @@ function renderRates(){
     +'</div></div>';
   var seoulB='';
   var sudo='<div class="sec" style="margin-top:14px"><div class="sdesc" style="font-weight:800;color:#111a2e;font-size:15px">수도권 (경기·인천)</div>'
-    +tbl([['일산·고양','광역버스','80만원','8만원','',3],['','시내버스','60만원','8만원',''],['','마을버스','50만원','8만원',''],['분당·성남','시내버스','35~60만원','8만원','노선별 상이'],['부천','시내버스','40~50만원','8만원',''],
+    +tbl([['일산·고양','광역버스','80만원','8만원','',3],['','시내버스','60만원','8만원',''],['','마을버스','50만원','8만원',''],['부천','시내버스','40~50만원','8만원',''],
       ['수원·화성·군포','바디(차도+인도)','52만원','8만원','남부 경기권',2],['','후면','12만원','2만원',''],
       ['인천','시내버스 외부(일반)','60만원','8.5만원','최소 5대·12개월+ 제작 1회 무료',3],['','시내버스(송도 경유)','70만원','8.5만원',''],['','광역버스(강남 90·기타 70)','70~90만원','12만원','서울 상권 연결'],
       ['안산','시내버스 바디(차도+인도)','52만원','10만원','남부 경기권 · 한 병원 브랜드가 전체 노선을 수년째 선점(당분간 집행 어려움)']])+'</div>';
   var gg='<div class="sec" style="margin-top:14px"><div class="sdesc" style="font-weight:800;color:#111a2e;font-size:15px">동남부 경기·성남권 (등급별 · 광역/지선/공공)</div>'
-    +tbl([
-      ['광역버스','SA급 (삼성·테헤란·청담·선릉)','90만원','8만원','강남 메인',4],['','A급 (강남역·양재·분당·판교)','85만원','8만원',''],['','B급 (명동·서울역·수원·용인)','80만원','8만원',''],['','C급 (강변·잠실·기타 서울)','80만원','8만원',''],
-      ['지선버스','S급 (하남·송파·위례·분당·잠실)','70만원','8만원','',4],['','A급 (강동·천호·구리·남양주)','65만원','8만원',''],['','B급 (수원·성남·용인·화성·안양)','60만원','8만원',''],['','C급 (수도권 관내)','55만원','8만원',''],
-      ['공공버스','A급 (강동·천호·구리·남양주)','45만원','6만원','차도+후면만(인도 불가)',2],['','B급 (수원·성남·용인·화성·안양)','35만원','6만원',''],
-      ['성남 시내버스','판교·분당·위례 외부(5면)','50만원','8만원','판교14·분당7·위례5 노선',2],['','외부 중앙문','10만원','2만원','10개 노선']])
-    +'<div class="note" style="margin-top:8px">· <b>동남부 경기·성남권</b>(성남·분당·하남·위례·송파·강동·구리·남양주·수원·용인·화성·안양 등) 광역/지선/공공 <b>등급별 대당가</b>(VAT 별도). 제작비 광역·지선 8만/공공 6만(6개월+ 1회 무료). · 자생 <b>분당·성남·수원·용인</b> 분원 경유 노선에 해당. · 일산·고양·부천·안산은 타 권역·별도 단가.</div></div>';
+    +tbl6([
+      ['광역버스','SA급 · 삼성·테헤란·청담·선릉(강남 메인)','바디·사랑면·후면','90만원','8만원','',4],['','A급 · 강남역·양재·논현·분당·판교','바디·사랑면·후면','85만원','8만원',''],['','B급 · 명동·서울역·수원·용인','바디·사랑면·후면','80만원','8만원',''],['','C급 · 강변·잠실·기타 서울','바디·사랑면·후면','80만원','8만원',''],
+      ['지선버스','S급 · 하남·송파·위례·분당·잠실','바디·사랑면·후면','70만원','8만원','',4],['','A급 · 강동·천호·구리·남양주','바디·사랑면·후면','65만원','8만원',''],['','B급 · 수원·성남·용인·화성·안양','바디·사랑면·후면','60만원','8만원',''],['','C급 · 수도권 관내','바디·사랑면·후면','55만원','8만원',''],
+      ['공공버스','A급 · 강동·천호·구리·남양주','차도·후면(인도면 불가)','45만원','6만원','',2],['','B급 · 수원·성남·용인·화성·안양','차도·후면(인도면 불가)','35만원','6만원',''],
+      ['성남 시내버스','판교·분당·위례','외부(5면)','50만원','8만원','판교14·분당7·위례5 노선',2],['','판교·분당·위례','외부 중앙문','10만원','2만원','10개 노선']])
+    +'<div class="note" style="margin-top:8px">· <b>동남부 경기·성남권</b> 광역/지선/공공 <b>등급별 대당가</b>(VAT 별도). 등급은 <b>노선이 지나는 주요 지역</b> 기준입니다. 제작비 광역·지선 8만/공공 6만(6개월+ 1회 무료). · 자생 <b>분당·성남·수원·용인</b> 분원 경유 노선에 해당.</div></div>';
   var youngnam='<div class="sec" style="margin-top:14px"><div class="sdesc" style="font-weight:800;color:#111a2e;font-size:15px">영남</div>'
     +tbl([['부산','일반노선','78만원','6만원','분배 일반8:해운대2',2],['','해운대노선','90만원','6만원',''],['대구','간선·지선·순환·급행','75만원','7만원','상품등급 S/A/B'],['울산','확대형(차도+인도)','65만원','7만원','',3],['','전체 set','75만원','8만원',''],['','후면','15만원','3만원',''],['창원','차도+인도','60만원','10만원','',2],['','후면','15만원','2만원','']])+'</div>';
   var chung='<div class="sec" style="margin-top:14px"><div class="sdesc" style="font-weight:800;color:#111a2e;font-size:15px">충청·호남</div>'
@@ -667,7 +682,7 @@ function renderRates(){
       ['천안','시내버스 바디(차도+인도)','40만원','10만원','공동배차·6개월+ 제작비 감면',2],['','후면','15만원','1만원',''],
       ['청주','시내버스 바디(차도+인도)','60만원','10만원','최소 3개월 집행',3],['','급행 B3·B7·747(바디+행선판)','75~90만원','12~15만원','고정노선'],['','급행 후면','15만원','2만원',''],
       ['세종','시내버스·BRT(등급별)','35~64만원','8만원','세종순환·오송역 경유']])+'</div>';
-  var vnote='<div class="note" style="margin-top:14px">※ 모든 단가는 <b>부가세(VAT) 별도</b>, <b>월 단가(1대)</b> 기준입니다. <b>제작·부착비는 광고료와 별도</b>(1회성)이며, \'별도\'는 별도 협의 항목입니다. 서울버스TV는 제외, 서울 시내버스 외부광고 기준입니다.</div>';
+  var vnote='<div class="note" style="margin-top:14px">※ 모든 단가는 <b>부가세(VAT) 별도</b>, <b>월 단가(1대)</b> 기준입니다. <b>제작·부착비는 광고료와 별도</b>(1회성)이며, \'별도\'는 별도 협의 항목입니다. 서울버스TV는 제외, <b>버스 외부광고 기준</b>입니다. · <b>버스 내부 광고(파노라마·유리창 등)는 필요 시 별도 문의</b>해 주세요.</div>';
   document.getElementById('ratesBody').innerHTML=seoul+seoulB+sudo+gg+youngnam+chung+vnote;
 }
 function renderRec(){
