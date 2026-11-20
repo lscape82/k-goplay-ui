@@ -343,12 +343,20 @@ ul.why li::marker{color:var(--amber)}
 <section class="view" id="v-why" hidden>
   <div class="eyebrow">분원별 추천 노선</div>
   <h2 class="big">분원별 추천 노선</h2>
-  <p class="lead">각 분원 생활권을 경유하는 노선 중 <b>우선순위 상위</b>를 뽑았습니다. <span style="color:#e11d2a;font-weight:800">★</span>=최우선. <b>버스 번호를 누르면 지도에서 해당 노선</b>을 바로 볼 수 있습니다.</p>
-  <div class="sec"><div class="recwrap" id="recBody"></div></div>
-  <div class="sec" style="border-top:1px solid var(--line);padding-top:26px"><h3>선정 기준 — 누구에게, 왜 이 노선인가</h3>
+  <p class="lead">각 분원 생활권 노선을 <b>데이터 기준</b>으로 선별했습니다. <b>선정 기준</b>을 먼저 보시고, 아래에서 <b>분원별 우선 노선</b>을 확인하세요.</p>
+  <div class="sec"><h3>선정 기준 — 누구에게, 왜 이 노선인가</h3>
     <div class="sdesc">자생한방병원은 척추·관절 비수술 치료 특화 병원입니다. 매체는 <b>주 이용층의 생활 동선</b>과 <b>실제 내원 가능권</b>을 기준으로 고릅니다.</div></div>
+  <div class="sec">
+    <h3 style="font-size:17px">① 매체 선정 4대 기준 (가중 적용)</h3>
+    <div class="crit">
+      <div class="row"><div class="no">1</div><div><h4>분원 접근성</h4><p>분원 반경 통과 노선만 후보 — 정류장 이름 키워드가 아니라 <b>GPS 좌표로 선별</b>. 실제 내원 생활권 커버.</p></div></div>
+      <div class="row"><div class="no">2</div><div><h4>타깃 밀집</h4><p>중장년 주거·생활 밀집, 주요 간선도로를 경유하는 노선에 가중.</p></div></div>
+      <div class="row"><div class="no">3</div><div><h4>노출 효율</h4><p>왕복 운행·운행대수·정류소수가 많은 노선 우선(일 18시간·왕복 8~9회).</p></div></div>
+      <div class="row g"><div class="no">4</div><div><h4>등급·예산 효율</h4><p>등급(서울 SSA~B, 대구 상품 S/A 등) 대비 단가 효율을 따져 예산 내 최적 조합.</p></div></div>
+    </div>
+  </div>
   <div class="sec grid2">
-    <div class="card"><h3 style="font-size:17px">① 타깃 — 누구에게 보일 것인가</h3>
+    <div class="card"><h3 style="font-size:17px">② 타깃 — 누구에게 보일 것인가</h3>
       <ul class="why">
         <li><b>주 이용층</b> : 척추·관절 질환은 중장년·고령층 비중이 높고, 교통사고·근골격계 통증(활동 연령)도 핵심 — 중장년 거주·생활 밀집 지역 우선.</li>
         <li><b>접근 동선</b> : 버스는 "집 ↔ 주요도로 ↔ 병원" 생활 동선을 하루 18시간·왕복 8~9회 반복 노출 — 실제 내원 가능권 노선을 1순위로.</li>
@@ -360,15 +368,9 @@ ul.why li::marker{color:var(--amber)}
         <li><b>C안</b> : 서울 상시 + 지방·경기 분기 순환. 같은 예산에 집행 분원 확대.</li>
       </ul></div>
   </div>
-  <div class="sec">
-    <h3>② 매체 선정 4대 기준 (가중 적용)</h3>
-    <div class="crit">
-      <div class="row"><div class="no">1</div><div><h4>분원 접근성</h4><p>분원 반경 통과 노선만 후보 — 정류장 이름 키워드가 아니라 <b>GPS 좌표로 선별</b>. 실제 내원 생활권 커버.</p></div></div>
-      <div class="row"><div class="no">2</div><div><h4>타깃 밀집</h4><p>중장년 주거·생활 밀집, 주요 간선도로를 경유하는 노선에 가중.</p></div></div>
-      <div class="row"><div class="no">3</div><div><h4>노출 효율</h4><p>왕복 운행·운행대수·정류소수가 많은 노선 우선(일 18시간·왕복 8~9회).</p></div></div>
-      <div class="row g"><div class="no">4</div><div><h4>등급·예산 효율</h4><p>등급(서울 SSA~B, 대구 상품 S/A 등) 대비 단가 효율을 따져 예산 내 최적 조합.</p></div></div>
-    </div>
-  </div>
+  <div class="sec" style="border-top:1px solid var(--line);padding-top:26px"><h3>분원별 추천 노선 (상위)</h3>
+    <div class="sdesc">위 기준으로 산출한 분원별 우선 노선입니다. <span style="color:#e11d2a;font-weight:800">★</span>=최우선. <b>버스 번호를 누르면 지도에서 해당 노선</b>을 바로 볼 수 있습니다.</div>
+    <div class="recwrap" id="recBody"></div></div>
 </section>
 
 <!-- 지역별 단가표 -->
