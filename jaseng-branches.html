@@ -240,7 +240,7 @@
       var won = function(v){ return Number(v||0).toLocaleString("ko-KR"); };
       var GORD = { SSA:0, SA:1, S:1.5, A:2, B:3, "심야":4 };
       var gord = function(g){ return GORD.hasOwnProperty(g) ? GORD[g] : 9; };
-      var glab = function(g){ return g==="심야" ? "심야버스" : g==="후보" ? "분원 인근 노선 (광고 가능 여부 확인 전)" : g==="매체" ? "매체사 보유 노선" : g+"급"; };
+      var glab = function(g){ return g==="심야" ? "심야버스" : g==="후보" ? "분원 인근 노선 (광고 가능 여부 확인 전)" : g==="매체" ? "보유 경유 노선" : g+"급"; };
       var gclass = function(g){ return (g==="SSA"||g==="SA"||g==="A"||g==="B") ? g : "etc"; };
       var gbadge = function(g){ return g==="매체" ? "보유" : g; };
 
@@ -367,7 +367,7 @@
         if (r.candidate) {
           document.getElementById("pMeta").innerHTML = '분원 인근 통과 노선 <b>'+r.count+'개</b> <span style="color:#b45309;font-weight:700">· 광고 가능 노선은 확인 전</span>';
         } else if (r.vendor) {
-          document.getElementById("pMeta").innerHTML = '매체사 보유 경유 노선 <b>'+r.count+'개</b>' + (gparts ? '<br>'+gparts : '');
+          document.getElementById("pMeta").innerHTML = '보유 경유 노선 <b>'+r.count+'개</b>' + (gparts ? '<br>'+gparts : '');
         } else {
           document.getElementById("pMeta").innerHTML = '경유 노선 <b>'+r.count+'개</b>' + (gparts ? '<br>'+gparts : '');
         }

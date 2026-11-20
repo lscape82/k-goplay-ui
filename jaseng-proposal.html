@@ -297,7 +297,7 @@ ul.why li::marker{color:var(--amber)}
     <div class="card"><h3 style="font-size:16px">단가 기준</h3>
       <ul class="why">
         <li>서울 외부 부착광고 등급별 : SSA 170 · SA 150 · A 120 · B 90만/월</li>
-        <li>지방·경기 매체사 단가 : 분원별 상이(지역별 단가표 탭 참조)</li>
+        <li>지방·경기 단가 : 분원별 상이(지역별 단가표 탭 참조)</li>
         <li>VAT·제작비 별도 · 서울버스TV(별도 매체) 제외</li>
       </ul></div>
     <div class="card"><h3 style="font-size:16px">집행 조건</h3>
@@ -335,7 +335,7 @@ ul.why li::marker{color:var(--amber)}
       <tr><td class="b">울산</td><td class="r b">258만명</td><td class="r">700대</td><td class="r">105</td><td class="r">3,064</td><td class="rmemo">왕복 8~9회</td></tr>
       <tr><td class="b">창원</td><td class="r b">인구 101만</td><td class="r">750대</td><td class="r">143</td><td class="r">3,064</td><td class="rmemo">왕복 8~9회</td></tr>
     </tbody></table></div>
-    <div class="sdesc" style="margin-top:8px">· 경기·인천 분원 지역 통계는 매체사 확인 후 보완합니다.</div>
+    <div class="sdesc" style="margin-top:8px">· 경기·인천 분원 지역 통계는 확정 예약 시 보완합니다.</div>
   </div>
 </section>
 
@@ -377,7 +377,7 @@ ul.why li::marker{color:var(--amber)}
 <section class="view" id="v-rates" hidden>
   <div class="eyebrow">지역별 단가표</div>
   <h2 class="big">지역별 버스 외부광고 비용</h2>
-  <p class="lead">자생 분원이 있는 지역의 매체사 공개 단가입니다(월 1대 · VAT 별도 · 제작·부착비 별도). 운영안(A/B/C)의 금액이 산출된 근거 자료입니다.</p>
+  <p class="lead">자생 분원이 있는 지역의 공개 단가입니다(월 1대 · VAT 별도 · 제작·부착비 별도). 운영안(A/B/C)의 금액이 산출된 근거 자료입니다.</p>
   <div class="note" style="margin-top:16px">💡 <b>같은 지역이 여러 줄로 보이는 이유</b> — 한 지역에도 <b>버스 종류(시내·지선·광역·공공)·면 구성(차도/인도/후면)·집행 기간</b>에 따라 단가가 다릅니다. 모순이 아니라 <b>선택지</b>이며, <b>분원별 실제 제안 단가는 운영안(A/B/C)에 반영</b>돼 있습니다. 최종 단가·노선은 확정 예약 시 확정됩니다.</div>
   <div class="sec" style="margin-top:18px"><div id="ratesBody"></div></div>
 </section>
@@ -396,14 +396,14 @@ var PLAN={
   {b:'보라매',area:'서울',med:'A 1 · B 1',rate:'120·90만',qty:2,amt:25200000,memo:'동작·관악'},
   {b:'잠실',area:'서울',med:'A 1 · B 1',rate:'120·90만',qty:2,amt:25200000,memo:'송파·강동'},
   {b:'노원',area:'서울',med:'B 1',rate:'90만',qty:1,amt:10800000,memo:'동북권'},
-  {b:'분당',area:'경기',med:'시내버스',rate:'50만',qty:3,amt:18000000,memo:'매체사 제안가'},
+  {b:'분당',area:'경기',med:'시내버스',rate:'50만',qty:3,amt:18000000,memo:'제안 단가'},
   {b:'일산',area:'경기',med:'시내버스',rate:'60만',qty:2,amt:14400000,memo:'판매가·시내'},
-  {b:'부천',area:'경기',med:'시내버스',rate:'45만',qty:1,amt:5400000,memo:'매체사 제안가'},
-  {b:'인천',area:'인천',med:'시내버스 외부(일반)',rate:'60만',qty:2,amt:14400000,memo:'미디어오픈·최소5대'}],
- B:[{b:'분당',area:'경기',med:'시내버스',rate:'50만',qty:3,amt:18000000,memo:'매체사 제안가'},
+  {b:'부천',area:'경기',med:'시내버스',rate:'45만',qty:1,amt:5400000,memo:'제안 단가'},
+  {b:'인천',area:'인천',med:'시내버스 외부(일반)',rate:'60만',qty:2,amt:14400000,memo:'최소 5대·제작 1회 무료'}],
+ B:[{b:'분당',area:'경기',med:'시내버스',rate:'50만',qty:3,amt:18000000,memo:'제안 단가'},
   {b:'일산',area:'경기',med:'시내버스',rate:'60만',qty:3,amt:21600000,memo:'판매가·시내'},
-  {b:'부천',area:'경기',med:'시내버스',rate:'45만',qty:3,amt:16200000,memo:'매체사 제안가'},
-  {b:'수원',area:'경기',med:'시내버스 바디',rate:'52만',qty:3,amt:18720000,memo:'애드브레인·남부경기'},
+  {b:'부천',area:'경기',med:'시내버스',rate:'45만',qty:3,amt:16200000,memo:'제안 단가'},
+  {b:'수원',area:'경기',med:'시내버스 바디',rate:'52만',qty:3,amt:18720000,memo:'남부 경기권'},
   {b:'대구',area:'대구',med:'간선/지선(S·A)',rate:'75만',qty:3,amt:27000000,memo:'상품등급 S/A'},
   {b:'부산',area:'부산',med:'일반노선',rate:'78만',qty:2,amt:18720000,memo:'일반노선'},
   {b:'해운대',area:'부산',med:'해운대노선',rate:'90만',qty:1,amt:10800000,memo:'해운대 급지'},
@@ -463,7 +463,7 @@ function costTable(rows){
     h+='<tr><td class="b">자생 '+r.b+'</td><td>'+r.area+'</td><td>'+r.med+' <span style="color:#94a3b8;font-size:11.5px">· 인근 '+(NR[r.b]||'')+'노선 中</span></td><td class="c b">'+r.qty+'</td><td class="c">'+M+'</td><td class="r">'+r.rate+'</td>'+feeCell(r.b,r.qty)+'<td class="r b">'+won(r.amt)+'원</td><td class="rmemo">'+r.memo+'</td></tr>';
   });
   h+='<tr class="sum"><td>합계</td><td></td><td></td><td class="c">'+tq+'대</td><td class="c">'+M+'</td><td></td><td class="r">+'+won(fsum)+'원</td><td class="r"><span class="amber">'+won(tot)+'원</span></td><td>잔여 '+won(BUDGET-tot)+'</td></tr></tbody></table></div>';
-  h+='<div style="margin-top:8px;font-size:12px;color:#64748b">※ 모든 금액은 <b>부가세(VAT) 별도</b>이며, <b>제작·부착비는 광고료와 별도</b>(1회성)입니다. 경기·인천 등 일부 지역 제작비는 매체사 협의. 노선·대수·금액은 확정 예약 시 가능 차량 현황에 따라 변동됩니다.</div>';
+  h+='<div style="margin-top:8px;font-size:12px;color:#64748b">※ 모든 금액은 <b>부가세(VAT) 별도</b>이며, <b>제작·부착비는 광고료와 별도</b>(1회성)입니다. 경기·인천 등 일부 지역 제작비는 별도 협의. 노선·대수·금액은 확정 예약 시 가능 차량 현황에 따라 변동됩니다.</div>';
   return h;
 }
 function calStrip(items){ // items: {b, area, start, len, qty}
@@ -516,7 +516,7 @@ function renderC(){
   h+='<tr class="sum"><td></td><td>순환 소계</td><td></td><td class="c">'+C_ROT.length+'개 분원</td><td></td><td></td><td></td><td class="r">+'+won(rfee)+'원</td><td class="r"><span class="amber">'+won(qtot)+'원</span></td></tr></tbody></table></div>';
   var gt=stot+qtot;
   h+='<div class="tblw" style="margin-top:14px"><table><tbody><tr class="sum"><td>총 합계</td><td class="c">서울 '+sq+'대 상시 + 순환 '+C_ROT.length+'개 분원 = 연 '+(C_SEOUL.length+C_ROT.length)+'개 분원</td><td class="r"><span class="amber">'+won(gt)+'원</span></td><td>잔여 '+won(BUDGET-gt)+'</td></tr></tbody></table></div>';
-  h+='<div style="margin-top:8px;font-size:12px;color:#64748b">※ 모든 금액은 <b>부가세(VAT) 별도</b>이며, <b>제작·부착비는 광고료와 별도</b>(1회성)입니다. 경기·인천 등 일부 지역 제작비는 매체사 협의. 노선·대수·금액은 확정 예약 시 변동될 수 있습니다.</div>';
+  h+='<div style="margin-top:8px;font-size:12px;color:#64748b">※ 모든 금액은 <b>부가세(VAT) 별도</b>이며, <b>제작·부착비는 광고료와 별도</b>(1회성)입니다. 경기·인천 등 일부 지역 제작비는 별도 협의. 노선·대수·금액은 확정 예약 시 변동될 수 있습니다.</div>';
   document.getElementById('planBody').innerHTML=h;
   document.getElementById('calDesc').textContent='서울은 1~12월 상시, 지방·경기는 우선순위에 따라 분기별로 순환 집행합니다.';
   var items=C_SEOUL.map(function(r){return {b:r.b,area:'서울',start:1,len:12,qty:r.qty};}).concat(C_ROT.map(function(r){return {b:r.b,area:r.area,start:r.start,len:r.len,qty:r.qty};}));
@@ -544,14 +544,14 @@ function renderRates(){
     +tbl([['일산·고양','광역버스','80만원','8만원','',3],['','시내버스','60만원','8만원',''],['','마을버스','50만원','8만원',''],['분당·성남','시내버스','35~60만원','8만원','노선별 상이'],['부천','시내버스','40~50만원','8만원',''],
       ['수원·화성·군포','바디(차도+인도)','52만원','8만원','남부 경기권',2],['','후면','12만원','2만원',''],
       ['인천','시내버스 외부(일반)','60만원','8.5만원','최소 5대·12개월+ 제작 1회 무료',3],['','시내버스(송도 경유)','70만원','8.5만원',''],['','광역버스(강남 90·기타 70)','70~90만원','12만원','서울 상권 연결'],
-      ['안산','시내버스','별도 협의','—','매체사 단가 미제공']])+'</div>';
+      ['안산','시내버스','별도 협의','—','단가 미확정(협의)']])+'</div>';
   var gg='<div class="sec" style="margin-top:14px"><div class="sdesc" style="font-weight:800;color:#111a2e;font-size:15px">동남부 경기·성남권 (등급별 · 광역/지선/공공)</div>'
     +tbl([
       ['광역버스','SA급 (삼성·테헤란·청담·선릉)','90만원','8만원','강남 메인',4],['','A급 (강남역·양재·분당·판교)','85만원','8만원',''],['','B급 (명동·서울역·수원·용인)','80만원','8만원',''],['','C급 (강변·잠실·기타 서울)','80만원','8만원',''],
       ['지선버스','S급 (하남·송파·위례·분당·잠실)','70만원','8만원','',4],['','A급 (강동·천호·구리·남양주)','65만원','8만원',''],['','B급 (수원·성남·용인·화성·안양)','60만원','8만원',''],['','C급 (수도권 관내)','55만원','8만원',''],
       ['공공버스','A급 (강동·천호·구리·남양주)','45만원','6만원','차도+후면만(인도 불가)',2],['','B급 (수원·성남·용인·화성·안양)','35만원','6만원',''],
       ['성남 시내버스','판교·분당·위례 외부(5면)','50만원','8만원','판교14·분당7·위례5 노선',2],['','외부 중앙문','10만원','2만원','10개 노선']])
-    +'<div class="note" style="margin-top:8px">· <b>동남부 경기·성남권</b>(성남·분당·하남·위례·송파·강동·구리·남양주·수원·용인·화성·안양 등) 광역/지선/공공 <b>등급별 대당가</b>(VAT 별도). 제작비 광역·지선 8만/공공 6만(6개월+ 1회 무료). · 자생 <b>분당·성남·수원·용인</b> 분원 경유 노선에 해당. · 일산·고양·부천·안산은 타 권역·별도 매체사.</div></div>';
+    +'<div class="note" style="margin-top:8px">· <b>동남부 경기·성남권</b>(성남·분당·하남·위례·송파·강동·구리·남양주·수원·용인·화성·안양 등) 광역/지선/공공 <b>등급별 대당가</b>(VAT 별도). 제작비 광역·지선 8만/공공 6만(6개월+ 1회 무료). · 자생 <b>분당·성남·수원·용인</b> 분원 경유 노선에 해당. · 일산·고양·부천·안산은 타 권역·별도 단가.</div></div>';
   var youngnam='<div class="sec" style="margin-top:14px"><div class="sdesc" style="font-weight:800;color:#111a2e;font-size:15px">영남</div>'
     +tbl([['부산','일반노선','78만원','6만원','분배 일반8:해운대2',2],['','해운대노선','90만원','6만원',''],['대구','간선·지선·순환·급행','75만원','7만원','상품등급 S/A/B'],['울산','확대형(차도+인도)','65만원','7만원','',3],['','전체 set','75만원','8만원',''],['','후면','15만원','3만원',''],['창원','차도+인도','60만원','10만원','',2],['','후면','15만원','2만원','']])+'</div>';
   var chung='<div class="sec" style="margin-top:14px"><div class="sdesc" style="font-weight:800;color:#111a2e;font-size:15px">충청·호남</div>'
@@ -559,7 +559,7 @@ function renderRates(){
       ['천안','시내버스 바디(차도+인도)','40만원','10만원','공동배차·6개월+ 제작비 감면',2],['','후면','15만원','1만원',''],
       ['청주','시내버스 바디(차도+인도)','60만원','10만원','최소 3개월 집행',3],['','급행 B3·B7·747(바디+행선판)','75~90만원','12~15만원','고정노선'],['','급행 후면','15만원','2만원',''],
       ['세종','시내버스·BRT(등급별)','35~64만원','8만원','세종순환·오송역 경유']])+'</div>';
-  var vnote='<div class="note" style="margin-top:14px">※ 모든 단가는 <b>부가세(VAT) 별도</b>, <b>월 단가(1대)</b> 기준입니다. <b>제작·부착비는 광고료와 별도</b>(1회성)이며, \'별도\'는 매체사 협의 항목입니다. 서울버스TV는 제외, 서울 시내버스 외부광고 기준입니다.</div>';
+  var vnote='<div class="note" style="margin-top:14px">※ 모든 단가는 <b>부가세(VAT) 별도</b>, <b>월 단가(1대)</b> 기준입니다. <b>제작·부착비는 광고료와 별도</b>(1회성)이며, \'별도\'는 별도 협의 항목입니다. 서울버스TV는 제외, 서울 시내버스 외부광고 기준입니다.</div>';
   document.getElementById('ratesBody').innerHTML=seoul+seoulB+sudo+gg+youngnam+chung+vnote;
 }
 function renderRec(){
