@@ -82,7 +82,7 @@ table.rt{table-layout:auto;min-width:0;width:100%}
 .abgrid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:14px;align-items:start}
 .abgrid .rtt{font-weight:800;color:#111a2e;font-size:15px;margin-bottom:6px}
 @media(max-width:860px){.abgrid{grid-template-columns:1fr}}
-th{text-align:left;font-size:12px;font-weight:800;color:#fff;background:#334661;padding:11px 12px;white-space:nowrap}
+th{text-align:left;font-size:12px;font-weight:800;color:#fff;background:var(--navy);padding:11px 12px;white-space:nowrap}
 td{padding:10px 12px;border-bottom:1px solid #eef1f7;vertical-align:middle;word-break:keep-all}
 tr:last-child td{border-bottom:0}
 td.r,th.r{text-align:right}
@@ -91,7 +91,7 @@ td.b{font-weight:800;color:#111a2e}
 td.rmemo{color:#64748b;font-size:12px}
 tbody tr:nth-child(even):not(.area):not(.sum) td{background:#fbfcfd}
 tr.area td{background:#eaeff7;font-weight:800;color:var(--navy);font-size:12.5px}
-tr.sum td{background:#334661;color:#fff;font-weight:800;font-size:14.5px}
+tr.sum td{background:var(--navy);color:#fff;font-weight:800;font-size:14.5px}
 tr.sum td .amber{color:#ffcf8a}
 .badge{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:999px;background:#eef1fb;color:var(--navy);margin-right:3px}
 .badge.g{background:#fdf0dd;color:#9a5a08}
@@ -113,6 +113,8 @@ tr.sum td .amber{color:#ffcf8a}
 .note b{font-weight:800}
 .chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
 .chip{font-size:12px;font-weight:700;padding:5px 11px;border-radius:999px;background:var(--soft);border:1px solid var(--line);color:#44546e}
+.cmp .chips{gap:5px}
+.cmp .chip{font-size:11px;padding:4px 9px}
 
 /* 추천 노선 리스트업 */
 .recwrap{display:grid;grid-template-columns:1fr 1fr;gap:12px}
@@ -220,10 +222,10 @@ ul.why li::marker{color:var(--amber)}
         <div class="blk con"><span class="lb">단점</span>지방 분원 노출 없음(지방 집객 효과 ✕). 서울 단가가 높아 총 대수(19대)가 적음.</div>
         <div class="fit">추천 — 수도권 집객·서울 브랜딩이 최우선일 때</div></div>
       <div class="cmp" data-plan="B" onclick="pickPlan('B')"><span class="tag">B안</span><h4>전국구 분산</h4>
-        <div class="chips" style="margin:2px 0 6px"><span class="chip">(고정) 서울 + 경기 + 지방 광역시</span><span class="chip">26대 · 1.94억</span></div>
-        <div class="blk"><span class="lb">특징</span>서울 본원(강남) + 경기 거점 + 지방 광역시(대구·부산·대전·광주·울산·창원) 분산. 12개월 연속 26대.</div>
-        <div class="blk pro"><span class="lb">장점</span>서울 본원부터 전국 분원까지 고르게 노출 → 지방 집객 지원·분원 간 형평. 가장 많은 대수(26대).</div>
-        <div class="blk con"><span class="lb">단점</span>분원당 대수가 적어(1~3대) 개별 임팩트는 약함. 서울은 본원 1곳만(핵심 상권 밀도는 A안보다 낮음).</div>
+        <div class="chips" style="margin:2px 0 6px"><span class="chip">(고정) 서울 + 경기 + 지방 광역시</span><span class="chip">24대 · 1.92억</span></div>
+        <div class="blk"><span class="lb">특징</span>서울 3대(강남 본원 2 + 목동 1) + 경기 거점 + 지방 광역시(대구·부산·대전·광주·울산·창원). 12개월 연속 24대.</div>
+        <div class="blk pro"><span class="lb">장점</span>서울 본원부터 전국 광역시까지 고르게 노출 → 지방 집객 지원·분원 간 형평. 전국 커버리지 최대.</div>
+        <div class="blk con"><span class="lb">단점</span>분원당 대수가 적어(1~3대) 개별 임팩트는 약함. 서울 밀집도는 A안보다 낮음.</div>
         <div class="fit">추천 — 전국 분원 균형·지방 집객이 목표일 때</div></div>
       <div class="cmp rec" data-plan="C" onclick="pickPlan('C')"><span class="tag">C안 추천</span><h4>서울 고정 + 순환</h4>
         <div class="chips" style="margin:2px 0 6px"><span class="chip">(고정) 서울 + (순환) 경기·지방</span><span class="chip">연 16개 분원 · 1.95억</span></div>
@@ -402,22 +404,25 @@ ul.why li::marker{color:var(--amber)}
 var won=function(n){return n.toLocaleString('ko-KR');};
 var BUDGET=200000000, M=12;
 var NR={강남:42,목동:46,보라매:25,잠실:28,노원:17,분당:11,일산:8,부천:9,수원:15,인천:30,대구:25,부산:21,해운대:6,대전:13,광주:13,울산:46,창원:38,안산:16,천안:17,청주:41};
+/* 주요 거점 = 자생 타깃(중장년·주요 상권·역·대형 주거)에 맞는 핵심 경유지 */
+var HUB={강남:'강남역·테헤란로·삼성역',목동:'목동 아파트·오목교·양천구청',보라매:'보라매공원·신대방·사당',잠실:'잠실역·롯데타워·송파',노원:'노원역·상계주공·중계학원가',분당:'서현역·정자·판교',일산:'라페스타·주엽·대화',부천:'부천역·중동신도시',수원:'수원역·영통·광교',인천:'부평역·구월동·시청',대구:'동성로·수성구·범어',부산:'서면·연산·동래',해운대:'해운대·센텀시티',대전:'둔산·시청·은행동',광주:'상무지구·충장로·첨단',울산:'삼산동·공업탑·성남동',창원:'상남동·중앙동·시청',안산:'중앙역·고잔',천안:'천안역·불당·터미널',청주:'성안길·가경·터미널'};
 var PLAN={
- A:[{b:'강남',area:'서울',med:'SA 1 · A 2 · B 1',rate:'150·120·90만',qty:4,amt:57600000,memo:'본원·골드 패키지'},
-  {b:'목동',area:'서울',med:'A 1 · B 1',rate:'120·90만',qty:2,amt:25200000,memo:'서남권'},
-  {b:'보라매',area:'서울',med:'A 1 · B 1',rate:'120·90만',qty:2,amt:25200000,memo:'동작·관악'},
-  {b:'잠실',area:'서울',med:'A 1 · B 1',rate:'120·90만',qty:2,amt:25200000,memo:'송파·강동'},
-  {b:'노원',area:'서울',med:'B 1',rate:'90만',qty:1,amt:10800000,memo:'동북권'},
+ A:[{b:'강남',area:'서울',med:'SA 1 · A 2 · B 1',rate:'150·120·90만',qty:4,amt:57600000,memo:'골드 패키지(등급믹스)'},
+  {b:'목동',area:'서울',med:'A 1 · B 1',rate:'120·90만',qty:2,amt:25200000,memo:'—'},
+  {b:'보라매',area:'서울',med:'A 1 · B 1',rate:'120·90만',qty:2,amt:25200000,memo:'—'},
+  {b:'잠실',area:'서울',med:'A 1 · B 1',rate:'120·90만',qty:2,amt:25200000,memo:'—'},
+  {b:'노원',area:'서울',med:'B 1',rate:'90만',qty:1,amt:10800000,memo:'—'},
   {b:'분당',area:'경기',med:'시내버스',rate:'50만',qty:3,amt:18000000,memo:'제안 단가'},
   {b:'일산',area:'경기',med:'시내버스',rate:'60만',qty:2,amt:14400000,memo:'판매가·시내'},
   {b:'부천',area:'경기',med:'시내버스',rate:'45만',qty:1,amt:5400000,memo:'제안 단가'},
   {b:'인천',area:'인천',med:'시내버스 외부(일반)',rate:'60만',qty:2,amt:14400000,memo:'최소 5대·제작 1회 무료'}],
- B:[{b:'강남',area:'서울',med:'B 1',rate:'90만',qty:1,amt:10800000,memo:'본원(서울 주요)'},
+ B:[{b:'강남',area:'서울',med:'A 1 · B 1',rate:'120·90만',qty:2,amt:25200000,memo:'골드 패키지'},
+  {b:'목동',area:'서울',med:'B 1',rate:'90만',qty:1,amt:10800000,memo:'—'},
   {b:'분당',area:'경기',med:'시내버스',rate:'50만',qty:3,amt:18000000,memo:'제안 단가'},
-  {b:'일산',area:'경기',med:'시내버스',rate:'60만',qty:3,amt:21600000,memo:'판매가·시내'},
-  {b:'부천',area:'경기',med:'시내버스',rate:'45만',qty:3,amt:16200000,memo:'제안 단가'},
-  {b:'수원',area:'경기',med:'시내버스 바디',rate:'52만',qty:3,amt:18720000,memo:'남부 경기권'},
-  {b:'대구',area:'대구',med:'간선/지선(S·A)',rate:'75만',qty:3,amt:27000000,memo:'상품등급 S/A'},
+  {b:'일산',area:'경기',med:'시내버스',rate:'60만',qty:2,amt:14400000,memo:'판매가·시내'},
+  {b:'부천',area:'경기',med:'시내버스',rate:'45만',qty:2,amt:10800000,memo:'제안 단가'},
+  {b:'수원',area:'경기',med:'시내버스 바디',rate:'52만',qty:2,amt:12480000,memo:'—'},
+  {b:'대구',area:'대구',med:'간선/지선(S·A)',rate:'75만',qty:2,amt:18000000,memo:'상품등급 S/A'},
   {b:'부산',area:'부산',med:'일반노선',rate:'78만',qty:2,amt:18720000,memo:'일반노선'},
   {b:'대전',area:'대전',med:'간선/지선',rate:'68만',qty:2,amt:16320000,memo:'6개월+ 제작무료'},
   {b:'광주',area:'광주',med:'도로+인도+하차문',rate:'70만',qty:2,amt:16800000,memo:'풀세트 110만 선택가'},
@@ -470,11 +475,11 @@ function feeCell(b,qty){
   return '<td class="r">'+won(u*qty)+'원<span style="color:#94a3b8;font-size:11px;display:block">'+(u/10000)+'만/대</span></td>';
 }
 function costTable(rows){
-  var tot=0,tq=0,fsum=0,h='<div class="tblw"><table><thead><tr><th>분원</th><th>지역</th><th>매체·등급</th><th class="c">대수</th><th class="c">개월</th><th class="r">월 단가</th><th class="r">제작·부착비<small style="font-weight:600;opacity:.8">(별도)</small></th><th class="r">연 집행금액</th><th>비고</th></tr></thead><tbody>';
+  var tot=0,tq=0,fsum=0,h='<div class="tblw"><table><thead><tr><th>분원</th><th>지역</th><th>주요 거점</th><th>매체·등급</th><th class="c">대수</th><th class="c">개월</th><th class="r">월 단가</th><th class="r">제작·부착비<small style="font-weight:600;opacity:.8">(별도)</small></th><th class="r">연 집행금액</th><th>비고</th></tr></thead><tbody>';
   rows.forEach(function(r){ tot+=r.amt; tq+=r.qty; if(FEE[r.b]!=null) fsum+=FEE[r.b]*r.qty;
-    h+='<tr><td class="b">자생 '+r.b+'</td><td>'+r.area+'</td><td>'+r.med+' <span style="color:#94a3b8;font-size:11.5px">· 인근 '+(NR[r.b]||'')+'노선 中</span></td><td class="c b">'+r.qty+'</td><td class="c">'+M+'</td><td class="r">'+r.rate+'</td>'+feeCell(r.b,r.qty)+'<td class="r b">'+won(r.amt)+'원</td><td class="rmemo">'+r.memo+'</td></tr>';
+    h+='<tr><td class="b">자생 '+r.b+'</td><td>'+r.area+'</td><td>'+(HUB[r.b]||'')+'</td><td>'+r.med+' <span style="color:#94a3b8;font-size:11.5px">· 인근 '+(NR[r.b]||'')+'노선 中</span></td><td class="c b">'+r.qty+'</td><td class="c">'+M+'</td><td class="r">'+r.rate+'</td>'+feeCell(r.b,r.qty)+'<td class="r b">'+won(r.amt)+'원</td><td class="rmemo">'+(r.memo||'—')+'</td></tr>';
   });
-  h+='<tr class="sum"><td>합계</td><td></td><td></td><td class="c">'+tq+'대</td><td class="c">'+M+'</td><td></td><td class="r">+'+won(fsum)+'원</td><td class="r"><span class="amber">'+won(tot)+'원</span></td><td>잔여 '+won(BUDGET-tot)+'</td></tr></tbody></table></div>';
+  h+='<tr class="sum"><td>합계</td><td></td><td></td><td></td><td class="c">'+tq+'대</td><td class="c">'+M+'</td><td></td><td class="r">+'+won(fsum)+'원</td><td class="r"><span class="amber">'+won(tot)+'원</span></td><td>잔여 '+won(BUDGET-tot)+'</td></tr></tbody></table></div>';
   h+='<div style="margin-top:8px;font-size:12px;color:#64748b">※ 모든 금액은 <b>부가세(VAT) 별도</b>이며, <b>제작·부착비는 광고료와 별도</b>(1회성)입니다. 경기·인천 등 일부 지역 제작비는 별도 협의. 노선·대수·금액은 확정 예약 시 가능 차량 현황에 따라 변동됩니다.</div>';
   return h;
 }
@@ -515,17 +520,17 @@ function renderC(){
   h+=kpiStrip(cbuses,cbm,C_SEOUL.length+C_ROT.length,croutes);
   h+='<div style="margin-bottom:12px;font-size:14px;color:#34425a"><b>서울 5분원 12개월 고정</b> + 지방·경기 <b>분기 순환(플라이팅)</b> — 지점별 우선순위·집행 월을 배정합니다.</div>';
   var sfee=0;
-  h+='<div class="tblw"><table><thead><tr><th>서울 고정</th><th>등급</th><th class="c">대수</th><th class="c">개월</th><th class="r">제작·부착비<small style="font-weight:600;opacity:.8">(별도)</small></th><th class="r">연 집행금액</th></tr></thead><tbody>';
-  C_SEOUL.forEach(function(r){ stot+=r.amt; sq+=r.qty; if(FEE[r.b]!=null) sfee+=FEE[r.b]*r.qty;
-    h+='<tr><td class="b">자생 '+r.b+'</td><td>'+r.med+'</td><td class="c b">'+r.qty+'</td><td class="c">12</td>'+feeCell(r.b,r.qty)+'<td class="r b">'+won(r.amt)+'원</td></tr>'; });
-  h+='<tr class="sum"><td>서울 소계</td><td></td><td class="c">'+sq+'대</td><td class="c">12</td><td class="r">+'+won(sfee)+'원</td><td class="r"><span class="amber">'+won(stot)+'원</span></td></tr></tbody></table></div>';
+  h+='<div class="tblw"><table><thead><tr><th class="c">우선순위</th><th>서울 고정</th><th>주요 거점</th><th>등급</th><th class="c">대수</th><th class="c">개월</th><th class="r">제작·부착비<small style="font-weight:600;opacity:.8">(별도)</small></th><th class="r">연 집행금액</th></tr></thead><tbody>';
+  C_SEOUL.forEach(function(r,i){ stot+=r.amt; sq+=r.qty; if(FEE[r.b]!=null) sfee+=FEE[r.b]*r.qty;
+    h+='<tr><td class="c b">'+(i+1)+'</td><td class="b">자생 '+r.b+'</td><td>'+(HUB[r.b]||'')+'</td><td>'+r.med+'</td><td class="c b">'+r.qty+'</td><td class="c">12</td>'+feeCell(r.b,r.qty)+'<td class="r b">'+won(r.amt)+'원</td></tr>'; });
+  h+='<tr class="sum"><td></td><td>서울 소계</td><td></td><td></td><td class="c">'+sq+'대</td><td class="c">12</td><td class="r">+'+won(sfee)+'원</td><td class="r"><span class="amber">'+won(stot)+'원</span></td></tr></tbody></table></div>';
   var qtot=0;
   var rfee=0;
-  h+='<div class="tblw" style="margin-top:14px"><table><thead><tr><th class="c">우선</th><th>분원</th><th>지역</th><th class="c">집행 월</th><th class="c">개월</th><th class="c">대수</th><th class="r">월 단가</th><th class="r">제작·부착비<small style="font-weight:600;opacity:.8">(별도)</small></th><th class="r">집행금액</th></tr></thead><tbody>';
+  h+='<div class="tblw" style="margin-top:14px"><table><thead><tr><th class="c">우선순위</th><th>분원</th><th>지역</th><th>주요 거점</th><th class="c">집행 월</th><th class="c">개월</th><th class="c">대수</th><th class="r">월 단가</th><th class="r">제작·부착비<small style="font-weight:600;opacity:.8">(별도)</small></th><th class="r">집행금액</th></tr></thead><tbody>';
   C_ROT.forEach(function(r){ var amt=r.rate*r.qty*r.len; qtot+=amt; if(FEE[r.b]!=null) rfee+=FEE[r.b]*r.qty;
-    h+='<tr><td class="c b">'+r.pri+'</td><td class="b">자생 '+r.b+'</td><td>'+r.area+'</td><td class="c b" style="color:var(--amber)">'+r.mo+'</td><td class="c">'+r.len+'개월</td><td class="c">'+r.qty+'</td><td class="r">'+(r.rate/10000)+'만</td>'+feeCell(r.b,r.qty)+'<td class="r b">'+won(amt)+'원</td></tr>';
+    h+='<tr><td class="c b">'+r.pri+'</td><td class="b">자생 '+r.b+'</td><td>'+r.area+'</td><td>'+(HUB[r.b]||'')+'</td><td class="c b" style="color:var(--amber)">'+r.mo+'</td><td class="c">'+r.len+'개월</td><td class="c">'+r.qty+'</td><td class="r">'+(r.rate/10000)+'만</td>'+feeCell(r.b,r.qty)+'<td class="r b">'+won(amt)+'원</td></tr>';
   });
-  h+='<tr class="sum"><td></td><td>순환 소계</td><td></td><td class="c">'+C_ROT.length+'개 분원</td><td></td><td></td><td></td><td class="r">+'+won(rfee)+'원</td><td class="r"><span class="amber">'+won(qtot)+'원</span></td></tr></tbody></table></div>';
+  h+='<tr class="sum"><td></td><td>순환 소계</td><td></td><td></td><td class="c">'+C_ROT.length+'개 분원</td><td></td><td></td><td></td><td class="r">+'+won(rfee)+'원</td><td class="r"><span class="amber">'+won(qtot)+'원</span></td></tr></tbody></table></div>';
   var gt=stot+qtot;
   h+='<div class="tblw" style="margin-top:14px"><table><tbody><tr class="sum"><td>총 합계</td><td class="c">서울 '+sq+'대 상시 + 순환 '+C_ROT.length+'개 분원 = 연 '+(C_SEOUL.length+C_ROT.length)+'개 분원</td><td class="r"><span class="amber">'+won(gt)+'원</span></td><td>잔여 '+won(BUDGET-gt)+'</td></tr></tbody></table></div>';
   h+='<div style="margin-top:8px;font-size:12px;color:#64748b">※ 모든 금액은 <b>부가세(VAT) 별도</b>이며, <b>제작·부착비는 광고료와 별도</b>(1회성)입니다. 경기·인천 등 일부 지역 제작비는 별도 협의. 노선·대수·금액은 확정 예약 시 변동될 수 있습니다.</div>';
