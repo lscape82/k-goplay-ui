@@ -151,7 +151,8 @@ ul.why li::marker{color:var(--amber)}
 .gdiv{grid-column:1 / -1;height:1px;background:var(--line);margin:3px 0}
 
 /* 안별 장단점 비교 */
-.cmp{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:9px}
+.cmp{background:#fff;border:1px solid var(--line);border-radius:14px;padding:18px;display:flex;flex-direction:column;gap:9px;cursor:pointer;transition:box-shadow .12s,border-color .12s}
+.cmp:hover{border-color:var(--navy2);box-shadow:0 3px 12px rgba(22,33,91,.08)}
 .cmp.sel{border-color:var(--navy);box-shadow:0 0 0 1px var(--navy) inset}
 .cmp .tag{align-self:flex-start;font-size:11px;font-weight:800;padding:3px 10px;border-radius:999px;background:#eef1fb;color:var(--navy)}
 .cmp.rec .tag{background:var(--navy);color:#fff}
@@ -212,21 +213,21 @@ ul.why li::marker{color:var(--amber)}
     <h3>A·B·C 세 가지 안</h3>
     <div class="sdesc">예산은 같고 전략이 다릅니다. 집객 범위와 노출 밀도 중 무엇을 우선하느냐로 선택합니다.</div>
     <div class="grid3">
-      <div class="cmp" data-plan="A"><span class="tag">A안</span><h4>서울 1순위 중심</h4>
-        <div class="chips" style="margin:2px 0 6px"><span class="chip">서울 5분원+경기·인천</span><span class="chip">19대 · 1.96억</span></div>
+      <div class="cmp" data-plan="A" onclick="pickPlan('A')"><span class="tag">A안</span><h4>서울 1순위 중심</h4>
+        <div class="chips" style="margin:2px 0 6px"><span class="chip">(고정) 서울 5분원 + 경기·인천</span><span class="chip">19대 · 1.96억</span></div>
         <div class="blk"><span class="lb">특징</span>서울 5분원 집중(강남 본원=등급믹스) + 경기·인천 선별 추가. 12개월 연속 19대.</div>
         <div class="blk pro"><span class="lb">장점</span>수도권 인구밀집·핵심 상권을 연중 반복 노출 → 브랜드 인지 극대화. 본원(강남) 프리미엄 상징성.</div>
         <div class="blk con"><span class="lb">단점</span>지방 분원 노출 없음(지방 집객 효과 ✕). 서울 단가가 높아 총 대수(19대)가 적음.</div>
         <div class="fit">추천 — 수도권 집객·서울 브랜딩이 최우선일 때</div></div>
-      <div class="cmp" data-plan="B"><span class="tag">B안</span><h4>전국구 분산</h4>
-        <div class="chips" style="margin:2px 0 6px"><span class="chip">경기+지방 광역시</span><span class="chip">26대 · 1.94억</span></div>
-        <div class="blk"><span class="lb">특징</span>경기 거점 + 지방 광역시(대구·부산·대전·광주·울산·창원) 분산. 12개월 연속 26대.</div>
-        <div class="blk pro"><span class="lb">장점</span>전국 분원을 고르게 노출 → 지방 분원 집객 지원, 분원 간 형평. 가장 많은 대수(26대).</div>
-        <div class="blk con"><span class="lb">단점</span>분원당 대수가 적어(2~3대) 개별 임팩트는 약함. 서울 핵심 상권 밀도가 낮음.</div>
+      <div class="cmp" data-plan="B" onclick="pickPlan('B')"><span class="tag">B안</span><h4>전국구 분산</h4>
+        <div class="chips" style="margin:2px 0 6px"><span class="chip">(고정) 서울 + 경기 + 지방 광역시</span><span class="chip">26대 · 1.94억</span></div>
+        <div class="blk"><span class="lb">특징</span>서울 본원(강남) + 경기 거점 + 지방 광역시(대구·부산·대전·광주·울산·창원) 분산. 12개월 연속 26대.</div>
+        <div class="blk pro"><span class="lb">장점</span>서울 본원부터 전국 분원까지 고르게 노출 → 지방 집객 지원·분원 간 형평. 가장 많은 대수(26대).</div>
+        <div class="blk con"><span class="lb">단점</span>분원당 대수가 적어(1~3대) 개별 임팩트는 약함. 서울은 본원 1곳만(핵심 상권 밀도는 A안보다 낮음).</div>
         <div class="fit">추천 — 전국 분원 균형·지방 집객이 목표일 때</div></div>
-      <div class="cmp rec" data-plan="C"><span class="tag">C안 추천</span><h4>서울 고정 + 순환</h4>
-        <div class="chips" style="margin:2px 0 6px"><span class="chip">서울 9대 상시</span><span class="chip">연 16개 분원 · 1.95억</span></div>
-        <div class="blk"><span class="lb">특징</span>서울 5분원 12개월 상시 + 지방·경기 분기 순환(플라이팅). 연 16개 분원 집행.</div>
+      <div class="cmp rec" data-plan="C" onclick="pickPlan('C')"><span class="tag">C안 추천</span><h4>서울 고정 + 순환</h4>
+        <div class="chips" style="margin:2px 0 6px"><span class="chip">(고정) 서울 + (순환) 경기·지방</span><span class="chip">연 16개 분원 · 1.95억</span></div>
+        <div class="blk"><span class="lb">특징</span>서울 5분원 12개월 상시(고정) + 지방·경기 분기 순환(플라이팅). 연 16개 분원 집행.</div>
         <div class="blk pro"><span class="lb">장점</span>서울 상시 유지 + 같은 예산으로 집행 분원 2배 확대. 지방도 분기별로 순차 커버 → 예산 효율 최고.</div>
         <div class="blk con"><span class="lb">단점</span>지방 분원은 연중 3~6개월만 노출(상시 아님). 분기 전환 등 운영 관리가 다소 복잡.</div>
         <div class="fit">추천 — 예산 효율 극대화, 서울 유지 + 전국 순차 노출</div></div>
@@ -411,13 +412,13 @@ var PLAN={
   {b:'일산',area:'경기',med:'시내버스',rate:'60만',qty:2,amt:14400000,memo:'판매가·시내'},
   {b:'부천',area:'경기',med:'시내버스',rate:'45만',qty:1,amt:5400000,memo:'제안 단가'},
   {b:'인천',area:'인천',med:'시내버스 외부(일반)',rate:'60만',qty:2,amt:14400000,memo:'최소 5대·제작 1회 무료'}],
- B:[{b:'분당',area:'경기',med:'시내버스',rate:'50만',qty:3,amt:18000000,memo:'제안 단가'},
+ B:[{b:'강남',area:'서울',med:'B 1',rate:'90만',qty:1,amt:10800000,memo:'본원(서울 주요)'},
+  {b:'분당',area:'경기',med:'시내버스',rate:'50만',qty:3,amt:18000000,memo:'제안 단가'},
   {b:'일산',area:'경기',med:'시내버스',rate:'60만',qty:3,amt:21600000,memo:'판매가·시내'},
   {b:'부천',area:'경기',med:'시내버스',rate:'45만',qty:3,amt:16200000,memo:'제안 단가'},
   {b:'수원',area:'경기',med:'시내버스 바디',rate:'52만',qty:3,amt:18720000,memo:'남부 경기권'},
   {b:'대구',area:'대구',med:'간선/지선(S·A)',rate:'75만',qty:3,amt:27000000,memo:'상품등급 S/A'},
   {b:'부산',area:'부산',med:'일반노선',rate:'78만',qty:2,amt:18720000,memo:'일반노선'},
-  {b:'해운대',area:'부산',med:'해운대노선',rate:'90만',qty:1,amt:10800000,memo:'해운대 급지'},
   {b:'대전',area:'대전',med:'간선/지선',rate:'68만',qty:2,amt:16320000,memo:'6개월+ 제작무료'},
   {b:'광주',area:'광주',med:'도로+인도+하차문',rate:'70만',qty:2,amt:16800000,memo:'풀세트 110만 선택가'},
   {b:'울산',area:'울산',med:'확대형',rate:'65만',qty:2,amt:15600000,memo:'확대형(차도+인도)'},
@@ -610,10 +611,11 @@ function activateTab(v){
 }
 tabs.forEach(function(t){ t.addEventListener('click',function(){ activateTab(t.dataset.v); });});
 function syncCmp(ab){ document.querySelectorAll('.cmp[data-plan]').forEach(function(c){ c.classList.toggle('sel', c.getAttribute('data-plan')===ab); }); }
-document.querySelectorAll('[data-ab]').forEach(function(b){ b.addEventListener('click',function(){
-  document.querySelectorAll('[data-ab]').forEach(function(x){x.setAttribute('aria-pressed',x===b?'true':'false');});
-  renderPlan(b.dataset.ab); syncCmp(b.dataset.ab);
-});});
+function pickPlan(ab){
+  document.querySelectorAll('[data-ab]').forEach(function(x){x.setAttribute('aria-pressed',x.dataset.ab===ab?'true':'false');});
+  renderPlan(ab); syncCmp(ab);
+}
+document.querySelectorAll('[data-ab]').forEach(function(b){ b.addEventListener('click',function(){ pickPlan(b.dataset.ab); });});
 document.getElementById('home').addEventListener('click',function(){ window.location.href='jaseng-branches.html'; });
 
 renderRates(); renderRec(); renderPlan('A'); syncCmp('A');
