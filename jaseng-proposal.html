@@ -136,6 +136,8 @@ a.recrow.reclink:hover .rnum{color:#c67d16}
 table.qt td,table.qt th{font-size:12.5px}
 table.qt td{padding:7px 9px}
 table.qt td.rtc{padding:4px 9px}
+table.qt tr.grp > td{border-top:2px solid #aeb9d2}
+table.qt tbody tr:first-child.grp > td{border-top:0}
 table.qt .gcell .nsub{color:#94a3b8;font-size:11px;display:block;font-weight:400;margin-top:1px}
 a.rtlink{display:flex;align-items:center;justify-content:space-between;gap:12px;text-decoration:none;color:var(--navy);font-weight:800;white-space:nowrap}
 a.rtlink:hover{color:#c67d16}
@@ -519,7 +521,7 @@ function costTable(rows){
   var tot=0,tq=0,fsum=0,h='<div class="tblw"><table class="qt"><thead><tr><th>분원</th><th>지역</th><th>주요 거점</th><th>등급(수량)</th><th>추천 노선</th><th class="c">대수</th><th class="c">개월</th><th class="r">월 단가</th><th class="r">제작·부착비<small style="font-weight:600;opacity:.8">(별도)</small></th><th class="r">연 집행금액</th><th>비고</th></tr></thead><tbody>';
   rows.forEach(function(r){ tot+=r.amt; tq+=r.qty; if(FEE[r.b]!=null) fsum+=FEE[r.b]*r.qty;
     var rts=recRoutes(r.b), n=Math.max(1,rts.length);
-    h+='<tr><td class="b" rowspan="'+n+'">자생 '+r.b+'</td><td rowspan="'+n+'">'+r.area+'</td><td rowspan="'+n+'">'+hubCell(r.b)+'</td><td rowspan="'+n+'">'+gradeLines(r.med)+'</td>'+routeCell(r.b,rts[0])+'<td class="c b" rowspan="'+n+'">'+r.qty+'</td><td class="c" rowspan="'+n+'">'+M+'</td><td class="r" rowspan="'+n+'">'+rateLines(r.med,r.rate)+'</td>'+feeCell(r.b,r.qty,n)+'<td class="r b" rowspan="'+n+'">'+manWon(r.amt)+'</td><td class="rmemo" rowspan="'+n+'">'+(r.memo||'—')+'</td></tr>';
+    h+='<tr class="grp"><td class="b" rowspan="'+n+'">자생 '+r.b+'</td><td rowspan="'+n+'">'+r.area+'</td><td rowspan="'+n+'">'+hubCell(r.b)+'</td><td rowspan="'+n+'">'+gradeLines(r.med)+'</td>'+routeCell(r.b,rts[0])+'<td class="c b" rowspan="'+n+'">'+r.qty+'</td><td class="c" rowspan="'+n+'">'+M+'</td><td class="r" rowspan="'+n+'">'+rateLines(r.med,r.rate)+'</td>'+feeCell(r.b,r.qty,n)+'<td class="r b" rowspan="'+n+'">'+manWon(r.amt)+'</td><td class="rmemo" rowspan="'+n+'">'+(r.memo||'—')+'</td></tr>';
     for(var i=1;i<n;i++){ h+='<tr>'+routeCell(r.b,rts[i])+'</tr>'; }
   });
   h+='<tr class="sum"><td>합계</td><td></td><td></td><td></td><td></td><td class="c">'+tq+'대</td><td class="c">'+M+'</td><td></td><td class="r">+'+manWon(fsum)+'</td><td class="r"><span class="amber">'+manWon(tot)+'</span></td><td>잔여 '+manWon(BUDGET-tot)+'</td></tr></tbody></table></div>';
@@ -566,7 +568,7 @@ function renderC(){
   h+='<div class="tblw"><table class="qt"><thead><tr><th class="c">우선순위</th><th>서울 고정</th><th>주요 거점</th><th>등급(수량)</th><th>추천 노선</th><th class="c">대수</th><th class="c">개월</th><th class="r">제작·부착비<small style="font-weight:600;opacity:.8">(별도)</small></th><th class="r">연 집행금액</th></tr></thead><tbody>';
   C_SEOUL.forEach(function(r,i){ stot+=r.amt; sq+=r.qty; if(FEE[r.b]!=null) sfee+=FEE[r.b]*r.qty;
     var rts=recRoutes(r.b), n=Math.max(1,rts.length);
-    h+='<tr><td class="c b" rowspan="'+n+'">'+(i+1)+'</td><td class="b" rowspan="'+n+'">자생 '+r.b+'</td><td rowspan="'+n+'">'+hubCell(r.b)+'</td><td rowspan="'+n+'">'+gradeLines(r.med)+'</td>'+routeCell(r.b,rts[0])+'<td class="c b" rowspan="'+n+'">'+r.qty+'</td><td class="c" rowspan="'+n+'">12</td>'+feeCell(r.b,r.qty,n)+'<td class="r b" rowspan="'+n+'">'+manWon(r.amt)+'</td></tr>';
+    h+='<tr class="grp"><td class="c b" rowspan="'+n+'">'+(i+1)+'</td><td class="b" rowspan="'+n+'">자생 '+r.b+'</td><td rowspan="'+n+'">'+hubCell(r.b)+'</td><td rowspan="'+n+'">'+gradeLines(r.med)+'</td>'+routeCell(r.b,rts[0])+'<td class="c b" rowspan="'+n+'">'+r.qty+'</td><td class="c" rowspan="'+n+'">12</td>'+feeCell(r.b,r.qty,n)+'<td class="r b" rowspan="'+n+'">'+manWon(r.amt)+'</td></tr>';
     for(var k=1;k<n;k++){ h+='<tr>'+routeCell(r.b,rts[k])+'</tr>'; } });
   h+='<tr class="sum"><td></td><td>서울 소계</td><td></td><td></td><td></td><td class="c">'+sq+'대</td><td class="c">12</td><td class="r">+'+manWon(sfee)+'</td><td class="r"><span class="amber">'+manWon(stot)+'</span></td></tr></tbody></table></div>';
   var qtot=0;
@@ -574,7 +576,7 @@ function renderC(){
   h+='<div class="tblw" style="margin-top:14px"><table class="qt"><thead><tr><th class="c">우선순위</th><th>분원</th><th>지역</th><th>주요 거점</th><th>추천 노선</th><th class="c">집행 월</th><th class="c">개월</th><th class="c">대수</th><th class="r">월 단가</th><th class="r">제작·부착비<small style="font-weight:600;opacity:.8">(별도)</small></th><th class="r">집행금액</th></tr></thead><tbody>';
   C_ROT.forEach(function(r){ var amt=r.rate*r.qty*r.len; qtot+=amt; if(FEE[r.b]!=null) rfee+=FEE[r.b]*r.qty;
     var rts=recRoutes(r.b), n=Math.max(1,rts.length);
-    h+='<tr><td class="c b" rowspan="'+n+'">'+r.pri+'</td><td class="b" rowspan="'+n+'">자생 '+r.b+'</td><td rowspan="'+n+'">'+r.area+'</td><td rowspan="'+n+'">'+hubCell(r.b)+'</td>'+routeCell(r.b,rts[0])+'<td class="c b" rowspan="'+n+'" style="color:var(--amber)">'+r.mo+'</td><td class="c" rowspan="'+n+'">'+r.len+'개월</td><td class="c" rowspan="'+n+'">'+r.qty+'</td><td class="r" rowspan="'+n+'">'+manWon(r.rate)+'</td>'+feeCell(r.b,r.qty,n)+'<td class="r b" rowspan="'+n+'">'+manWon(amt)+'</td></tr>';
+    h+='<tr class="grp"><td class="c b" rowspan="'+n+'">'+r.pri+'</td><td class="b" rowspan="'+n+'">자생 '+r.b+'</td><td rowspan="'+n+'">'+r.area+'</td><td rowspan="'+n+'">'+hubCell(r.b)+'</td>'+routeCell(r.b,rts[0])+'<td class="c b" rowspan="'+n+'" style="color:var(--amber)">'+r.mo+'</td><td class="c" rowspan="'+n+'">'+r.len+'개월</td><td class="c" rowspan="'+n+'">'+r.qty+'</td><td class="r" rowspan="'+n+'">'+manWon(r.rate)+'</td>'+feeCell(r.b,r.qty,n)+'<td class="r b" rowspan="'+n+'">'+manWon(amt)+'</td></tr>';
     for(var k=1;k<n;k++){ h+='<tr>'+routeCell(r.b,rts[k])+'</tr>'; }
   });
   h+='<tr class="sum"><td></td><td>순환 소계</td><td></td><td></td><td></td><td class="c">'+C_ROT.length+'개 분원</td><td></td><td></td><td></td><td class="r">+'+manWon(rfee)+'</td><td class="r"><span class="amber">'+manWon(qtot)+'</span></td></tr></tbody></table></div>';
