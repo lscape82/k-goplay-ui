@@ -163,7 +163,7 @@
       <nav class="tabs" aria-label="제안 섹션">
         <a class="cur" aria-current="true">노선 지도</a>
         <a href="jaseng-proposal.html#plan">운영안·견적</a>
-        <a href="jaseng-proposal.html#why">선정 근거</a>
+        <a href="jaseng-proposal.html#why">분원별 추천 노선</a>
         <a href="jaseng-proposal.html#rates">지역별 단가표</a>
       </nav>
     </header>
@@ -198,10 +198,6 @@
         <div class="box next" id="nextbox" hidden>
           <span class="nt">🚌 버스광고 노선 — 지도에 경로 표시</span>
           <div class="nl">분원 핀 클릭 → <b>노선 목록</b>, 노선 선택 시 <b>지도에 경로·운행정보</b>가 표시됩니다.<br><span style="display:inline-block;margin-top:5px;color:#92400e;font-weight:700">⚠️ 전 지역 공통 — 확정 예약 시점에 <b>광고 가능 버스 수량·노선 확인 필수</b> (차량 현황에 따라 변동).</span></div>
-          <div class="rsum" id="rsum" style="display:none">
-            <div class="c"><div class="k">서울 경유 노선</div><div class="v" id="rLines">–</div></div>
-            <div class="c"><div class="k">광고버스</div><div class="v" id="rQty">–</div></div>
-          </div>
         </div>
 
         <div class="box listbox" id="listbox" hidden></div>
@@ -495,14 +491,19 @@
       document.getElementById("nAll").textContent = allTotal + "곳";
       document.getElementById("sub").textContent = "전국 " + allTotal + "개 분원 · 수도권 " + capTotal + " · 지방 " + (allTotal-capTotal);
 
-      if (R && R.summary) {
-        document.getElementById("rsum").style.display = "flex";
-        document.getElementById("rLines").innerHTML = won(R.summary.unique_routes) + '<small>개</small>';
-        document.getElementById("rQty").innerHTML = won(R.summary.unique_qty) + '<small>대</small>';
-      }
 
       ["scopebox","sumbox","legend","nextbox","listbox"].forEach(function(id){ document.getElementById(id).hidden=false; });
       apply();
+
+      // 제안서 '분원별 추천 노선'에서 버스번호 클릭 진입 — ?b=분원&r=노선
+      try {
+        var qp = new URLSearchParams(location.search);
+        var qb = qp.get('b'), qr = qp.get('r');
+        if (qb && B.filter(function(x){ return x.name===qb; }).length) {
+          openPanel(qb);
+          if (qr) setTimeout(function(){ selectRoute(qr); }, 350);
+        }
+      } catch(e){}
     })();
   </script>
 </body>

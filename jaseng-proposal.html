@@ -92,7 +92,8 @@ tr.sum td .amber{color:#ffcf8a}
 .cal .on{background:var(--navy);border-radius:5px;height:18px}
 .cal .on.loc{background:var(--amber)}
 
-.crit{display:grid;gap:10px}
+.crit{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:680px){.crit{grid-template-columns:1fr}}
 .crit .row{display:grid;grid-template-columns:40px 1fr;gap:12px;background:#fff;border:1px solid var(--line);border-radius:12px;padding:14px 16px}
 .crit .no{width:34px;height:34px;border-radius:50%;background:#eef1fb;color:var(--navy);font-weight:800;display:grid;place-items:center}
 .crit .row.g .no{background:#fdf0dd;color:#9a5a08}
@@ -113,6 +114,10 @@ tr.sum td .amber{color:#ffcf8a}
 .recrow .rnum{font-weight:800;color:var(--navy);min-width:48px}
 .recrow .rnum .st{color:#e11d2a;margin-left:2px;font-size:11px}
 .recrow .rseg{color:#64748b;font-size:12px}
+a.recrow.reclink{text-decoration:none;color:inherit;cursor:pointer}
+a.recrow.reclink:hover{background:#eef2fb;border-radius:7px}
+a.recrow.reclink:hover .rnum{color:#c67d16}
+.recrow .rgo{margin-left:auto;color:var(--navy);font-weight:800;font-size:11px;white-space:nowrap;flex:none}
 
 .mapcta{display:flex;align-items:center;gap:20px;flex-wrap:wrap;background:linear-gradient(135deg,#16215b,#2b3b7a);color:#fff;border-radius:16px;padding:26px 28px}
 .mapcta h3{color:#fff;font-size:22px}
@@ -175,7 +180,7 @@ ul.why li::marker{color:var(--amber)}
   <nav class="tabs" aria-label="제안 섹션">
     <a href="jaseng-branches.html">노선 지도</a>
     <button data-v="plan" aria-current="true">운영안·견적</button>
-    <button data-v="why">선정 근거</button>
+    <button data-v="why">분원별 추천 노선</button>
     <button data-v="rates">지역별 단가표</button>
   </nav>
 </header>
@@ -227,22 +232,7 @@ ul.why li::marker{color:var(--amber)}
     </div>
   </div>
 
-  <div class="sec">
-    <h3>매체 규모 — 버스가 만드는 노출</h3>
-    <div class="sdesc">버스 외부광고는 하루 18시간 운행·왕복 8~9회로 생활권을 반복 노출합니다(각 지자체 시내버스 공개 통계).</div>
-    <div class="tblw"><table><thead><tr><th>지역</th><th class="r">월 이용객</th><th class="r">운행 차량</th><th class="r">운행 노선</th><th class="r">정류장</th><th>운행</th></tr></thead><tbody>
-      <tr><td class="b">서울</td><td class="r b">2.44억명</td><td class="r">7,394대</td><td class="r">452</td><td class="r">8,302</td><td class="rmemo">18시간 · 왕복 8~9회</td></tr>
-      <tr><td class="b">부산</td><td class="r b">4,146만명</td><td class="r">2,372대</td><td class="r">142</td><td class="r">3,998</td><td class="rmemo">왕복 8~9회</td></tr>
-      <tr><td class="b">대구</td><td class="r b">2,300만명</td><td class="r">1,566대</td><td class="r">117</td><td class="r">3,080</td><td class="rmemo">18시간 · 왕복 8~9회</td></tr>
-      <tr><td class="b">대전</td><td class="r b">1,300만명</td><td class="r">1,566대</td><td class="r">113</td><td class="r">3,080</td><td class="rmemo">18시간 · 왕복 4~5회</td></tr>
-      <tr><td class="b">광주</td><td class="r b">1,200만명</td><td class="r">1,131대</td><td class="r">113</td><td class="r">2,369</td><td class="rmemo">18시간 · 왕복 3~5회</td></tr>
-      <tr><td class="b">울산</td><td class="r b">258만명</td><td class="r">700대</td><td class="r">105</td><td class="r">3,064</td><td class="rmemo">왕복 8~9회</td></tr>
-      <tr><td class="b">창원</td><td class="r b">인구 101만</td><td class="r">750대</td><td class="r">143</td><td class="r">3,064</td><td class="rmemo">왕복 8~9회</td></tr>
-    </tbody></table></div>
-    <div class="sdesc" style="margin-top:8px">· 경기·인천 분원 지역 통계는 매체사 확인 후 보완합니다.</div>
-  </div>
-
-  <div class="sec">
+  <div id="specHold" hidden>
     <h3>광고 소재 · 광고면 · 규격 <span style="font-size:12px;font-weight:800;color:#fff;background:#16215b;padding:3px 9px;border-radius:999px;vertical-align:middle;margin-left:4px">서울 기준</span></h3>
     <div class="sdesc">버스 외부광고는 차량 면별로 집행합니다. 면이 클수록 노출·단가가 높습니다. <b>아래 그림·규격은 서울 시내버스 기준</b>이며, 지역·차종에 따라 면 구성·규격이 다릅니다.</div>
     <div class="grid2">
@@ -342,13 +332,30 @@ ul.why li::marker{color:var(--amber)}
       <a class="btn gh" href="jaseng-branches.html">노선 지도 보기 ▸</a>
     </div>
   </div>
+  <div class="sec">
+    <h3>참고 · 매체 규모 (버스가 만드는 노출)</h3>
+    <div class="sdesc">버스 외부광고는 하루 18시간 운행·왕복 8~9회로 생활권을 반복 노출합니다(각 지자체 시내버스 공개 통계).</div>
+    <div class="tblw"><table><thead><tr><th>지역</th><th class="r">월 이용객</th><th class="r">운행 차량</th><th class="r">운행 노선</th><th class="r">정류장</th><th>운행</th></tr></thead><tbody>
+      <tr><td class="b">서울</td><td class="r b">2.44억명</td><td class="r">7,394대</td><td class="r">452</td><td class="r">8,302</td><td class="rmemo">18시간 · 왕복 8~9회</td></tr>
+      <tr><td class="b">부산</td><td class="r b">4,146만명</td><td class="r">2,372대</td><td class="r">142</td><td class="r">3,998</td><td class="rmemo">왕복 8~9회</td></tr>
+      <tr><td class="b">대구</td><td class="r b">2,300만명</td><td class="r">1,566대</td><td class="r">117</td><td class="r">3,080</td><td class="rmemo">18시간 · 왕복 8~9회</td></tr>
+      <tr><td class="b">대전</td><td class="r b">1,300만명</td><td class="r">1,566대</td><td class="r">113</td><td class="r">3,080</td><td class="rmemo">18시간 · 왕복 4~5회</td></tr>
+      <tr><td class="b">광주</td><td class="r b">1,200만명</td><td class="r">1,131대</td><td class="r">113</td><td class="r">2,369</td><td class="rmemo">18시간 · 왕복 3~5회</td></tr>
+      <tr><td class="b">울산</td><td class="r b">258만명</td><td class="r">700대</td><td class="r">105</td><td class="r">3,064</td><td class="rmemo">왕복 8~9회</td></tr>
+      <tr><td class="b">창원</td><td class="r b">인구 101만</td><td class="r">750대</td><td class="r">143</td><td class="r">3,064</td><td class="rmemo">왕복 8~9회</td></tr>
+    </tbody></table></div>
+    <div class="sdesc" style="margin-top:8px">· 경기·인천 분원 지역 통계는 매체사 확인 후 보완합니다.</div>
+  </div>
 </section>
 
 <!-- 선정 근거 (+ 추천 노선 리스트업) -->
 <section class="view" id="v-why" hidden>
-  <div class="eyebrow">선정 근거</div>
-  <h2 class="big">누구에게, 왜 이 노선인가</h2>
-  <p class="lead">자생한방병원은 척추·관절 비수술 치료 특화 병원입니다. 매체는 <b>주 이용층의 생활 동선</b>과 <b>실제 내원 가능권</b>을 기준으로 고릅니다.</p>
+  <div class="eyebrow">분원별 추천 노선</div>
+  <h2 class="big">분원별 추천 노선</h2>
+  <p class="lead">각 분원 생활권을 경유하는 노선 중 <b>우선순위 상위</b>를 뽑았습니다. <span style="color:#e11d2a;font-weight:800">★</span>=최우선. <b>버스 번호를 누르면 지도에서 해당 노선</b>을 바로 볼 수 있습니다.</p>
+  <div class="sec"><div class="recwrap" id="recBody"></div></div>
+  <div class="sec" style="border-top:1px solid var(--line);padding-top:26px"><h3>선정 기준 — 누구에게, 왜 이 노선인가</h3>
+    <div class="sdesc">자생한방병원은 척추·관절 비수술 치료 특화 병원입니다. 매체는 <b>주 이용층의 생활 동선</b>과 <b>실제 내원 가능권</b>을 기준으로 고릅니다.</div></div>
   <div class="sec grid2">
     <div class="card"><h3 style="font-size:17px">① 타깃 — 누구에게 보일 것인가</h3>
       <ul class="why">
@@ -370,11 +377,6 @@ ul.why li::marker{color:var(--amber)}
       <div class="row"><div class="no">3</div><div><h4>노출 효율</h4><p>왕복 운행·운행대수·정류소수가 많은 노선 우선(일 18시간·왕복 8~9회).</p></div></div>
       <div class="row g"><div class="no">4</div><div><h4>등급·예산 효율</h4><p>등급(서울 SSA~B, 대구 상품 S/A 등) 대비 단가 효율을 따져 예산 내 최적 조합.</p></div></div>
     </div>
-  </div>
-  <div class="sec">
-    <h3>분원별 추천 노선 (상위)</h3>
-    <div class="sdesc">위 기준으로 산출한 분원별 우선 노선입니다. <span style="color:#e11d2a;font-weight:800">★</span>=최우선. 전체 노선·경로는 노선 지도에서 확인하실 수 있습니다.</div>
-    <div class="recwrap" id="recBody"></div>
   </div>
 </section>
 
@@ -572,7 +574,7 @@ function renderRec(){
   var h='';
   order.forEach(function(b){ var rs=REC[b]; if(!rs) return;
     h+='<div class="reccard"><div class="rh"><b>자생 '+b+'</b><span class="ar">인근 '+(NR[b]||'')+'노선 中 상위</span></div>';
-    rs.forEach(function(r,i){ h+='<div class="recrow"><span class="rnum">'+r[0]+(i===0?'<span class="st">★</span>':'')+'</span><span class="rseg">'+r[1]+'</span></div>'; });
+    rs.forEach(function(r,i){ h+='<a class="recrow reclink" href="jaseng-branches.html?b='+encodeURIComponent(b)+'&r='+encodeURIComponent(r[0])+'" title="지도에서 '+r[0]+'번 노선 보기"><span class="rnum">'+r[0]+(i===0?'<span class="st">★</span>':'')+'</span><span class="rseg">'+r[1]+'</span><span class="rgo">지도 ▸</span></a>'; });
     h+='</div>';
   });
   document.getElementById('recBody').innerHTML=h;
@@ -610,6 +612,8 @@ document.querySelectorAll('[data-ab]').forEach(function(b){ b.addEventListener('
 document.getElementById('home').addEventListener('click',function(){ window.location.href='jaseng-branches.html'; });
 
 renderRates(); renderRec(); renderPlan('A');
+// 규격 블록을 '지역별 단가표' 탭 하단으로 이동
+(function(){ var sh=document.getElementById('specHold'); var rt=document.getElementById('v-rates'); if(sh&&rt){ sh.className='sec'; sh.removeAttribute('hidden'); rt.appendChild(sh); } })();
 (function(){ var hs=(location.hash||'').replace('#',''); var ok=['plan','why','rates'];
   activateTab(ok.indexOf(hs)>=0?hs:'plan'); })();
 </script>
