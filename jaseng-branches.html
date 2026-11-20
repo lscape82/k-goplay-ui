@@ -501,7 +501,11 @@
         var qb = qp.get('b'), qr = qp.get('r');
         if (qb && B.filter(function(x){ return x.name===qb; }).length) {
           openPanel(qb);
-          if (qr) setTimeout(function(){ selectRoute(qr); }, 350);
+          if (qr) {
+            var picked=false, pick=function(){ if(picked) return; picked=true; selectRoute(qr); };
+            naver.maps.Event.once(map, 'idle', pick); // 지도 줌·타일 정착 후 선택
+            setTimeout(pick, 1200);                    // 폴백(이미 idle이면)
+          }
         }
       } catch(e){}
     })();
