@@ -160,8 +160,10 @@ ul.why li::marker{color:var(--amber)}
 .cmp:hover{border-color:var(--navy2);box-shadow:0 3px 12px rgba(22,33,91,.08)}
 .cmp.sel{border-color:var(--navy);box-shadow:0 0 0 1px var(--navy) inset}
 .cmp.sel .chip{background:var(--navy);color:#fff;border-color:var(--navy)}
+.cmp .tagrow{display:flex;align-items:center;gap:5px;align-self:flex-start}
 .cmp .tag{align-self:flex-start;font-size:11px;font-weight:800;padding:3px 10px;border-radius:999px;background:#eef1fb;color:var(--navy)}
-.cmp.rec .tag{background:var(--navy);color:#fff}
+.cmp.sel .tag{background:var(--navy);color:#fff}
+.cmp .rectag{font-size:11px;font-weight:800;padding:3px 9px;border-radius:999px;background:#fff7ed;color:#b45309;border:1px solid #fcd9a8}
 .cmp h4{font-size:17px}
 .cmp .blk{font-size:13px;line-height:1.55}
 .cmp .blk .lb{font-weight:800;font-size:11.5px;letter-spacing:.02em;display:block;margin-bottom:1px}
@@ -231,7 +233,7 @@ ul.why li::marker{color:var(--amber)}
         <div class="blk pro"><span class="lb">장점</span>서울 본원부터 전국 광역시까지 고르게 노출 → 지방 집객 지원·분원 간 형평. 전국 커버리지 최대.</div>
         <div class="blk con"><span class="lb">단점</span>분원당 대수가 적어(1~3대) 개별 임팩트는 약함. 서울 밀집도는 A안보다 낮음.</div>
         <div class="fit">추천 — 전국 분원 균형·지방 집객이 목표일 때</div></div>
-      <div class="cmp rec" data-plan="C" onclick="pickPlan('C')"><span class="tag">C안 추천</span><h4>서울 고정 + 순환</h4>
+      <div class="cmp rec" data-plan="C" onclick="pickPlan('C')"><span class="tagrow"><span class="tag">C안</span><span class="rectag">★ 추천</span></span><h4>서울 고정 + 순환</h4>
         <div class="chips" style="margin:2px 0 6px"><span class="chip">(고정) 서울 + (순환) 경기·지방</span><span class="chip">연 16개 분원 · 1.95억</span></div>
         <div class="blk"><span class="lb">특징</span>서울 5분원 12개월 상시(고정) + 지방·경기 분기 순환(플라이팅). 연 16개 분원 집행.</div>
         <div class="blk pro"><span class="lb">장점</span>서울 상시 유지 + 같은 예산으로 집행 분원 2배 확대. 지방도 분기별로 순차 커버 → 예산 효율 최고.</div>
@@ -411,7 +413,10 @@ var NR={강남:42,목동:46,보라매:25,잠실:28,노원:17,분당:11,일산:8,
 /* 주요 거점 = 자생 타깃(중장년·주요 상권·역·대형 주거)에 맞는 핵심 경유지 */
 var HUB={강남:'강남역·테헤란로·삼성역',목동:'목동 아파트·오목교·양천구청',보라매:'보라매공원·신대방·사당',잠실:'잠실역·롯데타워·송파',노원:'노원역·상계주공·중계학원가',분당:'서현역·정자·판교',일산:'라페스타·주엽·대화',부천:'부천역·중동신도시',수원:'수원역·영통·광교',인천:'부평역·구월동·시청',대구:'동성로·수성구·범어',부산:'서면·연산·동래',해운대:'해운대·센텀시티',대전:'둔산·시청·은행동',광주:'상무지구·충장로·첨단',울산:'삼산동·공업탑·성남동',창원:'상남동·중앙동·시청',안산:'중앙역·고잔',천안:'천안역·불당·터미널',청주:'성안길·가경·터미널'};
 /* 한 노선으로 동시 경유하는 다른 분원(좌표 기반 산출) — 강조 표시 */
-var HUB_LINK={강남:'잠실·분당',잠실:'강남',목동:'보라매',보라매:'목동',노원:'잠실·강남',일산:'강남',분당:'수원',수원:'강남',부산:'해운대',해운대:'부산'};
+/* 추천 상위 노선 기준 동시 경유(분원 레벨 집계) */
+var HUB_LINK={'강남':'잠실·노원','목동':'강남','보라매':'강남·잠실·목동','잠실':'강남','분당':'수원'};
+/* 노선별 동시 경유(정확) */
+var ROUTE_LINK={'강남':{'360':'잠실','146':'노원'},'목동':{'643':'강남','640':'강남'},'보라매':{'360':'강남·잠실','461':'잠실','640':'강남·목동'},'잠실':{'360':'강남','402':'강남'},'분당':{'720-1':'수원'}};
 function hubCell(b){ return (HUB[b]||'')+(HUB_LINK[b]?'<br><span class="hublink">🔗 '+HUB_LINK[b]+' 동시 경유</span>':''); }
 function recNums(b){ var r=(typeof REC!=='undefined')&&REC[b]; return r?r.slice(0,3).map(function(x){return x[0];}).join('·'):''; }
 var PLAN={
@@ -593,7 +598,7 @@ function renderRec(){
   order.forEach(function(b){ var rs=REC[b]; if(!rs) return;
     h+='<div class="reccard"><div class="rh"><b>자생 '+b+'</b><span class="ar">인근 '+(NR[b]||'')+'노선 中 상위</span></div>';
     h+='<div class="rhub">📍 주요 거점 <b>'+(HUB[b]||'')+'</b>'+(HUB_LINK[b]?' <span class="hublink">🔗 '+HUB_LINK[b]+' 동시 경유</span>':'')+'</div>';
-    rs.forEach(function(r,i){ h+='<a class="recrow reclink" href="jaseng-branches.html?b='+encodeURIComponent(b)+'&r='+encodeURIComponent(r[0])+'" title="지도에서 '+r[0]+'번 노선 보기"><span class="rnum">'+r[0]+(i===0?'<span class="st">★</span>':'')+'</span><span class="rseg">'+r[1]+'</span><span class="rgo">지도 ▸</span></a>'; });
+    rs.forEach(function(r,i){ h+='<a class="recrow reclink" href="jaseng-branches.html?b='+encodeURIComponent(b)+'&r='+encodeURIComponent(r[0])+'" title="지도에서 '+r[0]+'번 노선 보기"><span class="rnum">'+r[0]+(i===0?'<span class="st">★</span>':'')+'</span><span class="rseg">'+r[1]+'</span>'+((ROUTE_LINK[b]&&ROUTE_LINK[b][r[0]])?'<span class="hublink" style="margin:0 6px;flex:none">🔗 '+ROUTE_LINK[b][r[0]]+' 동시 경유</span>':'')+'<span class="rgo">지도 ▸</span></a>'; });
     h+='</div>';
   });
   document.getElementById('recBody').innerHTML=h;
